@@ -1,7 +1,10 @@
 import random
 import sqlite3
+from sqlite3 import Cursor
+from typing import Callable, TypeAlias
 
 import pymorphy3
+from PyQt5.QtWidgets import QPushButton
 
 from src.data_types import WordInputOperation
 from src.game_settings import LETTERS_PER_HAND, GRID_SIZE
@@ -13,22 +16,26 @@ BOOSTERS_CONFIG_FILE = 'res/boosters.txt'
 LETTER_DB_FILE = 'res/letters.db'
 
 
-def get_x(x, offset, hor):
+def get_x(x: int, offset: int, hor: bool) -> int:
     if hor:
         return x + offset
     else:
         return x
 
 
-def get_y(y, offset, hor):
+def get_y(y: int, offset: int, hor: bool) -> int:
     if hor:
         return y
     else:
         return y + offset
 
 
+ButtonsGrid: TypeAlias = list[list[QPushButton]]
+ButtonsForHand: TypeAlias = list[QPushButton]
+
+
 class Board:
-    def __init__(self, log):
+    def __init__(self, log: Callable[[str], None]):
         self.let_con = sqlite3.connect(LETTER_DB_FILE)
         self.morph = pymorphy3.MorphAnalyzer()
         self.words = []
@@ -40,7 +47,7 @@ class Board:
                     if boost != DEFAULT_CELL:
                         self.boosters[j, i] = int(boost)
 
-    def generate(self):
+    def generate(self) -> int:
         self.grid = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.chips = []
         cur = self.let_con.cursor()
@@ -49,16 +56,16 @@ class Board:
                 self.chips.append(i[1])
         self.chips = random.sample(self.chips, len(self.chips))
 
-    def take_chip(self):
+    def take_chip(self) -> str:
         return self.chips.pop(-1)
 
-    def next_chips(self):
+    def next_chips(self) -> None:
         if len(self.chips) < LETTERS_PER_HAND:
             self.curr_chips = [''] * LETTERS_PER_HAND
         else:
             self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
-    def update_chips(self, btns):
+    def update_chips(self, btns: ButtonsForHand) -> None:
         for i, btn in zip(self.curr_chips, btns):
             btn.setText(i)
             if i != '':
@@ -66,13 +73,13 @@ class Board:
             else:
                 btn.setToolTip('')
 
-    def get_letter_value(self, let):
+    def get_letter_value(self, let: str) -> int:
         cur = self.let_con.cursor()
         point = cur.execute(f'''SELECT value FROM letters WHERE char='{let}' ''')
         for j in point:
             return j[0]
 
-    def update_grid(self, btns):
+    def update_grid(self, btns: ButtonsGrid) -> None:
         for i, j in zip(self.grid, btns):
             for let, btn in zip(i, j):
                 if let != '':
@@ -80,19 +87,19 @@ class Board:
                     btn.setEnabled(False)
                 btn.setText(let)
 
-    def update_boosters(self, btns):
+    def update_boosters(self, btns: ButtonsGrid) -> None:
         for i, line in enumerate(btns):
             for j, btn in enumerate(line):
                 btn.setProperty('boost', self.boosters.get((i, j), DEFAULT_CELL))
 
-    def commit_grid(self, btns, chips):
+    def commit_grid(self, btns: ButtonsGrid, chips: ButtonsForHand) -> None:
         for i, line in enumerate(btns):
             for j, btn in enumerate(line):
                 self.grid[i][j] = btn.text()
         for i, chip in enumerate(chips):
             self.curr_chips[i] = chip.text()
 
-    def raise_chips(self, btns, cursor):
+    def raise_chips(self, btns: ButtonsForHand, cursor: str) -> None:
         for i in btns:
             if i.text() != '':
                 self.chips.append(i.text())
@@ -102,7 +109,7 @@ class Board:
             print(cursor)
         self.chips = random.sample(self.chips, len(self.chips))
 
-    def input_word(self, btns, info: WordInputOperation, fist_word):
+    def input_word(self, btns: ButtonsGrid, info: WordInputOperation, fist_word: bool) -> bool:
         res = ''
         intersect = False
         for i in range(info.word_length):
@@ -127,7 +134,7 @@ class Board:
             return False
         return self.check_word(res)
 
-    def word_points(self, info: WordInputOperation):
+    def word_points(self, info: WordInputOperation) -> int:
         res = 0
         cur = self.let_con.cursor()
         post_boost = []
@@ -145,7 +152,8 @@ class Board:
         print(f'Bonus: {bonus}')
         return res + bonus
 
-    def point_boost(self, x, y, cur, post_boost):
+    def point_boost(self, x: int, y: int, cur: Cursor,
+                    post_boost: list[int]) -> int:  # todo Убрать мутацию входного параметра
         boost = self.boosters.get((x, y), DEFAULT_CELL)
         request = cur.execute(f'''SELECT value FROM letters WHERE char='{self.grid[x][y]}' ''')
         for j in request:
@@ -164,10 +172,10 @@ class Board:
             post_boost.append(boost)
         return res
 
-    def close(self):
+    def close(self) -> None:
         self.let_con.close()
 
-    def check_word(self, word):
+    def check_word(self, word: str) -> bool:
         res = self.morph.parse(word)
         for i in res:
             if {'NOUN'} in i.tag and i.normal_form.lower().replace('ё', 'е') == word:

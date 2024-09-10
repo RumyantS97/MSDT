@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtGui import QColor, QFont
-from PyQt5.QtWidgets import QPushButton, QApplication, QListWidgetItem, QMessageBox, QTableWidgetItem
+from PyQt5.QtGui import QColor, QFont, QCloseEvent
+from PyQt5.QtWidgets import QPushButton, QApplication, QListWidgetItem, QMessageBox, QTableWidgetItem, QWidget
 
 from src.board import Board
 from src.data_types import Player, WordInputOperation
@@ -16,7 +16,7 @@ RED_COLOR = QColor(255, 0, 0)
 
 
 class WordMaker(Game, Ui_MainWindow):
-    def __init__(self, parent, players: list[Player] = None):
+    def __init__(self, parent: QWidget | None, players: list[Player] = None):
         super().__init__(parent, ups=UPDATES_PER_SECOND)
         print('WordMaker!')
         self.grid = []
@@ -75,11 +75,11 @@ class WordMaker(Game, Ui_MainWindow):
             self.stylesheet = f.read()
         self.setStyleSheet(self.stylesheet)
 
-    def log(self, msg):
+    def log(self, msg: str) -> None:
         item = QListWidgetItem(msg)
         self.listWidget.addItem(item)
 
-    def next_player(self):
+    def next_player(self) -> None:
         self.c_player = self.c_player + 1
         if self.c_player >= len(self.players):
             self.c_player = 0
@@ -91,7 +91,7 @@ class WordMaker(Game, Ui_MainWindow):
             if len(self.board.chips) < len(self.players) * 7:
                 self.game_over()
 
-    def game_over(self):
+    def game_over(self) -> None:
         self.lock_grid()
         self.lock_chips()
         self.wordStart.setEnabled(False)
@@ -100,15 +100,15 @@ class WordMaker(Game, Ui_MainWindow):
         self.turnEnd.setEnabled(False)
         QMessageBox.about(self, 'Game over', 'В наборе закончились фишки.\nИгра завершена.')
 
-    def get_curr_player(self):
+    def get_curr_player(self) -> Player:
         return self.players[self.c_player]
 
-    def lock_grid(self):
+    def lock_grid(self) -> None:
         for i in self.grid:
             for j in i:
                 j.setEnabled(False)
 
-    def start_word(self):
+    def start_word(self) -> None:
         b = self.checkBox.isChecked()
         if (b and self.wordX.value() + self.wordLen.value() - 1 >= GRID_SIZE) or \
                 (not b and self.wordY.value() + self.wordLen.value() - 1 >= GRID_SIZE):
@@ -128,7 +128,7 @@ class WordMaker(Game, Ui_MainWindow):
             if not cell.stat:
                 cell.setEnabled(True)
 
-    def end_word(self):
+    def end_word(self) -> None:
         if self.board.input_word(self.grid, self.curr_oper, self.first_turn):
             self.board.commit_grid(self.grid, self.buttons)
             self.board.update_grid(self.grid)
@@ -143,7 +143,7 @@ class WordMaker(Game, Ui_MainWindow):
         else:
             self.log('Invalid word!')
 
-    def end_turn(self):
+    def end_turn(self) -> None:
         previous_player_name = self.get_curr_player().name
         self.next_player()
         self.board.raise_chips(self.buttons, self.curr_letter)
@@ -155,12 +155,12 @@ class WordMaker(Game, Ui_MainWindow):
         self.log(f'Ход закончен для "{previous_player_name}".')
         self.log(f'Следующий ход для "{self.get_curr_player().name}".')
 
-    def unlock_cell(self, x, y):
+    def unlock_cell(self, x: int, y: int) -> None:
         cell = self.grid[x][y]
         if not cell.stat:
             cell.setEnabled(True)
 
-    def cancel_word(self):
+    def cancel_word(self) -> None:
         self.lock_grid()
         self.board.update_grid(self.grid)
         self.board.update_chips(self.buttons)
@@ -171,7 +171,7 @@ class WordMaker(Game, Ui_MainWindow):
         self.turnCancel.setEnabled(False)
         self.turnEnd.setEnabled(True)
 
-    def chip_input(self):
+    def chip_input(self) -> None:
         btn = self.sender()
         a = btn.text()
         btn.setText(self.curr_letter)
@@ -185,17 +185,17 @@ class WordMaker(Game, Ui_MainWindow):
         else:
             btn.setToolTip('')
 
-    def lock_chips(self):
+    def lock_chips(self) -> None:
         self.set_chips_unlocked(False)
 
-    def unlock_chips(self):
+    def unlock_chips(self) -> None:
         self.set_chips_unlocked(True)
 
-    def set_chips_unlocked(self, locked):
+    def set_chips_unlocked(self, locked: bool) -> None:
         for i in self.buttons:
             i.setEnabled(locked)
 
-    def OnUpdate(self, delta):
+    def on_update(self, delta: int) -> None:
         b = self.checkBox.isChecked()
         self.checkBox.setText('→' if b else '↓')
         for i in self.grid:
@@ -210,11 +210,11 @@ class WordMaker(Game, Ui_MainWindow):
                     self.grid[self.wordX.value()][self.wordY.value() + i].setProperty('selected', True)
         self.setStyleSheet(self.stylesheet)
 
-    def closeEvent(self, e):
+    def closeEvent(self, e: QCloseEvent) -> None:
         self.board.close()
         Game.closeEvent(self, e)
 
-    def getName(self):
+    def get_name(self) -> str:
         return 'WordMaker'
 
 
