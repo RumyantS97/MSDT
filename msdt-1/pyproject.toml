@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "msdt-1"
+version = "0.1.0"
+description = ""
+authors = ["artem.golovin <golovinartem2004@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyqt5 = "5.13.0"
+pyqt5-stubs = ">=5.13,<6.0"
+pymorphy3 = "^2.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

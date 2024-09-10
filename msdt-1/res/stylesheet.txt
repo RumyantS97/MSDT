@@ -1,0 +1,237 @@
+QPushButton {
+    border-color: gray;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 4px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #f6f7fa, stop: 1 #dadbde);
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
+}
+
+QPushButton:hover {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 white, stop: 1 silver);
+}
+
+QPushButton:flat {
+    border: none; /* no border for a flat push button */
+}
+
+QPushButton:default {
+    border-color: navy; /* make the default button prominent */
+}
+
+QPushButton[selected=true] {
+    background-color: silver;
+}
+
+QPushButton[grid=true]:enabled {
+    background-color: white;
+}
+
+QPushButton[grid=true]:pressed {
+    background-color: gray;
+}
+
+QPushButton[boost='1'] {
+    border-color: lime;
+}
+
+QPushButton[boost='2'] {
+    border-color: yellow;
+}
+
+QPushButton[boost='3'] {
+    border-color: blue;
+}
+
+QPushButton[boost='4'] {
+    border-color: red;
+}
+
+QPushButton[boost='5'] {
+    border-color: maroon;
+}
+
+QScrollBar:horizontal {
+    border: 2px solid grey;
+    background: white;
+    height: 20px;
+    margin: 0px 25px 0 25px;
+}
+QScrollBar::handle:horizontal {
+    background: silver;
+    min-width: 20px;
+}
+QScrollBar::add-line:horizontal {
+    border: 2px solid grey;
+    background: aqua;
+    width: 20px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    border: 2px solid grey;
+    background: aqua;
+    width: 20px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QScrollBar:left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+    border: 2px solid grey;
+    width: 3px;
+    height: 3px;
+    background: white;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+QScrollBar:vertical {
+     border: 2px solid grey;
+     background: white;
+     width: 15px;
+     margin: 25px 0 25px 0;
+}
+QScrollBar::handle:vertical {
+    background: silver;
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical {
+    border: 2px solid grey;
+    background: aqua;
+    height: 20px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+QScrollBar::sub-line:vertical {
+    border: 2px solid grey;
+    background: aqua;
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    border: 2px solid grey;
+    width: 3px;
+    height: 3px;
+    background: white;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QSlider::groove:horizontal {
+    border: 2px solid gray;
+    height: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 2px 0;
+}
+
+QSlider::handle:horizontal {
+    background: aqua;
+    border: 2px solid gray;
+    width: 18px;
+    margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+}
+
+QSlider::groove:vertical {
+    border: 2px solid gray;
+    width: 10px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #B1B1B1, stop:1 #c4c4c4);
+    margin: 0 2px;
+
+    /*background: red;
+    position: absolute;*/ /* absolutely position 4px from the left and right of the widget. setting margins on the widget should work too... */
+    /*left: 4px; right: 4px;*/
+}
+
+QSlider::handle:vertical {
+    background: aqua;
+    border: 2px solid gray;
+    height: 18px;
+    margin: 0 -2px;
+
+}
+
+QCheckBox {
+    spacing: 5px;
+}
+
+QCheckBox::indicator {
+    width: 13px;
+    height: 13px;
+}
+
+QCheckBox::indicator:unchecked {
+    background-color: aqua;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:unchecked:hover {
+    background-color: silver;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:unchecked:pressed {
+    background-color: teal;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:checked {
+    background-color: aqua;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:checked:hover {
+    background-color: silver;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:checked:pressed {
+    background-color: teal;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:indeterminate:hover {
+    background-color: red;
+    border: 2px solid grey;
+}
+
+QCheckBox::indicator:indeterminate:pressed {
+    background-color: teal;
+    border: 2px solid grey;
+}
+
+QTableWidget {
+    background-color: qlineargradient(x1: 0.5, y1: 0, x2: 0.5, y2: 0.5,
+                                stop: 0 white, stop: 1 silver);
+    selection-background-color: qlineargradient(x1: 0, y1: 0, x2: 0.5, y2: 0.5,
+                                stop: 0 #FF92BB, stop: 1 white);
+
+}
+
+QTableWidget QTableCornerButton::section {
+    background: qlineargradient(x1: 0.5, y1: 0, x2: 0.5, y2: 0.5,
+                                stop: 0 white, stop: 1 silver);
+    border: 2px outset grey;
+}
+
+QHeaderView::section {
+    background-color: qlineargradient(x1: 0.5, y1: 0, x2: 0.5, y2: 0.5,
+                                stop: 0 grey, stop: 1 silver);
+    border: 2px solid teal;
+}
+
+QListWidget::item {
+    background-color: silver;
+    border: 2px solid grey;
+    margin-bottom: 3px;
+}
