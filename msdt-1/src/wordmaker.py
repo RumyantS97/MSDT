@@ -50,8 +50,6 @@ class WordMaker(Game, Ui_MainWindow):
 
         # Board
         self.board = Board(self.log)
-        self.board.generate()
-        self.board.next_chips()
         self.board.update_chips(self.buttons)
         self.board.update_boosters(self.grid)
         self.lock_grid()
@@ -181,7 +179,7 @@ class WordMaker(Game, Ui_MainWindow):
         else:
             self.cursorLet.setText('')
         if btn.text() != '':
-            btn.setToolTip(f'Очков за букву: {self.board.get_letter_value(btn.text())}')
+            btn.setToolTip(f'Очков за букву: {self.board.letter_points_config.get_letter_value(btn.text())}')
         else:
             btn.setToolTip('')
 

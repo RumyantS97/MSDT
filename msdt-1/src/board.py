@@ -1,34 +1,15 @@
 import random
-import sqlite3
-from sqlite3 import Cursor
 from typing import Callable, TypeAlias
 
-import pymorphy3
 from PyQt5.QtWidgets import QPushButton
 
 from src.data_types import WordInputOperation
 from src.game_settings import LETTERS_PER_HAND, GRID_SIZE
+from src.letter_points_config import LetterPointsConfig
+from src.tile_types import DEFAULT_CELL, read_tile_types
 from src.tile_types import STARTING_CELL
-from src.tile_types import DEFAULT_CELL, LETTER_TIMES_TWO_CELL, LETTER_TIMES_THREE_CELL, WORD_TIMES_TWO_CELL, \
-    WORD_TIMES_THREE_CELL
-
-BOOSTERS_CONFIG_FILE = 'res/boosters.txt'
-LETTER_DB_FILE = 'res/letters.db'
-
-
-def get_x(x: int, offset: int, hor: bool) -> int:
-    if hor:
-        return x + offset
-    else:
-        return x
-
-
-def get_y(y: int, offset: int, hor: bool) -> int:
-    if hor:
-        return y
-    else:
-        return y + offset
-
+from src.word_existence_checker import WordExistenceChecker
+from src.word_points_counter import WordPointsCounter
 
 ButtonsGrid: TypeAlias = list[list[QPushButton]]
 ButtonsForHand: TypeAlias = list[QPushButton]
@@ -36,25 +17,15 @@ ButtonsForHand: TypeAlias = list[QPushButton]
 
 class Board:
     def __init__(self, log: Callable[[str], None]):
-        self.let_con = sqlite3.connect(LETTER_DB_FILE)
-        self.morph = pymorphy3.MorphAnalyzer()
+        self.letter_points_config = LetterPointsConfig()
+        self.word_existence_checker = WordExistenceChecker()
         self.words = []
         self.log = log
-        self.boosters = {}
-        with open(BOOSTERS_CONFIG_FILE) as f:
-            for i, line in enumerate(f.readlines()):
-                for j, boost in enumerate(line.split()):
-                    if boost != DEFAULT_CELL:
-                        self.boosters[j, i] = int(boost)
-
-    def generate(self) -> int:
+        self.tile_types = read_tile_types()
+        self.word_points_counter = WordPointsCounter(self.letter_points_config, self.tile_types)
         self.grid = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
-        self.chips = []
-        cur = self.let_con.cursor()
-        for i in cur.execute('''SELECT * FROM letters''').fetchall():
-            for j in range(i[2]):
-                self.chips.append(i[1])
-        self.chips = random.sample(self.chips, len(self.chips))
+        self.chips = self.letter_points_config.get_letters_kit()
+        self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
     def take_chip(self) -> str:
         return self.chips.pop(-1)
@@ -69,15 +40,9 @@ class Board:
         for i, btn in zip(self.curr_chips, btns):
             btn.setText(i)
             if i != '':
-                btn.setToolTip(f'Очков за букву: {self.get_letter_value(i)}')
+                btn.setToolTip(f'Очков за букву: {self.letter_points_config.get_letter_value(i)}')
             else:
                 btn.setToolTip('')
-
-    def get_letter_value(self, let: str) -> int:
-        cur = self.let_con.cursor()
-        point = cur.execute(f'''SELECT value FROM letters WHERE char='{let}' ''')
-        for j in point:
-            return j[0]
 
     def update_grid(self, btns: ButtonsGrid) -> None:
         for i, j in zip(self.grid, btns):
@@ -90,7 +55,7 @@ class Board:
     def update_boosters(self, btns: ButtonsGrid) -> None:
         for i, line in enumerate(btns):
             for j, btn in enumerate(line):
-                btn.setProperty('boost', self.boosters.get((i, j), DEFAULT_CELL))
+                btn.setProperty('boost', self.tile_types.get((i, j), DEFAULT_CELL))
 
     def commit_grid(self, btns: ButtonsGrid, chips: ButtonsForHand) -> None:
         for i, line in enumerate(btns):
@@ -107,18 +72,23 @@ class Board:
         if cursor != '':
             self.chips.append(cursor)
             print(cursor)
-        self.chips = random.sample(self.chips, len(self.chips))
+        random.shuffle(self.chips)
 
-    def input_word(self, btns: ButtonsGrid, info: WordInputOperation, fist_word: bool) -> bool:
+    def input_word(self, btns: ButtonsGrid, word_input: WordInputOperation, fist_word: bool) -> bool:
         res = ''
         intersect = False
-        for i in range(info.word_length):
-            b = btns[get_x(info.start_cell_x, i, info.is_horizontal)][get_y(info.start_cell_y, i, info.is_horizontal)]
+        for i in range(word_input.word_length):
+            if word_input.is_horizontal:
+                cell_x = word_input.start_cell_x + i
+                cell_y = word_input.start_cell_y
+            else:
+                cell_x = word_input.start_cell_x
+                cell_y = word_input.start_cell_y + i
+
+            b = btns[cell_x][cell_y]
             if not fist_word and b.stat:
                 intersect = True
-            if fist_word and self.boosters.get(
-                    (get_x(info.start_cell_x, i, info.is_horizontal), get_y(info.start_cell_y, i, info.is_horizontal)),
-                    0) == STARTING_CELL:
+            if fist_word and self.tile_types.get((cell_x, cell_y), DEFAULT_CELL) == STARTING_CELL:
                 intersect = True
             let = b.text()
             if let == '':
@@ -132,55 +102,23 @@ class Board:
         if not intersect:
             self.log('Слово не пересекается с предыдущими.')
             return False
-        return self.check_word(res)
+        return self.word_existence_checker.is_valid_word(res)
 
     def word_points(self, info: WordInputOperation) -> int:
-        res = 0
-        cur = self.let_con.cursor()
-        post_boost = []
-        for i in range(info.word_length):
-            if info.is_horizontal:
-                res += self.point_boost(info.start_cell_x + i, info.start_cell_y, cur, post_boost)
-            else:
-                res += self.point_boost(info.start_cell_x, info.start_cell_y + i, cur, post_boost)
-        bonus = 0
-        for i in post_boost:
-            if i == WORD_TIMES_TWO_CELL:
-                bonus += res
-            if i == WORD_TIMES_THREE_CELL:
-                bonus += res * 2
-        print(f'Bonus: {bonus}')
-        return res + bonus
+        word = self.get_operation_word(info)
+        return self.word_points_counter.get_points_for_word(word, info)
 
-    def point_boost(self, x: int, y: int, cur: Cursor,
-                    post_boost: list[int]) -> int:  # todo Убрать мутацию входного параметра
-        boost = self.boosters.get((x, y), DEFAULT_CELL)
-        request = cur.execute(f'''SELECT value FROM letters WHERE char='{self.grid[x][y]}' ''')
-        for j in request:
-            res = j[0]
-        print(f'Before boost: {res}')
-        if boost == DEFAULT_CELL:
-            print('x1')
-            return res
-        if boost == LETTER_TIMES_TWO_CELL:
-            print('x2')
-            return res * 2
-        if boost == LETTER_TIMES_THREE_CELL:
-            print('x3')
-            return res * 3
-        if boost == WORD_TIMES_TWO_CELL or boost == WORD_TIMES_THREE_CELL:
-            post_boost.append(boost)
-        return res
+    def get_operation_word(self, word_operation: WordInputOperation) -> str:
+        letters = []
+        for i in range(word_operation.word_length):
+            if word_operation.is_horizontal:
+                cell_x = word_operation.start_cell_x + i
+                cell_y = word_operation.start_cell_y
+            else:
+                cell_x = word_operation.start_cell_x
+                cell_y = word_operation.start_cell_y + i
+            letters += self.grid[cell_x][cell_y]
+        return "".join(letters)
 
     def close(self) -> None:
-        self.let_con.close()
-
-    def check_word(self, word: str) -> bool:
-        res = self.morph.parse(word)
-        for i in res:
-            if {'NOUN'} in i.tag and i.normal_form.lower().replace('ё', 'е') == word:
-                return True
-            else:
-                print(f'Incorrect tags: {i}')
-        print('--------------')
-        return False
+        self.letter_points_config.close()
