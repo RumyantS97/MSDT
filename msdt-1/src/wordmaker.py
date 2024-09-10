@@ -3,24 +3,32 @@ import sys
 from PyQt5.QtGui import QColor, QFont
 from PyQt5.QtWidgets import QPushButton, QApplication, QListWidgetItem, QMessageBox, QTableWidgetItem
 
-from Board import Board
-from ui_wordmaker import Ui_MainWindow
-from game import Game
+from src.board import Board
+from src.data_types import Player, WordInputOperation
+from src.game import Game
+from src.game_settings import GRID_SIZE
+from src.ui_wordmaker import Ui_MainWindow
+
+UPDATES_PER_SECOND = 25
+
+GREEN_COLOR = QColor(0, 255, 0)
+RED_COLOR = QColor(255, 0, 0)
 
 
 class WordMaker(Game, Ui_MainWindow):
-    def __init__(self, parent, players=[['1st', QColor(0, 255, 0), 0]]):
-        super().__init__(parent, 25)
+    def __init__(self, parent, players: list[Player] = None):
+        super().__init__(parent, ups=UPDATES_PER_SECOND)
         print('WordMaker!')
         self.grid = []
+        if players is None:
+            players = [Player('1st', GREEN_COLOR), Player('2nd', RED_COLOR)]
         self.players = players
-        self.c_player = 0
-        self.curr_oper = None
-        self.curr_letter = ''
-        self.add_player('2nd', 255, 0, 0)
-        for i in range(16):
+        self.c_player: int = 0
+        self.curr_oper: WordInputOperation | None = None
+        self.curr_letter: str | None = None
+        for i in range(GRID_SIZE):
             line = []
-            for j in range(16):
+            for j in range(GRID_SIZE):
                 b = QPushButton('', self)
                 b.resize(35, 35)
                 b.move(i * 36 + 10, j * 36)
@@ -61,7 +69,7 @@ class WordMaker(Game, Ui_MainWindow):
         self.tableWidget.setColumnCount(0)
         for i, pl in enumerate(self.players):
             item = QTableWidgetItem()
-            item.setText(pl[0])
+            item.setText(pl.name)
             self.tableWidget.setVerticalHeaderItem(i, item)
         with open('res/stylesheet.txt') as f:
             self.stylesheet = f.read()
@@ -71,10 +79,6 @@ class WordMaker(Game, Ui_MainWindow):
         item = QListWidgetItem(msg)
         self.listWidget.addItem(item)
 
-    def add_player(self, name, r=0, g=0, b=0):
-        self.players.append([name, QColor(r, g, b), 0])
-        print(self.players)
-
     def next_player(self):
         self.c_player = self.c_player + 1
         if self.c_player >= len(self.players):
@@ -82,7 +86,7 @@ class WordMaker(Game, Ui_MainWindow):
             self.tableWidget.setColumnCount(self.turn + 1)
             for i, pl in enumerate(self.players):
                 print(self.turn, i)
-                self.tableWidget.setItem(i, self.turn, QTableWidgetItem(str(pl[2])))
+                self.tableWidget.setItem(i, self.turn, QTableWidgetItem(str(pl.points_amount)))
             self.turn += 1
             if len(self.board.chips) < len(self.players) * 7:
                 self.game_over()
@@ -106,8 +110,8 @@ class WordMaker(Game, Ui_MainWindow):
 
     def start_word(self):
         b = self.checkBox.isChecked()
-        if (b and self.wordX.value() + self.wordLen.value() - 1 >= 16) or \
-                (not b and self.wordY.value() + self.wordLen.value() - 1 >= 16):
+        if (b and self.wordX.value() + self.wordLen.value() - 1 >= GRID_SIZE) or \
+                (not b and self.wordY.value() + self.wordLen.value() - 1 >= GRID_SIZE):
             self.log('Out of bounds')
             return
         self.lock_grid()
@@ -115,7 +119,7 @@ class WordMaker(Game, Ui_MainWindow):
         self.wordEnd.setEnabled(True)
         self.turnCancel.setEnabled(True)
         self.turnEnd.setEnabled(False)
-        self.curr_oper = (self.wordX.value(), self.wordY.value(), self.wordLen.value(), b)
+        self.curr_oper = WordInputOperation(self.wordX.value(), self.wordY.value(), self.wordLen.value(), b)
         for i in range(self.wordLen.value()):
             if b:
                 cell = self.grid[self.wordX.value() + i][self.wordY.value()]
@@ -128,8 +132,8 @@ class WordMaker(Game, Ui_MainWindow):
         if self.board.input_word(self.grid, self.curr_oper, self.first_turn):
             self.board.commit_grid(self.grid, self.buttons)
             self.board.update_grid(self.grid)
-            self.get_curr_player()[2] += self.board.word_points(self.curr_oper)
-            self.log(f'У {self.get_curr_player()[0]} теперь {self.get_curr_player()[2]} очков!')
+            self.get_curr_player().points_amount += self.board.word_points(self.curr_oper)
+            self.log(f'У {self.get_curr_player().name} теперь {self.get_curr_player().points_amount} очков!')
             self.lock_grid()
             self.wordStart.setEnabled(True)
             self.wordEnd.setEnabled(False)
@@ -140,7 +144,7 @@ class WordMaker(Game, Ui_MainWindow):
             self.log('Invalid word!')
 
     def end_turn(self):
-        old = self.get_curr_player()[0]
+        previous_player_name = self.get_curr_player().name
         self.next_player()
         self.board.raise_chips(self.buttons, self.curr_letter)
         self.board.next_chips()
@@ -148,8 +152,8 @@ class WordMaker(Game, Ui_MainWindow):
         self.lock_grid()
         self.curr_letter = ''
         self.cursorLet.setText('')
-        self.log(f'Ход закончен для "{old}".')
-        self.log(f'Следующий ход для "{self.get_curr_player()[0]}".')
+        self.log(f'Ход закончен для "{previous_player_name}".')
+        self.log(f'Следующий ход для "{self.get_curr_player().name}".')
 
     def unlock_cell(self, x, y):
         cell = self.grid[x][y]
@@ -199,10 +203,10 @@ class WordMaker(Game, Ui_MainWindow):
                 j.setProperty('selected', False)
         for i in range(self.wordLen.value()):
             if b:
-                if self.wordX.value() + i < 16:
+                if self.wordX.value() + i < GRID_SIZE:
                     self.grid[self.wordX.value() + i][self.wordY.value()].setProperty('selected', True)
             else:
-                if self.wordY.value() + i < 16:
+                if self.wordY.value() + i < GRID_SIZE:
                     self.grid[self.wordX.value()][self.wordY.value() + i].setProperty('selected', True)
         self.setStyleSheet(self.stylesheet)
 

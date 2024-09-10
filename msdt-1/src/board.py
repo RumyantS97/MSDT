@@ -1,8 +1,16 @@
-import sqlite3
-import pymorphy3
 import random
+import sqlite3
 
-from PyQt5.QtGui import QColor, QPainter
+import pymorphy3
+
+from src.data_types import WordInputOperation
+from src.game_settings import LETTERS_PER_HAND, GRID_SIZE
+from src.tile_types import STARTING_CELL
+from src.tile_types import DEFAULT_CELL, LETTER_TIMES_TWO_CELL, LETTER_TIMES_THREE_CELL, WORD_TIMES_TWO_CELL, \
+    WORD_TIMES_THREE_CELL
+
+BOOSTERS_CONFIG_FILE = 'res/boosters.txt'
+LETTER_DB_FILE = 'res/letters.db'
 
 
 def get_x(x, offset, hor):
@@ -21,19 +29,19 @@ def get_y(y, offset, hor):
 
 class Board:
     def __init__(self, log):
-        self.let_con = sqlite3.connect('res/letters.db')
+        self.let_con = sqlite3.connect(LETTER_DB_FILE)
         self.morph = pymorphy3.MorphAnalyzer()
         self.words = []
         self.log = log
         self.boosters = {}
-        with open('res/boosters.txt') as f:
+        with open(BOOSTERS_CONFIG_FILE) as f:
             for i, line in enumerate(f.readlines()):
                 for j, boost in enumerate(line.split()):
-                    if boost != 0:
+                    if boost != DEFAULT_CELL:
                         self.boosters[j, i] = int(boost)
 
     def generate(self):
-        self.grid = [[''] * 16 for _ in range(16)]
+        self.grid = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.chips = []
         cur = self.let_con.cursor()
         for i in cur.execute('''SELECT * FROM letters''').fetchall():
@@ -45,10 +53,10 @@ class Board:
         return self.chips.pop(-1)
 
     def next_chips(self):
-        if len(self.chips) < 7:
-            self.curr_chips = [''] * 7
+        if len(self.chips) < LETTERS_PER_HAND:
+            self.curr_chips = [''] * LETTERS_PER_HAND
         else:
-            self.curr_chips = [self.take_chip() for _ in range(7)]
+            self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
     def update_chips(self, btns):
         for i, btn in zip(self.curr_chips, btns):
@@ -75,7 +83,7 @@ class Board:
     def update_boosters(self, btns):
         for i, line in enumerate(btns):
             for j, btn in enumerate(line):
-                btn.setProperty('boost', self.boosters.get((i, j), 0))
+                btn.setProperty('boost', self.boosters.get((i, j), DEFAULT_CELL))
 
     def commit_grid(self, btns, chips):
         for i, line in enumerate(btns):
@@ -94,14 +102,16 @@ class Board:
             print(cursor)
         self.chips = random.sample(self.chips, len(self.chips))
 
-    def input_word(self, btns, info, fist_word):
+    def input_word(self, btns, info: WordInputOperation, fist_word):
         res = ''
         intersect = False
-        for i in range(info[2]):
-            b = btns[get_x(info[0], i, info[3])][get_y(info[1], i, info[3])]
+        for i in range(info.word_length):
+            b = btns[get_x(info.start_cell_x, i, info.is_horizontal)][get_y(info.start_cell_y, i, info.is_horizontal)]
             if not fist_word and b.stat:
                 intersect = True
-            if fist_word and self.boosters.get((get_x(info[0], i, info[3]), get_y(info[1], i, info[3])), 0) == 5:
+            if fist_word and self.boosters.get(
+                    (get_x(info.start_cell_x, i, info.is_horizontal), get_y(info.start_cell_y, i, info.is_horizontal)),
+                    0) == STARTING_CELL:
                 intersect = True
             let = b.text()
             if let == '':
@@ -117,45 +127,40 @@ class Board:
             return False
         return self.check_word(res)
 
-    def word_points(self, info):
+    def word_points(self, info: WordInputOperation):
         res = 0
         cur = self.let_con.cursor()
         post_boost = []
-        for i in range(info[2]):
-            if info[3]:
-                res += self.point_boost(info[0] + i, info[1], cur, post_boost)
+        for i in range(info.word_length):
+            if info.is_horizontal:
+                res += self.point_boost(info.start_cell_x + i, info.start_cell_y, cur, post_boost)
             else:
-                res += self.point_boost(info[0], info[1] + i, cur, post_boost)
+                res += self.point_boost(info.start_cell_x, info.start_cell_y + i, cur, post_boost)
         bonus = 0
         for i in post_boost:
-            if i == 3:
+            if i == WORD_TIMES_TWO_CELL:
                 bonus += res
-            if i == 4:
+            if i == WORD_TIMES_THREE_CELL:
                 bonus += res * 2
         print(f'Bonus: {bonus}')
         return res + bonus
 
-    # 1 - x2 for letter
-    # 2 - x3 for letter
-    # 3 - x2 for word
-    # 4 - x3 for word
-    # 5 - Cell for first word
     def point_boost(self, x, y, cur, post_boost):
-        boost = self.boosters.get((x, y), 0)
+        boost = self.boosters.get((x, y), DEFAULT_CELL)
         request = cur.execute(f'''SELECT value FROM letters WHERE char='{self.grid[x][y]}' ''')
         for j in request:
             res = j[0]
         print(f'Before boost: {res}')
-        if boost == 0:
+        if boost == DEFAULT_CELL:
             print('x1')
             return res
-        if boost == 1:
+        if boost == LETTER_TIMES_TWO_CELL:
             print('x2')
             return res * 2
-        if boost == 2:
+        if boost == LETTER_TIMES_THREE_CELL:
             print('x3')
             return res * 3
-        if boost == 3 or boost == 4:
+        if boost == WORD_TIMES_TWO_CELL or boost == WORD_TIMES_THREE_CELL:
             post_boost.append(boost)
         return res
 
@@ -165,7 +170,6 @@ class Board:
     def check_word(self, word):
         res = self.morph.parse(word)
         for i in res:
-            # print(i)
             if {'NOUN'} in i.tag and i.normal_form.lower().replace('ё', 'е') == word:
                 return True
             else:
