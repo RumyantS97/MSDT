@@ -33,4 +33,16 @@
 
 Первоначальный код взят из репозитория https://github.com/RustyGuard/PyQTProject
 
+
+### Форматирование
+
 Код приведён под формат black, [являющийся подмножеством стандартов pep8](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html).
+
+### Статический анализ
+
+В качестве статического анализатора выбран mypy
+
+Итог правок кода:
+```
+Success: no issues found in 10 source files
+```

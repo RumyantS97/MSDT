@@ -49,7 +49,15 @@ class WordMaker(Game, Ui_MainWindow):
                 line.append(b)
             self.grid.append(line)
 
-        self.buttons: list[QPushButton] = [self.b0, self.b1, self.b2, self.b3, self.b4, self.b5, self.b6]
+        self.buttons: list[QPushButton] = [
+            self.b0,
+            self.b1,
+            self.b2,
+            self.b3,
+            self.b4,
+            self.b5,
+            self.b6,
+        ]
         for button in self.buttons:
             button.clicked.connect(self.chip_input)
 
