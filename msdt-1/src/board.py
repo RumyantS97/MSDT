@@ -4,10 +4,9 @@ from typing import Callable, TypeAlias
 from PyQt5.QtWidgets import QPushButton
 
 from data_types import WordInputOperation
-from game_settings import LETTERS_PER_HAND, GRID_SIZE
+from game_settings import GRID_SIZE, LETTERS_PER_HAND
 from letter_points_config import LetterPointsConfig
-from tile_types import DEFAULT_CELL, read_tile_types
-from tile_types import STARTING_CELL
+from tile_types import DEFAULT_CELL, STARTING_CELL, read_tile_types
 from word_existence_checker import WordExistenceChecker
 from word_points_counter import WordPointsCounter
 

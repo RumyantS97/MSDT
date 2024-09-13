@@ -1,11 +1,11 @@
 import sys
 
-from PyQt5.QtGui import QColor, QFont, QCloseEvent
+from PyQt5.QtGui import QCloseEvent, QColor, QFont
 from PyQt5.QtWidgets import (
-    QPushButton,
     QApplication,
     QListWidgetItem,
     QMessageBox,
+    QPushButton,
     QTableWidgetItem,
     QWidget,
 )
@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (
 from board import Board
 from data_types import Player, WordInputOperation
 from game import Game
-from game_settings import GRID_SIZE
+from game_settings import GRID_SIZE, LETTERS_PER_HAND
 from ui_wordmaker import Ui_MainWindow
 
 UPDATES_PER_SECOND = 25
