@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QMainWindow, QWidget
 
 
 class Game(QMainWindow):
-    def __init__(self, parent: QWidget | None, ups: int = None):
+    def __init__(self, parent: QWidget | None, ups: int | None = None):
         super().__init__(parent)
-        self.setupUi(self)
+        self.setupUi(self)  # type: ignore[attr-defined]
         if ups:
             self.update_timer_id: int = self.startTimer(ups)
             self.delta = ups

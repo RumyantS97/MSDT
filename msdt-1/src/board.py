@@ -3,13 +3,13 @@ from typing import Callable, TypeAlias
 
 from PyQt5.QtWidgets import QPushButton
 
-from src.data_types import WordInputOperation
-from src.game_settings import LETTERS_PER_HAND, GRID_SIZE
-from src.letter_points_config import LetterPointsConfig
-from src.tile_types import DEFAULT_CELL, read_tile_types
-from src.tile_types import STARTING_CELL
-from src.word_existence_checker import WordExistenceChecker
-from src.word_points_counter import WordPointsCounter
+from data_types import WordInputOperation
+from game_settings import LETTERS_PER_HAND, GRID_SIZE
+from letter_points_config import LetterPointsConfig
+from tile_types import DEFAULT_CELL, read_tile_types
+from tile_types import STARTING_CELL
+from word_existence_checker import WordExistenceChecker
+from word_points_counter import WordPointsCounter
 
 ButtonsGrid: TypeAlias = list[list[QPushButton]]
 ButtonsForHand: TypeAlias = list[QPushButton]
@@ -19,7 +19,7 @@ class Board:
     def __init__(self, log: Callable[[str], None]):
         self.letter_points_config = LetterPointsConfig()
         self.word_existence_checker = WordExistenceChecker()
-        self.words = []
+        self.words: list[str] = []
         self.log = log
         self.tile_types = read_tile_types()
         self.word_points_counter = WordPointsCounter(
@@ -52,7 +52,6 @@ class Board:
         for i, j in zip(self.grid, btns):
             for let, btn in zip(i, j):
                 if let != "":
-                    btn.stat = True
                     btn.setEnabled(False)
                 btn.setText(let)
 
@@ -68,12 +67,12 @@ class Board:
         for i, chip in enumerate(chips):
             self.curr_chips[i] = chip.text()
 
-    def raise_chips(self, btns: ButtonsForHand, cursor: str) -> None:
-        for i in btns:
-            if i.text() != "":
-                self.chips.append(i.text())
-                print(i.text())
-        if cursor != "":
+    def release_unused_chips(self, btns: ButtonsForHand, cursor: str | None) -> None:
+        for button in btns:
+            if button.text() != "":
+                self.chips.append(button.text())
+                print(button.text())
+        if cursor is not None:
             self.chips.append(cursor)
             print(cursor)
         random.shuffle(self.chips)
@@ -92,7 +91,7 @@ class Board:
                 cell_y = word_input.start_cell_y + i
 
             b = btns[cell_x][cell_y]
-            if not fist_word and b.stat:
+            if not fist_word:
                 intersect = True
             if (
                 fist_word
@@ -118,7 +117,7 @@ class Board:
         return self.word_points_counter.get_points_for_word(word, info)
 
     def get_operation_word(self, word_operation: WordInputOperation) -> str:
-        letters = []
+        letters: list[str] = []
         for i in range(word_operation.word_length):
             if word_operation.is_horizontal:
                 cell_x = word_operation.start_cell_x + i

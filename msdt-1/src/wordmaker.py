@@ -10,11 +10,11 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from src.board import Board
-from src.data_types import Player, WordInputOperation
-from src.game import Game
-from src.game_settings import GRID_SIZE
-from src.ui_wordmaker import Ui_MainWindow
+from board import Board
+from data_types import Player, WordInputOperation
+from game import Game
+from game_settings import GRID_SIZE
+from ui_wordmaker import Ui_MainWindow
 
 UPDATES_PER_SECOND = 25
 
@@ -23,7 +23,7 @@ RED_COLOR = QColor(255, 0, 0)
 
 
 class WordMaker(Game, Ui_MainWindow):
-    def __init__(self, parent: QWidget | None, players: list[Player] = None):
+    def __init__(self, parent: QWidget | None, players: list[Player] | None = None):
         super().__init__(parent, ups=UPDATES_PER_SECOND)
         print("WordMaker!")
         self.grid = []
@@ -44,16 +44,14 @@ class WordMaker(Game, Ui_MainWindow):
                 font.setFamily("Comic Sans MS")
                 font.setPointSize(12)
                 b.setFont(font)
-                b.stat = False
                 b.setProperty("selected", False)
                 b.setProperty("grid", True)
                 line.append(b)
             self.grid.append(line)
 
-        self.buttons = [self.b0, self.b1, self.b2, self.b3, self.b4, self.b5, self.b6]
-        for i in self.buttons:
-            i.clicked.connect(self.chip_input)
-            i.stat = False
+        self.buttons: list[QPushButton] = [self.b0, self.b1, self.b2, self.b3, self.b4, self.b5, self.b6]
+        for button in self.buttons:
+            button.clicked.connect(self.chip_input)
 
         # Board
         self.board = Board(self.log)
@@ -137,10 +135,10 @@ class WordMaker(Game, Ui_MainWindow):
                 cell = self.grid[self.wordX.value() + i][self.wordY.value()]
             else:
                 cell = self.grid[self.wordX.value()][self.wordY.value() + i]
-            if not cell.stat:
-                cell.setEnabled(True)
+            cell.setEnabled(True)
 
     def end_word(self) -> None:
+        assert self.curr_oper is not None
         if self.board.input_word(self.grid, self.curr_oper, self.first_turn):
             self.board.commit_grid(self.grid, self.buttons)
             self.board.update_grid(self.grid)
@@ -162,43 +160,45 @@ class WordMaker(Game, Ui_MainWindow):
     def end_turn(self) -> None:
         previous_player_name = self.get_curr_player().name
         self.next_player()
-        self.board.raise_chips(self.buttons, self.curr_letter)
+        self.board.release_unused_chips(self.buttons, self.curr_letter)
         self.board.next_chips()
         self.board.update_chips(self.buttons)
         self.lock_grid()
-        self.curr_letter = ""
+        self.curr_letter = None
         self.cursorLet.setText("")
         self.log(f'Ход закончен для "{previous_player_name}".')
         self.log(f'Следующий ход для "{self.get_curr_player().name}".')
 
     def unlock_cell(self, x: int, y: int) -> None:
         cell = self.grid[x][y]
-        if not cell.stat:
-            cell.setEnabled(True)
+        cell.setEnabled(True)
 
     def cancel_word(self) -> None:
         self.lock_grid()
         self.board.update_grid(self.grid)
         self.board.update_chips(self.buttons)
         self.curr_oper = None
-        self.curr_letter = ""
+        self.curr_letter = None
         self.wordStart.setEnabled(True)
         self.wordEnd.setEnabled(False)
         self.turnCancel.setEnabled(False)
         self.turnEnd.setEnabled(True)
 
     def chip_input(self) -> None:
-        btn = self.sender()
-        a = btn.text()
-        btn.setText(self.curr_letter)
-        self.curr_letter = a
-        if self.curr_letter != "":
+        btn: QPushButton = self.sender()  # type: ignore[assignment]
+        button_letter = btn.text()
+        cursor_letter = self.curr_letter
+        btn.setText(cursor_letter or "")
+
+        if button_letter != "":
+            self.curr_letter = button_letter
             self.cursorLet.setText(f"Буква в руке: {self.curr_letter}")
         else:
+            self.curr_letter = None
             self.cursorLet.setText("")
-        if btn.text() != "":
+        if cursor_letter is not None:
             btn.setToolTip(
-                f"Очков за букву: {self.board.letter_points_config.get_letter_value(btn.text())}"
+                f"Очков за букву: {self.board.letter_points_config.get_letter_value(cursor_letter)}"
             )
         else:
             btn.setToolTip("")
@@ -216,9 +216,9 @@ class WordMaker(Game, Ui_MainWindow):
     def on_update(self, delta: int) -> None:
         b = self.checkBox.isChecked()
         self.checkBox.setText("→" if b else "↓")
-        for i in self.grid:
-            for j in i:
-                j.setProperty("selected", False)
+        for buttons_row in self.grid:
+            for button in buttons_row:
+                button.setProperty("selected", False)
         for i in range(self.wordLen.value()):
             if b:
                 if self.wordX.value() + i < GRID_SIZE:

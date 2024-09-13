@@ -1,6 +1,6 @@
-from src.data_types import WordInputOperation
-from src.letter_points_config import LetterPointsConfig
-from src.tile_types import (
+from data_types import WordInputOperation
+from letter_points_config import LetterPointsConfig
+from tile_types import (
     DEFAULT_CELL,
     LETTER_TIMES_TWO_CELL,
     LETTER_TIMES_THREE_CELL,
