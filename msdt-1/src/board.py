@@ -25,61 +25,63 @@ class Board:
             self.letter_points_config, self.tile_types
         )
         self.grid = [[""] * GRID_SIZE for _ in range(GRID_SIZE)]
-        self.chips = self.letter_points_config.get_letters_kit()
-        self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
+        self.chips_bag = self.letter_points_config.get_letters_kit()
+        self.chips_at_hand: list[str] = [
+            self.take_chip() for _ in range(LETTERS_PER_HAND)
+        ]
 
     def take_chip(self) -> str:
-        return self.chips.pop(-1)
+        return self.chips_bag.pop(-1)
 
     def next_chips(self) -> None:
-        if len(self.chips) < LETTERS_PER_HAND:
-            self.curr_chips = [""] * LETTERS_PER_HAND
+        if len(self.chips_bag) < LETTERS_PER_HAND:
+            self.chips_at_hand = [""] * LETTERS_PER_HAND
         else:
-            self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
+            self.chips_at_hand = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
-    def update_chips(self, btns: ButtonsForHand) -> None:
-        for i, btn in zip(self.curr_chips, btns):
-            btn.setText(i)
-            if i != "":
-                btn.setToolTip(
-                    f"Очков за букву: {self.letter_points_config.get_letter_value(i)}"
+    def update_chips(self, buttons: ButtonsForHand) -> None:
+        for chip, button in zip(self.chips_at_hand, buttons):
+            button.setText(chip)
+            if chip != "":
+                button.setToolTip(
+                    f"Очков за букву: {self.letter_points_config.get_letter_value(chip)}"
                 )
             else:
-                btn.setToolTip("")
+                button.setToolTip("")
 
-    def update_grid(self, btns: ButtonsGrid) -> None:
-        for i, j in zip(self.grid, btns):
-            for let, btn in zip(i, j):
-                if let != "":
-                    btn.setEnabled(False)
-                btn.setText(let)
+    def update_grid(self, buttons: ButtonsGrid) -> None:
+        for i, buttons_row in zip(self.grid, buttons):
+            for letter, button in zip(i, buttons_row):
+                if letter != "":
+                    button.setEnabled(False)
+                button.setText(letter)
 
-    def update_boosters(self, btns: ButtonsGrid) -> None:
-        for i, line in enumerate(btns):
+    def update_boosters(self, buttons: ButtonsGrid) -> None:
+        for i, line in enumerate(buttons):
             for j, btn in enumerate(line):
                 btn.setProperty("boost", self.tile_types.get((i, j), DEFAULT_CELL))
 
-    def commit_grid(self, btns: ButtonsGrid, chips: ButtonsForHand) -> None:
-        for i, line in enumerate(btns):
+    def commit_grid(self, buttons: ButtonsGrid, chips: ButtonsForHand) -> None:
+        for i, line in enumerate(buttons):
             for j, btn in enumerate(line):
                 self.grid[i][j] = btn.text()
         for i, chip in enumerate(chips):
-            self.curr_chips[i] = chip.text()
+            self.chips_at_hand[i] = chip.text()
 
-    def release_unused_chips(self, btns: ButtonsForHand, cursor: str | None) -> None:
-        for button in btns:
+    def release_unused_chips(self, buttons: ButtonsForHand, cursor: str | None) -> None:
+        for button in buttons:
             if button.text() != "":
-                self.chips.append(button.text())
+                self.chips_bag.append(button.text())
                 print(button.text())
         if cursor is not None:
-            self.chips.append(cursor)
+            self.chips_bag.append(cursor)
             print(cursor)
-        random.shuffle(self.chips)
+        random.shuffle(self.chips_bag)
 
     def input_word(
-        self, btns: ButtonsGrid, word_input: WordInputOperation, fist_word: bool
+        self, buttons: ButtonsGrid, word_input: WordInputOperation, fist_word: bool
     ) -> bool:
-        res = ""
+        result_word = ""
         intersect = False
         for i in range(word_input.word_length):
             if word_input.is_horizontal:
@@ -89,7 +91,7 @@ class Board:
                 cell_x = word_input.start_cell_x
                 cell_y = word_input.start_cell_y + i
 
-            b = btns[cell_x][cell_y]
+            button = buttons[cell_x][cell_y]
             if not fist_word:
                 intersect = True
             if (
@@ -97,19 +99,19 @@ class Board:
                 and self.tile_types.get((cell_x, cell_y), DEFAULT_CELL) == STARTING_CELL
             ):
                 intersect = True
-            let = b.text()
+            let = button.text()
             if let == "":
                 self.log("Empty Space")
                 return False
-            res += let
-        if res in self.words:
+            result_word += let
+        if result_word in self.words:
             self.log("Word already been!!!")
             return False
-        self.words.append(res)
+        self.words.append(result_word)
         if not intersect:
             self.log("Слово не пересекается с предыдущими.")
             return False
-        return self.word_existence_checker.is_valid_word(res)
+        return self.word_existence_checker.is_valid_word(result_word)
 
     def word_points(self, info: WordInputOperation) -> int:
         word = self.get_operation_word(info)

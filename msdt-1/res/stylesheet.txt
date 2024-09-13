@@ -5,6 +5,8 @@ QPushButton {
     border-radius: 4px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
+    color: red;
+    font: bold 18px;
 }
 
 QPushButton:pressed {
@@ -25,8 +27,12 @@ QPushButton:default {
     border-color: navy; /* make the default button prominent */
 }
 
+QPushButton[selected=false] {
+    background-color: lightgrey;
+}
+
 QPushButton[selected=true] {
-    background-color: silver;
+    background-color: azure;
 }
 
 QPushButton[grid=true]:enabled {
