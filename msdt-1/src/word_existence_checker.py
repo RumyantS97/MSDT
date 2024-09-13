@@ -12,9 +12,9 @@ class WordExistenceChecker:
         """
         res = self.morph.parse(word)
         for i in res:
-            if {'NOUN'} in i.tag and i.normal_form.lower().replace('ё', 'е') == word:
+            if {"NOUN"} in i.tag and i.normal_form.lower().replace("ё", "е") == word:
                 return True
             else:
-                print(f'Incorrect tags: {i}')
-        print('--------------')
+                print(f"Incorrect tags: {i}")
+        print("--------------")
         return False

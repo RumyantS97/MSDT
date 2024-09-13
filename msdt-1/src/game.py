@@ -15,13 +15,13 @@ class Game(QMainWindow):
         pass
 
     def get_name(self) -> str:
-        return ''
+        return ""
 
     def timerEvent(self, e: QTimerEvent) -> None:
         self.on_update(self.delta)
         self.update()
 
     def closeEvent(self, e: QCloseEvent) -> None:
-        print('Window Closed')
+        print("Window Closed")
         self.killTimer(self.update_timer_id)
         e.accept()

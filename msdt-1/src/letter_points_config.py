@@ -1,7 +1,7 @@
 import random
 import sqlite3
 
-LETTER_DB_FILE = 'res/letters.db'
+LETTER_DB_FILE = "res/letters.db"
 
 
 class LetterPointsConfig:
@@ -14,7 +14,7 @@ class LetterPointsConfig:
         """
         chips = []
         cur = self.let_con.cursor()
-        for i in cur.execute('''SELECT * FROM letters''').fetchall():
+        for i in cur.execute("""SELECT * FROM letters""").fetchall():
             for j in range(i[2]):
                 chips.append(i[1])
         random.shuffle(chips)
@@ -26,7 +26,9 @@ class LetterPointsConfig:
         :return: Количество очков за букву
         """
         cur = self.let_con.cursor()
-        line = cur.execute(f'''SELECT value FROM letters WHERE char='{letter}' ''').fetchone()
+        line = cur.execute(
+            f"""SELECT value FROM letters WHERE char='{letter}' """
+        ).fetchone()
         return line[0]
 
     def close(self):

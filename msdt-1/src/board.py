@@ -22,8 +22,10 @@ class Board:
         self.words = []
         self.log = log
         self.tile_types = read_tile_types()
-        self.word_points_counter = WordPointsCounter(self.letter_points_config, self.tile_types)
-        self.grid = [[''] * GRID_SIZE for _ in range(GRID_SIZE)]
+        self.word_points_counter = WordPointsCounter(
+            self.letter_points_config, self.tile_types
+        )
+        self.grid = [[""] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.chips = self.letter_points_config.get_letters_kit()
         self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
@@ -32,22 +34,24 @@ class Board:
 
     def next_chips(self) -> None:
         if len(self.chips) < LETTERS_PER_HAND:
-            self.curr_chips = [''] * LETTERS_PER_HAND
+            self.curr_chips = [""] * LETTERS_PER_HAND
         else:
             self.curr_chips = [self.take_chip() for _ in range(LETTERS_PER_HAND)]
 
     def update_chips(self, btns: ButtonsForHand) -> None:
         for i, btn in zip(self.curr_chips, btns):
             btn.setText(i)
-            if i != '':
-                btn.setToolTip(f'Очков за букву: {self.letter_points_config.get_letter_value(i)}')
+            if i != "":
+                btn.setToolTip(
+                    f"Очков за букву: {self.letter_points_config.get_letter_value(i)}"
+                )
             else:
-                btn.setToolTip('')
+                btn.setToolTip("")
 
     def update_grid(self, btns: ButtonsGrid) -> None:
         for i, j in zip(self.grid, btns):
             for let, btn in zip(i, j):
-                if let != '':
+                if let != "":
                     btn.stat = True
                     btn.setEnabled(False)
                 btn.setText(let)
@@ -55,7 +59,7 @@ class Board:
     def update_boosters(self, btns: ButtonsGrid) -> None:
         for i, line in enumerate(btns):
             for j, btn in enumerate(line):
-                btn.setProperty('boost', self.tile_types.get((i, j), DEFAULT_CELL))
+                btn.setProperty("boost", self.tile_types.get((i, j), DEFAULT_CELL))
 
     def commit_grid(self, btns: ButtonsGrid, chips: ButtonsForHand) -> None:
         for i, line in enumerate(btns):
@@ -66,16 +70,18 @@ class Board:
 
     def raise_chips(self, btns: ButtonsForHand, cursor: str) -> None:
         for i in btns:
-            if i.text() != '':
+            if i.text() != "":
                 self.chips.append(i.text())
                 print(i.text())
-        if cursor != '':
+        if cursor != "":
             self.chips.append(cursor)
             print(cursor)
         random.shuffle(self.chips)
 
-    def input_word(self, btns: ButtonsGrid, word_input: WordInputOperation, fist_word: bool) -> bool:
-        res = ''
+    def input_word(
+        self, btns: ButtonsGrid, word_input: WordInputOperation, fist_word: bool
+    ) -> bool:
+        res = ""
         intersect = False
         for i in range(word_input.word_length):
             if word_input.is_horizontal:
@@ -88,19 +94,22 @@ class Board:
             b = btns[cell_x][cell_y]
             if not fist_word and b.stat:
                 intersect = True
-            if fist_word and self.tile_types.get((cell_x, cell_y), DEFAULT_CELL) == STARTING_CELL:
+            if (
+                fist_word
+                and self.tile_types.get((cell_x, cell_y), DEFAULT_CELL) == STARTING_CELL
+            ):
                 intersect = True
             let = b.text()
-            if let == '':
-                self.log('Empty Space')
+            if let == "":
+                self.log("Empty Space")
                 return False
             res += let
         if res in self.words:
-            self.log('Word already been!!!')
+            self.log("Word already been!!!")
             return False
         self.words.append(res)
         if not intersect:
-            self.log('Слово не пересекается с предыдущими.')
+            self.log("Слово не пересекается с предыдущими.")
             return False
         return self.word_existence_checker.is_valid_word(res)
 

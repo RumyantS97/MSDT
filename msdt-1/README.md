@@ -32,3 +32,5 @@
 ## Ход выполнения
 
 Первоначальный код взят из репозитория https://github.com/RustyGuard/PyQTProject
+
+Код приведён под формат black, [являющийся подмножеством стандартов pep8](https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html).
