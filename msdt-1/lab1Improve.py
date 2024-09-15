@@ -334,14 +334,14 @@ palindrome_substrings = palindromic_substrings(input_string)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
-print("\nЗадание 3") # O(Nlog(N))
+print("\nЗадание 3")  # O(Nlog(N))
 # Задание 3
 
 
 class Node:
     def __init__(self, char, freq):
-        self.char = char # Символ
-        self.freq = freq # Частота повоторений
+        self.char = char  # Символ
+        self.freq = freq  # Частота повоторений
         self.left = None
         self.right = None
 
@@ -350,27 +350,27 @@ class Node:
 
 
 def build_huffman_tree(text):
-    freq_dict = defaultdict(int) # Создаем словарь и заносим к ключу количество совпадений
+    freq_dict = defaultdict(int)  # Создаем словарь и заносим к ключу количество совпадений
     for char in text:
         freq_dict[char] += 1
 
     min_heap = []
-    for char, freq in freq_dict.items(): # Создаем кучу и заносим по возр для каждого символа узел с символом и частотой
+    for char, freq in freq_dict.items():  # Создаем кучу и заносим по возр для каждого символа узел с символом и частотой
         heapq.heappush(min_heap, Node(char, freq))
 
-    while len(min_heap) > 1: # Проходим пока не останется один узел _ Log(n)
+    while len(min_heap) > 1:  # Проходим пока не останется один узел _ Log(n)
         left = heapq.heappop(min_heap)
         right = heapq.heappop(min_heap)
         combined_freq = left.freq + right.freq
-        parent = Node(None, combined_freq) # Создаем новый узел из двух наименее повторяющихся
+        parent = Node(None, combined_freq)  # Создаем новый узел из двух наименее повторяющихся
         parent.left = left
         parent.right = right
-        heapq.heappush(min_heap, parent) # Заносим новый узел к остальным
+        heapq.heappush(min_heap, parent)  # Заносим новый узел к остальным
 
     return min_heap[0]
 
 
-def build_huffman_codes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
+def build_huffman_codes(node, current_code, huffman_codes):  # Для каждого узла сохраняется его двоичный код из дерева
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
@@ -379,17 +379,17 @@ def build_huffman_codes(node, current_code, huffman_codes): # Для каждо�
 
 
 def huffman_encoding(text):
-    root = build_huffman_tree(text) # Построение дерева
-    huffman_codes = {} # Заведение словаря для символов(их довичный код)
+    root = build_huffman_tree(text)  # Построение дерева
+    huffman_codes = {}  # Заведение словаря для символов(их довичный код)
     build_huffman_codes(root, '', huffman_codes)
 
-    encoded_text = ''.join(huffman_codes[char] for char in text) # Преобразовываем текст проходя посимвольно
-    return encoded_text, huffman_codes # Возвращаем закодированный текст и словарь с кодом
+    encoded_text = ''.join(huffman_codes[char] for char in text)  # Преобразовываем текст проходя посимвольно
+    return encoded_text, huffman_codes  # Возвращаем закодированный текст и словарь с кодом
 
 
 def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
-    current_code = '' # Накопление битов для тек символа
+    current_code = ''  # Накопление битов для тек символа
     for bit in encoded_text:
         current_code += bit
         for char, code in huffman_codes.items():
@@ -413,23 +413,23 @@ print("Decoded text:", decoded_text)
 print("\nЗадание 4")
 
 
-def has_cycle(graph): # O(n + m)
+def has_cycle(graph):  # O(n + m)
     def dfs(node, visited, rec_stack):
         visited[node] = True
         rec_stack[node] = True
 
-        for neighbor in graph[node]: # Проходка по соседям вершины
-            if not visited[neighbor]: # Если не посещали соседа, вызываем рекурсивно функцию
+        for neighbor in graph[node]:  # Проходка по соседям вершины
+            if not visited[neighbor]:  # Если не посещали соседа, вызываем рекурсивно функцию
                 if dfs(neighbor, visited, rec_stack):
                     return True
-            elif rec_stack[neighbor]: # Если обнаруживается сосед как записаный, то есть цикл
+            elif rec_stack[neighbor]:  # Если обнаруживается сосед как записаный, то есть цикл
                 return True
 
         rec_stack[node] = False
         return False
 
-    visited = defaultdict(bool) # Словарь для отслеживания посещенных вершин
-    rec_stack = defaultdict(bool) # Словарь для отслеживания вершин в текущем стеке вызовов
+    visited = defaultdict(bool)  # Словарь для отслеживания посещенных вершин
+    rec_stack = defaultdict(bool)  # Словарь для отслеживания вершин в текущем стеке вызовов
 
     for node in graph:
         if not visited[node]:
