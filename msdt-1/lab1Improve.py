@@ -1,3 +1,11 @@
+from collections import deque
+import random
+import string
+import time
+import heapq
+from collections import defaultdict
+
+
 # Задание 1
 print("Задание 1")
 
@@ -88,7 +96,6 @@ min_stack.print_stack()
 
 # Задание 3
 print("\nЗадание 3")
-from collections import deque
 
 
 def max_in_window(arr, k):
@@ -123,6 +130,8 @@ print("\t", result)
 
 # Задание 4
 print("\nЗадание 4")
+
+
 def find_duplicate(nums):
     tortoise = nums[0]
     hare = nums[0]
@@ -149,6 +158,8 @@ print(find_duplicate(nums))  # Вывод: 2
 
 # Задание 5
 print("\nЗадание 5")
+
+
 def zero_matrix(matrix):
     rows = len(matrix)
     cols = len(matrix[0])
@@ -188,10 +199,6 @@ for row in result:
     print(row)
 
 
-import random
-import string
-
-
 def generate_random_string(length):
     return ''.join(random.choices(string.ascii_lowercase, k=length))
 
@@ -200,9 +207,6 @@ def generate_random_substring(string, min_length, max_length):
     start = random.randint(0, len(string) - max_length)
     end = random.randint(min_length, max_length)
     return string[start:start + end]
-
-
-import time
 
 
 def compare_algorithms(text_length, pattern_length, num_tests):
@@ -284,7 +288,7 @@ avg_naive_time, avg_kmp_time = compare_algorithms(1000, 3, 100)
 print(f"Avg Time наивного алгоритма:\t {avg_naive_time * 1000:.5f} ms")
 print(f"Avg Time Кнута-Морриса-Пратта:\t {avg_kmp_time * 1000:.5f} ms")
 
-#задание 2
+# Задание 2
 print("\nЗадание 2")
 
 
@@ -332,8 +336,6 @@ print(palindrome_substrings)
 
 print("\nЗадание 3") # O(Nlog(N))
 # Задание 3
-import heapq
-from collections import defaultdict
 
 
 class Node:
@@ -409,7 +411,7 @@ print("Decoded text:", decoded_text)
 
 # Задание 4
 print("\nЗадание 4")
-from collections import defaultdict
+
 
 def has_cycle(graph): # O(n + m)
     def dfs(node, visited, rec_stack):
