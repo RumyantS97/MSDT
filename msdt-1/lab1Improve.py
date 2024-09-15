@@ -140,6 +140,7 @@ def find_duplicate(nums):
 
     return tortoise
 
+
 # Пример использования
 nums = [1, 3, 4, 2, 2]
 print(nums)
@@ -173,6 +174,7 @@ def zero_matrix(matrix):
                 matrix[i][j] = 0
 
     return matrix
+
 
 # Пример использования
 matrix = [
@@ -333,6 +335,7 @@ print("\nЗадание 3") # O(Nlog(N))
 import heapq
 from collections import defaultdict
 
+
 class Node:
     def __init__(self, char, freq):
         self.char = char # Символ
@@ -342,6 +345,7 @@ class Node:
 
     def __lt__(self, other):
         return self.freq < other.freq
+
 
 def build_huffman_tree(text):
     freq_dict = defaultdict(int) # Создаем словарь и заносим к ключу количество совпадений
@@ -363,12 +367,14 @@ def build_huffman_tree(text):
 
     return min_heap[0]
 
+
 def build_huffman_codes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
         build_huffman_codes(node.left, current_code + '0', huffman_codes)
         build_huffman_codes(node.right, current_code + '1', huffman_codes)
+
 
 def huffman_encoding(text):
     root = build_huffman_tree(text) # Построение дерева
@@ -377,6 +383,7 @@ def huffman_encoding(text):
 
     encoded_text = ''.join(huffman_codes[char] for char in text) # Преобразовываем текст проходя посимвольно
     return encoded_text, huffman_codes # Возвращаем закодированный текст и словарь с кодом
+
 
 def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
@@ -390,6 +397,7 @@ def huffman_decoding(encoded_text, huffman_codes):
                 break
 
     return decoded_text
+
 
 # Пример использования
 text = "hello world"
@@ -427,6 +435,7 @@ def has_cycle(graph): # O(n + m)
                 return True
 
     return False
+
 
 # Пример использования
 graph = {
