@@ -25,7 +25,8 @@ input_string = "((()))"
 print(input_string, "\t: ", check_brackets(input_string))  # Вернет True
 
 input_string = "(()))"
-print(input_string, "\t: ", check_brackets(input_string), "\n")  # Вернет False
+# Вернет False
+print(input_string, "\t: ", check_brackets(input_string), "\n")
 
 
 def check_brackets(input_string):
@@ -235,7 +236,8 @@ def compare_algorithms(text_length, pattern_length, num_tests):
 print("Задание 1")
 
 
-def naive_search(text, pattern):  # O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
+# O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
+def naive_search(text, pattern):
     n = len(text)
     m = len(pattern)
     result = []
@@ -284,7 +286,8 @@ def kmp_search(text, pattern):  # O(n)
     return result
 
 
-avg_naive_time, avg_kmp_time = compare_algorithms(1000, 3, 100)
+avg_naive_time, avg_kmp_time = (
+    compare_algorithms(1000, 3, 100))
 print(f"Avg Time наивного алгоритма:\t {avg_naive_time * 1000:.5f} ms")
 print(f"Avg Time Кнута-Морриса-Пратта:\t {avg_kmp_time * 1000:.5f} ms")
 
@@ -350,19 +353,23 @@ class Node:
 
 
 def build_huffman_tree(text):
-    freq_dict = defaultdict(int)  # Создаем словарь и заносим к ключу количество совпадений
+    # Создаем словарь и заносим к ключу количество совпадений
+    freq_dict = defaultdict(int)
     for char in text:
         freq_dict[char] += 1
 
     min_heap = []
-    for char, freq in freq_dict.items():  # Создаем кучу и заносим по возр для каждого символа узел с символом и частотой
+    # Создаем кучу и заносим по возр для каждого символа
+    # узел с символом и частотой
+    for char, freq in freq_dict.items():
         heapq.heappush(min_heap, Node(char, freq))
 
     while len(min_heap) > 1:  # Проходим пока не останется один узел _ Log(n)
         left = heapq.heappop(min_heap)
         right = heapq.heappop(min_heap)
         combined_freq = left.freq + right.freq
-        parent = Node(None, combined_freq)  # Создаем новый узел из двух наименее повторяющихся
+        # Создаем новый узел из двух наименее повторяющихся
+        parent = Node(None, combined_freq)
         parent.left = left
         parent.right = right
         heapq.heappush(min_heap, parent)  # Заносим новый узел к остальным
@@ -370,7 +377,8 @@ def build_huffman_tree(text):
     return min_heap[0]
 
 
-def build_huffman_codes(node, current_code, huffman_codes):  # Для каждого узла сохраняется его двоичный код из дерева
+# Для каждого узла сохраняется его двоичный код из дерева
+def build_huffman_codes(node, current_code, huffman_codes):
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
@@ -383,8 +391,10 @@ def huffman_encoding(text):
     huffman_codes = {}  # Заведение словаря для символов(их довичный код)
     build_huffman_codes(root, '', huffman_codes)
 
-    encoded_text = ''.join(huffman_codes[char] for char in text)  # Преобразовываем текст проходя посимвольно
-    return encoded_text, huffman_codes  # Возвращаем закодированный текст и словарь с кодом
+    # Преобразовываем текст проходя посимвольно
+    encoded_text = ''.join(huffman_codes[char] for char in text)
+    # Возвращаем закодированный текст и словарь с кодом
+    return encoded_text, huffman_codes
 
 
 def huffman_decoding(encoded_text, huffman_codes):
@@ -419,17 +429,21 @@ def has_cycle(graph):  # O(n + m)
         rec_stack[node] = True
 
         for neighbor in graph[node]:  # Проходка по соседям вершины
-            if not visited[neighbor]:  # Если не посещали соседа, вызываем рекурсивно функцию
+            # Если не посещали соседа, вызываем рекурсивно функцию
+            if not visited[neighbor]:
                 if dfs(neighbor, visited, rec_stack):
                     return True
-            elif rec_stack[neighbor]:  # Если обнаруживается сосед как записаный, то есть цикл
+                # Если обнаруживается сосед как записаный, то есть цикл
+            elif rec_stack[neighbor]:
                 return True
 
         rec_stack[node] = False
         return False
 
-    visited = defaultdict(bool)  # Словарь для отслеживания посещенных вершин
-    rec_stack = defaultdict(bool)  # Словарь для отслеживания вершин в текущем стеке вызовов
+    # Словарь для отслеживания посещенных вершин
+    visited = defaultdict(bool)
+    # Словарь для отслеживания вершин в текущем стеке вызовов
+    rec_stack = defaultdict(bool)
 
     for node in graph:
         if not visited[node]:
