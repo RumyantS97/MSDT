@@ -333,7 +333,7 @@ print("\nЗадание 3") # O(Nlog(N))
 import heapq
 from collections import defaultdict
 
-class node:
+class Node:
     def __init__(self, char, freq):
         self.char = char # Символ
         self.freq = freq # Частота повоторений
@@ -350,13 +350,13 @@ def build_huffman_tree(text):
 
     min_heap = []
     for char, freq in freq_dict.items(): # Создаем кучу и заносим по возр для каждого символа узел с символом и частотой
-        heapq.heappush(min_heap, node(char, freq))
+        heapq.heappush(min_heap, Node(char, freq))
 
     while len(min_heap) > 1: # Проходим пока не останется один узел _ Log(n)
         left = heapq.heappop(min_heap)
         right = heapq.heappop(min_heap)
         combined_freq = left.freq + right.freq
-        parent = node(None, combined_freq) # Создаем новый узел из двух наименее повторяющихся
+        parent = Node(None, combined_freq) # Создаем новый узел из двух наименее повторяющихся
         parent.left = left
         parent.right = right
         heapq.heappush(min_heap, parent) # Заносим новый узел к остальным
