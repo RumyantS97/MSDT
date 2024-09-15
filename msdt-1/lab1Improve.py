@@ -2,7 +2,7 @@
 print("Задание 1")
 
 
-def checkBrackets(inputString):
+def check_brackets(inputString):
     stack = []
     for char in inputString:
         if char == '(':
@@ -14,13 +14,13 @@ def checkBrackets(inputString):
 
 
 inputString = "((()))"
-print(inputString, "\t: ", checkBrackets(inputString))  # Вернет True
+print(inputString, "\t: ", check_brackets(inputString))  # Вернет True
 
 inputString = "(()))"
-print(inputString, "\t: ", checkBrackets(inputString), "\n")  # Вернет False
+print(inputString, "\t: ", check_brackets(inputString), "\n")  # Вернет False
 
 
-def checkBrackets(input_string):
+def check_brackets(input_string):
     bracket_pairs = {
         '(': ')',
         '[': ']',
@@ -38,10 +38,10 @@ def checkBrackets(input_string):
 
 
 inputString = "{[()()]}"
-print(inputString, ": ", checkBrackets(inputString))  # Вернет True
+print(inputString, ": ", check_brackets(inputString))  # Вернет True
 
 inputString = "({)}"
-print(inputString, "\t : ", checkBrackets(inputString))  # Вернет False
+print(inputString, "\t : ", check_brackets(inputString))  # Вернет False
 
 # Задание 2
 print("\nЗадание 2")
@@ -67,7 +67,7 @@ class MinStack:
         if self.min_stack:
             return self.min_stack[-1]
 
-    def printStack(self):
+    def print_stack(self):
         for i in self.stack:
             print(i, end=" ")
         print()
@@ -78,20 +78,20 @@ min_stack = MinStack()
 min_stack.push(3)
 min_stack.push(5)
 min_stack.push(2)
-min_stack.printStack()
+min_stack.print_stack()
 print("min: ", min_stack.min())  # Вернет 2
 min_stack.pop()
-min_stack.printStack()
+min_stack.print_stack()
 print("min: ", min_stack.min())  # Вернет 3
 min_stack.pop()
-min_stack.printStack()
+min_stack.print_stack()
 
 # Задание 3
 print("\nЗадание 3")
 from collections import deque
 
 
-def maxInWindow(arr, k):
+def max_in_window(arr, k):
     n = len(arr)
     if n == 0:
         return
@@ -117,13 +117,13 @@ def maxInWindow(arr, k):
 # Пример использования
 arr = [1,3,-1,-3,5,3,6,7]
 k = 3
-result = maxInWindow(arr, k)
+result = max_in_window(arr, k)
 print(arr)
 print("\t", result)
 
 # Задание 4
 print("\nЗадание 4")
-def findDuplicate(nums):
+def find_duplicate(nums):
     tortoise = nums[0]
     hare = nums[0]
 
@@ -143,12 +143,12 @@ def findDuplicate(nums):
 # Пример использования
 nums = [1,3,4,2,2]
 print(nums)
-print(findDuplicate(nums))  # Вывод: 2
+print(find_duplicate(nums))  # Вывод: 2
 
 
 # Задание 5
 print("\nЗадание 5")
-def zeroMatrix(matrix):
+def zero_matrix(matrix):
     rows = len(matrix)
     cols = len(matrix[0])
     row_zero = [False] * rows
@@ -177,7 +177,7 @@ def zeroMatrix(matrix):
 # Пример использования
 matrix = [[1,2,3],[4,0,6],[7,8,9]]
 
-result = zeroMatrix(matrix)
+result = zero_matrix(matrix)
 for row in result:
     print(row)
 
@@ -186,11 +186,11 @@ import random
 import string
 
 
-def generateRandomString(length):
+def generate_random_string(length):
     return ''.join(random.choices(string.ascii_lowercase, k=length))
 
 
-def generateRandomSubstring(string, min_length, max_length):
+def generate_random_substring(string, min_length, max_length):
     start = random.randint(0, len(string)-max_length)
     end = random.randint(min_length, max_length)
     return string[start:start+end]
@@ -199,20 +199,20 @@ def generateRandomSubstring(string, min_length, max_length):
 import time
 
 
-def compareAlgorithms(text_length, pattern_length, num_tests):
-    text = generateRandomString(text_length)
-    pattern = generateRandomSubstring(text, 1, pattern_length)
+def compare_algorithms(text_length, pattern_length, num_tests):
+    text = generate_random_string(text_length)
+    pattern = generate_random_substring(text, 1, pattern_length)
 
     naive_times = []
     kmp_times = []
 
     for _ in range(num_tests):
         start_time = time.time()
-        naiveSearch(text, pattern)
+        naive_search(text, pattern)
         naive_times.append(time.time()-start_time)
 
         start_time = time.time()
-        kmpSearch(text, pattern)
+        kmp_search(text, pattern)
         kmp_times.append(time.time()-start_time)
 
     avg_naive_time = sum(naive_times)/num_tests
@@ -225,7 +225,7 @@ def compareAlgorithms(text_length, pattern_length, num_tests):
 print("Задание 1")
 
 
-def naiveSearch(text, pattern):  # O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
+def naive_search(text, pattern):  # O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
     n = len(text)
     m = len(pattern)
     result = []
@@ -240,7 +240,7 @@ def naiveSearch(text, pattern):  # O(m * (n - m)), худший сл(m/2): O(n^2
     return result
 
 
-def computeLpsArray(pattern):
+def compute_lps_array(pattern):
     m = len(pattern)
     lps = [0] * m
     j = 0
@@ -255,10 +255,10 @@ def computeLpsArray(pattern):
     return lps
 
 
-def kmpSearch(text, pattern):  # O(n)
+def kmp_search(text, pattern):  # O(n)
     n = len(text)
     m = len(pattern)
-    lps = computeLpsArray(pattern)
+    lps = compute_lps_array(pattern)
     result = []
     j = 0
 
@@ -274,7 +274,7 @@ def kmpSearch(text, pattern):  # O(n)
     return result
 
 
-avg_naive_time, avg_kmp_time = compareAlgorithms(1000, 3, 100)
+avg_naive_time, avg_kmp_time = compare_algorithms(1000, 3, 100)
 print(f"Avg Time наивного алгоритма:\t {avg_naive_time * 1000:.5f} ms")
 print(f"Avg Time Кнута-Морриса-Пратта:\t {avg_kmp_time * 1000:.5f} ms")
 
@@ -282,7 +282,7 @@ print(f"Avg Time Кнута-Морриса-Пратта:\t {avg_kmp_time * 1000:
 print("\nЗадание 2")
 
 
-def findPalindromes(s):
+def find_palindromes(s):
     def is_palindrome(substring):
         return substring == substring[::-1]
 
@@ -298,7 +298,7 @@ def findPalindromes(s):
     # O(n^2)
 
 
-def palindromicSubstrings(s):
+def palindromic_substrings(s):
     def expand(left, right):
         while left >= 0 and right < len(s) and s[left] == s[right]:
             palindromes.append(s[left:right + 1])
@@ -316,11 +316,11 @@ def palindromicSubstrings(s):
 # Пример использования
 inputString = "abcbabad"
 # print(input_string[4:len(input_string)+4])
-palindrome_substrings = findPalindromes(inputString)
+palindrome_substrings = find_palindromes(inputString)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
-palindrome_substrings = palindromicSubstrings(inputString)
+palindrome_substrings = palindromic_substrings(inputString)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
@@ -339,7 +339,7 @@ class node:
     def __lt__(self, other):
         return self.freq < other.freq
 
-def buildHuffmanTree(text):
+def build_huffman_tree(text):
     freq_dict = defaultdict(int) # Создаем словарь и заносим к ключу количество совпадений
     for char in text:
         freq_dict[char] += 1
@@ -359,22 +359,22 @@ def buildHuffmanTree(text):
 
     return min_heap[0]
 
-def buildHuffmanCodes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
+def build_huffman_codes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
-        buildHuffmanCodes(node.left, current_code + '0', huffman_codes)
-        buildHuffmanCodes(node.right, current_code + '1', huffman_codes)
+        build_huffman_codes(node.left, current_code + '0', huffman_codes)
+        build_huffman_codes(node.right, current_code + '1', huffman_codes)
 
-def huffmanEncoding(text):
-    root = buildHuffmanTree(text) # Построение дерева
+def huffman_encoding(text):
+    root = build_huffman_tree(text) # Построение дерева
     huffman_codes = {} # Заведение словаря для символов(их довичный код)
-    buildHuffmanCodes(root, '', huffman_codes)
+    build_huffman_codes(root, '', huffman_codes)
 
     encoded_text = ''.join(huffman_codes[char] for char in text) # Преобразовываем текст проходя посимвольно
     return encoded_text, huffman_codes # Возвращаем закодированный текст и словарь с кодом
 
-def huffmanDecoding(encoded_text, huffman_codes):
+def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
     current_code = '' # Накопление битов для тек символа
     for bit in encoded_text:
@@ -389,9 +389,9 @@ def huffmanDecoding(encoded_text, huffman_codes):
 
 # Пример использования
 text = "hello world"
-encoded_text, huffman_codes = huffmanEncoding(text)
+encoded_text, huffman_codes = huffman_encoding(text)
 print("Encoded text:", encoded_text)
-decoded_text = huffmanDecoding(encoded_text, huffman_codes)
+decoded_text = huffman_decoding(encoded_text, huffman_codes)
 print("Decoded text:", decoded_text)
 
 
@@ -399,7 +399,7 @@ print("Decoded text:", decoded_text)
 print("\nЗадание 4")
 from collections import defaultdict
 
-def hasCycle(graph): # O(n + m)
+def has_cycle(graph): # O(n + m)
     def dfs(node, visited, rec_stack):
         visited[node] = True
         rec_stack[node] = True
@@ -432,7 +432,7 @@ graph = {
     3: [3]
 }
 
-if hasCycle(graph):
+if has_cycle(graph):
     print("Граф содержит цикл.")
 else:
     print("Граф не содержит циклов.")
