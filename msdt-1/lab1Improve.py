@@ -100,7 +100,7 @@ def max_in_window(arr, k):
     d = deque()
 
     for i in range(n):
-        while d and d[0] < i-k+1:
+        while d and d[0] < i - k + 1:
             d.popleft()
 
         while d and arr[i] >= arr[d[-1]]:
@@ -108,7 +108,7 @@ def max_in_window(arr, k):
 
         d.append(i)
 
-        if i >= k-1:
+        if i >= k - 1:
             max_in_window.append(arr[d[0]])
 
     return max_in_window
@@ -191,9 +191,9 @@ def generate_random_string(length):
 
 
 def generate_random_substring(string, min_length, max_length):
-    start = random.randint(0, len(string)-max_length)
+    start = random.randint(0, len(string) - max_length)
     end = random.randint(min_length, max_length)
-    return string[start:start+end]
+    return string[start:start + end]
 
 
 import time
@@ -209,14 +209,14 @@ def compare_algorithms(text_length, pattern_length, num_tests):
     for _ in range(num_tests):
         start_time = time.time()
         naive_search(text, pattern)
-        naive_times.append(time.time()-start_time)
+        naive_times.append(time.time() - start_time)
 
         start_time = time.time()
         kmp_search(text, pattern)
-        kmp_times.append(time.time()-start_time)
+        kmp_times.append(time.time() - start_time)
 
-    avg_naive_time = sum(naive_times)/num_tests
-    avg_kmp_time = sum(kmp_times)/num_tests
+    avg_naive_time = sum(naive_times) / num_tests
+    avg_kmp_time = sum(kmp_times) / num_tests
 
     return avg_naive_time, avg_kmp_time
 
