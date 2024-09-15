@@ -115,7 +115,7 @@ def max_in_window(arr, k):
 
 
 # Пример использования
-arr = [1,3,-1,-3,5,3,6,7]
+arr = [1, 3, -1, -3, 5, 3, 6, 7]
 k = 3
 result = max_in_window(arr, k)
 print(arr)
@@ -141,7 +141,7 @@ def find_duplicate(nums):
     return tortoise
 
 # Пример использования
-nums = [1,3,4,2,2]
+nums = [1, 3, 4, 2, 2]
 print(nums)
 print(find_duplicate(nums))  # Вывод: 2
 
@@ -175,7 +175,11 @@ def zero_matrix(matrix):
     return matrix
 
 # Пример использования
-matrix = [[1,2,3],[4,0,6],[7,8,9]]
+matrix = [
+    [1, 2, 3],
+    [4, 0, 6],
+    [7, 8, 9]
+]
 
 result = zero_matrix(matrix)
 for row in result:
