@@ -3,8 +3,8 @@ from storage import Storage
 
 class TaskManager:
     def __init__(self):
-        self.tasks=[]
-        self.storage=Storage()
+        self.tasks = []
+        self.storage = Storage()
         self.load_tasks()
 
     def load_tasks(self):

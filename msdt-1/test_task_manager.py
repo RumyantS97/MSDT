@@ -26,7 +26,7 @@ def test_delete_task(task_manager):#тест для удаления задач�
     task = Task("Task 1", "Description 1")
     task_manager.tasks.append(task)
     task_manager.delete_task(task.id)
-    assert len(task_manager.tasks)==0
+    assert len(task_manager.tasks) == 0
 
 def test_mark_task_completed(task_manager):#тест для маркировки задачи
     task = Task("Task 1", "Description 1")

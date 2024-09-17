@@ -3,7 +3,7 @@ from task import Task
 
 class Storage:
     def __init__(self, filename='tasks.json'):
-        self.filename=filename
+        self.filename = filename
 
     def save(self, tasks):
         # сохранение задач в файла
@@ -15,7 +15,7 @@ class Storage:
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
                 data = json.load(file)
-                tasks=[]
+                tasks = []
                 for task_data in data:
                     task = Task(task_data['title'], task_data['description'])
                     task.id = task_data['id']
