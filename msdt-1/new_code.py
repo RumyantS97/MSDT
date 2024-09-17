@@ -12,6 +12,7 @@ Yh = 0
 def Bezier(p1, p2, t):  # First order Bessel function
     return p1 * (1 - t) + p2 * t
 
+
 def Bezier_2(x1, y1, x2, y2, x3, y3):  # Second-order Bessel function
     te.goto(x1, y1)
     te.pendown()
@@ -22,6 +23,7 @@ def Bezier_2(x1, y1, x2, y2, x3, y3):  # Second-order Bessel function
                    Bezier(y2, y3, t / WriteStep), t / WriteStep)
         te.goto(x, y)
     te.penup()
+
 
 def Bezier_3(x1, y1, x2, y2, x3, y3, x4, y4):  # Third-order Bessel function
     x1 = -Width / 2 + x1
@@ -42,9 +44,11 @@ def Bezier_3(x1, y1, x2, y2, x3, y3, x4, y4):  # Third-order Bessel function
         te.goto(x, y)
     te.penup()
 
+
 def Moveto(x, y):  # Move to svg coordinates (x, y)
     te.penup()
     te.goto(-Width / 2 + x, Height / 2 - y)
+
 
 def line(x1, y1, x2, y2):  # Connect two points under svg coordinates
     te.penup()
@@ -53,26 +57,31 @@ def line(x1, y1, x2, y2):  # Connect two points under svg coordinates
     te.goto(-Width / 2 + x2, Height / 2 - y2)
     te.penup()
 
+
 def lineto(dx, dy):  # Connect the current point and the point with relative coordinates (dx, dy)
     te.pendown()
     te.goto(te.xcor() + dx, te.ycor() - dy)
     te.penup()
+
 
 def Lineto(x, y):  # Connect the current point and svg coordinates (x, y)
     te.pendown()
     te.goto(-Width / 2 + x, Height / 2 - y)
     te.penup()
 
+
 def Horizontal(x):  # Make the horizontal line with the abscissa x in the svg coordinates
     te.pendown()
     te.setx(x - Width / 2)
     te.penup()
+
 
 def horizontal(dx):  # Make the horizontal line with relative abscissa dx
     te.seth(0)
     te.pendown()
     te.fd(dx)
     te.penup()
+
 
 def vertical(dy):  # Make the vertical line with the relative ordinate dy
     te.seth(-90)
@@ -81,6 +90,7 @@ def vertical(dy):  # Make the vertical line with the relative ordinate dy
     te.penup()
     te.seth(0)
 
+
 def polyline(x1, y1, x2, y2, x3, y3):  # Make a polyline under svg coordinates
     te.penup()
     te.goto(-Width / 2 + x1, Height / 2 - y1)
@@ -88,6 +98,7 @@ def polyline(x1, y1, x2, y2, x3, y3):  # Make a polyline under svg coordinates
     te.goto(-Width / 2 + x2, Height / 2 - y2)
     te.goto(-Width / 2 + x3, Height / 2 - y3)
     te.penup()
+
 
 def Curveto(x1, y1, x2, y2, x, y):  # Third-order Bezier curve to (x, y)
     te.penup()
@@ -98,6 +109,7 @@ def Curveto(x1, y1, x2, y2, x, y):  # Third-order Bezier curve to (x, y)
     global Yh
     Xh = x - x2
     Yh = y - y2
+
 
 def curveto_r(x1, y1, x2, y2, x, y):  # Third-order Bezier curve to relative coordinates (x, y)
     te.penup()
@@ -110,6 +122,7 @@ def curveto_r(x1, y1, x2, y2, x, y):  # Third-order Bezier curve to relative coo
     Xh = x - x2
     Yh = y - y2
 
+
 def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     global Xh
     global Yh
@@ -119,6 +132,7 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     Bezier_3(X_now, Y_now, X_now + Xh, Y_now + Yh, x2, y2, x, y)
     Xh = x - x2
     Yh = y - y2
+
 
     def smooth_r(x2, y2, x, y):  # Smooth the third-order Bezier curve to relative coordinates (x, y)
         global Xh
@@ -136,7 +150,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     te.pensize(1)
     te.speed(Speed)
     te.penup()
-
     # Layer_2
     time.sleep(20)
     te.color("black", "#F2F2F2")  # Coat
@@ -162,7 +175,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(-8, 23, -8, 23)
     Lineto(61, 462)
     te.end_fill()
-
     Moveto(60.5, 461.5)  # Shadow
     te.color("black", "#D3DFF0")
     te.begin_fill()
@@ -176,7 +188,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     curveto_r(-1, 11, -8, 25, -8, 25)
     Horizontal(60.5)
     te.end_fill()
-
     Moveto(444.5, 464)
     te.begin_fill()
     curveto_r(0, 0, -29, -36, -31, -46)
@@ -189,7 +200,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(50, 92, 50, 93)
     Horizontal(444.5)
     te.end_fill()
-
     Moveto(195, 49)
     te.begin_fill()
     te.pencolor("#D3DFF0")
@@ -198,7 +208,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     Horizontal(195)
     te.pencolor("#D3DFF0")
     te.end_fill()
-
     Moveto(327.997, 49)
     te.begin_fill()
     te.pencolor("#D3DFF0")
@@ -209,7 +218,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     Horizontal(327.997)
     te.pencolor("#D3DFF0")
     te.end_fill()
-
     te.pencolor("black")
     line(94.5, 397.5, 107.5, 373.5)  # Wrinkles
     line(122.5, 317.5, 95.875, 274.699)
@@ -223,7 +231,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     polyline(506.5, 369.5, 493.5, 402.5, 502.5, 443.5)
     Moveto(530, 429)
     curveto_r(4, 16, -5, 33, -5, 33)
-
     # Layer_3
     te.color("black", "#2b1d2a")  # Inside the jacket
     Moveto(225, 462)
@@ -310,7 +317,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     lineto(-2, 8)
     Lineto(225, 462)
     te.end_fill()
-
     te.pensize(2)
     Moveto(240, 450)
     smooth_r(0, 9, 3, 12)
@@ -338,7 +344,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(-10, -26, -10, -30)
     Smooth(255, 332, 262, 331)
     te.end_fill()
-
     Moveto(262, 346)
     lineto(-12, -6)
     Moveto(369, 333)
@@ -371,7 +376,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     curveto_r(-1, 0, -20, -7, -30, -19)
     Curveto(259, 373, 297, 385, 297, 387)
     te.end_fill()
-
     Moveto(323, 384)
     te.begin_fill()
     lineto(8, 7)
@@ -410,7 +414,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     curveto_r(-17, 18, -27, 71, -27, 71)
     Lineto(221, 155)
     te.end_fill()
-
     Moveto(264, 64)
     te.begin_fill()
     curveto_r(-4, 5, 14, 100, 14, 100)
@@ -419,14 +422,12 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(8, -50, 3, -65)
     Smooth(272, 64, 264, 64)
     te.end_fill()
-
     Moveto(342, 176)
     te.begin_fill()
     curveto_r(-1, 27, -10, 57, -10, 57)
     smooth_r(20, -33, 17, -54)
     Lineto(342, 176)
     te.end_fill()
-
     te.penup()
     te.begin_fill()
     polyline(349, 180, 353, 203, 361, 203)
@@ -453,7 +454,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(-39, 5, -44, 1)
     Smooth(206, 212, 206, 212)
     te.end_fill()
-
     Moveto(384, 204)
     te.begin_fill()
     te.pencolor("black")
@@ -479,7 +479,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(5, -31, 2, -34)
     Smooth(219, 203, 216, 206)
     te.end_fill()
-
     Moveto(354, 207)
     te.begin_fill()
     curveto_r(-2, 1, 2, 29, 4, 31)
@@ -496,7 +495,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     curveto_r(-3, 0, -8, 8, 1, 10)
     Smooth(258, 210, 253, 211)
     te.end_fill()
-
     Moveto(392, 209)
     te.begin_fill()
     lineto(4, 3)
@@ -515,7 +513,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     Horizontal(224)
     Lineto(219, 229)
     te.end_fill()
-
     Moveto(357, 227)
     te.begin_fill()
     smooth_r(4, -6, 10, -2)
@@ -525,7 +522,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     curveto_r(-12, 3, -29, 0, -32, -2)
     Smooth(357, 227, 357, 227)
     te.end_fill()
-
     # Layer_19
     te.color("#9A90CB", "#9A90CB")  # Eye 5
     Moveto(227, 231)
@@ -535,7 +531,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(0, -8, -1, -8)
     Smooth(234, 231, 227, 231)
     te.end_fill()
-
     Moveto(361, 227)
     te.begin_fill()
     curveto_r(2, 18, 26, 14, 30, 6)
@@ -543,7 +538,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     smooth_r(-15, 9, -24, -4)
     Curveto(363, 224, 361, 225, 361, 227)
     te.end_fill()
-
     # Layer_16
     te.pencolor("black")  # Eyes (lines)
     te.pensize(3)
@@ -563,7 +557,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     line(247.5, 218.5, 230.5, 223.5)
     line(246.5, 222.5, 232.5, 226.5)
     line(244.5, 225.5, 234.5, 228.5)
-
     line(377.5, 207.5, 367.5, 210.5)
     line(384.5, 207.5, 366.5, 212.5)
     line(385.5, 210.5, 366.5, 215.5)
@@ -580,7 +573,6 @@ def Smooth(x2, y2, x, y):  # Smooth the third-order Bezier curve to (x, y)
     line(296.5, 307.5, 303.5, 307.5)
     Moveto(315, 307)
     smooth_r(10, -1, 10, 2)
-
     te.penup()
     te.hideturtle()
     te.update()
