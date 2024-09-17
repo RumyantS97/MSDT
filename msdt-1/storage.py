@@ -8,7 +8,12 @@ class Storage:
     def save(self, tasks):
         # Сохранение задач в файл
         with open(self.filename, 'w', encoding='utf-8') as file:
-            data = [{'id': task.id, 'title': task.title, 'description': task.description, 'completed': task.completed} for task in tasks]
+            data = [{
+                'id': task.id,
+                'title': task.title,
+                'description': task.description,
+                'completed': task.completed,
+            } for task in tasks]
             json.dump(data, file, ensure_ascii=False, indent=4)
     def load(self):
         # Загрузка задач из файла

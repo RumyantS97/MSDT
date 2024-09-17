@@ -2,7 +2,8 @@ import uuid
 
 class Task:
     def __init__(self, title, description):
-        self.id = str(uuid.uuid4())  # Уникальный идентификатор для каждой задачи
+        # Уникальный идентификатор для каждой задачи
+        self.id = str(uuid.uuid4())
         self.title = title
         self.description = description
         self.completed = False
