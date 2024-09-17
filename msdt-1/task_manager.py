@@ -51,8 +51,8 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    # Маркировка задач
     def mark_task_completed(self, task_id):
+        # Маркировка задач
         task = self.find_task_by_id(task_id)
         if task:
             task.mark_completed()
@@ -62,6 +62,7 @@ class TaskManager:
             print(f"Задача с ID '{task_id}' не найдена.")
 
     def find_task_by_id(self, task_id):
+        # Поиск задачи
         for task in self.tasks:
             if task.id == task_id:
                 return task
