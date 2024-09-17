@@ -40,7 +40,7 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    def delete_task(self, task_id):
+    def remove_task(self, task_id):
         # Уудаление задач
         task = self.find_task_by_id(task_id)
         if task:

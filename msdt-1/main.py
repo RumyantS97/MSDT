@@ -22,7 +22,7 @@ def main():
             task_manager.edit_task(task_id, title, description)
         elif choice == '4':
             task_id = input("Введите ID задачи для удаления: ")
-            task_manager.delete_task(task_id)
+            task_manager.remove_task(task_id)
         elif choice == '5':
             task_id = input("Введите ID задачи для отметки выполнения: ")
             task_manager.mark_task_completed(task_id)
