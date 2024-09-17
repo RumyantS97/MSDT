@@ -17,7 +17,7 @@ class TaskManager:
 
     def add_task(self, title, description):
         #добавить новую задачу
-        new_task = Task(title,description)
+        new_task = Task(title, description)
         self.tasks.append(new_task)
         self.save_tasks()
         print(f"Задача '{title}' добавлена.")
@@ -40,7 +40,7 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    def delete_task(self,task_id):
+    def delete_task(self, task_id):
         #удаление
         task = self.by_id(task_id)
         if task:
@@ -51,7 +51,7 @@ class TaskManager:
             print(f"Задача с ID '{task_id}' не найдена.")
 
     # маркировка
-    def mark_task_completed(self,task_id):
+    def mark_task_completed(self, task_id):
         task = self.by_id(task_id)
         if task:
             task.mark_completed()
@@ -60,7 +60,7 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    def by_id(self,task_id):
+    def by_id(self, task_id):
         for task in self.tasks:
             if task.id == task_id:
                 return task

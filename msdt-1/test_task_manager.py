@@ -16,14 +16,14 @@ def test_add_task(task_manager):#тест для добавления задач
     assert task_manager.tasks[0].title == "Task 1"
 
 def test_edit_task(task_manager):#тест для редактора задачи
-    task = Task("Task 1","Description 1")
+    task = Task("Task 1", "Description 1")
     task_manager.tasks.append(task)
     task_manager.edit_task(task.id, "Updated Task", "Updated Description")
     assert task_manager.tasks[0].title == "Updated Task"
     assert task_manager.tasks[0].description == "Updated Description"
 
 def test_delete_task(task_manager):#тест для удаления задачи
-    task = Task("Task 1","Description 1")
+    task = Task("Task 1", "Description 1")
     task_manager.tasks.append(task)
     task_manager.delete_task(task.id)
     assert len(task_manager.tasks)==0
