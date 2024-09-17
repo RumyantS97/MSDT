@@ -1,9 +1,6 @@
-import turtle
-
-import te as te
-
-
+import turtle as te
 import time
+
 WriteStep = 15  # Sampling times of Bessel function
 Speed = 5
 Width = 600  # Interface width
