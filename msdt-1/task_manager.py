@@ -32,7 +32,7 @@ class TaskManager:
 
     def edit_task(self, task_id, title, description):
         # Редактор задач
-        task = self.by_id(task_id)
+        task = self.find_task_by_id(task_id)
         if task:
             task.edit(title, description)
             self.save_tasks()
@@ -42,7 +42,7 @@ class TaskManager:
 
     def delete_task(self, task_id):
         # Уудаление задач
-        task = self.by_id(task_id)
+        task = self.find_task_by_id(task_id)
         if task:
             self.tasks.remove(task)
             self.save_tasks()
@@ -52,7 +52,7 @@ class TaskManager:
 
     # Маркировка задач
     def mark_task_completed(self, task_id):
-        task = self.by_id(task_id)
+        task = self.find_task_by_id(task_id)
         if task:
             task.mark_completed()
             self.save_tasks()
@@ -60,7 +60,7 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    def by_id(self, task_id):
+    def find_task_by_id(self, task_id):
         for task in self.tasks:
             if task.id == task_id:
                 return task
