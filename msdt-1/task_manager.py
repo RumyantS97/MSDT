@@ -8,22 +8,22 @@ class TaskManager:
         self.load_tasks()
 
     def load_tasks(self):
-        # загрузка задач из файла
+        # Загрузка задач из файла
         self.tasks = self.storage.load()
 
     def save_tasks(self):
-        # сохранение задач в файла
+        # Сохранение задач в файл
         self.storage.save(self.tasks)
 
     def add_task(self, title, description):
-        # добавить новую задачу
+        # Добавить новую задачу
         new_task = Task(title, description)
         self.tasks.append(new_task)
         self.save_tasks()
         print(f"Задача '{title}' добавлена.")
 
     def view_tasks(self):
-        # все задачи вывести
+        # Все задачи вывести на экран
         if not self.tasks:
             print("Список задач пуст.")
         else:
@@ -31,7 +31,7 @@ class TaskManager:
                 print(task)
 
     def edit_task(self, task_id, title, description):
-        # редактор
+        # Редактор задач
         task = self.by_id(task_id)
         if task:
             task.edit(title, description)
@@ -41,7 +41,7 @@ class TaskManager:
             print(f"Задача с ID '{task_id}' не найдена.")
 
     def delete_task(self, task_id):
-        # удаление
+        # Уудаление задач
         task = self.by_id(task_id)
         if task:
             self.tasks.remove(task)
@@ -50,7 +50,7 @@ class TaskManager:
         else:
             print(f"Задача с ID '{task_id}' не найдена.")
 
-    # маркировка
+    # Маркировка задач
     def mark_task_completed(self, task_id):
         task = self.by_id(task_id)
         if task:
