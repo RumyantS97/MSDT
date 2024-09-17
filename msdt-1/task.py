@@ -16,7 +16,7 @@ class Task:
 
     def mark_completed(self):
         # Отметить задачу выполненной
-        self.completed=True
+        self.completed = True
 
     def __str__(self):
         if self.completed:
