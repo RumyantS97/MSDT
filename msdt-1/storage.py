@@ -11,7 +11,7 @@ class Storage:
             data = [{'id': task.id, 'title': task.title, 'description': task.description, 'completed': task.completed} for task in tasks]
             json.dump(data, file, ensure_ascii=False, indent=4)
     def load(self):
-        #загрузка задач из файла
+        # загрузка задач из файла
         try:
             with open(self.filename, 'r', encoding='utf-8') as file:
                 data = json.load(file)

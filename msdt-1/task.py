@@ -8,11 +8,11 @@ class Task:
         self.completed = False
 
     def edit(self, title, description):
-        #редактор задач
+        # редактор задач
         self.title = title
         self.description = description
     def mark_completed(self):
-        #отметить задачу выполненной
+        # отметить задачу выполненной
         self.completed=True
 
     def __str__(self):
