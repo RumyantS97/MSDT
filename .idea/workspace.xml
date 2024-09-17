@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b17b095f-07eb-4f76-824e-9440cf64433e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msdt-1/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msdt-1/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msdt-1/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/task.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msdt-1/task_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/task_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msdt-1/test_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/test_task.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/msdt-1/test_task_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/test_task_manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +112,21 @@
       <option name="project" value="LOCAL" />
       <updated>1726569115710</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Имена функций должны содержать глагол">
+      <created>1726569209667</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1726569209667</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Использование устоявшихся пар глаголов">
+      <created>1726569307335</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1726569307335</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +159,8 @@
     <MESSAGE value="Пробелы после знака комментария" />
     <MESSAGE value="Комментарии с заглавной буквы" />
     <MESSAGE value="Разбиение длинных строк" />
-    <option name="LAST_COMMIT_MESSAGE" value="Разбиение длинных строк" />
+    <MESSAGE value="Имена функций должны содержать глагол" />
+    <MESSAGE value="Использование устоявшихся пар глаголов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Использование устоявшихся пар глаголов" />
   </component>
 </project>

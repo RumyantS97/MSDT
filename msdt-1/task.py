@@ -1,5 +1,6 @@
 import uuid
 
+
 class Task:
     def __init__(self, title, description):
         # Уникальный идентификатор для каждой задачи
@@ -12,13 +13,14 @@ class Task:
         # Редактор задач
         self.title = title
         self.description = description
+
     def mark_completed(self):
         # Отметить задачу выполненной
         self.completed=True
 
     def __str__(self):
-            if self.completed:
-                status = "Выполнено"
-            else:
-                status = "Не выполнено"
-            return f"[{self.id}] {self.title}: {self.description} ({status})"
+        if self.completed:
+            status = "Выполнено"
+        else:
+            status = "Не выполнено"
+        return f"[{self.id}] {self.title}: {self.description} ({status})"

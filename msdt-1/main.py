@@ -1,6 +1,7 @@
 from task_manager import TaskManager
 from utils import display_main_menu
 
+
 def main():
 
     task_manager = TaskManager()
@@ -31,6 +32,7 @@ def main():
             break
         else:
             print("Неверный выбор")
+
 
 if __name__ == "__main__":
     main()

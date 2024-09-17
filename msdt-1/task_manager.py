@@ -1,6 +1,7 @@
 from task import Task
 from storage import Storage
 
+
 class TaskManager:
     def __init__(self):
         self.tasks = []

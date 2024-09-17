@@ -1,6 +1,7 @@
 import json
 from task import Task
 
+
 class Storage:
     def __init__(self, filename='tasks.json'):
         self.filename = filename
@@ -15,6 +16,7 @@ class Storage:
                 'completed': task.completed,
             } for task in tasks]
             json.dump(data, file, ensure_ascii=False, indent=4)
+
     def load(self):
         # Загрузка задач из файла
         try:
