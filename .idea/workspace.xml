@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b17b095f-07eb-4f76-824e-9440cf64433e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/msdt-1/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/game.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +191,56 @@
       <option name="project" value="LOCAL" />
       <updated>1726762951144</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Пробел после запятых">
+      <created>1726763047939</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763047939</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Пробел вокруг операторов">
+      <created>1726763102503</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763102503</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Пробел после знака комментария">
+      <created>1726763184212</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763184212</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Пустые строки между функциями">
+      <created>1726763260803</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763260803</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Добавление комментариев для функций">
+      <created>1726763537063</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763537063</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Пустая строка в конце файла">
+      <created>1726763691430</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763691430</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Пустая строка в конце файла">
+      <created>1726763858885</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1726763858885</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,12 +275,15 @@
     <MESSAGE value="Разбиение длинных строк" />
     <MESSAGE value="Имена функций должны содержать глагол" />
     <MESSAGE value="Использование устоявшихся пар глаголов" />
-    <MESSAGE value="Пустые строки между функциями" />
     <MESSAGE value="Комментарии для функций" />
     <MESSAGE value="Новая строка в конце файла" />
-    <MESSAGE value="Пробел вокруг операторов" />
-    <MESSAGE value="Пробел после запятых" />
     <MESSAGE value="Добавление кода" />
-    <option name="LAST_COMMIT_MESSAGE" value="Добавление кода" />
+    <MESSAGE value="Пробел после запятых" />
+    <MESSAGE value="Пробел вокруг операторов" />
+    <MESSAGE value="Пробел после знака комментария" />
+    <MESSAGE value="Пустые строки между функциями" />
+    <MESSAGE value="Добавление комментариев для функций" />
+    <MESSAGE value="Пустая строка в конце файла" />
+    <option name="LAST_COMMIT_MESSAGE" value="Пустая строка в конце файла" />
   </component>
 </project>
