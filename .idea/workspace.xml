@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b17b095f-07eb-4f76-824e-9440cf64433e" name="Changes" comment="">
+    <list default="true" id="b17b095f-07eb-4f76-824e-9440cf64433e" name="Changes" comment="Новая строка в конце файла">
+      <change afterPath="$PROJECT_DIR$/msdt-1/game.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/task.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/task_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/task_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/test_task.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/test_task.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/msdt-1/test_task_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/msdt-1/test_task_manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,13 +26,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="pytest for test_task.test_task_creation" type="tests" factoryName="py.test" temporary="true" nameIsGenerated="true">
       <module name="MSDT" />
@@ -126,7 +121,56 @@
       <option name="project" value="LOCAL" />
       <updated>1726569307335</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Пустые строки между функциями">
+      <created>1726589112196</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1726589112196</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Комментарии для функций">
+      <created>1726589248348</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1726589248348</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Новая строка в конце файла">
+      <created>1726589326850</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1726589326850</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Добавление кода">
+      <created>1726761785375</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1726761785375</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Пробел после запятых">
+      <created>1726761934968</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1726761934968</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Пробел после запятых">
+      <created>1726762173443</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1726762173443</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Пробел вокруг операторов">
+      <created>1726762228308</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1726762228308</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -161,6 +205,12 @@
     <MESSAGE value="Разбиение длинных строк" />
     <MESSAGE value="Имена функций должны содержать глагол" />
     <MESSAGE value="Использование устоявшихся пар глаголов" />
-    <option name="LAST_COMMIT_MESSAGE" value="Использование устоявшихся пар глаголов" />
+    <MESSAGE value="Пустые строки между функциями" />
+    <MESSAGE value="Комментарии для функций" />
+    <MESSAGE value="Новая строка в конце файла" />
+    <MESSAGE value="Добавление кода" />
+    <MESSAGE value="Пробел после запятых" />
+    <MESSAGE value="Пробел вокруг операторов" />
+    <option name="LAST_COMMIT_MESSAGE" value="Пробел вокруг операторов" />
   </component>
 </project>
