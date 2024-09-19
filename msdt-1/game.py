@@ -35,7 +35,7 @@ def play_game():
 
     while not guessed:
         guess = get_user_input()
-        attempts+=1
+        attempts += 1
         guessed = check_guess(guess, number)
     print(f"Ты угадал число за {attempts} попыток!")
 
@@ -69,11 +69,11 @@ def play_game_with_stats(): #Добавляем список для хранен
     number = get_random_number()
     attempts = 0
     guessed = False
-    attempts_list=[]
+    attempts_list = []
 
     while not guessed:
         guess = get_user_input()
-        attempts+=1
+        attempts += 1
         guessed = check_guess(guess, number)
     attempts_list.append(attempts)
     print(f"Ты угадал число за {attempts} попыток!")
