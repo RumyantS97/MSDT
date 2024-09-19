@@ -5,7 +5,7 @@ def welcome_message():
     print("Я загадал число от 1 до 100, попробуй его угадать!")
 
 def get_random_number():
-    return random.randint(1,100)
+    return random.randint(1, 100)
 
 def get_user_input():
     while True:
@@ -18,7 +18,7 @@ def get_user_input():
         except ValueError:
             print("Ошибка! Введите корректное число.")
 
-def check_guess(guess,number):
+def check_guess(guess, number):
     if guess < number:
         print("Загаданное число больше.")
     elif guess > number:
@@ -42,9 +42,9 @@ def play_game():
 def play_again():
     while True:
         answer = input("Хочешь сыграть ещё раз? (да/нет): ").lower()
-        if answer in ['да','yes']:
+        if answer in ['да', 'yes']:
             return True
-        elif answer in ['нет','no']:
+        elif answer in ['нет', 'no']:
             return False
         else:
             print("Пожалуйста, введите 'да' или 'нет'.")
@@ -74,7 +74,7 @@ def play_game_with_stats(): #Добавляем список для хранен
     while not guessed:
         guess = get_user_input()
         attempts+=1
-        guessed = check_guess(guess,number)
+        guessed = check_guess(guess, number)
     attempts_list.append(attempts)
     print(f"Ты угадал число за {attempts} попыток!")
     count_attempts(attempts_list)
