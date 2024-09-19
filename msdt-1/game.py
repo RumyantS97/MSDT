@@ -1,11 +1,14 @@
 import random
 
+
 def welcome_message():
     print("Привет! Добро пожаловать в игру 'Угадай число'!")
     print("Я загадал число от 1 до 100, попробуй его угадать!")
 
+
 def get_random_number():
     return random.randint(1, 100)
+
 
 def get_user_input():
     while True:
@@ -18,6 +21,7 @@ def get_user_input():
         except ValueError:
             print("Ошибка! Введите корректное число.")
 
+
 def check_guess(guess, number):
     if guess < number:
         print("Загаданное число больше.")
@@ -27,6 +31,7 @@ def check_guess(guess, number):
         print("Поздравляю! Ты угадал число!")
         return True
     return False
+
 
 def play_game():
     number = get_random_number()
@@ -39,6 +44,7 @@ def play_game():
         guessed = check_guess(guess, number)
     print(f"Ты угадал число за {attempts} попыток!")
 
+
 def play_again():
     while True:
         answer = input("Хочешь сыграть ещё раз? (да/нет): ").lower()
@@ -49,6 +55,7 @@ def play_again():
         else:
             print("Пожалуйста, введите 'да' или 'нет'.")
 
+
 def main():
     welcome_message()
     play_game()
@@ -58,12 +65,14 @@ def main():
         play_game()
     print("Спасибо за игру! До встречи!")
 
+
 def count_attempts(attempts_list):# Подсчёт и вывод попыток угадать число
     if not attempts_list:
         print("Никто ещё не играл.")
     else:
         avg_attempts = sum(attempts_list) / len(attempts_list)
         print(f"Среднее количество попыток: {avg_attempts}")
+
 
 def play_game_with_stats(): # Добавляем список для хранения количества попыток
     number = get_random_number()
