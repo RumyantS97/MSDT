@@ -1,4 +1,6 @@
 from random import choice
+
+
 class Card:
     def __init__(self, rang, suit):
         self.rang = rang
@@ -26,7 +28,6 @@ class Deck:
 
 
 class Player:
-
     def __init__(self):
         self.cards = []
         self.count = 0
@@ -49,6 +50,7 @@ class Player:
         else:
             self.count += card.rang
 
+
 def get_info(user: Player, dealer: Player):
     print('=' * 30)
     print('Карты дилера: ', *dealer.cards)
@@ -56,6 +58,7 @@ def get_info(user: Player, dealer: Player):
     print('Ваши карты: ', *user.cards)
     print('Ваши очки: ' + str(user.count))
     print('=' * 30)
+
 
 def user_check(user: Player):
     if user.count > 21:
@@ -65,6 +68,7 @@ def user_check(user: Player):
     else:
         return None
 
+
 def dealer_check(dealer: Player):
     if dealer.count>21:
         return True
@@ -72,6 +76,7 @@ def dealer_check(dealer: Player):
         return False
     else:
         return None
+
 
 def main(points: int):
     bet = input('У вас ' + str(points) + ' очков.\nСколько вы хотите поставить? ')

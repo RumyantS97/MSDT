@@ -1,5 +1,6 @@
 from random import randint
 
+
 def hello():
     print('''Лабораторнная работа №2
     Вариант №8. Выполнил студент группы 6103-020302D Красюк А. М.
@@ -14,11 +15,13 @@ def hello():
     1 - ввод элементов списка в одну строку через пробел:
     любое число - автоматическое формирование списка из n элементов:''')
 
+
 def get_1_den(a):
     a = abs(a)
     while a >= 10:
           a = a // 10
     return a
+
 
 def makelist():
     choise = int(input())
@@ -34,12 +37,14 @@ def makelist():
         print(user_list)
         return user_list
 
+
 def parameter_search(user_list):
     maximum = -10**10
     for element in range(len(user_list)):
         if user_list[element] > maximum and user_list[element] % 2 != 0:
             maximum = user_list[element]
     return maximum
+
 
 def index_search(user_list, number):
     i = 0
@@ -49,6 +54,7 @@ def index_search(user_list, number):
           return i
     else:
           return None
+
 
 def quicksort(user_list, fst, lst):
     if fst>=lst:
@@ -66,6 +72,7 @@ def quicksort(user_list, fst, lst):
             i, j = i + 1, j - 1
     quicksort(user_list, fst, j)
     quicksort(user_list, i, lst)
+
 
 hello()
 numbers = makelist()

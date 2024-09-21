@@ -1,4 +1,6 @@
 import os
+
+
 def hello():
     print('''Лабораторнная работа №3
     Вариант №8. Выполнил студент группы 6103-020302D Красюк А. М.
@@ -8,6 +10,7 @@ def hello():
     все буквы английского алфавита, то следует вывести строчными буквами слово "no". Например, пусть в одной из строк исходного файла содержатся следующие символы:
     absCDKLMNOPvwXYabcprst. В этом случае в результирующем файле должно быть:
     ABCDKLMNOPRSTVWXY''')
+
 
 def handler(line):
     string = ''
@@ -24,15 +27,18 @@ def handler(line):
             string = 'no'
     return string
 
+
 def file_read(input_name, output_name):
     with open(input_name) as input_file:
         for line in input_file.readlines():
             string = handler(line)
             file_write(output_name, string)
 
+
 def file_write(output_name, string):
     with open(output_name, 'a') as file:
         file.write(string)
+
 
 hello()
 input_name = input('Введите название исходного файла с расширением .txt\n')
