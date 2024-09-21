@@ -82,7 +82,7 @@ print('Максимальный нечётный элемент: ' + str(paramet
 print()
 multiplicity = int(input('Введите число, кратность которому нужно проверить: '))
 index = index_search(numbers, multiplicity)
-if not index == None:
+if index is not None:
     print('Индекс первого двузначного элемента, кратного заданному числу: ' + str(index))
 else:
     print('В списке отсутствуют двузначные элементы, кратные заданному числу')

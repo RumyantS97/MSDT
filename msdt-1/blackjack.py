@@ -96,7 +96,7 @@ def main(points: int):
                 choice1 = input('''У вас блэк-джек, но у дилера на руках туз. 
                 Вы можете остаться при своих или продолжить играть.
                 О - остаться, П - продолжить ''')
-                while not choice1 in ('О', 'П'):
+                while choice1 not in ('О', 'П'):
                     choice1 = input('Введите ответ в соответствии с инструкциями ')
                 if choice1 == 'О':
                     return points
@@ -107,7 +107,7 @@ def main(points: int):
         flag = True
         while flag:
             choice1 = input('Будете брать карту? (да/нет) ')
-            while not choice1 in ('да', 'нет'):
+            while choice1 not in ('да', 'нет'):
                 choice1 = input('Введите ответ в соответствии с инструкциями ')
             if choice1 == 'да':
                 user.append(choice(deck))
@@ -164,7 +164,7 @@ while flag:
     print('Ваши очки: ' + str(points))
     if points > 0:
         asnwer = input('Хотите сыграть ещё? (да/нет) ')
-        while not asnwer in ('да', 'нет'):
+        while asnwer not in ('да', 'нет'):
             asnwer = input('Введите ответ в соответствии с инструкциями ')
         if asnwer == 'нет':
             flag = False
