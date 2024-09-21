@@ -19,7 +19,7 @@ def hello():
 def get_1_den(a):
     a = abs(a)
     while a >= 10:
-          a = a // 10
+        a = a // 10
     return a
 
 
@@ -50,11 +50,11 @@ def index_search(user_list, number):
     i = 0
     while (i < len(user_list)) and ((abs(user_list[i])//10 < 1) or (abs(user_list[i])//10 >= 10) or
                                     (user_list[i] % number != 0)):
-          i += 1
+        i += 1
     if i < len(user_list):
-          return i
+        return i
     else:
-          return None
+        return None
 
 
 def quicksort(user_list, fst, lst):
