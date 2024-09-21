@@ -48,7 +48,8 @@ def parameter_search(user_list):
 
 def index_search(user_list, number):
     i = 0
-    while (i < len(user_list)) and ((abs(user_list[i])//10 < 1) or (abs(user_list[i])//10 >= 10) or (user_list[i] % number != 0)):
+    while (i < len(user_list)) and ((abs(user_list[i])//10 < 1) or (abs(user_list[i])//10 >= 10) or
+                                    (user_list[i] % number != 0)):
           i += 1
     if i < len(user_list):
           return i
