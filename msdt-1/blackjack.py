@@ -70,9 +70,9 @@ def user_check(user: Player):
 
 
 def dealer_check(dealer: Player):
-    if dealer.count>21:
+    if dealer.count > 21:
         return True
-    elif dealer.count==21:
+    elif dealer.count == 21:
         return False
     else:
         return None

@@ -19,9 +19,9 @@ def handler(line):
             if not chr(number) in string:
                 string += chr(number)
     if '\n' in line:
-        string+='\n'
-        if len(string)==27:
-            string='no\n'
+        string += '\n'
+        if len(string) == 27:
+            string = 'no\n'
     else:
         if len(string) == 26:
             string = 'no'

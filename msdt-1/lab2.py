@@ -50,14 +50,14 @@ def index_search(user_list, number):
     i = 0
     while (i < len(user_list)) and ((abs(user_list[i])//10 < 1) or (abs(user_list[i])//10 >= 10) or (user_list[i] % number != 0)):
           i += 1
-    if i<len(user_list):
+    if i < len(user_list):
           return i
     else:
           return None
 
 
 def quicksort(user_list, fst, lst):
-    if fst>=lst:
+    if fst >= lst:
         return
     i, j = fst, lst
     pivot = user_list[randint(fst, lst)]
