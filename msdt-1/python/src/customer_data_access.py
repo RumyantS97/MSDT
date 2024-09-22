@@ -5,16 +5,16 @@ from model_objects import Customer, ShoppingList, CustomerType, Address
 
 
 class CustomerMatches:
-  def __init__(self):
-      self.matchTerm = None
-      self.customer = None
-      self.duplicates = []
+    def __init__(self):
+        self.matchTerm = None
+        self.customer = None
+        self.duplicates = []
 
-  def has_duplicates(self):
-      return self.duplicates
+    def has_duplicates(self):
+        return self.duplicates
 
-  def add_duplicate(self, duplicate):
-      self.duplicates.append(duplicate)
+    def add_duplicate(self, duplicate):
+        self.duplicates.append(duplicate)
 
 
 class CustomerDataAccess:
@@ -60,8 +60,8 @@ class CustomerDataAccess:
 
 class CustomerDataLayer:
     def __init__(self, conn):
-      self.conn = conn
-      self.cursor = self.conn.cursor()
+        self.conn = conn
+        self.cursor = self.conn.cursor()
 
     def findByExternalId(self, externalId):
         self.cursor.execute(
@@ -78,28 +78,28 @@ class CustomerDataLayer:
         return None
 
     def _customer_from_sql_select_fields(self, fields):
-      if not fields:
-          return None
+        if not fields:
+            return None
 
-      customer = Customer(internalId=fields[0], externalId=fields[1], masterExternalId=fields[2], name=fields[3],
-                      customerType=CustomerType(fields[4]), companyNumber=fields[5])
-      addressId = self._find_addressId(customer)
-      if addressId:
-          self.cursor.execute('SELECT street, city, postalCode FROM addresses WHERE addressId=?',
+        customer = Customer(internalId=fields[0], externalId=fields[1], masterExternalId=fields[2], name=fields[3],
+                        customerType=CustomerType(fields[4]), companyNumber=fields[5])
+        addressId = self._find_addressId(customer)
+        if addressId:
+            self.cursor.execute('SELECT street, city, postalCode FROM addresses WHERE addressId=?',
                                           (addressId, ))
-          addresses = self.cursor.fetchone()
-          if addresses:
-              (street, city, postalCode) = addresses
-              address = Address(street, city, postalCode)
-              customer.address = address
-      self.cursor.execute('SELECT shoppinglistId FROM customer_shoppinglists WHERE customerId=?', (customerinternalId,))
-      shoppinglists = self.cursor.fetchall()
-      for sl in shoppinglists:
-          self.cursor.execute('SELECT products FROM shoppinglists WHERE shoppinglistId=?', (sl[0],))
-          products_as_str = self.cursor.fetchone()
-          products = products_as_str[0].split(", ")
-          customer.addShoppingList(ShoppingList(products))
-      return customer
+            addresses = self.cursor.fetchone()
+            if addresses:
+                (street, city, postalCode) = addresses
+                address = Address(street, city, postalCode)
+                customer.address = address
+        self.cursor.execute('SELECT shoppinglistId FROM customer_shoppinglists WHERE customerId=?', (customer.internalId,))
+        shoppinglists = self.cursor.fetchall()
+        for sl in shoppinglists:
+            self.cursor.execute('SELECT products FROM shoppinglists WHERE shoppinglistId=?', (sl[0],))
+            products_as_str = self.cursor.fetchone()
+            products = products_as_str[0].split(", ")
+            customer.addShoppingList(ShoppingList(products))
+        return customer
 
     def findByMasterExternalId(self, masterExternalId):
         self.cursor.execute(

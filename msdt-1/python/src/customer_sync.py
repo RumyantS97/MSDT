@@ -51,9 +51,9 @@ class CustomerSync:
 
 
     def updateRelations(self, externalCustomer: ExternalCustomer, customer: Customer):
-      consumerShoppingLists = externalCustomer.shoppingLists
-      for consumerShoppingList in consumerShoppingLists:
-          self.customerDataAccess.updateShoppingList(customer, consumerShoppingList)
+        consumerShoppingLists = externalCustomer.shoppingLists
+        for consumerShoppingList in consumerShoppingLists:
+            self.customerDataAccess.updateShoppingList(customer, consumerShoppingList)
 
 
     def updateCustomer(self, customer):
@@ -126,17 +126,17 @@ class CustomerSync:
 
 
     def loadPerson(self, externalCustomer):
-      externalId = externalCustomer.externalId
+        externalId = externalCustomer.externalId
 
-      customerMatches = self.customerDataAccess.loadPersonCustomer(externalId)
+        customerMatches = self.customerDataAccess.loadPersonCustomer(externalId)
 
-      if customerMatches.customer is not None:
-          if CustomerType.PERSON != customerMatches.customer.customerType:
-              raise ConflictException(f"Existing customer for externalCustomer {externalId} already exists and is not a person")
+        if customerMatches.customer is not None:
+            if CustomerType.PERSON != customerMatches.customer.customerType:
+                raise ConflictException(f"Existing customer for externalCustomer {externalId} already exists and is not a person")
 
-          if "ExternalId" != customerMatches.matchTerm:
-              customer = customerMatches.customer
-              customer.externalId = externalId
-              customer.masterExternalId = externalId
+            if "ExternalId" != customerMatches.matchTerm:
+                customer = customerMatches.customer
+                customer.externalId = externalId
+                customer.masterExternalId = externalId
 
-      return customerMatches
+        return customerMatches
