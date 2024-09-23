@@ -5,25 +5,28 @@ from model_objects import Customer, shopping_list, CustomerType, Address
 
 
 class CustomerMatches:
-
+    '''Customer matches'''
     def __init__(self):
         self.match_term = None
         self.customer = None
         self.duplicates = []
 
     def has_duplicates(self):
+        '''return duplicates'''
         return self.duplicates
 
     def add_duplicate(self, duplicate):
+        '''add duplicate'''
         self.duplicates.append(duplicate)
 
 
 class CustomerDataAccess:
-
+    '''Customer data access'''
     def __init__(self, db):
-        self.customer_data_layer = customer_data_layer(db)
+        self.customer_data_layer = CustomerDataLayer(db)
 
     def load_company_customer(self, external_id, company_number):
+        '''load customer'''
         matches = CustomerMatches()
         match_by_external_id: Customer = self.customer_data_layer.find_by_external_id(external_id)
         if match_by_external_id is not None:
@@ -41,6 +44,7 @@ class CustomerDataAccess:
         return matches
 
     def load_person_customer(self, external_id):
+        '''loads a customer'''
         matches = CustomerMatches()
         match_by_personal_number: Customer = self.customer_data_layer.find_by_external_id(external_id)
         matches.customer = match_by_personal_number
@@ -49,24 +53,28 @@ class CustomerDataAccess:
         return matches
 
     def update_customer_record(self, customer):
+        '''updates a record'''
         self.customer_data_layer.update_customer_record(customer)
 
     def create_customer_record(self, customer):
+        '''creates a record'''
         return self.customer_data_layer.create_customer_record(customer)
 
     def update_shopping_list(self, customer: Customer, shopping_list: shopping_list):
+        '''upd the shopping list'''
         customer.addshopping_list(shopping_list)
         self.customer_data_layer.update_shopping_list(shopping_list)
         self.customer_data_layer.update_customer_record(customer)
 
 
-class customer_data_layer:
-    
+class CustomerDataLayer:
+    '''Layer for customer'''
     def __init__(self, conn):
         self.conn = conn
         self.cursor = self.conn.cursor()
 
     def find_by_external_id(self, external_id):
+        '''find cusromer by id'''
         self.cursor.execute(
             '''SELECT internalId, external_id, masterexternal_id, 
             name, customerType, company_number FROM customers 
@@ -120,6 +128,7 @@ class customer_data_layer:
         return customer
 
     def find_by_master_external_id(self, masterexternal_id):
+        '''Returns a list of customers'''
         self.cursor.execute(
             '''SELECT internalId, external_id, masterexternal_id, name,
             customerType, company_number FROM customers
@@ -128,6 +137,7 @@ class customer_data_layer:
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
     def find_by_company_number(self, company_number):
+        '''returns customer'''
         self.cursor.execute(
             '''SELECT internalId, external_id, masterexternal_id,
             name, customerType, company_number FROM customers
@@ -136,6 +146,7 @@ class customer_data_layer:
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
     def create_customer_record(self, customer):
+        '''creates a record'''
         customer.internalId = self._nextid("customers")
         self.cursor.execute('INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?, ?);', (
         customer.internalId, customer.external_id, customer.masterexternal_id, customer.name, customer.customerType.value,
@@ -176,6 +187,7 @@ class customer_data_layer:
             return 1
 
     def update_customer_record(self, customer):
+        '''update customer record'''
         self.cursor.execute(
             'Update customers set external_id=?, masterexternal_id=?, name=?, customerType=?, company_number=? WHERE internalId=?',
             (customer.external_id, customer.masterexternal_id, customer.name, customer.customerType.value,
@@ -205,4 +217,5 @@ class customer_data_layer:
         self.conn.commit()
 
     def update_shopping_list(self, shopping_list):
+        '''Update shopping list'''
         pass

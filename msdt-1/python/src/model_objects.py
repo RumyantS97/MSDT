@@ -6,19 +6,21 @@ from enum import Enum
 from dataclasses_json import dataclass_json
 
 
-class customer_type(Enum):
+class CustomerType(Enum):
+    '''enum class for customers'''
     PERSON = 1
     COMPANY = 2
 
 @dataclass_json
 @dataclass
 class ShoppingList:
+    '''shopping list'''
     products: List[str] = field(default_factory=list)
 
 @dataclass_json
 @dataclass(frozen=True)
 class Address:
-
+    '''address class'''
     street: str
     city: str
     postal_code: str
@@ -26,7 +28,7 @@ class Address:
 @dataclass_json
 @dataclass(frozen=True)
 class ExternalCustomer:
-
+    '''external customer class'''
     external_id: str
     name: str
     is_company: bool
@@ -37,8 +39,8 @@ class ExternalCustomer:
 
 
 class Customer:
-    
-    def __init__(self, internal_id: str = None, external_id: str = None, masterexternal_id: str = None, name: str = None, customer_type: customer_type = None, company_number: str = None):
+    '''primary class'''
+    def __init__(self, internal_id: str = None, external_id: str = None, masterexternal_id: str = None, name: str = None, customer_type: CustomerType = None, company_number: str = None):
         self.internal_id = internal_id
         self.external_id = external_id
         self.masterexternal_id = masterexternal_id
@@ -49,4 +51,5 @@ class Customer:
         self.address = None
 
     def addShoppingList(self, shoppingList):
+        '''adds element'''
         self.shopping_lists.append(shoppingList)

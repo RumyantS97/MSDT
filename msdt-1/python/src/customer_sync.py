@@ -7,16 +7,17 @@ from model_objects import Customer, external_customer, CustomerType
 
 
 class ConflictException(Exception):
-    
+
     pass
 
 
 class CustomerSync:
-
+    '''class to sync'''
     def __init__(self, customer_data_access):
         self.customer_data_access = customer_data_access
 
-    def syncWithDataLayer(self, external_customer):
+    def sync_with_dataLayer(self, external_customer):
+        '''sync with data layer'''
         customer_matches: customer_matches
         if external_customer.isCompany:
             customer_matches = self.load_company(external_customer)
@@ -52,16 +53,19 @@ class CustomerSync:
 
 
     def update_relations(self, external_customer: external_customer, customer: Customer):
+        '''update the customer relationship'''
         consumer_shopping_lists = external_customer.shoppingLists
         for consumer_shopping_list in consumer_shopping_lists:
             self.customer_data_access.updateShoppingList(customer, consumer_shopping_list)
 
 
     def update_customer(self, customer):
+        '''update the customer'''
         return self.customer_data_access.update_customerRecord(customer)
 
 
     def update_duplicate(self, external_customer: external_customer, duplicate: Customer):
+        '''update duplicate'''
         if duplicate is None:
             duplicate = Customer()
             duplicate.external_id = external_customer.external_id
@@ -76,14 +80,17 @@ class CustomerSync:
 
 
     def update_preferred_store(self, external_customer: external_customer, customer: Customer):
+        '''update preferred store'''
         customer.preferredStore = external_customer.preferredStore
 
 
     def create_customer(self, customer) -> Customer:
+        '''creates a customer'''
         return self.customer_data_access.create_customerRecord(customer)
 
 
     def populate_fields(self, external_customer: external_customer, customer: Customer):
+        '''sets customer info'''
         customer.name = external_customer.name
         if external_customer.isCompany:
             customer.company_number = external_customer.company_number
@@ -93,10 +100,12 @@ class CustomerSync:
 
 
     def update_contact_info(self, external_customer: external_customer, customer: Customer):
+        '''updates contact info'''
         customer.address = external_customer.postalAddress
 
 
     def load_company(self, external_customer) -> customer_matches:
+        '''returns company matches'''
         external_id = external_customer.external_id
         company_number = external_customer.company_number
 
@@ -127,6 +136,7 @@ class CustomerSync:
 
 
     def load_person(self, external_customer):
+        '''Load a customer from the external'''
         external_id = external_customer.external_id
 
         customer_matches = self.customer_data_access.load_personCustomer(external_id)
