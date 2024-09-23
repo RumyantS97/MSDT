@@ -7,6 +7,7 @@ from model_objects import Customer, external_customer, CustomerType
 
 
 class ConflictException(Exception):
+    
     pass
 
 

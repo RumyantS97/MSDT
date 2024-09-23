@@ -18,6 +18,7 @@ class ShoppingList:
 @dataclass_json
 @dataclass(frozen=True)
 class Address:
+
     street: str
     city: str
     postal_code: str
@@ -25,6 +26,7 @@ class Address:
 @dataclass_json
 @dataclass(frozen=True)
 class ExternalCustomer:
+
     external_id: str
     name: str
     is_company: bool
@@ -35,6 +37,7 @@ class ExternalCustomer:
 
 
 class Customer:
+    
     def __init__(self, internal_id: str = None, external_id: str = None, masterexternal_id: str = None, name: str = None, customer_type: customer_type = None, company_number: str = None):
         self.internal_id = internal_id
         self.external_id = external_id
