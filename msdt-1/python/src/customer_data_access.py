@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from model_objects import Customer, ShoppingList, CustomerType, Address
+from model_objects import Customer, shopping_list, CustomerType, Address
 
 
 class CustomerMatches:
     def __init__(self):
-        self.matchTerm = None
+        self.match_term = None
         self.customer = None
         self.duplicates = []
 
@@ -19,120 +19,120 @@ class CustomerMatches:
 
 class CustomerDataAccess:
     def __init__(self, db):
-        self.customerDataLayer = CustomerDataLayer(db)
+        self.customer_data_layer = customer_data_layer(db)
 
-    def loadCompanyCustomer(self, externalId, companyNumber):
+    def load_company_customer(self, external_id, company_number):
         matches = CustomerMatches()
-        matchByExternalId: Customer = self.customerDataLayer.findByExternalId(externalId)
-        if matchByExternalId is not None:
-            matches.customer = matchByExternalId
-            matches.matchTerm = "ExternalId"
-            matchByMasterId: Customer = self.customerDataLayer.findByMasterExternalId(externalId)
-            if matchByMasterId is not None:
-                matches.add_duplicate(matchByMasterId)
+        match_by_external_id: Customer = self.customer_data_layer.find_by_external_id(external_id)
+        if match_by_external_id is not None:
+            matches.customer = match_by_external_id
+            matches.match_term = "external_id"
+            match_by_master_id: Customer = self.customer_data_layer.find_by_master_external_id(external_id)
+            if match_by_master_id is not None:
+                matches.add_duplicate(match_by_master_id)
         else:
-            matchByCompanyNumber: Customer = self.customerDataLayer.findByCompanyNumber(companyNumber)
-            if matchByCompanyNumber is not None:
-                matches.customer = matchByCompanyNumber
-                matches.matchTerm = "CompanyNumber"
+            match_by_company_number: Customer = self.customer_data_layer.find_by_company_number(company_number)
+            if match_by_company_number is not None:
+                matches.customer = match_by_company_number
+                matches.match_term = "company_number"
 
         return matches
 
-    def loadPersonCustomer(self, externalId):
+    def load_person_customer(self, external_id):
         matches = CustomerMatches()
-        matchByPersonalNumber: Customer = self.customerDataLayer.findByExternalId(externalId)
-        matches.customer = matchByPersonalNumber
-        if matchByPersonalNumber is not None:
-            matches.matchTerm = "ExternalId"
+        match_by_personal_number: Customer = self.customer_data_layer.find_by_external_id(external_id)
+        matches.customer = match_by_personal_number
+        if match_by_personal_number is not None:
+            matches.match_term = "external_id"
         return matches
 
-    def updateCustomerRecord(self, customer):
-        self.customerDataLayer.updateCustomerRecord(customer)
+    def update_customer_record(self, customer):
+        self.customer_data_layer.update_customer_record(customer)
 
-    def createCustomerRecord(self, customer):
-        return self.customerDataLayer.createCustomerRecord(customer)
+    def create_customer_record(self, customer):
+        return self.customer_data_layer.create_customer_record(customer)
 
-    def updateShoppingList(self, customer: Customer, shoppingList: ShoppingList):
-        customer.addShoppingList(shoppingList)
-        self.customerDataLayer.updateShoppingList(shoppingList)
-        self.customerDataLayer.updateCustomerRecord(customer)
+    def update_shopping_list(self, customer: Customer, shopping_list: shopping_list):
+        customer.addshopping_list(shopping_list)
+        self.customer_data_layer.update_shopping_list(shopping_list)
+        self.customer_data_layer.update_customer_record(customer)
 
 
-class CustomerDataLayer:
+class customer_data_layer:
     def __init__(self, conn):
         self.conn = conn
         self.cursor = self.conn.cursor()
 
-    def findByExternalId(self, externalId):
+    def find_by_external_id(self, external_id):
         self.cursor.execute(
-            'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE externalId=?',
-            (externalId,))
+            'SELECT internalId, external_id, masterexternal_id, name, customerType, company_number FROM customers WHERE external_id=?',
+            (external_id,))
         customer = self._customer_from_sql_select_fields(self.cursor.fetchone())
         return customer
 
-    def _find_addressId(self, customer):
-        self.cursor.execute('SELECT addressId FROM customers WHERE internalId=?', (customer.internalId,))
-        (addressId,) = self.cursor.fetchone()
-        if addressId:
-            return int(addressId)
+    def _find_address_id(self, customer):
+        self.cursor.execute('SELECT address_id FROM customers WHERE internalId=?', (customer.internalId,))
+        (address_id,) = self.cursor.fetchone()
+        if address_id:
+            return int(address_id)
         return None
 
     def _customer_from_sql_select_fields(self, fields):
         if not fields:
             return None
 
-        customer = Customer(internalId=fields[0], externalId=fields[1], masterExternalId=fields[2], name=fields[3],
-                        customerType=CustomerType(fields[4]), companyNumber=fields[5])
-        addressId = self._find_addressId(customer)
-        if addressId:
-            self.cursor.execute('SELECT street, city, postalCode FROM addresses WHERE addressId=?',
-                                          (addressId, ))
+        customer = Customer(internalId=fields[0], external_id=fields[1], masterexternal_id=fields[2], name=fields[3],
+                        customerType=CustomerType(fields[4]), company_number=fields[5])
+        address_id = self._find_address_id(customer)
+        if address_id:
+            self.cursor.execute('SELECT street, city, postal_code FROM addresses WHERE address_id=?',
+                                          (address_id, ))
             addresses = self.cursor.fetchone()
             if addresses:
-                (street, city, postalCode) = addresses
-                address = Address(street, city, postalCode)
+                (street, city, postal_code) = addresses
+                address = Address(street, city, postal_code)
                 customer.address = address
-        self.cursor.execute('SELECT shoppinglistId FROM customer_shoppinglists WHERE customerId=?', (customer.internalId,))
-        shoppinglists = self.cursor.fetchall()
-        for sl in shoppinglists:
-            self.cursor.execute('SELECT products FROM shoppinglists WHERE shoppinglistId=?', (sl[0],))
+        self.cursor.execute('SELECT shopping_list_id FROM customer_shopping_lists WHERE customerId=?', (customer.internalId,))
+        shopping_lists = self.cursor.fetchall()
+        for sl in shopping_lists:
+            self.cursor.execute('SELECT products FROM shopping_lists WHERE shopping_list_id=?', (sl[0],))
             products_as_str = self.cursor.fetchone()
             products = products_as_str[0].split(", ")
-            customer.addShoppingList(ShoppingList(products))
+            customer.addshopping_list(shopping_list(products))
         return customer
 
-    def findByMasterExternalId(self, masterExternalId):
+    def find_by_master_external_id(self, masterexternal_id):
         self.cursor.execute(
-            'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE masterExternalId=?',
-            (masterExternalId,))
+            'SELECT internalId, external_id, masterexternal_id, name, customerType, company_number FROM customers WHERE masterexternal_id=?',
+            (masterexternal_id,))
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
-    def findByCompanyNumber(self, companyNumber):
+    def find_by_company_number(self, company_number):
         self.cursor.execute(
-            'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE companyNumber=?',
-            (companyNumber,))
+            'SELECT internalId, external_id, masterexternal_id, name, customerType, company_number FROM customers WHERE company_number=?',
+            (company_number,))
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
-    def createCustomerRecord(self, customer):
+    def create_customer_record(self, customer):
         customer.internalId = self._nextid("customers")
         self.cursor.execute('INSERT INTO customers VALUES (?, ?, ?, ?, ?, ?, ?);', (
-        customer.internalId, customer.externalId, customer.masterExternalId, customer.name, customer.customerType.value,
-        customer.companyNumber, None))
+        customer.internalId, customer.external_id, customer.masterexternal_id, customer.name, customer.customerType.value,
+        customer.company_number, None))
         if customer.address:
-            addressId = self._nextid("addresses")
+            address_id = self._nextid("addresses")
             self.cursor.execute('INSERT INTO addresses VALUES (?, ?, ?, ?)', (
-                addressId, customer.address.street, customer.address.city, customer.address.postalCode))
-            self.cursor.execute('UPDATE customers set addressId=? WHERE internalId=?', (addressId, customer.internalId))
+                address_id, customer.address.street, customer.address.city, customer.address.postal_code))
+            self.cursor.execute('UPDATE customers set address_id=? WHERE internalId=?', (address_id, customer.internalId))
 
-        if customer.shoppingLists:
-            for sl in customer.shoppingLists:
+        if customer.shopping_lists:
+            for sl in customer.shopping_lists:
                 data = ", ".join(sl)
-                self.cursor.execute('SELECT shoppinglistId FROM shoppinglists WHERE products=?', (data,))
-                shoppinglistId = self.cursor.fetchone()
-                if not shoppinglistId:
-                    shoppinglistId = self._nextid("shoppinglists")
-                    self.cursor.execute('INSERT INTO shoppinglists VALUES (?, ?)', (shoppinglistId, data))
-                self.cursor.execute('INSERT INTO customer_shoppinglists VALUES (?, ?)', (customer.internalId, shoppinglistId))
+                self.cursor.execute('SELECT shopping_list_id FROM shopping_lists WHERE products=?', (data,))
+                shopping_list_id = self.cursor.fetchone()
+                if not shopping_list_id:
+                    shopping_list_id = self._nextid("shopping_lists")
+                    self.cursor.execute('INSERT INTO shopping_lists VALUES (?, ?)', (shopping_list_id, data))
+                self.cursor.execute('INSERT INTO customer_shopping_lists VALUES (?, ?)', (customer.internalId, shopping_list_id))
         self.conn.commit()
         return customer
 
@@ -144,34 +144,34 @@ class CustomerDataLayer:
         else:
             return 1
 
-    def updateCustomerRecord(self, customer):
+    def update_customer_record(self, customer):
         self.cursor.execute(
-            'Update customers set externalId=?, masterExternalId=?, name=?, customerType=?, companyNumber=? WHERE internalId=?',
-            (customer.externalId, customer.masterExternalId, customer.name, customer.customerType.value,
-                customer.companyNumber, customer.internalId))
+            'Update customers set external_id=?, masterexternal_id=?, name=?, customerType=?, company_number=? WHERE internalId=?',
+            (customer.external_id, customer.masterexternal_id, customer.name, customer.customerType.value,
+                customer.company_number, customer.internalId))
         if customer.address:
-            addressId = self._find_addressId(customer)
-            if not addressId:
-                addressId = self._nextid("addresses")
-                self.cursor.execute('INSERT INTO addresses VALUES (?, ?, ?, ?)', (addressId, customer.address.street, customer.address.city, customer.address.postalCode))
-                self.cursor.execute('UPDATE customers set addressId=? WHERE internalId=?', (addressId, customer.internalId))
+            address_id = self._find_address_id(customer)
+            if not address_id:
+                address_id = self._nextid("addresses")
+                self.cursor.execute('INSERT INTO addresses VALUES (?, ?, ?, ?)', (address_id, customer.address.street, customer.address.city, customer.address.postal_code))
+                self.cursor.execute('UPDATE customers set address_id=? WHERE internalId=?', (address_id, customer.internalId))
 
-        self.cursor.execute('DELETE FROM customer_shoppinglists WHERE customerId=?', (customer.internalId,))
-        if customer.shoppingLists:
-            for sl in customer.shoppingLists:
+        self.cursor.execute('DELETE FROM customer_shopping_lists WHERE customerId=?', (customer.internalId,))
+        if customer.shopping_lists:
+            for sl in customer.shopping_lists:
                 products = ", ".join(sl.products)
-                self.cursor.execute('SELECT shoppinglistId FROM shoppinglists WHERE products=?', (products,))
-                shoppinglistIds = self.cursor.fetchone()
-                if shoppinglistIds is not None:
-                    (shoppinglistId,) = shoppinglistIds
-                    self.cursor.execute('INSERT INTO customer_shoppinglists VALUES (?, ?)',
-                                        (customer.internalId, shoppinglistId))
+                self.cursor.execute('SELECT shopping_list_id FROM shopping_lists WHERE products=?', (products,))
+                shopping_list_ids = self.cursor.fetchone()
+                if shopping_list_ids is not None:
+                    (shopping_list_id,) = shopping_list_ids
+                    self.cursor.execute('INSERT INTO customer_shopping_lists VALUES (?, ?)',
+                                        (customer.internalId, shopping_list_id))
                 else:
-                    shoppinglistId = self._nextid("shoppinglists")
-                    self.cursor.execute('INSERT INTO shoppinglists VALUES (?, ?)', (shoppinglistId, products))
-                    self.cursor.execute('INSERT INTO customer_shoppinglists VALUES (?, ?)', (customer.internalId, shoppinglistId))
+                    shopping_list_id = self._nextid("shopping_lists")
+                    self.cursor.execute('INSERT INTO shopping_lists VALUES (?, ?)', (shopping_list_id, products))
+                    self.cursor.execute('INSERT INTO customer_shopping_lists VALUES (?, ?)', (customer.internalId, shopping_list_id))
 
         self.conn.commit()
 
-    def updateShoppingList(self, shoppingList):
+    def update_shopping_list(self, shopping_list):
         pass

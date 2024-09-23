@@ -6,7 +6,7 @@ from enum import Enum
 from dataclasses_json import dataclass_json
 
 
-class CustomerType(Enum):
+class customer_type(Enum):
     PERSON = 1
     COMPANY = 2
 
@@ -20,31 +20,30 @@ class ShoppingList:
 class Address:
     street: str
     city: str
-    postalCode: str
+    postal_code: str
 
 @dataclass_json
 @dataclass(frozen=True)
 class ExternalCustomer:
-    externalId: str
+    external_id: str
     name: str
-    isCompany: bool
-    companyNumber: Optional[str]
-    preferredStore: str
-    postalAddress: Address
-    shoppingLists: List[ShoppingList] = field(default_factory=list)
+    is_company: bool
+    company_number: Optional[str]
+    preferred_store: str
+    postal_address: Address
+    shopping_lists: List[ShoppingList] = field(default_factory=list)
 
 
 class Customer:
-    def __init__(self, internalId: str = None, externalId: str = None, masterExternalId: str = None, name: str = None,
-                 customerType: CustomerType = None, companyNumber: str = None):
-        self.internalId = internalId
-        self.externalId = externalId
-        self.masterExternalId = masterExternalId
+    def __init__(self, internal_id: str = None, external_id: str = None, masterexternal_id: str = None, name: str = None, customer_type: customer_type = None, company_number: str = None):
+        self.internal_id = internal_id
+        self.external_id = external_id
+        self.masterexternal_id = masterexternal_id
         self.name = name
-        self.customerType = customerType
-        self.companyNumber = companyNumber
-        self.shoppingLists = []
+        self.customer_type = customer_type
+        self.company_number = company_number
+        self.shopping_lists = []
         self.address = None
 
     def addShoppingList(self, shoppingList):
-        self.shoppingLists.append(shoppingList)
+        self.shopping_lists.append(shoppingList)
