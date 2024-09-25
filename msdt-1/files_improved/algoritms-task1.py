@@ -3,7 +3,7 @@
 def naive_algorithm(s, p):
     for i in range(len(s) - len(p) + 1):
         for j in range(len(p)):
-            if s[i + j]!=p[j]:
+            if s[i + j] != p[j]:
                 break
         else:
             return i
@@ -38,7 +38,7 @@ def kmp(s, p):
                 return i - j
         else:
             if j > 0:
-                j = prefix_array[j-1]
+                j = prefix_array[j - 1]
             else:
                 i += 1
     if i == len(s):
