@@ -29,15 +29,15 @@ def quicksort(array, left, right):
         quicksort(array, x+1, right)
 
 def partition(array, left, right):
-    randomIndex = random.randint(left, right)
-    randomElement = array[randomIndex] # Запоминаем выбранный опорный элемент
+    random_index = random.randint(left, right)
+    random_element = array[random_index] # Запоминаем выбранный опорный элемент
 
-    array[randomIndex], array[right] = array[right], array[randomIndex] # Помещаем его в конец массива
+    array[random_index], array[right] = array[right], array[random_index] # Помещаем его в конец массива
 
     j = left # Элемент для разделения массива
 
     for i in range(left, right):
-        if array[i] < randomElement:
+        if array[i] < random_element:
             array[i], array[j] = array[j], array[i]
             j += 1
 
