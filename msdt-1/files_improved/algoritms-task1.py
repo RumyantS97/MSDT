@@ -71,7 +71,8 @@ def find_palindromes(s):
     for i in range(n):
         if palindrome_lengths[i] > 0:
             # Удаляем символы и добавляем в результат
-            palindromes.append(modified_string[i - palindrome_lengths[i]:i + palindrome_lengths[i] + 1].replace('#', ''))
+            palindromes.append(modified_string[i - palindrome_lengths[i]:i + palindrome_lengths[i] + 1]
+                               .replace('#', ''))
 
     return palindromes
 
