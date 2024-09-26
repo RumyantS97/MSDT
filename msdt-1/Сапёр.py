@@ -37,7 +37,7 @@ def choose_level():
 
 
 def restart(a):
-    global buttons_alive, buttons, game, label, n, time, label_time, width, height, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
+    global buttons_alive, buttons, game, label, n, time, label_time, WIDTH, HEIGHT, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     lst = root.place_slaves()
     for l in lst:
         l.destroy()
@@ -46,57 +46,57 @@ def restart(a):
 
     if a == "Лёгкая":
         n = 25
-        width = 10
+        WIDTH = 10
         help_count = IntVar()
         help_count.set(10)
-        height = 13
+        HEIGHT = 13
     elif a == "Средняя":
         n = 99
-        width = 20
+        WIDTH = 20
         help_count = IntVar()
         help_count.set(20)
-        height = 26
+        HEIGHT = 26
     else:
         n = 223
-        width = 30
+        WIDTH = 30
         help_count = IntVar()
         help_count.set(30)
-        height = 39
+        HEIGHT = 39
 
-    game = [0] * height
-    for i in range(height):
-        game[i] = [0] * width
+    game = [0] * HEIGHT
+    for i in range(HEIGHT):
+        game[i] = [0] * WIDTH
 
-    root.geometry(str(width * 20) + "x" + str(height * 20 + 100))
+    root.geometry(str(WIDTH * 20) + "x" + str(HEIGHT * 20 + 100))
 
     help_using = IntVar()
     help_using1 = 0
     help = Checkbutton(text="Подсказка", variable=help_using)
-    help.place(x=10, y=height * 20 + 60)
+    help.place(x=10, y=HEIGHT * 20 + 60)
     help_label = Label(textvariable=help_count)
-    help_label.place(x=width * 20 - 40, y=height * 20 + 60)
+    help_label.place(x=WIDTH * 20 - 40, y=HEIGHT * 20 + 60)
 
     flag_using1 = int()
     flag_using = IntVar()
     flag = Checkbutton(text="Ставить флажок", variable=flag_using)
-    flag.place(x=10, y=height * 20 + 10)
+    flag.place(x=10, y=HEIGHT * 20 + 10)
 
     flag_count = IntVar()
 
     flag_count.set(n)
 
     flag_label = Label(textvariable=flag_count)
-    flag_label.place(x=width * 20 - 40, y=height * 20 + 10)
+    flag_label.place(x=WIDTH * 20 - 40, y=HEIGHT * 20 + 10)
 
     while n > 0:
-        x = random.randint(0, height - 1)
-        y = random.randint(0, width - 1)
+        x = random.randint(0, HEIGHT - 1)
+        y = random.randint(0, WIDTH - 1)
         if game[x][y] == 0:
             game[x][y] = -1
             n -= 1
 
-    for i in range(height):
-        for j in range(width):
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             if game[i][j] != -1:
                 if i > 0:
                     if game[i - 1][j] == -1:
@@ -104,32 +104,32 @@ def restart(a):
                     if j > 0:
                         if game[i - 1][j - 1] == -1:
                             game[i][j] += 1
-                    if j < width - 1:
+                    if j < WIDTH - 1:
                         if game[i - 1][j + 1] == -1:
                             game[i][j] += 1
-                if i < height - 1:
+                if i < HEIGHT - 1:
                     if game[i + 1][j] == -1:
                         game[i][j] += 1
                     if j > 0:
                         if game[i + 1][j - 1] == -1:
                             game[i][j] += 1
-                    if j < width - 1:
+                    if j < WIDTH - 1:
                         if game[i + 1][j + 1] == -1:
                             game[i][j] += 1
                 if j > 0:
                     if game[i][j - 1] == -1:
                         game[i][j] += 1
-                if j < width - 1:
+                if j < WIDTH - 1:
                     if game[i][j + 1] == -1:
                         game[i][j] += 1
 
-    for i in range(height):
-        for j in range(width):
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             print(game[i][j], end=" ")
         print()
 
-    for i in range(height):
-        for j in range(width):
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             if game[i][j] == -1:
                 load = Image.open("techies.png")
                 render = ImageTk.PhotoImage(load)
@@ -137,37 +137,37 @@ def restart(a):
                 label.image = render
                 label.place(x=j * 20, y=i * 20, width=20, height=20)
 
-    buttons_alive = [1] * height
-    for i in range(height):
-        buttons_alive[i] = [1] * width
+    buttons_alive = [1] * HEIGHT
+    for i in range(HEIGHT):
+        buttons_alive[i] = [1] * WIDTH
 
-    for i in range(height):
-        for j in range(width):
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             if game[i][j] == -1:
                 buttons_alive[i][j] = -1
 
-    buttons = [""] * height
-    for i in range(height):
-        buttons[i] = [""] * width
+    buttons = [""] * HEIGHT
+    for i in range(HEIGHT):
+        buttons[i] = [""] * WIDTH
 
-    for i in range(height):
-        for j in range(width):
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             deleting = lambda x=i, y=j: delete_button(x, y)
             buttons[i][j] = Button(command=deleting, bg="#DCDCDC")
             buttons[i][j].place(x=j * 20, y=i * 20, width=20, height=20)
 
 
 def hide_bombs():
-    global buttons, buttons_alive, height, width
-    for i in range(height):
-        for j in range(width):
+    global buttons, buttons_alive, HEIGHT, WIDTH
+    for i in range(HEIGHT):
+        for j in range(WIDTH):
             if (buttons_alive[i][j] != 0) and (buttons_alive[i][j] % 10 == 0):
                 buttons[i][j].config(bg="#DCDCDC")
                 buttons_alive[i][j] //= 10
 
 
 def show_bombs(x, y):
-    global buttons, buttons_alive, height, width
+    global buttons, buttons_alive, HEIGHT, WIDTH
     if x > 0:
         if buttons_alive[x - 1][y] != 0:
             buttons_alive[x - 1][y] *= 10
@@ -175,29 +175,29 @@ def show_bombs(x, y):
         if (y > 0) and (buttons_alive[x - 1][y - 1] != 0):
             buttons_alive[x - 1][y - 1] *= 10
             buttons[x - 1][y - 1].config(bg="#FF0000")
-        if (y < width - 1) and (buttons_alive[x - 1][y + 1] != 0):
+        if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] != 0):
             buttons_alive[x - 1][y + 1] *= 10
             buttons[x - 1][y + 1].config(bg="#FF0000")
-    if x < height - 1:
+    if x < HEIGHT - 1:
         if buttons_alive[x + 1][y] != 0:
             buttons_alive[x + 1][y] *= 10
             buttons[x + 1][y].config(bg="#FF0000")
         if (y > 0) and (buttons_alive[x + 1][y - 1] != 0):
             buttons_alive[x + 1][y - 1] *= 10
             buttons[x + 1][y - 1].config(bg="#FF0000")
-        if (y < width - 1) and (buttons_alive[x + 1][y + 1] != 0):
+        if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] != 0):
             buttons_alive[x + 1][y + 1] *= 10
             buttons[x + 1][y + 1].config(bg="#FF0000")
     if (y > 0) and (buttons_alive[x][y - 1] != 0):
         buttons_alive[x][y - 1] *= 10
         buttons[x][y - 1].config(bg="#FF0000")
-    if (y < width - 1) and (buttons_alive[x][y + 1]!=0):
+    if (y < WIDTH - 1) and (buttons_alive[x][y + 1]!=0):
         buttons_alive[x][y + 1] *= 10
         buttons[x][y + 1].config(bg="#FF0000")
 
 
 def click_number(x, y):
-    global game, buttons, buttons_alive, height, width, flag_using1, flag_using, help_using1, help_using
+    global game, buttons, buttons_alive, HEIGHT, WIDTH, flag_using1, flag_using, help_using1, help_using
     hide_bombs()
     count = int()
     help_using1 = -1
@@ -207,18 +207,18 @@ def click_number(x, y):
             count += 1
         if (y > 0) and (buttons_alive[x - 1][y - 1] == -2 or (game[x - 1][y - 1] == -1 and buttons_alive[x - 1][y - 1] == 0)):
             count += 1
-        if (y < width - 1) and (buttons_alive[x - 1][y + 1] == -2 or (game[x - 1][y + 1] == -1 and buttons_alive[x - 1][y + 1] == 0)):
+        if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] == -2 or (game[x - 1][y + 1] == -1 and buttons_alive[x - 1][y + 1] == 0)):
             count += 1
-    if x < height - 1:
+    if x < HEIGHT - 1:
         if buttons_alive[x + 1][y] == -2 or (game[x + 1][y] == -1 and buttons_alive[x + 1][y] == 0):
             count += 1
         if (y > 0) and (buttons_alive[x + 1][y - 1] == -2 or (game[x + 1][y - 1] == -1 and buttons_alive[x + 1][y - 1] == 0)):
             count += 1
-        if (y < width - 1) and (buttons_alive[x + 1][y + 1] == -2 or (game[x + 1][y + 1] == -1 and buttons_alive[x + 1][y + 1] == 0)):
+        if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] == -2 or (game[x + 1][y + 1] == -1 and buttons_alive[x + 1][y + 1] == 0)):
             count += 1
     if (y > 0) and (buttons_alive[x][y - 1] == -2 or (game[x][y - 1] == -1 and buttons_alive[x][y - 1] == 0)):
         count += 1
-    if (y < width - 1) and (buttons_alive[x][y + 1] == -2 or (game[x][y + 1] == -1 and buttons_alive[x][y + 1] == 0)):
+    if (y < WIDTH - 1) and (buttons_alive[x][y + 1] == -2 or (game[x][y + 1] == -1 and buttons_alive[x][y + 1] == 0)):
         count += 1
 
     if count == game[x][y]:
@@ -233,12 +233,12 @@ def click_number(x, y):
                     flag_using1 = -1
                 delete_button(x - 1, y - 1)
                 flag_using1 = 0
-            if (y < width - 1) and (buttons_alive[x - 1][y + 1] != 0) and (buttons_alive[x - 1][y + 1] != -2):
+            if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] != 0) and (buttons_alive[x - 1][y + 1] != -2):
                 if flag_using.get() == 1:
                     flag_using1 = -1
                 delete_button(x - 1, y + 1)
                 flag_using1 = 0
-        if x < height - 1:
+        if x < HEIGHT - 1:
             if (buttons_alive[x + 1][y] != 0) and (buttons_alive[x + 1][y] != -2):
                 if flag_using.get() == 1:
                     flag_using1 = -1
@@ -249,7 +249,7 @@ def click_number(x, y):
                     flag_using1 = -1
                 delete_button(x + 1, y - 1)
                 flag_using1 = 0
-            if (y < width - 1) and (buttons_alive[x + 1][y + 1] != 0) and (buttons_alive[x + 1][y + 1] != -2):
+            if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] != 0) and (buttons_alive[x + 1][y + 1] != -2):
                 if flag_using.get() == 1:
                     flag_using1 = -1
                 delete_button(x + 1, y + 1)
@@ -259,7 +259,7 @@ def click_number(x, y):
                 flag_using1 = -1
             delete_button(x, y - 1)
             flag_using1 = 0
-        if (y < width - 1) and (buttons_alive[x][y + 1] != 0) and (buttons_alive[x][y + 1] != -2):
+        if (y < WIDTH - 1) and (buttons_alive[x][y + 1] != 0) and (buttons_alive[x][y + 1] != -2):
             if flag_using.get() == 1:
                 flag_using1 = -1
             delete_button(x, y + 1)
@@ -270,7 +270,7 @@ def click_number(x, y):
 
 
 def delete_button(x, y):
-    global game, buttons, buttons_alive, height, width, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
+    global game, buttons, buttons_alive, HEIGHT, WIDTH, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     hide_bombs()
     if help_using.get() + help_using1 == 1 and help_count.get() > 0:
         help_count.set(help_count.get() - 1)
@@ -283,18 +283,18 @@ def delete_button(x, y):
                     delete_button(x - 1, y)
                 if (y > 0) and (buttons_alive[x - 1][y - 1] == 1):
                     delete_button(x - 1, y - 1)
-                if (y < width - 1) and (buttons_alive[x - 1][y + 1] == 1):
+                if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] == 1):
                     delete_button(x - 1, y + 1)
-            if x < height - 1:
+            if x < HEIGHT - 1:
                 if buttons_alive[x + 1][y] == 1:
                     delete_button(x + 1, y)
                 if (y > 0) and (buttons_alive[x + 1][y - 1] == 1):
                     delete_button(x + 1, y - 1)
-                if (y < width - 1) and (buttons_alive[x + 1][y + 1] == 1):
+                if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] == 1):
                     delete_button(x + 1, y + 1)
             if (y > 0) and (buttons_alive[x][y - 1] == 1):
                 delete_button(x, y - 1)
-            if (y < width - 1) and (buttons_alive[x][y + 1] == 1):
+            if (y < WIDTH - 1) and (buttons_alive[x][y + 1] == 1):
                 delete_button(x, y + 1)
         elif game[x][y] == -1:
             buttons[x][y].destroy()
@@ -328,18 +328,18 @@ def delete_button(x, y):
                         delete_button(x - 1, y)
                     if (y > 0) and (buttons_alive[x - 1][y - 1] == 1):
                         delete_button(x - 1, y - 1)
-                    if (y < width - 1) and (buttons_alive[x - 1][y + 1] == 1):
+                    if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] == 1):
                         delete_button(x - 1, y + 1)
-                if x < height - 1:
+                if x < HEIGHT - 1:
                     if buttons_alive[x + 1][y] == 1:
                         delete_button(x + 1, y)
                     if (y > 0) and (buttons_alive[x + 1][y - 1] == 1):
                         delete_button(x + 1, y - 1)
-                    if (y < width - 1) and (buttons_alive[x + 1][y + 1] == 1):
+                    if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] == 1):
                         delete_button(x + 1, y + 1)
                 if (y > 0) and (buttons_alive[x][y - 1] == 1):
                     delete_button(x, y - 1)
-                if (y < width - 1) and (buttons_alive[x][y + 1] == 1):
+                if (y < WIDTH - 1) and (buttons_alive[x][y + 1] == 1):
                     delete_button(x, y + 1)
             elif game[x][y] == -1:
                 buttons[x][y].destroy()
@@ -367,8 +367,8 @@ def delete_button(x, y):
                 buttons[x][y].config(text=str(game[x][y]), command=click, bg="#FFFFFF", activebackground="#FFFFFF", relief="flat", foreground=color, font=("Arial", 10, "bold"))
                 buttons_alive[x][y] = 0
             abf = 1
-            for i in range(height):
-                for j in range(width):
+            for i in range(HEIGHT):
+                for j in range(WIDTH):
                     if buttons_alive[i][j] == 1:
                         abf = 0
             if abf == 1:
