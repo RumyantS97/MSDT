@@ -13,7 +13,8 @@ def menu_root():
     lst = root.place_slaves()
     for l in lst:
         l.destroy()
-    start_button = Button(text="Начать игру", bg="#00DA00", fg="#FFFFFF", font="20", command=choose_level)
+    start_button = Button(text="Начать игру", bg="#00DA00", fg="#FFFFFF",
+                          font="20", command=choose_level)
     start_button.place(x=100, y=170)
     menu_label = Label(text="Добро пожаловать в игру 'Сапёр'!", font="15", bg="#FFFFFF")
     menu_label.place(x=25, y=80)
@@ -37,7 +38,8 @@ def choose_level():
 
 
 def restart(a):
-    global buttons_alive, buttons, game, label, n, time, label_time, WIDTH, HEIGHT, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
+    global buttons_alive, buttons, game, label, n, time, label_time, WIDTH, HEIGHT, \
+        state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     lst = root.place_slaves()
     for l in lst:
         l.destroy()
@@ -197,7 +199,8 @@ def show_bombs(x, y):
 
 
 def click_number(x, y):
-    global game, buttons, buttons_alive, HEIGHT, WIDTH, flag_using1, flag_using, help_using1, help_using
+    global game, buttons, buttons_alive, HEIGHT, WIDTH, flag_using1, \
+        flag_using, help_using1, help_using
     hide_bombs()
     count = int()
     help_using1 = -1
@@ -205,20 +208,25 @@ def click_number(x, y):
     if x > 0:
         if buttons_alive[x - 1][y] == -2 or (game[x - 1][y] == -1 and buttons_alive[x - 1][y] == 0):
             count += 1
-        if (y > 0) and (buttons_alive[x - 1][y - 1] == -2 or (game[x - 1][y - 1] == -1 and buttons_alive[x - 1][y - 1] == 0)):
+        if (y > 0) and (buttons_alive[x - 1][y - 1] == -2 or
+                        (game[x - 1][y - 1] == -1 and buttons_alive[x - 1][y - 1] == 0)):
             count += 1
-        if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] == -2 or (game[x - 1][y + 1] == -1 and buttons_alive[x - 1][y + 1] == 0)):
+        if (y < WIDTH - 1) and (buttons_alive[x - 1][y + 1] == -2 or
+                                (game[x - 1][y + 1] == -1 and buttons_alive[x - 1][y + 1] == 0)):
             count += 1
     if x < HEIGHT - 1:
         if buttons_alive[x + 1][y] == -2 or (game[x + 1][y] == -1 and buttons_alive[x + 1][y] == 0):
             count += 1
-        if (y > 0) and (buttons_alive[x + 1][y - 1] == -2 or (game[x + 1][y - 1] == -1 and buttons_alive[x + 1][y - 1] == 0)):
+        if (y > 0) and (buttons_alive[x + 1][y - 1] == -2 or
+                        (game[x + 1][y - 1] == -1 and buttons_alive[x + 1][y - 1] == 0)):
             count += 1
-        if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] == -2 or (game[x + 1][y + 1] == -1 and buttons_alive[x + 1][y + 1] == 0)):
+        if (y < WIDTH - 1) and (buttons_alive[x + 1][y + 1] == -2 or
+                                (game[x + 1][y + 1] == -1 and buttons_alive[x + 1][y + 1] == 0)):
             count += 1
     if (y > 0) and (buttons_alive[x][y - 1] == -2 or (game[x][y - 1] == -1 and buttons_alive[x][y - 1] == 0)):
         count += 1
-    if (y < WIDTH - 1) and (buttons_alive[x][y + 1] == -2 or (game[x][y + 1] == -1 and buttons_alive[x][y + 1] == 0)):
+    if (y < WIDTH - 1) and (buttons_alive[x][y + 1] == -2 or
+                            (game[x][y + 1] == -1 and buttons_alive[x][y + 1] == 0)):
         count += 1
 
     if count == game[x][y]:
@@ -270,7 +278,8 @@ def click_number(x, y):
 
 
 def delete_button(x, y):
-    global game, buttons, buttons_alive, HEIGHT, WIDTH, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
+    global game, buttons, buttons_alive, HEIGHT, WIDTH, state, \
+        flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     hide_bombs()
     if help_using.get() + help_using1 == 1 and help_count.get() > 0:
         help_count.set(help_count.get() - 1)
@@ -314,7 +323,8 @@ def delete_button(x, y):
                 color = "#A50000"
             elif game[x][y] == 6:
                 color = "#00D000"
-            buttons[x][y].config(text=str(game[x][y]), command=click, bg="#FFFFFF", activebackground="#FFFFFF", relief="flat", foreground=color, font=("Arial", 10, "bold"))
+            buttons[x][y].config(text=str(game[x][y]), command=click, bg="#FFFFFF", activebackground="#FFFFFF",
+                                 relief="flat", foreground=color, font=("Arial", 10, "bold"))
             buttons_alive[x][y] = 0
     elif help_using.get() + help_using1 == 1 and help_count.get() == 0:
         messagebox.showerror("Внимание!", "Количество подсказок закончилось!")
@@ -364,7 +374,8 @@ def delete_button(x, y):
                     color = "#A50000"
                 elif game[x][y] == 6:
                     color = "#00D000"
-                buttons[x][y].config(text=str(game[x][y]), command=click, bg="#FFFFFF", activebackground="#FFFFFF", relief="flat", foreground=color, font=("Arial", 10, "bold"))
+                buttons[x][y].config(text=str(game[x][y]), command=click, bg="#FFFFFF", activebackground="#FFFFFF",
+                                     relief="flat", foreground=color, font=("Arial", 10, "bold"))
                 buttons_alive[x][y] = 0
             abf = 1
             for i in range(HEIGHT):
