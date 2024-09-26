@@ -23,7 +23,7 @@ def get_1_den(a):
     return a
 
 
-def makelist():
+def make_list():
     choise = int(input())
     if choise == 1:
         user_list = list(map(int, input('Введите в строку элементы списка:\n')
@@ -59,7 +59,7 @@ def index_search(user_list, number):
         return None
 
 
-def quicksort(user_list, fst, lst):
+def quick_sort(user_list, fst, lst):
     if fst >= lst:
         return
     i, j = fst, lst
@@ -73,12 +73,12 @@ def quicksort(user_list, fst, lst):
         if i <= j:
             user_list[i], user_list[j] = user_list[j], user_list[i]
             i, j = i + 1, j - 1
-    quicksort(user_list, fst, j)
-    quicksort(user_list, i, lst)
+    quick_sort(user_list, fst, j)
+    quick_sort(user_list, i, lst)
 
 
 hello()
-numbers = makelist()
+numbers = make_list()
 print()
 print('Максимальный нечётный элемент: ' + str(parameter_search(numbers)))
 print()
@@ -92,5 +92,5 @@ else:
 print()
 print('Исходный список\n', numbers)
 print()
-quicksort(numbers, 0, len(numbers) - 1)
+quick_sort(numbers, 0, len(numbers) - 1)
 print('Список после быстрой сортировки:\n', numbers)

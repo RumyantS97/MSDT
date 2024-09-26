@@ -168,10 +168,10 @@ while flag:
     points = main(points)
     print('Ваши очки: ' + str(points))
     if points > 0:
-        asnwer = input('Хотите сыграть ещё? (да/нет) ')
-        while asnwer not in ('да', 'нет'):
-            asnwer = input('Введите ответ в соответствии с инструкциями ')
-        if asnwer == 'нет':
+        answer = input('Хотите сыграть ещё? (да/нет) ')
+        while answer not in ('да', 'нет'):
+            answer = input('Введите ответ в соответствии с инструкциями ')
+        if answer == 'нет':
             flag = False
     else:
         print('У вас закончились очки')
