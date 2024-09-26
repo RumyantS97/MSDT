@@ -59,10 +59,10 @@ def main():
     q_times = []
 
     for size in range(6):
-        N = random.randint(1000, 19600)
-        array = [random.randint(-10, 10) for _ in range(N)]
+        n = random.randint(1000, 19600)
+        array = [random.randint(-10, 10) for _ in range(n)]
 
-        print("\nРазмер " + str(size + 1) + "-го массива N = " + str(N))
+        print("\nРазмер " + str(size + 1) + "-го массива N = " + str(n))
 
         arr1 = array.copy()
         print("\n... Выполнение шейкер-сортировки ...")
