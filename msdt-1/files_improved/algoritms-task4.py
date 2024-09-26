@@ -2,6 +2,7 @@
 # Алгоритм кодирования Хаффмана для сжатия текстовых данных
 import heapq
 from collections import defaultdict
+
 def build_huffman_tree(symbols_freq):
     heap = [[weight, [symbol, ""]] for symbol, weight in symbols_freq.items()]
     heapq.heapify(heap)
@@ -15,6 +16,7 @@ def build_huffman_tree(symbols_freq):
 
     return heap[0]
 
+
 def get_huffman_codes(tree):
     huff_codes = {}
     for pair in tree[1:]:
@@ -22,11 +24,13 @@ def get_huffman_codes(tree):
         huff_codes[symbol] = code
     return huff_codes
 
+
 def compress_data(text, huff_codes):
     result = ""
     for char in text:
         result += huff_codes[char]
     return result
+
 
 def decompress_data(compressed_data, huff_codes):
     huff_codes_reversed = {code: symbol for symbol, code in huff_codes.items()}

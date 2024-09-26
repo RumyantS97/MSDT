@@ -9,6 +9,7 @@ def naive_algorithm(s, p):
             return i
     return -1
 
+
 # Алгоритм Кнута-Морриса-Пратта
 def prefix_function(p):
     array = [0] * len(p)
@@ -26,6 +27,8 @@ def prefix_function(p):
             else:
                 j = array[j - 1]
     return array
+
+
 def kmp(s, p):
     prefix_array = prefix_function(p)
     i = 0
@@ -51,7 +54,7 @@ def find_palindromes(s):
     modified_string = '#' + '#'.join(s) + '#'
     n = len(modified_string)
 
-    palindrome_lengths = [0] * n   # Массив для хранения длин палиндромов
+    palindrome_lengths = [0] * n  # Массив для хранения длин палиндромов
     center = right = 0  # Центр и граница самого правого палиндрома
 
     for i in range(n):
@@ -64,7 +67,7 @@ def find_palindromes(s):
                modified_string[i - palindrome_lengths[i] - 1] == modified_string[i + palindrome_lengths[i] + 1]):
             palindrome_lengths[i] += 1
 
-        if i + palindrome_lengths[i] > right:    # Обновляем центр и границу самого правого палиндрома
+        if i + palindrome_lengths[i] > right:  # Обновляем центр и границу самого правого палиндрома
             center, right = i, i + palindrome_lengths[i]
 
     palindromes = []
@@ -83,6 +86,7 @@ def has_cycle(graph):
     num_nodes = len(graph)
     visited = [False] * num_nodes
     stack = [False] * num_nodes
+
     def dfs(node, visited, stack):
         visited[node] = True
         stack[node] = True

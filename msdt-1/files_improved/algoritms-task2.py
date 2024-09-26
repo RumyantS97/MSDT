@@ -1,14 +1,16 @@
 import random
 import time
+
+
 def shaker_sort(array):
-    swapped = True # Был ли обмен элементами
+    swapped = True  # Был ли обмен элементами
     start_index = 0
     end_index = len(array) - 1
 
     while swapped:
         swapped = False
         for i in range(start_index, end_index):  # Проход слева направо
-            if array[i] > array[i + 1]:         # Меняем элементы, если следующий меньше
+            if array[i] > array[i + 1]:  # Меняем элементы, если следующий меньше
                 array[i], array[i + 1] = array[i + 1], array[i]
                 swapped = True
 
@@ -18,23 +20,26 @@ def shaker_sort(array):
         swapped = False
         end_index -= 1  # Последний элемент уже на месте
         for i in range(end_index - 1, start_index - 1, -1):  # Проход справа налево
-            if array[i] > array[i + 1]:                     # Меняем элементы, если следующий меньше
+            if array[i] > array[i + 1]:  # Меняем элементы, если следующий меньше
                 array[i], array[i + 1] = array[i + 1], array[i]
                 swapped = True
         start_index += 1
+
+
 def quicksort(array, left, right):
     if left < right:
         x = partition(array, left, right)
         quicksort(array, left, x - 1)
         quicksort(array, x + 1, right)
 
+
 def partition(array, left, right):
     random_index = random.randint(left, right)
-    random_element = array[random_index] # Запоминаем выбранный опорный элемент
+    random_element = array[random_index]  # Запоминаем выбранный опорный элемент
 
-    array[random_index], array[right] = array[right], array[random_index] # Помещаем его в конец массива
+    array[random_index], array[right] = array[right], array[random_index]  # Помещаем его в конец массива
 
-    j = left # Элемент для разделения массива
+    j = left  # Элемент для разделения массива
 
     for i in range(left, right):
         if array[i] < random_element:
@@ -44,6 +49,7 @@ def partition(array, left, right):
     array[j], array[right] = array[right], array[j]
 
     return j
+
 
 def main():
     print("\nПрактическая работа №1. Алгоритмы сортировки.\nВыполнила: Купцова Таисия, группа 6203-020302D\nВариант "
@@ -62,7 +68,6 @@ def main():
         print("\n... Выполнение шейкер-сортировки ...")
         start_time = time.time()
         shaker_sort(arr1)
-
 
         end_time = time.time()
         time_s = end_time - start_time
