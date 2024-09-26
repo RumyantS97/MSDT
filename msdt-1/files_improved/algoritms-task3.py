@@ -60,7 +60,7 @@ def find_duplicates(arr):
         if arr[abs(num)] > 0:
             arr[abs(num)] *= -1
         else:
-            print(abs(num), end = " ")
+            print(abs(num), end=" ")
 
 
 def set_zeros(matrix):

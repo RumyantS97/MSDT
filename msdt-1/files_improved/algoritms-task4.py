@@ -10,8 +10,10 @@ def build_huffman_tree(symbols_freq):
     while len(heap) > 1:
         el1 = heapq.heappop(heap)
         el2 = heapq.heappop(heap)
-        for pair in el1[1:]: pair[1] = '0' + pair[1]
-        for pair in el2[1:]: pair[1] = '1' + pair[1]
+        for pair in el1[1:]:
+            pair[1] = '0' + pair[1]
+        for pair in el2[1:]:
+            pair[1] = '1' + pair[1]
         heapq.heappush(heap, [el1[0] + el2[0]] + el1[1:] + el2[1:])
 
     return heap[0]
