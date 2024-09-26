@@ -6,16 +6,16 @@ import random
 root=Tk()
 root.title("Сапёр")
 root.config(bg="#FFFFFF")
-def menuroot():
+def menu_root():
     root.geometry("300x300")
     lst = root.place_slaves()
     for l in lst:
         l.destroy()
-    start_button=Button(text="Начать игру",bg="#00DA00",fg="#FFFFFF",font="20",command=chooselevel)
+    start_button=Button(text="Начать игру",bg="#00DA00",fg="#FFFFFF",font="20",command=choose_level)
     start_button.place(x=100,y=170)
     menu_label=Label(text="Добро пожаловать в игру 'Сапёр'!",font="15",bg="#FFFFFF")
     menu_label.place(x=25,y=80)
-def chooselevel():
+def choose_level():
     lst=root.place_slaves()
     for l in lst:
         l.destroy()
@@ -146,17 +146,17 @@ def restart(a):
 
     for i in range(height):
         for j in range(width):
-            deleting=lambda x=i,y=j:deletebutton(x,y)
+            deleting=lambda x=i,y=j:delete_button(x,y)
             buttons[i][j]=Button(command=deleting,bg="#DCDCDC")
             buttons[i][j].place(x=j*20,y=i * 20,width=20,height=20)
-def hidebombs():
+def hide_bombs():
     global buttons,buttons_alive,height,width
     for i in range(height):
         for j in range(width):
             if (buttons_alive[i][j]!=0)and(buttons_alive[i][j]%10==0):
                 buttons[i][j].config(bg="#DCDCDC")
                 buttons_alive[i][j]//=10
-def showbombs(x,y):
+def show_bombs(x,y):
     global buttons,buttons_alive,height,width
     if x>0:
         if buttons_alive[x-1][y]!=0:
@@ -184,9 +184,9 @@ def showbombs(x,y):
     if (y<width-1) and (buttons_alive[x][y + 1]!=0):
         buttons_alive[x][y+1]*=10
         buttons[x][y+1].config(bg="#FF0000")
-def clicknumber(x,y):
+def click_number(x,y):
     global game,buttons,buttons_alive,height,width,flag_using1,flag_using,help_using1,help_using
-    hidebombs()
+    hide_bombs()
     count=int()
     help_using1=-1
 
@@ -214,50 +214,50 @@ def clicknumber(x,y):
             if (buttons_alive[x-1][y]!=0)and(buttons_alive[x-1][y]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x-1,y)
+                delete_button(x-1,y)
                 flag_using1=0
             if (y>0)and(buttons_alive[x-1][y-1]!=0)and(buttons_alive[x-1][y-1]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x-1,y-1)
+                delete_button(x-1,y-1)
                 flag_using1=0
             if (y<width-1)and(buttons_alive[x-1][y+1]!=0)and(buttons_alive[x-1][y+1]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x-1,y+1)
+                delete_button(x-1,y+1)
                 flag_using1=0
         if x<height-1:
             if (buttons_alive[x+1][y]!=0)and(buttons_alive[x+1][y]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x+1,y)
+                delete_button(x+1,y)
                 flag_using1=0
             if (y>0)and(buttons_alive[x+1][y-1]!=0)and(buttons_alive[x+1][y-1]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x+1,y-1)
+                delete_button(x+1,y-1)
                 flag_using1=0
             if (y<width-1)and(buttons_alive[x+1][y+1]!=0)and(buttons_alive[x+1][y+1]!=-2):
                 if flag_using.get()==1:
                     flag_using1=-1
-                deletebutton(x+1,y+1)
+                delete_button(x+1,y+1)
                 flag_using1=0
         if (y>0)and(buttons_alive[x][y-1]!=0)and(buttons_alive[x][y-1]!=-2):
             if flag_using.get()==1:
                 flag_using1=-1
-            deletebutton(x,y-1)
+            delete_button(x,y-1)
             flag_using1=0
         if (y<width-1)and(buttons_alive[x][y+1]!=0)and(buttons_alive[x][y+1]!=-2):
             if flag_using.get()==1:
                 flag_using1=-1
-            deletebutton(x,y+1)
+            delete_button(x,y+1)
             flag_using1=0
     else:
-        showbombs(x,y)
+        show_bombs(x,y)
     help_using1=0
-def deletebutton(x,y):
+def delete_button(x,y):
     global game,buttons,buttons_alive,height,width,state,flag_using,flag_using1,flag_count,help_using,help_using1,help_count
-    hidebombs()
+    hide_bombs()
     if help_using.get()+help_using1==1and help_count.get()>0:
         help_count.set(help_count.get()-1)
         if game[x][y]==0:
@@ -266,27 +266,27 @@ def deletebutton(x,y):
             help_using1=-1
             if x>0:
                 if buttons_alive[x-1][y]==1:
-                    deletebutton(x-1,y)
+                    delete_button(x-1,y)
                 if (y>0)and(buttons_alive[x-1][y-1]==1):
-                    deletebutton(x-1,y-1)
+                    delete_button(x-1,y-1)
                 if (y<width-1)and(buttons_alive[x-1][y+1]==1):
-                    deletebutton(x-1,y+1)
+                    delete_button(x-1,y+1)
             if x<height-1:
                 if buttons_alive[x+1][y]==1:
-                    deletebutton(x+1,y)
+                    delete_button(x+1,y)
                 if (y>0)and(buttons_alive[x+1][y-1]==1):
-                    deletebutton(x+1,y-1)
+                    delete_button(x+1,y-1)
                 if (y<width-1)and(buttons_alive[x+1][y+1]==1):
-                    deletebutton(x+1,y+1)
+                    delete_button(x+1,y+1)
             if (y>0)and(buttons_alive[x][y-1]==1):
-                deletebutton(x,y-1)
+                delete_button(x,y-1)
             if (y<width-1)and(buttons_alive[x][y+1]==1):
-                deletebutton(x,y+1)
+                delete_button(x,y+1)
         elif game[x][y]==-1:
             buttons[x][y].destroy()
             buttons_alive[x][y]=0
         else:
-            click=lambda i=x,j=y:clicknumber(i,j)
+            click=lambda i=x,j=y:click_number(i,j)
             color="#00FF00"
             if game[x][y]==1:
                 color="#0086FF"
@@ -311,22 +311,22 @@ def deletebutton(x,y):
                 buttons_alive[x][y]=0
                 if x>0:
                     if buttons_alive[x-1][y]==1:
-                        deletebutton(x-1,y)
+                        delete_button(x-1,y)
                     if (y>0)and(buttons_alive[x-1][y-1]==1):
-                        deletebutton(x-1,y-1)
+                        delete_button(x-1,y-1)
                     if (y<width-1)and(buttons_alive[x-1][y+1]==1):
-                        deletebutton(x-1,y+1)
+                        delete_button(x-1,y+1)
                 if x<height-1:
                     if buttons_alive[x+1][y]==1:
-                        deletebutton(x+1,y)
+                        delete_button(x+1,y)
                     if (y>0)and(buttons_alive[x+1][y-1]==1):
-                        deletebutton(x+1,y-1)
+                        delete_button(x+1,y-1)
                     if (y<width-1)and(buttons_alive[x+1][y+1]==1):
-                        deletebutton(x+1,y+1)
+                        delete_button(x+1,y+1)
                 if (y>0)and(buttons_alive[x][y-1]==1):
-                    deletebutton(x,y-1)
+                    delete_button(x,y-1)
                 if (y<width-1)and(buttons_alive[x][y+1]==1):
-                    deletebutton(x,y+1)
+                    delete_button(x,y+1)
             elif game[x][y]==-1:
                 buttons[x][y].destroy()
                 buttons_alive[x][y]=0
@@ -334,9 +334,9 @@ def deletebutton(x,y):
                 if answer:
                     restart(state)
                 else:
-                    menuroot()
+                    menu_root()
             else:
-                click=lambda i=x,j=y:clicknumber(i,j)
+                click=lambda i=x,j=y:click_number(i,j)
                 color="#00FF00"
                 if game[x][y]==1:
                     color="#0086FF"
@@ -362,7 +362,7 @@ def deletebutton(x,y):
                 if answer:
                     restart(state)
                 else:
-                    menuroot()
+                    menu_root()
         else:
             if buttons_alive[x][y]==-2:
                 load=Image.open("sentry1.png")
@@ -381,5 +381,5 @@ def deletebutton(x,y):
                 buttons[x][y].image=render
                 buttons_alive[x][y]=-2
                 flag_count.set(flag_count.get()-1)
-menuroot()
+menu_root()
 root.mainloop()
