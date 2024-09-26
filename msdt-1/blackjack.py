@@ -15,7 +15,8 @@ class Deck:
     suits = ['♥', '♣', '♦', '♠']
 
     def __init__(self):
-        self.cards = [Card(rang, suit) for rang in self.rangs for suit in self.suits]
+        self.cards = [Card(rang, suit) for rang in self.rangs
+                      for suit in self.suits]
 
     def __getitem__(self, item):
         if 0 <= item < len(self.cards):
@@ -79,9 +80,11 @@ def dealer_check(dealer: Player):
 
 
 def main(points: int):
-    bet = input('У вас ' + str(points) + ' очков.\nСколько вы хотите поставить? ')
+    bet = input('У вас ' + str(points)
+                + ' очков.\nСколько вы хотите поставить? ')
     while not bet.isdigit() and int(bet) <= points:
-        bet = input('Ваша ставка должна быть числом, меньшим общего количества очков: ')
+        bet = input('Ваша ставка должна быть числом, '
+                    'меньшим общего количества очков: ')
     bet = int(bet)
     deck = Deck()
     user = Player()
@@ -97,11 +100,13 @@ def main(points: int):
                 Вы можете остаться при своих или продолжить играть.
                 О - остаться, П - продолжить ''')
                 while choice1 not in ('О', 'П'):
-                    choice1 = input('Введите ответ в соответствии с инструкциями ')
+                    choice1 = input('Введите ответ в соответствии с '
+                                    'инструкциями ')
                 if choice1 == 'О':
                     return points
         else:
-            print('Поздравляем! У вас блэк-джек! Ваш очки: ' + str(points * 1.5))
+            print('Поздравляем! У вас блэк-джек! Ваш очки: '
+                  + str(points * 1.5))
             return points + bet
     if user.count != 21:
         flag = True

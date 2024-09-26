@@ -6,8 +6,8 @@ def hello():
     Вариант №8. Выполнил студент группы 6103-020302D Красюк А. М.
     Задание:
     1. В списке целочисленных элементов найти максимальный нечётный элемент
-    2. С использованием цикла while найти в списке индекс первого двузначного элемента,
-       кратного заданному числу
+    2. С использованием цикла while найти в списке индекс первого двузначного 
+    элемента, кратного заданному числу
     3. Отсортировать список (без использования стандартных функций сортировки)
        по убыванию старших цифр элементов списка (быстрая сортировка)''')
     print()
@@ -26,7 +26,8 @@ def get_1_den(a):
 def makelist():
     choise = int(input())
     if choise == 1:
-        user_list = list(map(int, input('Введите в строку элементы списка:\n').split()))
+        user_list = list(map(int, input('Введите в строку элементы списка:\n')
+                             .split()))
         return user_list
     else:
         length = int(input('Введите количество элементов списка: '))
@@ -39,7 +40,7 @@ def makelist():
 
 
 def parameter_search(user_list):
-    maximum = -10**10
+    maximum = -10 ** 10
     for element in range(len(user_list)):
         if user_list[element] > maximum and user_list[element] % 2 != 0:
             maximum = user_list[element]
@@ -48,7 +49,8 @@ def parameter_search(user_list):
 
 def index_search(user_list, number):
     i = 0
-    while (i < len(user_list)) and ((abs(user_list[i])//10 < 1) or (abs(user_list[i])//10 >= 10) or
+    while (i < len(user_list)) and ((abs(user_list[i]) // 10 < 1) or
+                                    (abs(user_list[i]) // 10 >= 10) or
                                     (user_list[i] % number != 0)):
         i += 1
     if i < len(user_list):
@@ -83,11 +85,12 @@ print()
 multiplicity = int(input('Введите число, кратность которому нужно проверить: '))
 index = index_search(numbers, multiplicity)
 if index is not None:
-    print('Индекс первого двузначного элемента, кратного заданному числу: ' + str(index))
+    print('Индекс первого двузначного элемента, кратного заданному числу: '
+          + str(index))
 else:
     print('В списке отсутствуют двузначные элементы, кратные заданному числу')
 print()
 print('Исходный список\n', numbers)
 print()
-quicksort(numbers, 0, len(numbers)-1)
+quicksort(numbers, 0, len(numbers) - 1)
 print('Список после быстрой сортировки:\n', numbers)
