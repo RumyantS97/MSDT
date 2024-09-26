@@ -6,6 +6,8 @@ import random
 root = Tk()
 root.title("Сапёр")
 root.config(bg="#FFFFFF")
+
+
 def menu_root():
     root.geometry("300x300")
     lst = root.place_slaves()
@@ -15,6 +17,8 @@ def menu_root():
     start_button.place(x=100, y=170)
     menu_label = Label(text="Добро пожаловать в игру 'Сапёр'!", font="15", bg="#FFFFFF")
     menu_label.place(x=25, y=80)
+
+
 def choose_level():
     lst = root.place_slaves()
     for l in lst:
@@ -30,6 +34,8 @@ def choose_level():
     hard = lambda x="Сложная": restart(x)
     button_hard = Button(text="Сложная", font="20", command=hard)
     button_hard.place(x=25, y=190)
+
+
 def restart(a):
     global buttons_alive, buttons, game, label, n, time, label_time, width, height, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     lst = root.place_slaves()
@@ -149,6 +155,8 @@ def restart(a):
             deleting = lambda x=i, y=j: delete_button(x, y)
             buttons[i][j] = Button(command=deleting, bg="#DCDCDC")
             buttons[i][j].place(x=j * 20, y=i * 20, width=20, height=20)
+
+
 def hide_bombs():
     global buttons, buttons_alive, height, width
     for i in range(height):
@@ -156,6 +164,8 @@ def hide_bombs():
             if (buttons_alive[i][j] != 0) and (buttons_alive[i][j] % 10 == 0):
                 buttons[i][j].config(bg="#DCDCDC")
                 buttons_alive[i][j] //= 10
+
+
 def show_bombs(x, y):
     global buttons, buttons_alive, height, width
     if x > 0:
@@ -184,6 +194,8 @@ def show_bombs(x, y):
     if (y < width - 1) and (buttons_alive[x][y + 1]!=0):
         buttons_alive[x][y + 1] *= 10
         buttons[x][y + 1].config(bg="#FF0000")
+
+
 def click_number(x, y):
     global game, buttons, buttons_alive, height, width, flag_using1, flag_using, help_using1, help_using
     hide_bombs()
@@ -255,6 +267,8 @@ def click_number(x, y):
     else:
         show_bombs(x, y)
     help_using1 = 0
+
+
 def delete_button(x, y):
     global game, buttons, buttons_alive, height, width, state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     hide_bombs()
@@ -381,5 +395,7 @@ def delete_button(x, y):
                 buttons[x][y].image = render
                 buttons_alive[x][y] = -2
                 flag_count.set(flag_count.get() - 1)
+
+
 menu_root()
 root.mainloop()
