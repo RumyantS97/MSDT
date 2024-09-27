@@ -52,11 +52,18 @@ class CustomerSync:
         return created
 
 
-    def update_relations(self, external_customer: external_customer, customer: Customer):
+    def update_relations(
+            self, 
+            external_customer: external_customer,
+              customer: Customer
+    ):
         '''update the customer relationship'''
         consumer_shopping_lists = external_customer.shoppingLists
         for consumer_shopping_list in consumer_shopping_lists:
-            self.customer_data_access.updateShoppingList(customer, consumer_shopping_list)
+            self.customer_data_access.updateShoppingList(
+                customer, 
+                consumer_shopping_list
+            )
 
 
     def update_customer(self, customer):
@@ -64,7 +71,11 @@ class CustomerSync:
         return self.customer_data_access.update_customerRecord(customer)
 
 
-    def update_duplicate(self, external_customer: external_customer, duplicate: Customer):
+    def update_duplicate(
+            self, 
+            external_customer: external_customer, 
+            duplicate: Customer
+    ):
         '''update duplicate'''
         if duplicate is None:
             duplicate = Customer()
@@ -79,7 +90,11 @@ class CustomerSync:
             self.update_customer(duplicate)
 
 
-    def update_preferred_store(self, external_customer: external_customer, customer: Customer):
+    def update_preferred_store(
+            self,
+            external_customer: external_customer,
+            customer: Customer
+    ):
         '''update preferred store'''
         customer.preferredStore = external_customer.preferredStore
 
@@ -89,7 +104,11 @@ class CustomerSync:
         return self.customer_data_access.create_customerRecord(customer)
 
 
-    def populate_fields(self, external_customer: external_customer, customer: Customer):
+    def populate_fields(
+            self,
+            external_customer: external_customer,
+            customer: Customer
+    ):
         '''sets customer info'''
         customer.name = external_customer.name
         if external_customer.isCompany:
@@ -99,7 +118,11 @@ class CustomerSync:
             customer.customerType = CustomerType.PERSON
 
 
-    def update_contact_info(self, external_customer: external_customer, customer: Customer):
+    def update_contact_info(
+            self, 
+            external_customer: external_customer, 
+            customer: Customer
+    ):
         '''updates contact info'''
         customer.address = external_customer.postalAddress
 
@@ -109,10 +132,16 @@ class CustomerSync:
         external_id = external_customer.external_id
         company_number = external_customer.company_number
 
-        customer_matches = self.customer_data_access.load_companyCustomer(external_id, company_number)
+        customer_matches = self.customer_data_access.load_companyCustomer(
+            external_id,
+            company_number
+        )
 
         if customer_matches.customer is not None and CustomerType.COMPANY != customer_matches.customer.customerType:
-            raise ConflictException("Existing customer for external_customer {external_id} already exists and is not a company")
+            raise ConflictException(
+                f"Existing customer for external_customer 
+                {external_id} already exists and is not a company"
+                )
 
         if "external_id" == customer_matches.matchTerm:
             customercompany_number = customer_matches.customer.company_number
@@ -125,7 +154,11 @@ class CustomerSync:
         elif "company_number" == customer_matches.matchTerm:
             customerexternal_id = customer_matches.customer.external_id
             if customerexternal_id is not None and external_id != customerexternal_id:
-                raise ConflictException(f"Existing customer for external_customer {company_number} doesn't match external id {external_id} instead found {customerexternal_id}")
+                raise ConflictException(
+                    f"Existing customer for external_customer 
+                    {company_number} doesn't match external id {external_id} 
+                    instead found {customerexternal_id}"
+                )
 
             customer = customer_matches.customer
             customer.external_id = external_id
@@ -139,11 +172,16 @@ class CustomerSync:
         '''Load a customer from the external'''
         external_id = external_customer.external_id
 
-        customer_matches = self.customer_data_access.load_personCustomer(external_id)
+        customer_matches = self.customer_data_access.load_personCustomer(
+            external_id
+        )
 
         if customer_matches.customer is not None:
             if CustomerType.PERSON != customer_matches.customer.customerType:
-                raise ConflictException(f"Existing customer for external_customer {external_id} already exists and is not a person")
+                raise ConflictException(
+                    f"Existing customer for external_customer 
+                    {external_id} already exists and is not a person"
+                )
 
             if "external_id" != customer_matches.matchTerm:
                 customer = customer_matches.customer
