@@ -1,5 +1,4 @@
 class Yahtzee:
-
     @staticmethod
     def chance(d1, d2, d3, d4, d5):
         total = 0
@@ -9,6 +8,7 @@ class Yahtzee:
         total += d4
         total += d5
         return total
+
 
     @staticmethod
     def yahtzee(dice):
@@ -20,6 +20,7 @@ class Yahtzee:
                 return 50
         return 0
     
+
     @staticmethod
     def ones( d1,  d2,  d3,  d4,  d5):
         sum = 0
@@ -77,6 +78,7 @@ class Yahtzee:
         self.dice[3] = d4
         self.dice[4] = _5
     
+    
     def fours(self):
         sum = 0
         for at in range(5):
@@ -101,6 +103,7 @@ class Yahtzee:
                 sum = sum + 6
         return sum
     
+
     @staticmethod
     def score_pair( d1,  d2,  d3,  d4,  d5):
         counts = [0]*6
@@ -115,6 +118,7 @@ class Yahtzee:
                 return (6-at)*2
         return 0
     
+
     @staticmethod
     def two_pair( d1,  d2,  d3,  d4,  d5):
         counts = [0]*6
@@ -135,6 +139,7 @@ class Yahtzee:
         else:
             return 0
     
+
     @staticmethod
     def four_of_a_kind( _1,  _2,  d3,  d4,  d5):
         tallies = [0]*6
