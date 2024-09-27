@@ -6,9 +6,9 @@ class Yahtzee:
 
     @staticmethod
     def yahtzee(dice):
-        counts = [0]*(len(dice)+1)
+        counts = [0] * (len(dice) + 1)
         for die in dice:
-            counts[die-1] += 1
+            counts[die - 1] += 1
         for i in range(len(counts)):
             if counts[i] == 5:
                 return 50
@@ -72,8 +72,8 @@ class Yahtzee:
             counts[value - 1] += 1
 
         for at in range(6):
-            if (counts[6-at-1] == 2):
-                return (6-at)*2
+            if (counts[6 - at - 1] == 2):
+                return (6 - at) * 2
             
         return 0
     
@@ -90,9 +90,9 @@ class Yahtzee:
         n = 0
         score = 0
         for i in range(6):
-            if (counts[6-i-1] == 2):
+            if (counts[6 - i - 1] == 2):
                 n = n+1
-                score += (6-i)
+                score += (6 - i)
                     
         if (n == 2):
             return score * 2
@@ -102,33 +102,33 @@ class Yahtzee:
 
     @staticmethod
     def four_of_a_kind(dice):
-        tallies = [0]*6
+        tallies = [0] * 6
 
         for value in dice:
             tallies[value - 1] += 1
        
         for i in range(6):
             if (tallies[i] == 4):
-                return (i+1) * 4
+                return (i + 1) * 4
         return 0
     
 
     @staticmethod
     def three_of_a_kind(dice):
-        t = [0]*6
+        t = [0] * 6
 
         for value in dice:
             t[value - 1] += 1
 
         for i in range(6):
             if (t[i] == 3):
-                return (i+1) * 3
+                return (i + 1) * 3
         return 0
     
 
     @staticmethod
     def smallStraight(dice):
-        tallies = [0]*6
+        tallies = [0] * 6
 
         for value in dice:
             tallies[value - 1] += 1
@@ -141,7 +141,7 @@ class Yahtzee:
 
     @staticmethod
     def largeStraight(dice):
-        tallies = [0]*6
+        tallies = [0] * 6
         
         for value in dice:
             tallies[value - 1] += 1
@@ -154,7 +154,7 @@ class Yahtzee:
 
     @staticmethod
     def fullHouse(dice):
-        tallies = []*6
+        tallies = [] * 6
         _2 = False
         i = 0
         _2_at = 0
@@ -167,13 +167,13 @@ class Yahtzee:
         for i in range(6):
             if (tallies[i] == 2): 
                 _2 = True
-                _2_at = i+1
+                _2_at = i + 1
             
 
         for i in range(6):
             if (tallies[i] == 3): 
                 _3 = True
-                _3_at = i+1
+                _3_at = i + 1
             
 
         if (_2 and _3):
