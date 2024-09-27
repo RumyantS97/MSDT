@@ -39,19 +39,19 @@ class Yahtzee:
     
     def fours(self):
         sum = 0
-        for at in range(5):
-            if (self.dice[at] == 4): 
+        for value in range(5):
+            if (self.dice[value] == 4): 
                 sum += 4
         return sum
     
 
     def fives(self):
-        s = 0
+        sum = 0
         i = 0
         for i in range(len(self.dice)): 
             if (self.dice[i] == 5):
-                s = s + 5
-        return s
+                sum = sum + 5
+        return sum
     
 
     def sixes(self):
@@ -71,9 +71,9 @@ class Yahtzee:
         for value in dice:
             counts[value - 1] += 1
 
-        for at in range(6):
-            if (counts[6 - at - 1] == 2):
-                return (6 - at) * 2
+        for i in range(6):
+            if (counts[6 - i - 1] == 2):
+                return (6 - i) * 2
             
         return 0
     
@@ -115,19 +115,19 @@ class Yahtzee:
 
     @staticmethod
     def three_of_a_kind(dice):
-        t = [0] * 6
+        tallies = [0] * 6
 
         for value in dice:
-            t[value - 1] += 1
+            tallies[value - 1] += 1
 
         for i in range(6):
-            if (t[i] == 3):
+            if (tallies[i] == 3):
                 return (i + 1) * 3
         return 0
     
 
     @staticmethod
-    def smallStraight(dice):
+    def small_straight(dice):
         tallies = [0] * 6
 
         for value in dice:
@@ -140,7 +140,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def largeStraight(dice):
+    def large_straight(dice):
         tallies = [0] * 6
         
         for value in dice:
@@ -153,30 +153,30 @@ class Yahtzee:
     
 
     @staticmethod
-    def fullHouse(dice):
+    def full_house(dice):
         tallies = [] * 6
-        _2 = False
+        key_2 = False
         i = 0
-        _2_at = 0
-        _3 = False
-        _3_at = 0
+        sum_2 = 0
+        key_3 = False
+        sum_3  = 0
 
         for value in dice:
             tallies[value - 1] += 1
 
         for i in range(6):
             if (tallies[i] == 2): 
-                _2 = True
-                _2_at = i + 1
+                key_2 = True
+                sum_2 = i + 1
             
 
         for i in range(6):
             if (tallies[i] == 3): 
-                _3 = True
-                _3_at = i + 1
+                key_3 = True
+                sum_3 = i + 1
             
 
-        if (_2 and _3):
-            return _2_at * 2 + _3_at * 3
+        if (key_2 and key_3):
+            return sum_2 * 2 + sum_3 * 3
         else:
             return 0
