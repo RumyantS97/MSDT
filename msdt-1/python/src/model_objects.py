@@ -40,7 +40,15 @@ class ExternalCustomer:
 
 class Customer:
     '''primary class'''
-    def __init__(self, internal_id: str = None, external_id: str = None, masterexternal_id: str = None, name: str = None, customer_type: CustomerType = None, company_number: str = None):
+    def __init__(
+            self, 
+            internal_id: str = None, 
+            external_id: str = None,
+            masterexternal_id: str = None, 
+            name: str = None, 
+            customer_type: CustomerType = None, 
+            company_number: str = None
+    ):
         self.internal_id = internal_id
         self.external_id = external_id
         self.masterexternal_id = masterexternal_id
