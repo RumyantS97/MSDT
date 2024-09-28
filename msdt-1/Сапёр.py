@@ -1,13 +1,21 @@
+"""Приложение Сапёр
+
+Написано в рамках проектной работы в лицее
+Приложение реализовано на языке Python с использованием встроенной библиотеки Tkinter
+
+"""
+
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import random
 
+# Создание окна приложения
 root = Tk()
 root.title("Сапёр")
 root.config(bg="#FFFFFF")
 
-
+# Главное меню
 def menu_root():
     root.geometry("300x300")
     lst = root.place_slaves()
@@ -19,7 +27,7 @@ def menu_root():
     menu_label = Label(text="Добро пожаловать в игру 'Сапёр'!", font="15", bg="#FFFFFF")
     menu_label.place(x=25, y=80)
 
-
+# Окно с выбором сложности игры
 def choose_level():
     lst = root.place_slaves()
     for l in lst:
@@ -37,6 +45,7 @@ def choose_level():
     button_hard.place(x=25, y=190)
 
 
+# Функция, создающая игровое поле с учётом уровня сложности
 def restart(a):
     global buttons_alive, buttons, game, label, n, time, label_time, WIDTH, HEIGHT, \
         state, flag_using, flag_using1, flag_count, help_using, help_using1, help_count
@@ -46,6 +55,7 @@ def restart(a):
 
     state = a
 
+    # Выбор параметров в зависимости от уровня сложности
     if a == "Лёгкая":
         n = 25
         WIDTH = 10
@@ -65,6 +75,7 @@ def restart(a):
         help_count.set(30)
         HEIGHT = 39
 
+    # Матрица, отвечающая за расположение мин и цифр
     game = [0] * HEIGHT
     for i in range(HEIGHT):
         game[i] = [0] * WIDTH
@@ -90,6 +101,7 @@ def restart(a):
     flag_label = Label(textvariable=flag_count)
     flag_label.place(x=WIDTH * 20 - 40, y=HEIGHT * 20 + 10)
 
+    # Заполнение матрицы минами
     while n > 0:
         x = random.randint(0, HEIGHT - 1)
         y = random.randint(0, WIDTH - 1)
@@ -97,6 +109,7 @@ def restart(a):
             game[x][y] = -1
             n -= 1
 
+    # Заполнение матрицы цифрами
     for i in range(HEIGHT):
         for j in range(WIDTH):
             if game[i][j] != -1:
@@ -125,11 +138,13 @@ def restart(a):
                     if game[i][j + 1] == -1:
                         game[i][j] += 1
 
+    # Вывод матрицы на консоль
     for i in range(HEIGHT):
         for j in range(WIDTH):
             print(game[i][j], end=" ")
         print()
 
+    # Вставка картинки мины на соответствующие позиции
     for i in range(HEIGHT):
         for j in range(WIDTH):
             if game[i][j] == -1:
@@ -139,6 +154,7 @@ def restart(a):
                 label.image = render
                 label.place(x=j * 20, y=i * 20, width=20, height=20)
 
+    # Матрица, отвечающая за нераскрытые клетки поля
     buttons_alive = [1] * HEIGHT
     for i in range(HEIGHT):
         buttons_alive[i] = [1] * WIDTH
@@ -148,6 +164,7 @@ def restart(a):
             if game[i][j] == -1:
                 buttons_alive[i][j] = -1
 
+    # Матрица кнопок поля
     buttons = [""] * HEIGHT
     for i in range(HEIGHT):
         buttons[i] = [""] * WIDTH
@@ -159,6 +176,7 @@ def restart(a):
             buttons[i][j].place(x=j * 20, y=i * 20, width=20, height=20)
 
 
+# Функция, перекрашивающая красные неизведанные клетки обратно в серый цвет
 def hide_bombs():
     global buttons, buttons_alive, HEIGHT, WIDTH
     for i in range(HEIGHT):
@@ -168,6 +186,7 @@ def hide_bombs():
                 buttons_alive[i][j] //= 10
 
 
+# Функция, перекрашивающая серые клетки рядом с цифрой в красные (показывает потенциальное расположение мины)
 def show_bombs(x, y):
     global buttons, buttons_alive, HEIGHT, WIDTH
     if x > 0:
@@ -198,13 +217,14 @@ def show_bombs(x, y):
         buttons[x][y + 1].config(bg="#FF0000")
 
 
+# Функция, обрабатывающая нажатие на цифру
 def click_number(x, y):
     global game, buttons, buttons_alive, HEIGHT, WIDTH, flag_using1, \
         flag_using, help_using1, help_using
     hide_bombs()
     count = int()
     help_using1 = -1
-
+    # Если все мины рядом с цифрой отмечены флажком, раскрывает остальные клетки, иначе перекрашивает поля в красный
     if x > 0:
         if buttons_alive[x - 1][y] == -2 or (game[x - 1][y] == -1 and buttons_alive[x - 1][y] == 0):
             count += 1
@@ -277,10 +297,12 @@ def click_number(x, y):
     help_using1 = 0
 
 
+# Функция, обрабатывающая нажатие на нераскрытую клетку
 def delete_button(x, y):
     global game, buttons, buttons_alive, HEIGHT, WIDTH, state, \
         flag_using, flag_using1, flag_count, help_using, help_using1, help_count
     hide_bombs()
+    # Нажатие на кнопку с использованием подсказки
     if help_using.get() + help_using1 == 1 and help_count.get() > 0:
         help_count.set(help_count.get() - 1)
         if game[x][y] == 0:
@@ -328,6 +350,7 @@ def delete_button(x, y):
             buttons_alive[x][y] = 0
     elif help_using.get() + help_using1 == 1 and help_count.get() == 0:
         messagebox.showerror("Внимание!", "Количество подсказок закончилось!")
+    # Нажатие на кнопку без модификаторов
     else:
         if flag_using1 + flag_using.get() == 0:
             if game[x][y] == 0:
@@ -388,6 +411,7 @@ def delete_button(x, y):
                     restart(state)
                 else:
                     menu_root()
+        # Работа с флажком
         else:
             if buttons_alive[x][y] == -2:
                 load = Image.open("sentry1.png")
