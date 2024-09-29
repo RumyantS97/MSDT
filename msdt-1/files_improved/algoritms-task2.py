@@ -28,12 +28,12 @@ def shaker_sort(array):
 
 def quick_sort(array, left, right):
     if left < right:
-        x = partition(array, left, right)
+        x = divide_array(array, left, right)
         quick_sort(array, left, x - 1)
         quick_sort(array, x + 1, right)
 
 
-def partition(array, left, right):
+def divide_array(array, left, right):
     random_index = random.randint(left, right)
     random_element = array[random_index]  # Запоминаем выбранный опорный элемент
 
