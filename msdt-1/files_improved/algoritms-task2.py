@@ -26,11 +26,11 @@ def shaker_sort(array):
         start_index += 1
 
 
-def quicksort(array, left, right):
+def quick_sort(array, left, right):
     if left < right:
         x = partition(array, left, right)
-        quicksort(array, left, x - 1)
-        quicksort(array, x + 1, right)
+        quick_sort(array, left, x - 1)
+        quick_sort(array, x + 1, right)
 
 
 def partition(array, left, right):
@@ -77,7 +77,7 @@ def main():
         arr2 = array.copy()
         print("\n... Выполнение быстрой сортировки ...")
         start_time = time.time()
-        quicksort(arr2, 0, len(arr2) - 1)
+        quick_sort(arr2, 0, len(arr2) - 1)
         end_time = time.time()
         time_q = end_time - start_time
         print("Время быстрой сортировки:", time_q, "сек")
