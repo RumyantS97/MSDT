@@ -45,46 +45,50 @@ def prices():
 
         if age and age < 6:
              res["cost"] = 0
-
         else:
             if "type" in request.args and request.args["type"] != "night":
-                cursor = connection.cursor()
-                cursor.execute('SELECT * FROM holidays')
-                is_holiday = False
-                reduction = 0
-                for row in cursor.fetchall():
-                    holiday = row[0]
-                    if "date" in request.args:
-                        d = datetime.fromisoformat(request.args["date"])
-                        if d.year == holiday.year and d.month == holiday.month and holiday.day == d.day:
-                            is_holiday = True
-                if not is_holiday and "date" in request.args and datetime.fromisoformat(request.args["date"]).weekday() == 0:
-                    reduction = 35
-
-                # TODO: apply reduction for others
-                if age and age < 15:
-                     res['cost'] = math.ceil(result["cost"]*.7)
-                else:
-                    if not age:
-                        cost = result['cost'] * (1 - reduction/100)
-                        res['cost'] = math.ceil(cost)
-                    else:
-                        if age and age > 64:
-                            cost = result['cost'] * .75 * (1 - reduction / 100)
-                            res['cost'] = math.ceil(cost)
-                        elif age:
-                            cost = result['cost'] * (1 - reduction / 100)
-                            res['cost'] = math.ceil(cost)
+                apply_reduction(res, request.args, result)
             else:
-                if age and age >= 6:
-                    if age > 64:
-                        res['cost'] = math.ceil(result['cost'] * .4)
-                    else:
-                        res.update(result)
-                else:
-                    res['cost'] = 0
-
+                handle_night_pass(res, request.args, result)
     return res
+
+def apply_reduction(res, args, result):
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM holidays')
+    is_holiday = check_holiday(cursor, args.get("date"))
+    reduction = 0
+    
+    if not is_holiday and "date" in args and datetime.fromisoformat(args["date"]).weekday() == 0:
+        reduction = 35
+    
+    age = args.get("age", type=int)
+    if age < 15:
+        res["cost"] = math.ceil(result["cost"] * 0.7)
+    else:
+        cost = result["cost"] * (1 - reduction / 100)
+        if age > 64:
+            cost *= 0.75
+        res["cost"] = math.ceil(cost)
+
+
+def check_holiday(cursor, date_str):
+    date = datetime.fromisoformat(date_str)
+    for row in cursor.fetchall():
+        holiday = row[0]
+        if d.year == holiday.year and d.month == holiday.month and holiday.day == d.day:
+            is_holiday = True
+    return False
+
+
+def handle_night_pass(res, args, result):
+    age = args.get("age", type=int)
+    if age >= 6:
+        if age > 64:
+            res["cost"] = math.ceil(result["cost"] * 0.4)
+        else:
+            res.update(result)
+    else:
+        res["cost"] = 0
 
 
 if __name__ == "__main__":
