@@ -37,6 +37,9 @@ def prices():
                        + 'WHERE type = ? ', (request.args['type'],))
 
         row = cursor.fetchone()
+        if row is None:
+            # if no lift pass is found
+            return {"error": "No lift pass found for this type."}
         result = {"cost": row[0]}
 
         if age in request.args:
@@ -83,7 +86,10 @@ def apply_reduction(res, args, result):
 def check_holiday(cursor, date_str):
     """
     Check if the date is a holiday
+    If date not provided, return False
     """
+    if not date_str:
+        return False
     date = datetime.fromisoformat(date_str)
     for row in cursor.fetchall():
         holiday = row[0]
