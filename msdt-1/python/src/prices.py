@@ -21,6 +21,7 @@ def prices():
     global connection
     if connection is None:
         connection = create_lift_pass_db_connection(connection_options)
+
     if request.method == 'PUT':
         lift_pass_cost = request.args["cost"]
         lift_pass_type = request.args["type"]
@@ -28,14 +29,23 @@ def prices():
         cursor.execute('INSERT INTO `base_price` (type, cost) VALUES (?, ?) ' +
             'ON DUPLICATE KEY UPDATE cost = ?', (lift_pass_type, lift_pass_cost, lift_pass_cost))
         return {}
+
     elif request.method == 'GET':
         cursor = connection.cursor()
         cursor.execute(f'SELECT cost FROM base_price '
                        + 'WHERE type = ? ', (request.args['type'],))
+
         row = cursor.fetchone()
         result = {"cost": row[0]}
-        if 'age' in request.args and request.args.get('age', type=int) < 6:
+
+        if age in request.args:
+            age = request.args.get('age', type=int)
+        else:
+            age = None
+
+        if age and age < 6:
              res["cost"] = 0
+
         else:
             if "type" in request.args and request.args["type"] != "night":
                 cursor = connection.cursor()
@@ -52,22 +62,22 @@ def prices():
                     reduction = 35
 
                 # TODO: apply reduction for others
-                if 'age' in request.args and request.args.get('age', type=int) < 15:
+                if age and age < 15:
                      res['cost'] = math.ceil(result["cost"]*.7)
                 else:
-                    if 'age' not in request.args:
+                    if not age:
                         cost = result['cost'] * (1 - reduction/100)
                         res['cost'] = math.ceil(cost)
                     else:
-                        if 'age' in request.args and request.args.get('age', type=int) > 64:
+                        if age and age > 64:
                             cost = result['cost'] * .75 * (1 - reduction / 100)
                             res['cost'] = math.ceil(cost)
-                        elif 'age' in request.args:
+                        elif age:
                             cost = result['cost'] * (1 - reduction / 100)
                             res['cost'] = math.ceil(cost)
             else:
-                if 'age' in request.args and request.args.get('age', type=int) >= 6:
-                    if request.args.get('age', type=int) > 64:
+                if age and age >= 6:
+                    if age > 64:
                         res['cost'] = math.ceil(result['cost'] * .4)
                     else:
                         res.update(result)
