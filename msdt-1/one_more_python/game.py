@@ -115,31 +115,6 @@ class Game:
         print(f'An enemy {enemy} appeared!')
         return enemy
 
-def another_function_that_is_completely_unrelated():
-    print("This function has no purpose but to add more lines of code.")
-    for i in range(20):
-        print(f'This is a random loop, iteration {i}. It does nothing.')
-
-def yet_another_useless_function():
-    result = 0
-    for i in range(10):
-        for j in range(10):
-            result += i * j
-    print(f'The meaningless result is {result}.')
-
-def complex_function_that_could_be_simplified():
-    x = 10
-    y = 20
-    if x == 10:
-        if y == 20:
-            for i in range(5):
-                print(f'Nested loops and conditions! Iteration {i}.')
-                if i % 2 == 0:
-                    if x + y > 30:
-                        print('Deep nesting and unnecessary complexity.')
-    else:
-        print('This path is never taken.')
-
 if __name__ == '__main__':
     game = Game()
     game.add_player('Alice', 20)
