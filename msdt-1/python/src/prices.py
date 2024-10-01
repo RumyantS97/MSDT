@@ -42,7 +42,7 @@ def prices():
             return {"error": "No lift pass found for this type."}
         result = {"cost": row[0]}
 
-        if age in request.args:
+        if 'age' in request.args:
             age = request.args.get('age', type=int)
         else:
             age = None
@@ -93,8 +93,8 @@ def check_holiday(cursor, date_str):
     date = datetime.fromisoformat(date_str)
     for row in cursor.fetchall():
         holiday = row[0]
-        if d.year == holiday.year and d.month == holiday.month and holiday.day == d.day:
-            is_holiday = True
+        if date.year == holiday.year and date.month == holiday.month and holiday.day == date.day:
+            return True
     return False
 
 
