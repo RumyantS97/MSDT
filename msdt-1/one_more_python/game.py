@@ -1,6 +1,7 @@
 import random
 import time
 
+
 class Player:
     def __init__(self, name, age):
         self.name = name
@@ -18,7 +19,8 @@ class Player:
             damage = random.randint(1, self.strength)
             other_player.health -= damage
             self.energy -= 10
-            print(f'{self.name} attacked {other_player.name} for {damage} damage. {other_player.name} has {other_player.health} health left.')
+            print(
+                f'{self.name} attacked {other_player.name} for {damage} damage. {other_player.name} has {other_player.health} health left.')
             if other_player.health <= 0:
                 print(f'{other_player.name} is defeated!')
                 self.gain_experience(10)
@@ -50,7 +52,9 @@ class Player:
         print(f'{self.name} collected {item}.')
 
     def show_status(self):
-        print(f'Player {self.name}: Health: {self.health}, Energy: {self.energy}, Score: {self.score}, Experience: {self.experience}, Strength: {self.strength}, Defense: {self.defense}, Items: {self.items}')
+        print(
+            f'Player {self.name}: Health: {self.health}, Energy: {self.energy}, Score: {self.score}, Experience: {self.experience}, Strength: {self.strength}, Defense: {self.defense}, Items: {self.items}')
+
 
 class Game:
     def __init__(self):
@@ -72,25 +76,32 @@ class Game:
             for player in self.players:
                 print(f"\nIt's {player.name}'s turn.")
                 player.show_status()
-                action = input('Choose action: 1-Attack, 2-Rest, 3-Collect item, 4-End game\n')
-                if action == '1':
-                    if len(self.players) > 1:
-                        opponent = self.choose_opponent(player)
-                        player.attack(opponent)
-                    else:
-                        print('No other players to attack.')
-                elif action == '2':
-                    player.rest()
-                elif action == '3':
-                    item = random.choice(self.items)
-                    player.collect_item(item)
-                elif action == '4':
-                    self.end_game()
-                else:
-                    print('Invalid action!')
+
+                action = self.get_player_action()
+                self.handle_action(player, action)
 
                 if self.check_game_over():
                     break
+
+    def get_player_action(self):
+        return input('Choose action: 1-Attack, 2-Rest, 3-Collect item, 4-End game\n')
+
+    def handle_action(self, player, action):
+        if action == '1':
+            if len(self.players) > 1:
+                opponent = self.choose_opponent(player)
+                player.attack(opponent)
+            else:
+                print('No other players to attack.')
+        elif action == '2':
+            player.rest()
+        elif action == '3':
+            item = random.choice(self.items)
+            player.collect_item(item)
+        elif action == '4':
+            self.end_game()
+        else:
+            print('Invalid action!')
 
     def choose_opponent(self, current_player):
         opponents = [p for p in self.players if p != current_player]
@@ -115,11 +126,9 @@ class Game:
         print(f'An enemy {enemy} appeared!')
         return enemy
 
+
 if __name__ == '__main__':
     game = Game()
     game.add_player('Alice', 20)
     game.add_player('Bob', 22)
     game.start_game()
-    another_function_that_is_completely_unrelated()
-    yet_another_useless_function()
-    complex_function_that_could_be_simplified()
