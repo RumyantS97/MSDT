@@ -1,11 +1,11 @@
 class Yahtzee:
     @staticmethod
-    def chance(dice):
+    def calculate_scores_sum_of_all_dice(dice):
         return sum(dice)
 
 
     @staticmethod
-    def yahtzee(dice):
+    def calculate_yahtzee_score(dice):
         counts = [0] * (len(dice) + 1)
         for die in dice:
             counts[die - 1] += 1
@@ -16,17 +16,17 @@ class Yahtzee:
     
 
     @staticmethod
-    def ones(dice):
+    def calculate_ones_score(dice):
         return sum( 1 for d in dice if d == 1)
     
 
     @staticmethod
-    def twos(dice):
+    def calculate_twos_score(dice):
         return sum(2 for d in dice if d == 2)
     
     
     @staticmethod
-    def threes(dice):
+    def calculate_threes_score(dice):
         return sum(3 for d in dice if d == 3)
     
 
@@ -37,7 +37,7 @@ class Yahtzee:
         self.dice = args
     
     
-    def fours(self):
+    def calculate_fours_score(self):
         sum = 0
         for value in range(5):
             if (self.dice[value] == 4): 
@@ -45,7 +45,7 @@ class Yahtzee:
         return sum
     
 
-    def fives(self):
+    def calculate_fives_score(self):
         sum = 0
         i = 0
         for i in range(len(self.dice)): 
@@ -54,7 +54,7 @@ class Yahtzee:
         return sum
     
 
-    def sixes(self):
+    def calculate_sixes_score(self):
         sum = 0
         for at in range(len(self.dice)): 
             if (self.dice[at] == 6):
@@ -63,7 +63,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def score_pair(dice):
+    def calculate_pair_score(dice):
         if len(dice) != 5:
             raise ValueError("Должно быть ровно 5 элементов.")
     
@@ -79,7 +79,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def two_pair(dice):
+    def calculate_two_pair_score(dice):
         if len(dice) != 5:
             raise ValueError("Должно быть ровно 5 элементов.")
     
@@ -101,7 +101,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def four_of_a_kind(dice):
+    def calculate_four_of_a_kind_score(dice):
         tallies = [0] * 6
 
         for value in dice:
@@ -114,7 +114,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def three_of_a_kind(dice):
+    def calculate_three_of_a_kind_score(dice):
         tallies = [0] * 6
 
         for value in dice:
@@ -127,7 +127,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def small_straight(dice):
+    def calculate_small_straight_score(dice):
         tallies = [0] * 6
 
         for value in dice:
@@ -140,7 +140,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def large_straight(dice):
+    def calculate_large_straight_score(dice):
         tallies = [0] * 6
         
         for value in dice:
@@ -153,7 +153,7 @@ class Yahtzee:
     
 
     @staticmethod
-    def full_house(dice):
+    def calculate_full_house_score(dice):
         tallies = [] * 6
         key_2 = False
         i = 0
