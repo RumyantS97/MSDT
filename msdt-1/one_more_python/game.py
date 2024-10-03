@@ -20,7 +20,8 @@ class Player:
             other_player.health -= damage
             self.energy -= 10
             print(
-                f'{self.name} attacked {other_player.name} for {damage} damage. {other_player.name} has {other_player.health} health left.')
+                f'{self.name} attacked {other_player.name} for {damage} damage. '
+                f'{other_player.name} has {other_player.health} health left.')
             if other_player.health <= 0:
                 print(f'{other_player.name} is defeated!')
                 self.gain_experience(10)
@@ -53,7 +54,8 @@ class Player:
 
     def show_status(self):
         print(
-            f'Player {self.name}: Health: {self.health}, Energy: {self.energy}, Score: {self.score}, Experience: {self.experience}, Strength: {self.strength}, Defense: {self.defense}, Items: {self.items}')
+            f'Player {self.name}: Health: {self.health}, Energy: {self.energy}, Score: {self.score}, '
+            f'Experience: {self.experience}, Strength: {self.strength}, Defense: {self.defense}, Items: {self.items}')
 
 
 class Game:

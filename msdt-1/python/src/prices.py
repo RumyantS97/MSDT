@@ -69,7 +69,8 @@ def apply_reduction(res, args, result):
     is_holiday = check_holiday(cursor, args.get("date"))
     reduction = 0
     
-    if not is_holiday and "date" in args and datetime.fromisoformat(args["date"]).weekday() == 0:
+    if (not is_holiday and "date" in args and
+            datetime.fromisoformat(args["date"]).weekday() == 0):
         # monday non holiday reduction
         reduction = 35
     
