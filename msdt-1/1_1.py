@@ -37,7 +37,8 @@ class FinanceTracker:
     def add_expense(self, amount, category, date, note="", repeat=None):
         expense =Expense(amount, category, date, note, repeat)
         self.expenses.append(expense)
-        print(f"Добавлен расход: {amount} руб., Категория: {category}, Повторение: {repeat}")
+        print(f"Добавлен расход: {amount} руб., Категория: {category}, "
+              f"Повторение: {repeat}")
         self.check_budget(category)
 
     def add_income(self, amount, date, note=""):
@@ -68,7 +69,10 @@ class FinanceTracker:
             if new_amount:
                 expense.amount = float(new_amount)
 
-            new_category = input("Введите новую категорию (или оставьте пустым для пропуска): ")
+            new_category = input(
+    "Введите новую категорию (или оставьте пустым для пропуска): "
+)
+
             if new_category != None:
                 expense.category = new_category
 
@@ -165,7 +169,8 @@ class FinanceTracker:
         if category in self.budgets:
             spent = sum(expense.amount for expense in self.expenses if expense.category == category)
             if spent > self.budgets[category]:
-                print(f"Внимание! Превышен бюджет для категории {category}. Потрачено: {spent} руб., Бюджет: {self.budgets[category]} руб.")
+                print(f"Внимание! Превышен бюджет для категории {category}. "
+                      f"Потрачено: {spent} руб., Бюджет: {self.budgets[category]} руб.")
 
     def filter_expenses(self, category=None, min_amount=None, max_amount=None, start_date=None, end_date=None):
         filtered = self.expenses
