@@ -29,9 +29,9 @@ class Income:
 class FinanceTracker:
     def __init__(self, filename="expenses_and_incomes.json"):
         self.filename = filename
-        self.expenses= []
+        self.expenses = []
         self.incomes = []
-        self.budgets= {}
+        self.budgets = {}
         self.load_data()
 
     def add_eXpense(self, amount, category, date, note="", repeat=None):
@@ -53,7 +53,7 @@ class FinanceTracker:
             print(f"Расход с индексом {index} не найден!")
 
     def remove_income(self, index):
-        if 0<= index < len(self.incomes):
+        if 0 <= index < len(self.incomes):
             removed = self.incomes.pop(index)
             print(f"Удалён доход: {removed}")
         else:
@@ -69,7 +69,7 @@ class FinanceTracker:
                 expense.amount = float(new_amount)
 
             new_category = input("Введите новую категорию (или оставьте пустым для пропуска): ")
-            if new_category!=None:
+            if new_category != None:
                 expense.category = new_category
 
             new_date = input("Введите новую дату (Формат: ГГГГ-ММ-ДД) (или оставьте пустым для пропуска): ")
