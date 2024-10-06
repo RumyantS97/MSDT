@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 
 
 class Expense:
+    """Класс, представляющий расход."""
+
     def __init__(self, amount, category, date, note="", repeat=None):
         self.amount = amount
         self.category = category
@@ -28,6 +30,8 @@ class Income:
 
 
 class FinanceTracker:
+    """Класс для отслеживания финансов."""
+
     def __init__(self, filename="expenses_and_incomes.json"):
         self.filename = filename
         self.expenses = []
@@ -225,6 +229,7 @@ class FinanceTracker:
 
 
 def display_menu():
+    """Отображение меню действий."""
     print("\nМеню:")
     print("1. Добавить расход")
     print("2. Добавить доход")
@@ -247,6 +252,7 @@ def display_menu():
 
 
 def main():
+    """Главная функция программы, управляющая логикой приложения."""
     tracker = FinanceTracker()
 
     while True:
