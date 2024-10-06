@@ -236,7 +236,6 @@ def display_menu():
     print("14. Фильтровать расходы")
     print("15. Сохранить данные")
     print("16. Загрузить данные")
-
     print("17. Очистить все данные")
     print("18. Выход")
 
@@ -306,16 +305,12 @@ def main():
             max_amount = input("Введите максимальную сумму для фильтрации (или оставьте пустым): ")
             start_date = input("Введите начальную дату для фильтрации (ГГГГ-ММ-ДД) (или оставьте пустым): ")
             end_date = input("Введите конечную дату для фильтрации (ГГГГ-ММ-ДД) (или оставьте пустым): ")
-
             min_amount = float(min_amount) if min_amount else None
             max_amount = float(max_amount) if max_amount else None
-
             tracker.filter_expenses(category, min_amount, max_amount, start_date, end_date)
 
         elif choice == "14":
             tracker.save_data()
-
-
 
         elif choice == "15":
             tracker.load_data()
