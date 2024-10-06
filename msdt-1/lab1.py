@@ -68,9 +68,9 @@ mediana = median(arr)
 print("Медиана: ", mediana)
 
 # Размах вариации 🌳
-raZmah1 = 0
-raZmah1 = max(arr_time) - min(arr_time)
-print("Размах вариации: ", raZmah1)
+razmah1 = 0
+razmah1 = max(arr_time) - min(arr_time)
+print("Размах вариации: ", razmah1)
 
 # Дисперсия 🌲
 dispersia = np.var(arr)
@@ -293,11 +293,11 @@ mean_x = sum([x * n for x, n in zip(x_values, n_x)]) / sum(n_x)
 mean_y = sum([y * n for y, n in zip(y_values, n_y)]) / sum(n_y)
 
 # Стандартное отклонение и среднее для каждой выборки
-S_x = (sum([n * ((x - mean_x) ** 2) for x, n in zip(x_values, n_x)]) / (sum(n_x) - 1)) ** 0.5
-S_y = (sum([n * ((y - mean_y) ** 2) for y, n in zip(y_values, n_y)]) / (sum(n_y) - 1)) ** 0.5
+s_x = (sum([n * ((x - mean_x) ** 2) for x, n in zip(x_values, n_x)]) / (sum(n_x) - 1)) ** 0.5
+s_y = (sum([n * ((y - mean_y) ** 2) for y, n in zip(y_values, n_y)]) / (sum(n_y) - 1)) ** 0.5
 
 # Расчет t-статистики и p-значения
-t_statistic, p_value = st.ttest_ind_from_stats(mean_x, S_x, sum(n_x), mean_y, S_y, sum(n_y))
+t_statistic, p_value = st.ttest_ind_from_stats(mean_x, s_x, sum(n_x), mean_y, s_y, sum(n_y))
 
 # Определение уровня значимости
 alpha = 0.05
