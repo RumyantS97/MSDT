@@ -1,4 +1,3 @@
-import math
 from statistics import mode
 from statistics import median
 import numpy as np
