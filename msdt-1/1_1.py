@@ -126,7 +126,7 @@ class FinanceTracker:
             print(f"{idx}. {income}")
 
     def apply_recurring_expenses(self):
-        today = datetime.now().strftime(("%Y-%m-%d"))
+        today = datetime.now().strftime("%Y-%m-%d")
         new_expenses = []
         for expense in self.expenses:
             if expense.repeat == "weekly":
@@ -249,8 +249,8 @@ def main():
         choice = input("Выберите действие (1-17): ")
 
         if choice == "1":
-            amount = (input("Введите сумму расхода: "))
-            category = (input("Введите категорию: "))
+            amount = input("Введите сумму расхода: ")
+            category = input("Введите категорию: ")
             date = input("Введите дату (Формат: ГГГГ-ММ-ДД): ")
             note = input("Введите заметку (опционально): ")
             repeat = input("Введите интервал повторения (weekly/monthly) или оставьте пустым: ")
