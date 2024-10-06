@@ -21,8 +21,8 @@ class LinkedList:
     def __init__(self):
         """Инициализация пустого связанного списка."""
         self.head = None
-            
-    def add_at_position(self, pos, data): 
+
+    def add_at_position(self, pos, data):
         """
         Добавляет узел с данными в указанную позицию.
 
@@ -47,8 +47,8 @@ class LinkedList:
         else:
             new_node.next = current.next
             current.next = new_node
-        
-    def delete_at_position(self, pos):    
+
+    def delete_at_position(self, pos):
         """
         Удаляет узел в указанной позиции.
 
@@ -96,7 +96,7 @@ class LinkedList:
         while current.next:
             current = current.next
         current.next = new_node
-        
+
     def delete_first(self):
         """Удаляет первый узел списка."""
         if self.head is None:
@@ -128,7 +128,7 @@ class LinkedList:
         for _ in range(size):
             rand_num = random.randint(min_val, max_val)
             self.add_to_end(rand_num)
-        
+
     def display_list(self):
         """Выводит содержимое списка в консоль."""
         if self.head == None:
@@ -136,11 +136,11 @@ class LinkedList:
             return
         current = self.head
         while current:
-            print(current.data, end=' ')
+            print(current.data, end=" ")
             current = current.next
         print()
 
-    def sort_list(self): 
+    def sort_list(self):
         """Сортирует список по возрастанию."""
         if self.head == None:
             return
@@ -159,7 +159,8 @@ class LinkedList:
         """
         Находит максимальное значение в списке.
 
-        :return: Максимальное значение, если список не пуст; None в противном случае.
+        :return: Максимальное значение, если список не пуст; 
+        None в противном случае.
         """
         if self.head is None:
             return None
@@ -170,12 +171,13 @@ class LinkedList:
                 max_value = current.data
             current = current.next
         return max_value
-        
+
     def find_min(self):
         """
         Находит минимальное значение в списке.
 
-        :return: Минимальное значение, если список не пуст; None в противном случае.
+        :return: Минимальное значение, если список не пуст; 
+        None в противном случае.
         """
         if self.head is None:
             return None
@@ -211,7 +213,7 @@ class LinkedList:
         sum_of_squares = 0
         current = self.head
         while current:
-            sum_of_squares += current.data ** 2
+            sum_of_squares += current.data**2
             current = current.next
         return math.sqrt(sum_of_squares)
 
@@ -233,7 +235,7 @@ class LinkedList:
         :return: True, если список пуст; False в противном случае.
         """
         return self.head is None
-        
+
     def clear_list(self):
         """Удаляет все элементы из списка."""
         self.head = None
@@ -242,7 +244,8 @@ class LinkedList:
         """
         Вычисляет среднее значение элементов списка.
 
-        :return: Среднее значение, если список не пуст; None в противном случае.
+        :return: Среднее значение, если список не пуст; 
+        None в противном случае.
         """
         if self.head is None:
             return None
@@ -259,7 +262,8 @@ class LinkedList:
         """
         Проверяет, является ли список палиндромом.
 
-        :return: True, если список является палиндромом; False в противном случае.
+        :return: True, если список является палиндромом; 
+        False в противном случае.
         """
         values = []
         current = self.head
@@ -300,7 +304,7 @@ class LinkedList:
                 return current.data
             current = current.next
         return None
-        
+
     def count_occurrences(self, value):
         """
         Подсчитывает количество вхождений указанного значения в списке.
@@ -388,15 +392,15 @@ l1.display_list()
 
 # Подсчет вхождений элемента
 value = 5
-occurrences = l1.count_occurrences(value)  
+occurrences = l1.count_occurrences(value)
 print(f"Value {value} occurs {occurrences} times.")
 
 # Удаление всех вхождений элемента
-l1.delete_all_occurrences(5)  
+l1.delete_all_occurrences(5)
 print("After deleting all occurrences of 5:")
 l1.display_list()
 
 # Дублирование всех элементов списка
-l1.duplicate_elements()  
+l1.duplicate_elements()
 print("After duplicating all elements:")
 l1.display_list()
