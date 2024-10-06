@@ -5,7 +5,18 @@ from datetime import datetime, timedelta
 
 
 class Expense:
+    """Класс, представляющий расход."""
+
     def __init__(self, amount, category, date, note="", repeat=None):
+        """Инициализация расхода.
+
+        Args:
+            amount (float): Сумма расхода.
+            category (str): Категория расхода.
+            date (str): Дата расхода в формате ГГГГ-ММ-ДД.
+            note (str): Заметка о расходе.
+            repeat (str, optional): Интервал повторения ("weekly" или "monthly"). По умолчанию None.
+        """
         self.amount = amount
         self.category = category
         self.date = date
@@ -28,7 +39,14 @@ class Income:
 
 
 class FinanceTracker:
+    """Класс для отслеживания финансов."""
+    
     def __init__(self, filename="expenses_and_incomes.json"):
+        """Инициализация трекера финансов.
+
+        Args:
+            filename (str): Имя файла для сохранения данных.
+        """
         self.filename = filename
         self.expenses = []
         self.incomes = []
@@ -36,6 +54,15 @@ class FinanceTracker:
         self.load_data()
 
     def add_expense(self, amount, category, date, note="", repeat=None):
+        """Добавить новый расход.
+
+        Args:
+            amount (float): Сумма расхода.
+            category (str): Категория расхода.
+            date (str): Дата расхода в формате ГГГГ-ММ-ДД.
+            note (str, optional): Заметка о расходе.
+            repeat (str, optional): Интервал повторения ("weekly" или "monthly").
+        """
         expense = Expense(amount, category, date, note, repeat)
         self.expenses.append(expense)
         print(f"Добавлен расход: {amount} руб., Категория: {category}, "
@@ -223,6 +250,7 @@ class FinanceTracker:
 
 
 def display_menu():
+    """Отображение меню действий."""
     print("\nМеню:")
     print("1. Добавить расход")
     print("2. Добавить доход")
@@ -245,6 +273,7 @@ def display_menu():
 
 
 def main():
+    """Главная функция программы, управляющая логикой приложения."""
     tracker = FinanceTracker()
 
     while True:
