@@ -34,7 +34,7 @@ class FinanceTracker:
         self.budgets = {}
         self.load_data()
 
-    def add_eXpense(self, amount, category, date, note="", repeat=None):
+    def add_expense(self, amount, category, date, note="", repeat=None):
         expense =Expense(amount, category, date, note, repeat)
         self.expenses.append(expense)
         print(f"Добавлен расход: {amount} руб., Категория: {category}, Повторение: {repeat}")
@@ -45,7 +45,7 @@ class FinanceTracker:
         self.incomes.append(income)
         print(f"Добавлен доход: {amount} руб.")
 
-    def remove_eXpense(self, index):
+    def remove_expense(self, index):
         if 0 <= index < len(self.expenses):
             removed = self.expenses.pop(index)
             print(f"Удален расход: {removed}")
@@ -59,7 +59,7 @@ class FinanceTracker:
         else:
             print(f"Доход с индексом {index} не найден!")
 
-    def edit_eXpense(self, index):
+    def edit_expense(self, index):
         if 0 <= index < len(self.expenses):
             expense = self.expenses[index]
             print(f"Редактирование расхода: {expense}")
@@ -88,7 +88,7 @@ class FinanceTracker:
         else:
             print(f"Расход с индексом {index} не найден!")
 
-    def edit_Income(self, index):
+    def edit_income(self, index):
         if 0 <= index < len(self.incomes):
             income = self.incomes[index]
             print(f"Редактирование дохода: {income}")
