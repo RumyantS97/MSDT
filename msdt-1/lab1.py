@@ -81,7 +81,11 @@ mid_square = np.std(arr)
 print("Среднее квадратическое отклонение: ", mid_square)
 
 # Коэффициент вариации 🍄
-cv = lambda x: np.std(x, ddof=1) / np.mean(x) * 100
+
+
+def cv(x): return np.std(x, ddof=1) / np.mean(x) * 100
+
+
 print("Коэффициент вариации: ", cv(arr))
 
 
