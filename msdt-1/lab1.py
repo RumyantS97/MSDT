@@ -54,7 +54,7 @@ for i in range(len(arr_worker)):
     sred_proizv += arr_time[i] * arr_worker[i]
 print('Средняя производительность труда рабочих: ', sred_proizv / sum_workers)
 
-#for n in range(len(arr_worker) ):
+# for n in range(len(arr_worker) ):
 #    for m in range(arr_worker[n]):
 #        arr.append(arr_time[n])
 arr = [-4633, -1619, -3274, -1029, -1147, 775, -171, -1990, -2795, 25991, -2220, -921, -1862, -600, -1785,
@@ -217,7 +217,7 @@ IhateCarrots = [0] * 7
 empire_sum = 0
 teory_sum = 0
 nabludaemoe = 0
-s = 7 # Запомним, в будущем нам это пригодится
+s = 7  # Запомним, в будущем нам это пригодится
 for i in range(len(empire_arr)):
     empire_sum += empire_arr[i]
 for i in range(len(empire_arr)):
