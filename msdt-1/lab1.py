@@ -10,12 +10,12 @@ import random
 print("====================Первый номер====================\n")
 first_number = [23, 25, 42, 34, 27, 19, 21, 34, 41]
 sr = 0
-for i in range (len(first_number)):
+for i in range(len(first_number)):
     sr += first_number[i]
-sr = sr/len(first_number)+1
+sr = sr / len(first_number) + 1
 sr = 30.66667
 print(sr)
-alpha1=0.95
+alpha1 = 0.95
 loc1 = np.mean(sr)
 scale1 = st.sem(first_number)
 interval_first = st.norm.interval(alpha1, loc1, scale1)
@@ -24,7 +24,7 @@ print("95% доверительный интервал для средней д�
 # Для дисперсии 🌴
 disperser = np.var(first_number)
 mean1 = np.mean(disperser)
-loc1=mean1
+loc1 = mean1
 scale1 = st.sem(first_number)
 interval_first2 = st.norm.interval(alpha1, loc1, scale1)
 print("95% доверительный интервал для дисперсии выручки:", interval_first2)
@@ -33,7 +33,7 @@ print("95% доверительный интервал для дисперсии
 SKO = np.std(first_number)
 mean1 = np.mean(SKO)
 
-loc1=mean1
+loc1 = mean1
 scale1 = st.sem(first_number)
 interval_first3 = st.norm.interval(alpha1, loc1, scale1)
 print("95% доверительный интервал для СКО:", interval_first3)
@@ -58,7 +58,7 @@ print('Средняя производительность труда рабоч
 #for n in range(len(arr_worker) ):
 #    for m in range(arr_worker[n]):
 #        arr.append(arr_time[n])
-arr = [-4633, -1619, -3274, -1029, -1147, 775, -171, -1990,-2795, 25991, -2220,-921,-1862,-600,-1785,-2158,-1422,13873,1068,-3387,-454,97,-551,-2019,2267,19643,-3096,-152,-1697,1700]
+arr = [-4633, -1619, -3274, -1029, -1147, 775, -171, -1990, -2795, 25991, -2220, -921, -1862, -600, -1785, -2158, -1422, 13873, 1068, -3387, -454, 97, -551, -2019, 2267, 19643, -3096, -152, -1697, 1700]
 # Мода 🍒
 moda = mode(arr)
 print("Мода: ", moda)
@@ -89,29 +89,29 @@ print("Коэффициент вариации: ", cv(arr))
 # Доверительный интервал 🌱
 
 # Для среднего времени обработки одной детали 🌿
-mean = np.mean((19+21+23+25+27+29)/6)
+mean = np.mean((19 + 21 + 23 + 25 + 27 + 29) / 6)
 std_err = st.sem(arr)
-loc=mean
-alpha=0.99
-scale=std_err
+loc = mean
+alpha = 0.99
+scale = std_err
 interval = st.norm.interval(alpha, loc, scale)
 print("99% доверительный интервал для среднего времени обработки одной детали:", interval)
 
 # Для дисперсии ☘️
 mean = np.mean(dispersia)
 std_err = st.sem(arr)
-loc=mean
-alpha=0.99
-scale=std_err
+loc = mean
+alpha = 0.99
+scale = std_err
 interval = st.norm.interval(alpha, loc, scale)
 print("99% доверительный интервал для дисперсии:", interval)
 
 # Для СКО 🎍
 mean = np.mean(mid_square)
 std_err = st.sem(arr)
-loc=mean
-alpha=0.99
-scale=std_err
+loc = mean
+alpha = 0.99
+scale = std_err
 interval = st.norm.interval(alpha, loc, scale)
 print("99% доверительный интервал для СКО:", interval)
 
@@ -120,16 +120,16 @@ print("99% доверительный интервал для СКО:", interval
 print("\n====================Третий номер====================\n")
 third_arr = [1.6, 1.9, 2.0, 2.1, 2.2, 2.4, 2.5, 2.6, 2.7, 2.8, 2.8, 2.9, 2.9, 3.0, 3.1, 3.2, 3.2, 3.3, 3.4, 3.4, 3.4, 3.5, 3.5, 3.5, 3.5, 3.6, 3.7, 3.9]
 sr = 0
-for o in range (len(third_arr)):
+for o in range(len(third_arr)):
     sr += third_arr[o]
-sr = sr/len(third_arr)
+sr = sr / len(third_arr)
 
 # Для средней себестоимости 🍁
 mean = np.mean(sr)
 std_err = st.sem(third_arr)
-loc=mean
-alpha=0.93
-scale=std_err
+loc = mean
+alpha = 0.93
+scale = std_err
 interval = st.norm.interval(alpha, loc, scale)
 print("93% доверительный интервал для средней себестоимости:", interval)
 
@@ -137,9 +137,9 @@ print("93% доверительный интервал для средней с�
 mid_square3 = np.std(third_arr)
 mean = np.mean(mid_square3)
 std_err = st.sem(third_arr)
-loc=mean
-alpha=0.93
-scale=std_err
+loc = mean
+alpha = 0.93
+scale = std_err
 interval = st.norm.interval(alpha, loc, scale)
 print("93% доверительный интервал для среднеквадратического отклонения:", interval)
 
@@ -155,16 +155,16 @@ for nn in range(len(array_worker) - 1):
 
 # Среднее время, которое рабочий тратит на изготовление детали 🐳
 sred_znach = 0
-for nnn in range (len(array)):
+for nnn in range(len(array)):
     sred_znach += array[nnn]
 sred_znach = sred_znach / len(array)
 
 # Доверительный интервал для cреднего времени, которое рабочий тратит на изготовление детали 🎋
 mean = np.mean(sred_znach)
 std_err = st.sem(array)
-loc=mean
-alpha=0.999
-scale=std_err
+loc = mean
+alpha = 0.999
+scale = std_err
 interval4 = st.norm.interval(alpha, loc, scale)
 print("99.9% доверительный интервал для cреднего времени, которое рабочий тратит на изготовление детали:", interval4)
 
@@ -216,7 +216,7 @@ for i in range(len(empire_arr)):
 for i in range(len(empire_arr)):
     teory_sum += empire_arr[i]
 for i in range(len(empire_arr)):
-    IhateCarrots[i] = ((empire_arr[i] - teory_arr[i])**2)/teory_arr[i]
+    IhateCarrots[i] = ((empire_arr[i] - teory_arr[i]) ** 2) / teory_arr[i]
     nabludaemoe += IhateCarrots[i]
 if (teory_sum != empire_sum):
     print("Сумма частот различается и дальше нет смысла проводить исследование")
