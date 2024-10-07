@@ -16,7 +16,6 @@ def get_links():
             data[elem.text.strip()] = link['href']
     return data
 
-
 def get_groups_via_links(data: dict) -> dict[str, set[str]]:
     group_fac = {}
     for key in data.keys():
@@ -27,7 +26,7 @@ def get_groups_via_links(data: dict) -> dict[str, set[str]]:
 
         for group in groups:
             group_fac[key].add(group.text[6:].strip())
-            
+
         for key in data.keys():
             data[key] = list(data[key])
     return group_fac
