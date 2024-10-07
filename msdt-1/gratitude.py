@@ -24,6 +24,7 @@ def gratitude():
         cells[0].text = str(num_rows) + "."  # порядковый номер
         cells[1].text = input("Введите ФИО: ")  # ФИО
         cells[2].text = input("Введите Группу: ")  # Группа
+        
         next_step = input("Для продолжения нажмите Enter, Чтобы закончить напишите 'e', : ")
         if next_step.lower() == "e" or next_step.lower() == "е":  # e на русском и на англ
             break
@@ -33,8 +34,9 @@ def gratitude():
     organization_print = doc.paragraphs[6]
     organization_print.add_run(organization + ".")
 
+    # необходимо создать папку "ReadyThanks" в корне проекта
     doc.save(
-        f"ReadyThanks\\Благотворительное письмо {organization}.docx")  # необходимо создать папку "ReadyThanks" в корне проекта
+        f"ReadyThanks\\Благотворительное письмо {organization}.docx")
 
 
 gratitude()

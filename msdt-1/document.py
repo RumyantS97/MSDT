@@ -75,18 +75,22 @@ class Documents:
 
         # добавление фио директора
         self.exemption_doc.paragraphs[2].add_run(self.director_name)
+
         # добавление названия мероприятия
         for i in self.exemption_doc.paragraphs:
             i.text = i.text.replace("event", self.event_name)
+
         # добавление даты мероприятия
         for j in self.exemption_doc.paragraphs:
             j.text = j.text.replace("date", self.date)
+
         # добавление подписи
         sign = self.exemption_doc.tables[1]
         p = sign.cell(0, 0).add_paragraph('\n'+self.signature_post)
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p = sign.cell(0, 1).add_paragraph(self.signature_name)
         p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+
         # Заполнение таблицы
         fio = self.exemption_doc.tables[0]
         i = 0
@@ -122,10 +126,12 @@ class Documents:
         fio = self.thanks_doc.tables[2]
         for i in self.thanks_doc.paragraphs:
             i.text = i.text.replace("event", self.event_name)
+
         # добавление даты мероприятия
         for j in self.thanks_doc.paragraphs:
             j.text = j.text.replace("date", self.date)
         i = 0
+        
         # добавление подписи
         sign = self.thanks_doc.tables[3]
         p = sign.cell(0, 0).add_paragraph(self.signature_post)

@@ -9,6 +9,7 @@ def get_links():
     html = requests.get("https://ssau.ru/rasp").text
     page = BeautifulSoup(html, 'lxml')
     facultets = page.find_all('div', class_='card-default faculties__item')
+    
     for elem in facultets:
         links = elem.find_all('a', href=True)
         for link in links:
