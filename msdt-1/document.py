@@ -4,6 +4,9 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 
 class Documents:
+    """
+    Класс для создания документов, таких как освобождение и благодарность.
+    """
     exemption_doc: Document
     thanks_doc: Document
     _sample_dir: str
@@ -21,29 +24,52 @@ class Documents:
         self.signature_name = 'person'
 
     def set_data(self, date: str):
+        """
+        Устанавливает дату мероприятия.
+        """
         self.date = date
 
     def set_event_name(self, event_name: str):
+        """
+        Устанавливает название мероприятия.
+        """
         self.event_name = event_name
 
     def set_institute(
             self, institut_name: str, 
             director_post: str, director_name: str):
+        """
+        Устанавливает информацию об институте и директоре.
+        """
         self.institut_name = institut_name
         self.director_name = director_name
         self.director_post = director_post
 
     def add_fios(self, fios: list[list[str]]):
+        """
+        Добавляет список студентов в таблицу.
+        """
         self.fios = fios
 
     def add_fio(self, fio: list[str]):
+        """
+        Добавляет одного студента в таблицу.
+        """
         self.fios.append(fio)
 
     def set_signature(self, post: str, name: str):
+        """
+        Устанавливает должность и имя для подписи.
+        """
         self.signature_post = post
         self.signature_name = name
 
     def _add_exemption_content(self):
+        """
+        Добавляет содержимое документа освобождения.
+        Заполняет таблицу, добавляет подписи и заменяет
+        текстовые плейсхолдеры на реальные значения.
+        """
         # добавление института
         self.exemption_doc.paragraphs[1].add_run(self.institut_name)
 
@@ -74,6 +100,9 @@ class Documents:
     def make_exemption(
             self, dir: str, 
             exemption_sample: str, file_name: str):
+        """
+        Создает документ освобождения на основе шаблона.
+        """
         self.exemption_doc = Document(exemption_sample)
         style = self.exemption_doc.styles[self._doc_style]
         style.font.name = self._font_style
@@ -83,6 +112,11 @@ class Documents:
             f"./{dir}/Освобождение {file_name}_{self.institut_name}.docx")
 
     def _add_gatitude_content(self):
+        """
+        Добавляет содержимое документа благодарности.
+        Заполняет таблицу, добавляет подписи и заменяет
+        текстовые плейсхолдеры на реальные значения.
+        """
         run = self.thanks_doc.paragraphs[3].add_run(self.institut_name)
         run.bold = True
         fio = self.thanks_doc.tables[2]
@@ -109,6 +143,9 @@ class Documents:
     def make_thanks(
             self, dir: str, 
             sample_thanks: str, file_name: str):
+        """
+        Создает документ благодарности на основе шаблона.
+        """
         self.thanks_doc = Document(sample_thanks)
         style = self.thanks_doc.styles[self._doc_style]
         style.font.name = self._font_style
