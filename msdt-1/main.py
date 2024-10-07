@@ -60,22 +60,43 @@ if __name__ == '__main__':
         new_doc = Documents()
         new_doc.set_event_name(settings['event'])
         new_doc.set_data(settings['date'])
-        new_doc.set_institute(key, instituts[key]['director']['post'], instituts[key]['director']['name'])
-        new_doc.set_signature(settings['signature']['post'], settings['signature']['person'])
+        new_doc.set_institute(
+            key, 
+            instituts[key]['director']['post'], 
+            instituts[key]['director']['name']
+        )
+        new_doc.set_signature(
+            settings['signature']['post'], 
+            settings['signature']['person']
+        )
         for human in volunteers[key]:
             new_doc.add_fio(human)
-        new_doc.make_thanks(settings['output_files']['volunteers'], settings['templates']['volunteers_thanks'],
-                            'Финист')
+        new_doc.make_thanks(
+            settings['output_files']['volunteers'], 
+            settings['templates']['volunteers_thanks'],
+            'Финист'
+        )
 
     for key in orgs.keys():
         new_doc = Documents()
         new_doc.set_event_name(settings['event'])
         new_doc.set_data(settings['date'])
-        new_doc.set_signature(settings['signature']['post'], settings['signature']['person'])
-        new_doc.set_institute(key, instituts[key]['director']['post'], instituts[key]['director']['name'])
+        new_doc.set_signature(
+            settings['signature']['post'], 
+            settings['signature']['person']
+        )
+        new_doc.set_institute(
+            key, 
+            instituts[key]['director']['post'], 
+            instituts[key]['director']['name']
+        )
         for human in orgs[key]:
             new_doc.add_fio(human)
-        new_doc.make_thanks(settings['output_files']['orgs'], settings['templates']['orgs_thanks'], 'Финист')
+        new_doc.make_thanks(
+            settings['output_files']['orgs'], 
+            settings['templates']['orgs_thanks'], 
+            'Финист'
+        )
 
     for key in volunteers.keys():
         volunteers[key] += orgs[key]
@@ -84,8 +105,19 @@ if __name__ == '__main__':
         new_doc = Documents()
         new_doc.set_event_name(settings['event'])
         new_doc.set_data(settings['date'])
-        new_doc.set_institute(key, instituts[key]['director']['post'], instituts[key]['director']['name'])
-        new_doc.set_signature(settings['signature']['post'], settings['signature']['person'])
+        new_doc.set_institute(
+            key, 
+            instituts[key]['director']['post'], 
+            instituts[key]['director']['name']
+        )
+        new_doc.set_signature(
+            settings['signature']['post'], 
+            settings['signature']['person']
+        )
         for human in volunteers[key]:
             new_doc.add_fio(human)
-        new_doc.make_exemption(settings['output_files']['exemptions'], settings['templates']['exemptions'], 'Финист')
+        new_doc.make_exemption(
+            settings['output_files']['exemptions'], 
+            settings['templates']['exemptions'], 
+            'Финист'
+        )

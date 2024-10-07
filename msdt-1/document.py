@@ -26,7 +26,9 @@ class Documents:
     def set_event_name(self, event_name: str):
         self.event_name = event_name
 
-    def set_institute(self, institut_name: str, director_post: str, director_name: str):
+    def set_institute(
+            self, institut_name: str, 
+            director_post: str, director_name: str):
         self.institut_name = institut_name
         self.director_name = director_name
         self.director_post = director_post
@@ -69,7 +71,9 @@ class Documents:
             cells[1].text = student_fio  # ФИО
             cells[2].text = group  # Группа
 
-    def make_exemption(self, dir: str, exemption_sample: str, file_name: str):
+    def make_exemption(
+            self, dir: str, 
+            exemption_sample: str, file_name: str):
         self.exemption_doc = Document(exemption_sample)
         style = self.exemption_doc.styles[self._doc_style]
         style.font.name = self._font_style
@@ -102,7 +106,9 @@ class Documents:
             cells[1].text = student_fio  # фио студента
             cells[2].text = group  # группа студента
 
-    def make_thanks(self, dir: str, sample_thanks: str, file_name: str):
+    def make_thanks(
+            self, dir: str, 
+            sample_thanks: str, file_name: str):
         self.thanks_doc = Document(sample_thanks)
         style = self.thanks_doc.styles[self._doc_style]
         style.font.name = self._font_style
