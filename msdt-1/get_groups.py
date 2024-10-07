@@ -9,7 +9,7 @@ def get_links():
     html = requests.get("https://ssau.ru/rasp").text
     page = BeautifulSoup(html, 'lxml')
     facultets = page.find_all('div', class_='card-default faculties__item')
-    
+
     for elem in facultets:
         links = elem.find_all('a', href=True)
         for link in links:
@@ -24,8 +24,10 @@ def get_groups_via_links(data: dict) -> dict[str, set[str]]:
         page = BeautifulSoup(html, 'lxml')
         groups = page.find_all('a', class_="btn-text group-catalog__group")
         group_fac[key] = set()
+
         for group in groups:
             group_fac[key].add(group.text[6:].strip())
+            
         for key in data.keys():
             data[key] = list(data[key])
     return group_fac
