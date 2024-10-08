@@ -17,9 +17,9 @@ class Documents:
     def __init__(self):
         self.date = 'date'
         self.event_name = 'event name'
-        self.institut_name = 'institut name'
+        self.institute_name = 'institute name'
         self.director_name = 'director name'
-        self.fios = []
+        self.full_names = []
         self.signature_post = 'Post of person'
         self.signature_name = 'person'
 
@@ -36,26 +36,26 @@ class Documents:
         self.event_name = event_name
 
     def set_institute(
-            self, institut_name: str, 
+            self, institute_name: str, 
             director_post: str, director_name: str):
         """
         Устанавливает информацию об институте и директоре.
         """
-        self.institut_name = institut_name
+        self.institute_name = institute_name
         self.director_name = director_name
         self.director_post = director_post
 
-    def add_fios(self, fios: list[list[str]]):
+    def add_full_names(self, full_names: list[list[str]]):
         """
         Добавляет список студентов в таблицу.
         """
-        self.fios = fios
+        self.full_names = full_names
 
     def add_fio(self, fio: list[str]):
         """
         Добавляет одного студента в таблицу.
         """
-        self.fios.append(fio)
+        self.full_names.append(fio)
 
     def set_signature(self, post: str, name: str):
         """
@@ -71,7 +71,7 @@ class Documents:
         текстовые плейсхолдеры на реальные значения.
         """
         # добавление института
-        self.exemption_doc.paragraphs[1].add_run(self.institut_name)
+        self.exemption_doc.paragraphs[1].add_run(self.institute_name)
 
         # добавление фио директора
         self.exemption_doc.paragraphs[2].add_run(self.director_name)
@@ -94,11 +94,11 @@ class Documents:
         # Заполнение таблицы
         fio = self.exemption_doc.tables[0]
         i = 0
-        for student_fio, group in self.fios:
+        for students_name, group in self.full_names:
             i += 1
             cells = fio.add_row().cells
             cells[0].text = str(i) + "."  # порядковый номер
-            cells[1].text = student_fio  # ФИО
+            cells[1].text = students_name  # ФИО
             cells[2].text = group  # Группа
 
     def make_exemption(
@@ -113,7 +113,7 @@ class Documents:
         style.font.size = Pt(self._font_size)
         self._add_exemption_content()
         self.exemption_doc.save(
-            f"./{dir}/Освобождение {file_name}_{self.institut_name}.docx")
+            f"./{dir}/Освобождение {file_name}_{self.institute_name}.docx")
 
     def _add_gatitude_content(self):
         """
@@ -121,7 +121,7 @@ class Documents:
         Заполняет таблицу, добавляет подписи и заменяет
         текстовые плейсхолдеры на реальные значения.
         """
-        run = self.thanks_doc.paragraphs[3].add_run(self.institut_name)
+        run = self.thanks_doc.paragraphs[3].add_run(self.institute_name)
         run.bold = True
         fio = self.thanks_doc.tables[2]
         for i in self.thanks_doc.paragraphs:
@@ -139,11 +139,11 @@ class Documents:
         p = sign.cell(0, 1).add_paragraph(self.signature_name)
         p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
 
-        for student_fio, group in self.fios:
+        for students_name, group in self.full_names:
             i += 1
             cells = fio.add_row().cells
             cells[0].text = str(i) + '.'  # порядковый номер
-            cells[1].text = student_fio  # фио студента
+            cells[1].text = students_name  # фио студента
             cells[2].text = group  # группа студента
 
     def make_thanks(
@@ -157,4 +157,4 @@ class Documents:
         style.font.name = self._font_style
         style.font.size = Pt(self._font_size)
         self._add_gatitude_content()
-        self.thanks_doc.save(f"./{dir}/Благодарность_{file_name}_{self.institut_name}.docx")
+        self.thanks_doc.save(f"./{dir}/Благодарность_{file_name}_{self.institute_name}.docx")

@@ -16,11 +16,11 @@ def gratitude():
     run.bold = True
 
     # Заполнение таблицы
-    fio = doc.tables[2]
+    full_name = doc.tables[2]
 
     while True:
-        num_rows = len(fio.rows)
-        cells = fio.add_row().cells
+        num_rows = len(full_name.rows)
+        cells = full_name.add_row().cells
         cells[0].text = str(num_rows) + "."  # порядковый номер
         cells[1].text = input("Введите ФИО: ")  # ФИО
         cells[2].text = input("Введите Группу: ")  # Группа
