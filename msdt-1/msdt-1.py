@@ -1,18 +1,18 @@
 import random
 
 
-def room_1():
+def room_one():
     print("Вы находитесь в комнате 1.")
     print("Здесь ничего нет.")
     move = input("Введите 'вперед', чтобы перейти в следующую комнату: ")
     if move == "вперед":
-        room_2()
+        room_two()
     else:
         print("Некорректный ввод.")
-        room_1()
+        room_one()
 
 
-def room_2():
+def room_two():
     print("Вы находитесь в комнате 2.")
     print("На полу лежит старый меч.")
     action = input("Введите 'поднять', чтобы взять меч, "
@@ -21,18 +21,18 @@ def room_2():
         print("Вы подняли меч.")
         move = input("Введите 'вперед', чтобы перейти в следующую комнату: ")
         if move == "вперед":
-            room_3()
+            room_three()
         else:
             print("Некорректный ввод.")
-            room_2()
+            room_two()
     elif action == "вперед":
-        room_3()
+        room_three()
     else:
         print("Некорректный ввод.")
-        room_2()
+        room_two()
 
 
-def room_3():
+def room_three():
     print("Вы находитесь в комнате 3.")
     print("Перед вами монстр!")
     action = input("Введите 'атака', чтобы сразиться с монстром, "
@@ -41,10 +41,10 @@ def room_3():
         fight_monster()
     elif action == "бег":
         print("Вы убежали обратно в комнату 2.")
-        room_2()
+        room_two()
     else:
         print("Некорректный ввод.")
-        room_3()
+        room_three()
 
 
 def fight_monster():
@@ -69,26 +69,25 @@ def fight_monster():
             print(f"Монстр атакует! Вы потеряли {monster_damage} здоровья.")
         else:
             print("Вы победили монстра!")
-            room_4()
-
+            room_four()
 
     if player_health <= 0:
         print("Вы погибли. Игра окончена.")
         game_over()
 
 
-def room_4():
+def room_four():
     print("Вы находитесь в комнате 4.")
     print("Здесь пусто, но дверь впереди открыта.")
     move = input("Введите 'вперед', чтобы пройти дальше: ")
     if move == "вперед":
-        room_5()
+        room_five()
     else:
         print("Некорректный ввод.")
-        room_4()
+        room_four()
 
 
-def room_5():
+def room_five():
     print("Вы находитесь в комнате 5.")
     print("Вы встретили мудреца.")
     action = input("Введите 'говорить', чтобы поговорить с мудрецом, "
@@ -97,18 +96,18 @@ def room_5():
         print("Мудрец сказал: 'Будь осторожен в следующей комнате.'")
         move = input("Введите 'вперед', чтобы двигаться дальше: ")
         if move == "вперед":
-            room_6()
+            room_six()
         else:
             print("Некорректный ввод.")
-            room_5()
+            room_five()
     elif action == "вперед":
-        room_6()
+        room_six()
     else:
         print("Некорректный ввод.")
-        room_5()
+        room_five()
 
 
-def room_6():
+def room_six():
     print("Вы находитесь в комнате 6.")
     print("Перед вами большой сундук.")
     action = input("Введите 'открыть', чтобы открыть сундук, "
@@ -117,29 +116,29 @@ def room_6():
         print("В сундуке лежит золотая корона!")
         move = input("Введите 'вперед', чтобы двигаться дальше: ")
         if move == "вперед":
-            room_7()
+            room_seven()
         else:
             print("Некорректный ввод.")
-            room_6()
+            room_six()
     elif action == "вперед":
-        room_7()
+        room_seven()
     else:
         print("Некорректный ввод.")
-        room_6()
+        room_six()
 
 
-def room_7():
+def room_seven():
     print("Вы находитесь в комнате 7.")
     print("Здесь очень темно.")
     move = input("Введите 'вперед', чтобы двигаться дальше: ")
     if move == "вперед":
-        room_8()
+        room_eight()
     else:
         print("Некорректный ввод.")
-        room_7()
+        room_seven()
 
 
-def room_8():
+def room_eight():
     print("Вы находитесь в комнате 8.")
     print("Перед вами огромный дракон!")
     action = input("Введите 'сразиться', чтобы атаковать дракона, "
@@ -148,10 +147,10 @@ def room_8():
         fight_dragon()
     elif action == "бег":
         print("Вы убежали обратно в комнату 7.")
-        room_7()
+        room_seven()
     else:
         print("Некорректный ввод.")
-        room_8()
+        room_eight()
 
 
 def fight_dragon():
@@ -184,7 +183,7 @@ def fight_dragon():
         game_over()
 
 
-def room_9():
+def room_nine():
     print("Вы находитесь в комнате 9.")
     print("Здесь вы встречаете большого зомби!")
     action = input("Введите 'сразиться', чтобы сразиться с зомби, "
@@ -193,10 +192,10 @@ def room_9():
         fight_zombie()
     elif action == "бег":
         print("Вы убежали обратно в комнату 8.")
-        room_8()
+        room_eight()
     else:
         print("Некорректный ввод.")
-        room_9()
+        room_nine()
 
 
 def fight_zombie():
@@ -221,37 +220,36 @@ def fight_zombie():
             print(f"Зомби атакует! Вы потеряли {zombie_damage} здоровья.")
         else:
             print("Вы победили зомби!")
-            room_10()
-
+            room_ten()
 
     if player_health <= 0:
         print("Вы погибли. Игра окончена.")
         game_over()
 
 
-def room_10():
+def room_ten():
     print("Вы находитесь в комнате 10.")
     print("Здесь пусто, но впереди слышны шаги.")
     move = input("Введите 'вперед', чтобы продолжить игру: ")
     if move == "вперед":
-        room_11()
+        room_eleven()
     else:
         print("Некорректный ввод.")
-        room_10()
+        room_ten()
 
 
-def room_11():
+def room_eleven():
     print("Вы находитесь в комнате 11.")
     print("Здесь ничего нет.")
     move = input("Введите 'вперед', чтобы продолжить игру: ")
     if move == "вперед":
-        room_12()
+        room_twelve()
     else:
         print("Некорректный ввод.")
-        room_11()
+        room_eleven()
 
 
-def room_12():
+def room_twelve():
     print("Вы находитесь в комнате 12.")
     print("Перед вами ещё один монстр!")
     action = input("Введите 'сразиться', чтобы атаковать монстра, "
@@ -260,10 +258,10 @@ def room_12():
         fight_monster_again()
     elif action == "бег":
         print("Вы убежали обратно в комнату 11.")
-        room_11()
+        room_eleven()
     else:
         print("Некорректный ввод.")
-        room_12()
+        room_twelve()
 
 
 def fight_monster_again():
@@ -288,15 +286,14 @@ def fight_monster_again():
             print(f"Монстр атакует! Вы потеряли {monster_damage} здоровья.")
         else:
             print("Вы победили монстра!")
-            room_13()
-
+            room_thirteen()
 
     if player_health <= 0:
         print("Вы погибли. Игра окончена.")
         game_over()
 
 
-def room_13():
+def room_thirteen():
     print("Вы находитесь в комнате 13.")
     print("Вы нашли секретный выход!")
     print("Поздравляем, вы прошли игру.")
@@ -307,14 +304,14 @@ def game_over():
     print("Конец игры. Хотите сыграть снова?")
     replay = input("Введите 'да' для новой игры или 'нет', чтобы выйти: ")
     if replay == 'да':
-        room_1()
+        room_one()
     else:
         print("Спасибо за игру!")
 
 
 def start_game():
     print("Добро пожаловать в текстовую игру!")
-    room_1()
+    room_one()
 
 
 start_game()
