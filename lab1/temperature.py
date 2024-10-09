@@ -3,17 +3,17 @@ import os
 import numpy as np
 
 
-def save(name='', format='png'):
+def save(name='', format_file='png'):
     pwd = os.getcwd()
-    iPath = './pictures/{}'.format(format)
-    if not os.path.exists(iPath):
-        os.mkdir(iPath)
-    os.chdir(iPath)
-    plt.savefig('{}.{}'.format(name, format), dpi=500, format='png')
+    i_path = './pictures/{}'.format(format_file)
+    if not os.path.exists(i_path):
+        os.mkdir(i_path)
+    os.chdir(i_path)
+    plt.savefig('{}.{}'.format(name, format_file), dpi=500, format='png')
     os.chdir(pwd)
 
 
-def graphicTemperatureCold(t):
+def graphic_temperature_cold(t):
     if t >= 0 and t <= 15:
         y = 1 - t / 15
     else:
@@ -21,7 +21,7 @@ def graphicTemperatureCold(t):
     return y
 
 
-def graphicTemperatureWarmly(t):
+def graphic_temperature_warmly(t):
     if t < 15 or t > 25:
         y = 0
     elif t >= 15 and t < 17:
@@ -33,7 +33,7 @@ def graphicTemperatureWarmly(t):
     return y
 
 
-def graphicTemperatureHot(t):
+def graphic_temperature_hot(t):
     if t < 25:
         y = 0
     elif t >= 25 and t < 27:
@@ -43,16 +43,16 @@ def graphicTemperatureHot(t):
     return y
 
 
-def DrawGraph(name="pic_temperature"):
+def draw_graph(name="pic_temperature"):
     fig = plt.figure()
     fig.set_size_inches(10, 10)
     ax = fig.add_subplot(311)
     ax2 = fig.add_subplot(312)
     ax3 = fig.add_subplot(313)
     x = np.linspace(0, 30, 1000)
-    y1 = [graphicTemperatureCold(x) for x in x]
-    y2 = [graphicTemperatureWarmly(x) for x in x]
-    y3 = [graphicTemperatureHot(x) for x in x]
+    y1 = [graphic_temperature_cold(x) for x in x]
+    y2 = [graphic_temperature_warmly(x) for x in x]
+    y3 = [graphic_temperature_hot(x) for x in x]
     ax.plot(x, y1, color="blue", label="COLD")
     ax2.plot(x, y2, color="orange", label="WARMLY")
     ax3.plot(x, y3, color="red", label="HOT")
@@ -61,6 +61,6 @@ def DrawGraph(name="pic_temperature"):
         ax.set_ylabel("Значение")  # подпись у вертикальной оси y
         ax.legend()  # показывать условные обозначения
     # смотри преамбулу
-    save(name, format='pdf')
-    save(name, format='png')
+    save(name, format_file='pdf')
+    save(name, format_file='png')
     plt.show()

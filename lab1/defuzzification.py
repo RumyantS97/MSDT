@@ -1,23 +1,23 @@
 import matplotlib.pyplot as plt
 import os
 import numpy as np
-import Univers_set as uni_set
-import Picnic as pic
+import univers_set as uni_set
+import picnic as pic
 
 
-def save(name='', format='png'):
+def save(name='', format_file='png'):
     pwd = os.getcwd()
-    iPath = './pictures/{}'.format(format)
-    if not os.path.exists(iPath):
-        os.mkdir(iPath)
-    os.chdir(iPath)
-    plt.savefig('{}.{}'.format(name, format), dpi=500, format='png')
+    i_path = './pictures/{}'.format(format_file)
+    if not os.path.exists(i_path):
+        os.mkdir(i_path)
+    os.chdir(i_path)
+    plt.savefig('{}.{}'.format(name, format_file), dpi=500, format='png')
     os.chdir(pwd)
 
 
-def Defuzzification(temp, hours):
-    t1 = [uni_set.Xweather(t) for t in temp]
-    h1 = [uni_set.Yemployment(h) for h in hours]
+def defuzzification(temp, hours):
+    t1 = [uni_set.weather(t) for t in temp]
+    h1 = [uni_set.employment(h) for h in hours]
     i, j = 0, 0
     p = []
     key = []
@@ -34,37 +34,37 @@ def Defuzzification(temp, hours):
     return p, key
 
 
-def DrawGraph(temp, hours, name="pic_defuzzification"):
+def draw_graph(temp, hours, name="pic_defuzzification"):
     fig = plt.figure()
     fig.set_size_inches(10, 10)
     ax = fig.add_subplot()
     x = np.linspace(0, 1, 1000)
     fx = []
-    probability, key = Defuzzification(temp, hours)
+    probability, key = defuzzification(temp, hours)
     for p, k in zip(probability, key):
         y = []
-        if uni_set.knowledge_base[k] == 'вероятно едем':
-            G = [pic.graphicPicnicMayBe(x) for x in x]
+        if uni_set.KNOWLEDGE_BASE[k] == 'вероятно едем':
+            G = [pic.graphic_picnic_may_be(x) for x in x]
             for g in G:
                 if g < p: y.append(g)
                 else: y.append(0)
-        elif uni_set.knowledge_base[k] == 'не едем':
-            G = [pic.graphicPicnicNot(x) for x in x]
+        elif uni_set.KNOWLEDGE_BASE[k] == 'не едем':
+            G = [pic.graphic_picnic_not(x) for x in x]
             for g in G:
                 if g < p: y.append(g)
                 else: y.append(0)
-        elif uni_set.knowledge_base[k] == 'едем':
-            G = [pic.graphicPicnicYes(x) for x in x]
+        elif uni_set.KNOWLEDGE_BASE[k] == 'едем':
+            G = [pic.graphic_picnic_yes(x) for x in x]
             for g in G:
                 if g < p: y.append(g)
                 else: y.append(0)
         fx.append(y)
-    Fx = [max(p) for p in zip(fx[0], fx[1], fx[2], fx[3], fx[4], fx[5])]
-    ax.plot(x, Fx, color="blue", label="DEFUZZIFICATION")
+    fx_list = [max(p) for p in zip(fx[0], fx[1], fx[2], fx[3], fx[4], fx[5])]
+    ax.plot(x, fx_list, color="blue", label="DEFUZZIFICATION")
     ax.set_xlabel("Вероятность, %")  # подпись у горизонтальной оси х
     ax.set_ylabel("Значение")  # подпись у вертикальной оси y
     ax.legend()  # показывать условные обозначения
     # смотри преамбулу
-    save(name, format='pdf')
-    save(name, format='png')
+    save(name, format_file='pdf')
+    save(name, format_file='png')
     plt.show()

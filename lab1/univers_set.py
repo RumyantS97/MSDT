@@ -1,16 +1,16 @@
-weather = ['жарко',  # [0; 30] градусов
+WEATHER = ['жарко',  # [0; 30] градусов
            'тепло',
            'холодно']
 
-employment = ['свободен',  # [0; 24] часы
+EMPLOYMENT = ['свободен',  # [0; 24] часы
               'есть время',
               'занят']
 
-picnic = ['едем',  # [0; 1]
+PICNIC = ['едем',  # [0; 1]
           'вероятно поедем',
           'не едем']
 
-knowledge_base = {'Если жарко и свободен, то': 'вероятно едем',
+KNOWLEDGE_BASE = {'Если жарко и свободен, то': 'вероятно едем',
                   'Если холодно или занят, то': 'не едем',
                   'Если тепло и свободен, то': 'едем',
                   'Если тепло и есть время, то': 'вероятно едем',
@@ -18,7 +18,7 @@ knowledge_base = {'Если жарко и свободен, то': 'вероят
                   'Если тепло и занят, то': 'не едем'}
 
 
-def Xweather(temperature):
+def weather(temperature):
     if temperature < 15:
         if temperature > 0 and temperature < 15:
             return 1 - temperature / 15
@@ -42,7 +42,7 @@ def Xweather(temperature):
             return 1
 
 
-def Yemployment(hours):
+def employment(hours):
     if hours == 0:
         if hours == 0:
             return 1
@@ -64,7 +64,7 @@ def Yemployment(hours):
             return 1
 
 
-def Zpicnic(probability):
+def picnic(probability):
     if probability >= 0.8:
         if probability == 1:
             return 1
@@ -90,24 +90,24 @@ def Zpicnic(probability):
 
 def interpretator(temperature, hour):
     if temperature < 15:
-        t = weather[2]
+        t = WEATHER[2]
     elif temperature >= 15 and temperature <= 25:
-        t = weather[1]
+        t = WEATHER[1]
     elif temperature > 25:
-        t = weather[0]
+        t = WEATHER[0]
 
     if hour == 0:
-        emp = employment[2]
+        emp = EMPLOYMENT[2]
     elif hour > 0 and hour < 6:
-        emp = employment[1]
+        emp = EMPLOYMENT[1]
     elif hour >= 6:
-        emp = employment[0]
+        emp = EMPLOYMENT[0]
 
-    key = knowledge_base.keys()
+    key = KNOWLEDGE_BASE.keys()
     for k in key:
         if t in k and emp in k: return k
     return 0
 
 
-def Calculation(temperature, hours):
-    return Xweather(temperature), Yemployment(hours)
+def calculation(temperature, hours):
+    return weather(temperature), employment(hours)
