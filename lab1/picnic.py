@@ -17,7 +17,7 @@ def save(name='', format_file='png'):
 def graphic_picnic_not(p):
     if p == 0:
         y = 1
-    elif p > 0 and p <= 0.2:
+    elif 0 < p <= 0.2:
         y = 1 - 5 * p
     elif p > 0.2:
         y = 0
@@ -27,9 +27,9 @@ def graphic_picnic_not(p):
 def graphic_picnic_may_be(p):
     if p < 0.4 or p > 0.6:
         y = 0
-    elif p >= 0.4 and p <= 0.5:
+    elif 0.4 <= p <= 0.5:
         y = 10 * p - 4
-    elif p > 0.5 and p <= 0.6:
+    elif 0.5 < p <= 0.6:
         y = 6 - 10 * p
     return y
 
@@ -37,7 +37,7 @@ def graphic_picnic_may_be(p):
 def graphic_picnic_yes(p):
     if p == 1:
         y = 1
-    elif p < 1 and p >= 0.8:
+    elif 1 > p >= 0.8:
         y = 5 * p - 4
     elif p < 0.8:
         y = 0

@@ -15,7 +15,7 @@ def save(name='', format_file='png'):
 
 
 def graphic_temperature_cold(t):
-    if t >= 0 and t <= 15:
+    if 0 <= t <= 15:
         y = 1 - t / 15
     else:
         y = 0
@@ -25,11 +25,11 @@ def graphic_temperature_cold(t):
 def graphic_temperature_warmly(t):
     if t < 15 or t > 25:
         y = 0
-    elif t >= 15 and t < 17:
+    elif 15 <= t < 17:
         y = 0.5 * t - 7.5
-    elif t >= 17 and t <= 23:
+    elif 17 <= t <= 23:
         y = 1
-    elif t > 23 and t <= 25:
+    elif 23 < t <= 25:
         y = 12.5 - 0.5 * t
     return y
 
@@ -37,7 +37,7 @@ def graphic_temperature_warmly(t):
 def graphic_temperature_hot(t):
     if t < 25:
         y = 0
-    elif t >= 25 and t < 27:
+    elif 25 <= t < 27:
         y = 0.5 * t - 12.5
     elif t >= 27:
         y = 1

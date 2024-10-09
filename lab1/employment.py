@@ -25,9 +25,9 @@ def graphic_employment_busy(h):
 def graphic_employment_time(h):
     if h < 2 or h > 6:
         y = 0
-    elif h >= 2 and h < 4:
+    elif 2 <= h < 4:
         y = 0.5 * h - 1
-    elif h >= 4 and h <= 6:
+    elif 4 <= h <= 6:
         y = 3 - 0.5 * h
     return y
 
@@ -35,7 +35,7 @@ def graphic_employment_time(h):
 def graphic_employment_free(h):
     if h < 6:
         y = 0
-    elif h >= 6 and h <= 8:
+    elif 6 <= h <= 8:
         y = 0.5 * h - 3
     elif h > 8:
         y = 1
