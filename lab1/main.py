@@ -4,7 +4,6 @@ import picnic as pic
 import temperature as temp
 import univers_set as uni_set
 
-
 if __name__ == '__main__':
     temperature = list(map(float, input('Введите  6 измерений температур: ').split()))
     hour = list(map(float, input('Введите 6 измерений времени: ').split()))

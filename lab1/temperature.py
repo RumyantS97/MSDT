@@ -31,6 +31,8 @@ def graphic_temperature_warmly(t):
         y = 1
     elif 23 < t <= 25:
         y = 12.5 - 0.5 * t
+    else:
+        y = None
     return y
 
 
@@ -41,6 +43,8 @@ def graphic_temperature_hot(t):
         y = 0.5 * t - 12.5
     elif t >= 27:
         y = 1
+    else:
+        y = None
     return y
 
 

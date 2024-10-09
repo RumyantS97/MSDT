@@ -21,6 +21,8 @@ def graphic_picnic_not(p):
         y = 1 - 5 * p
     elif p > 0.2:
         y = 0
+    else:
+        y = None
     return y
 
 
@@ -31,6 +33,8 @@ def graphic_picnic_may_be(p):
         y = 10 * p - 4
     elif 0.5 < p <= 0.6:
         y = 6 - 10 * p
+    else:
+        y = None
     return y
 
 
@@ -41,6 +45,8 @@ def graphic_picnic_yes(p):
         y = 5 * p - 4
     elif p < 0.8:
         y = 0
+    else:
+        y = None
     return y
 
 

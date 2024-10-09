@@ -29,6 +29,8 @@ def graphic_employment_time(h):
         y = 0.5 * h - 1
     elif 4 <= h <= 6:
         y = 3 - 0.5 * h
+    else:
+        y = None
     return y
 
 
@@ -39,6 +41,8 @@ def graphic_employment_free(h):
         y = 0.5 * h - 3
     elif h > 8:
         y = 1
+    else:
+        y = None
     return y
 
 

@@ -48,18 +48,24 @@ def draw_graph(temp, hours, name="pic_defuzzification"):
         if uni_set.KNOWLEDGE_BASE[k] == 'вероятно едем':
             G = [pic.graphic_picnic_may_be(x) for x in x]
             for g in G:
-                if g < p: y.append(g)
-                else: y.append(0)
+                if g < p:
+                    y.append(g)
+                else:
+                    y.append(0)
         elif uni_set.KNOWLEDGE_BASE[k] == 'не едем':
             G = [pic.graphic_picnic_not(x) for x in x]
             for g in G:
-                if g < p: y.append(g)
-                else: y.append(0)
+                if g < p:
+                    y.append(g)
+                else:
+                    y.append(0)
         elif uni_set.KNOWLEDGE_BASE[k] == 'едем':
             G = [pic.graphic_picnic_yes(x) for x in x]
             for g in G:
-                if g < p: y.append(g)
-                else: y.append(0)
+                if g < p:
+                    y.append(g)
+                else:
+                    y.append(0)
         fx.append(y)
     fx_list = [max(p) for p in zip(fx[0], fx[1], fx[2], fx[3], fx[4], fx[5])]
     ax.plot(x, fx_list, color="blue", label="DEFUZZIFICATION")
