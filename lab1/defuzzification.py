@@ -1,8 +1,10 @@
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
 import numpy as np
-import univers_set as uni_set
+
 import picnic as pic
+import univers_set as uni_set
 
 
 def save(name='', format_file='png'):

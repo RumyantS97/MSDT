@@ -1,8 +1,8 @@
-import univers_set as uni_set
-import temperature as temp
+import defuzzification as defuzz
 import employment as emp
 import picnic as pic
-import defuzzification as defuzz
+import temperature as temp
+import univers_set as uni_set
 
 
 if __name__ == '__main__':
