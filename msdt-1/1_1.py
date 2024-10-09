@@ -74,9 +74,7 @@ class FinanceTracker:
             if new_amount:
                 expense.amount = float(new_amount)
 
-            new_category = input(
-    "Введите новую категорию (или оставьте пустым для пропуска): "
-)
+            new_category = input("Введите новую категорию (или оставьте пустым для пропуска): ")
 
             if new_category != None:
                 expense.category = new_category
