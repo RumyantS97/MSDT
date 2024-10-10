@@ -36,7 +36,6 @@ def add_four_numbers(number_one, number_two, number_three, number_four):
 
 
 def perform_complex_calculation(a, b, c, d, e, f, g):
-    print("Эта функция делает очень много всего")
     result = (a + b) * (c - d) + f
     print(result)
     return result
@@ -64,11 +63,6 @@ def calculate_large_expression(a, b, c, d, e, f, g, h, i, j, k, l):
     return result
 
 
-def execute_nested_loops():
-    print("\n".join([f"Цикл {i} {j} {k}" for i in range(5) for j in range(3) for k in range(2)]))
-    time.sleep(0.1)
-
-
 def process_data_values(data_values):
     return [(value * 2 if value > 5 else value * 10 if value == 5 else value) for value in data_values]
 
@@ -92,29 +86,15 @@ def recursive_print(n):
     print("Базовый случай")
 
 
-def run_useless_loop():
-    for i in range(10):
-        print("Это бесполезный цикл", i)
-        time.sleep(0.1)
-
-    print("\n".join([f"Это тоже {j}" for j in range(5)]))
-
-
 def perform_random_action():
     random_value = random.randint(1, 100)
-    print("Функция с рандомными действиями")
-    print(f"Число равно {random_value}", end=' ')
+    print("Число равно", random_value, end=' ')
     if random_value > 50:
         print("— Большое число")
     elif random_value == 50:
         print("— Число равно 50")
     else:
         print("— Маленькое число")
-
-
-def print_series_of_strings():
-    strings = [f"Строка {i}" for i in range(1, 9)]
-    print("\n".join(strings))
 
 
 def concatenate_strings(string1, string2, string3):
@@ -148,11 +128,6 @@ def calculate_expression(a, b, c):
     else:
         print("Маленький результат")
     return result
-
-
-def useless_function():
-    for i in range(5):
-        print("Эта функция ничего не делает", i)
 
 
 def process_string_list(strings):
@@ -192,24 +167,17 @@ def say_goodbye():
 
 
 if __name__ == "__main__":
-    main()
-    calculate_large_expression(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    execute_nested_loops()
-    process_data_values([3, 6, 9, 5, 2])
-    calculate_with_sqrt(1, 2, 3)
-    compute_expression(10, 20, 5, 2)
-    recursive_print(10)
-    run_useless_loop()
+    generate_random_numbers(5)
     perform_random_action()
-    print_series_of_strings()
+    display_random_numbers()
+    add_four_numbers(1, 2, 3, 4)
+    calculate_large_expression(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    process_data_values([3, 6, 9, 5, 2])
     concatenate_strings("hello", "world", "python")
     building = Building(5, "синий")
     building.describe_building()
-    building.build_structure()
     calculate_expression(10, 20, 30)
-    useless_function()
     process_string_list(["apple", "banana", "kiwi", "melon", "grape"])
     compare_three_numbers(5, 3, 2)
     check_positive_numbers(1, 2, 3)
-    display_random_numbers()
     say_goodbye()
