@@ -5,11 +5,8 @@ import sys
 
 
 def generate_random_numbers(count):
-    if count > 1:
-        for i in range(count):
-            display_random_number(i)
-    else:
-        display_random_number(1)
+    for i in range(max(count, 1)):
+        display_random_number(i)
 
 
 def display_random_number(index):
@@ -25,33 +22,23 @@ def display_random_number(index):
 
 
 def get_length_if_greater_than_five(items):
-    item_count = len(items)
-
-    if item_count > 5:
-        return item_count
-    else:
-        return 0
+    return len(items) if len(items) > 5 else 0
 
 
 def sum_range(start, end):
-    total_sum = 0
-
-    for i in range(start, end + 1):
-        total_sum += i
-    return total_sum
+    return sum(range(start, end + 1))
 
 
 def add_four_numbers(number_one, number_two, number_three, number_four):
-    print(number_one + number_two + number_three + number_four)
-    return number_one + number_two + number_three + number_four
+    result = number_one + number_two + number_three + number_four
+    print(result)
+    return result
 
 
 def perform_complex_calculation(a, b, c, d, e, f, g):
     print("Эта функция делает очень много всего")
-    sum_ab = a + b
-    difference_cd = c - d
-    result = sum_ab * difference_cd + f
-    print(sum_ab, difference_cd, result)
+    result = (a + b) * (c - d) + f
+    print(result)
     return result
 
 
@@ -71,100 +58,70 @@ class Car:
 
 
 def calculate_large_expression(a, b, c, d, e, f, g, h, i, j, k, l):
-    print("Очень сложная функция, в которой много параметров")
     result = (a + b + c - d * e / f + g - h * i / j + k - l)
 
-    if result > 0:
-        print("Результат положительный:", result)
-    else:
-        print("Результат отрицательный:", result)
+    print("Результат положительный:", result) if result > 0 else print("Результат отрицательный:", result)
     return result
 
 
 def execute_nested_loops():
-    for i in range(5):
-        for j in range(3):
-            for k in range(2):
-                print(f"Цикл {i} {j} {k}")
+    print("\n".join([f"Цикл {i} {j} {k}" for i in range(5) for j in range(3) for k in range(2)]))
     time.sleep(0.1)
 
 
 def process_data_values(data_values):
-    result = []
-    for value in data_values:
-        if value > 5:
-            result.append(value * 2)
-        elif value == 5:
-            result.append(value * 10)
-        else:
-            result.append(value)
-    return result
+    return [(value * 2 if value > 5 else value * 10 if value == 5 else value) for value in data_values]
 
 
 def calculate_with_sqrt(x, y, z):
-    result = 0
-    for i in range(100):
-        result += (x + y * z) / math.sqrt(i + 1)
-    return result
+    return sum((x + y * z) / math.sqrt(i + 1) for i in range(100))
 
 
 def compute_expression(a, b, c, d):
-    result = ((a ** 2 + b ** 2) / (c - d)) if d != 0 else sys.maxsize
-
-    if result < 100:
-        print("Маленький результат:", result)
-    else:
-        print("Большой результат:", result)
+    if d == 0:
+        return sys.maxsize
+    result = (a ** 2 + b ** 2) / (c - d)
+    print("Результат:", "Маленький" if result < 100 else "Большой", result)
     return result
 
 
 def recursive_print(n):
-    if n > 0:
+    while n > 0:
         print(n)
-        recursive_print(n - 1)
-    else:
-        print("Базовый случай")
+        n -= 1
+    print("Базовый случай")
 
 
 def run_useless_loop():
     for i in range(10):
         print("Это бесполезный цикл", i)
         time.sleep(0.1)
-    for j in range(5):
-        print("Это тоже", j)
+
+    print("\n".join([f"Это тоже {j}" for j in range(5)]))
 
 
 def perform_random_action():
-    print("Функция с рандомными действиями")
     random_value = random.randint(1, 100)
-
+    print("Функция с рандомными действиями")
+    print(f"Число равно {random_value}", end=' ')
     if random_value > 50:
-        print("Большое число:", random_value)
+        print("— Большое число")
     elif random_value == 50:
-        print("Число равно 50")
+        print("— Число равно 50")
     else:
-        print("Маленькое число:", random_value)
+        print("— Маленькое число")
 
 
 def print_series_of_strings():
-    print("Строка 1")
-    print("Строка 2")
-    print("Строка 3")
-    print("Строка 4")
-    print("Строка 5")
-    print("Строка 6")
-    print("Строка 7")
-    print("Строка 8")
+    strings = [f"Строка {i}" for i in range(1, 9)]
+    print("\n".join(strings))
 
 
 def concatenate_strings(string1, string2, string3):
-    combined_string = (string1 + string2 + string3) if len(string1) > 5 else string2 * 2
+    combined_string = string1 + string2 + string3 if len(string1) > 5 else string2 * 2
     print("Комбинированная строка:", combined_string)
 
-    if 'a' in combined_string:
-        print("Строка содержит букву 'a'")
-    else:
-        print("Строка не содержит букву 'a'")
+    print("Строка содержит букву 'a'") if 'a' in combined_string else print("Строка не содержит букву 'a'")
 
 
 class Building:
@@ -184,7 +141,6 @@ class Building:
 
 def calculate_expression(a, b, c):
     result = (a + b) * (c - b) / (a + 1)
-
     if result > 1000:
         print("Огромный результат")
     elif result == 1000:
@@ -195,53 +151,38 @@ def calculate_expression(a, b, c):
 
 
 def useless_function():
-    print("Эта функция ничего не делает")
     for i in range(5):
-        print("И она всё равно бесполезна", i)
+        print("Эта функция ничего не делает", i)
 
 
 def process_string_list(strings):
-    processed_strings = []
-    for string in strings:
-        if len(string) > 5:
-            processed_strings.append(string.upper())
-        else:
-            processed_strings.append(string.lower())
-    return processed_strings
+    return [string.upper() if len(string) > 5 else string.lower() for string in strings]
 
 
 def compare_three_numbers(x, y, z):
-    if x > y:
-        if y > z:
-            print("x больше y, y больше z")
-        else:
-            print("y не больше z")
+    if x > y > z:
+        print("x больше y, y больше z")
+    elif y <= z:
+        print("y не больше z")
     else:
         print("x не больше y")
 
 
 def check_positive_numbers(a, b, c):
-    if a > 0:
-        if b > 0:
-            if c > 0:
-                print("Все числа положительные")
-            else:
-                print("Только a и b положительные")
-        else:
-            print("Только a положительное")
+    if all(x > 0 for x in [a, b, c]):
+        print("Все числа положительные")
+    elif a > 0 and b > 0:
+        print("Только a и b положительные")
+    elif a > 0:
+        print("Только a положительное")
     else:
         print("Ни одно число не положительное")
 
 
 def display_random_numbers():
     random_numbers = [random.randint(1, 100) for _ in range(10)]
-    print("Список случайных чисел:", random_numbers)
-
     for number in random_numbers:
-        if number % 2 == 0:
-            print(f"Число {number} чётное")
-        else:
-            print(f"Число {number} нечётное")
+        print(f"Число {number} {'чётное' if number % 2 == 0 else 'нечётное'}")
 
 
 def say_goodbye():
