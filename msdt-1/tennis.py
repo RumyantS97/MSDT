@@ -29,13 +29,13 @@ class TennisGameDefactored1:
             if (minusResult == 1):
                 result = "Advantage " + self.player1Name
             elif (minusResult == -1):
-                result ="Advantage " + self.player2Name
+                result = "Advantage " + self.player2Name
             elif (minusResult >= 2):
                 result = "Win for " + self.player1Name
             else:
-                result ="Win for " + self.player2Name
+                result = "Win for " + self.player2Name
         else:
-            for i in range(1,3):
+            for i in range(1, 3):
                 if (i == 1):
                     tempScore = self.p1points
                 else:
