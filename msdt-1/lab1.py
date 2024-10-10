@@ -152,11 +152,17 @@ print("93% доверительный интервал для среднеква
 
 # Четвёртый номер 🌈
 print("\n====================Четвёртый номер====================\n")
-array_time = [round(random.uniform(4.0, 4.5), 1), round(random.uniform(4.5, 5.0), 1),
-              round(random.uniform(5.0, 5.5), 1), round(random.uniform(5.5, 6.0), 1),
-              round(random.uniform(6.0, 6.5), 1), round(random.uniform(6.5, 7.0), 1),
-              round(random.uniform(7.0, 7.5), 1), round(random.uniform(7.5, 8.0), 1),
-              round(random.uniform(8.0, 9.5), 1)]
+array_time = [
+  round(random.uniform(4.0, 4.5), 1),
+  round(random.uniform(4.5, 5.0), 1),
+  round(random.uniform(5.0, 5.5), 1),
+  round(random.uniform(5.5, 6.0), 1),
+  round(random.uniform(6.0, 6.5), 1),
+  round(random.uniform(6.5, 7.0), 1),
+  round(random.uniform(7.0, 7.5), 1),
+  round(random.uniform(7.5, 8.0), 1),
+  round(random.uniform(8.0, 9.5), 1)
+]
 array_worker = [4, 14, 55, 92, 160, 96, 66, 11, 2]
 array = []
 for nn in range(len(array_worker) - 1):
