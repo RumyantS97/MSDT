@@ -1,5 +1,4 @@
-from statistics import mode
-from statistics import median
+from statistics import mode, median
 import numpy as np
 import scipy.stats as st
 import random
