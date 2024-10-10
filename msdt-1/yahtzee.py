@@ -8,6 +8,21 @@ class Yahtzee:
     def yahtzee(dice):
         return 50 if dice.count(dice[0]) == 5 else 0
 
+    @staticmethod
+    def count_value(dice, value):
+        return dice.count(value) * value
+
+    @staticmethod
+    def ones(*dice):
+        return Yahtzee.count_value(dice, 1)
+
+    @staticmethod
+    def twos(*dice):
+        return Yahtzee.count_value(dice, 2)
+
+    @staticmethod
+    def threes(*dice):
+        return Yahtzee.count_value(dice, 3)
 
     @staticmethod
     def ones(d1, d2, d3, d4, d5):
