@@ -25,46 +25,25 @@ class Yahtzee:
         return Yahtzee.count_value(dice, 3)
 
     @staticmethod
-    def ones(d1, d2, d3, d4, d5):
-        total = 0
-        if d1 == 1:
-            total += 1
-        if d2 == 1:
-            total += 1
-        if d3 == 1:
-            total += 1
-        if d4 == 1:
-            total += 1
-        if d5 == 1:
-            total += 1
-        return total
+    def get_counts(dice):
+        counts = [0] * 6
+        for die in dice:
+            counts[die - 1] += 1
+        return counts
 
     @staticmethod
-    def twos(d1, d2, d3, d4, d5):
-        total = 0
-        if d1 == 2:
-            total += 2
-        if d2 == 2:
-            total += 2
-        if d3 == 2:
-            total += 2
-        if d4 == 2:
-            total += 2
-        if d5 == 2:
-            total += 2
-        return total
+    def small_straight(*dice):
+        required = {1, 2, 3, 4, 5}
+        return 15 if required.issubset(dice) else 0
 
     @staticmethod
-    def threes(d1, d2, d3, d4, d5):
-        total = 0
-        if d1 == 3:
-            total += 3
-        if d2 == 3:
-            total += 3
-        if d3 == 3:
-            total += 3
-        if d4 == 3:
-            total += 3
-        if d5 == 3:
-            total += 3
-        return total
+    def large_straight(*dice):
+        required = {2, 3, 4, 5, 6}
+        return 20 if required.issubset(dice) else 0
+
+    @staticmethod
+    def full_house(*dice):
+        counts = Yahtzee.get_counts(dice)
+        has_two = 2 in counts
+        has_three = 3 in counts
+        return sum(dice) if has_two and has_three else 0
