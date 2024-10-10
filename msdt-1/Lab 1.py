@@ -3,50 +3,50 @@ import time
 import math
 import sys
 
-def g(s):
-    if s > 1:
-        for i in range(s):
-            r(i)
+def generate_random_numbers(count):
+    if count > 1:
+        for i in range(count):
+            display_random_number(i)
     else:
-        r(1)
+        display_random_number(1)
 
-def r(a):
-    b = random.randint(1, 100)
-    print("Случайное число:", b)
+def display_random_number(index):
+    random_number = random.randint(1, 100)
+    print("Случайное число:", random_number)
 
-    if b > 50:
-        print(f"Число {b} больше 50")
-    elif b == 50:
-        print(f"Число {b} равно 50")
+    if random_number > 50:
+        print(f"Число {random_number} больше 50")
+    elif random_number == 50:
+        print(f"Число {random_number} равно 50")
     else:
-        print(f"Число {b} меньше 50")
+        print(f"Число {random_number} меньше 50")
 
-def l(l):
-    c = len(l)
+def get_length_if_greater_than_five(items):
+    item_count = len(items)
 
-    if c > 5:
-        return c
+    if item_count > 5:
+        return item_count
     else:
         return 0
 
-def sum_nums(a, b):
-    s = 0
+def sum_range(start, end):
+    total_sum = 0
 
-    for i in range(a, b + 1):
-        s += i
-    return s
+    for i in range(start, end + 1):
+        total_sum += i
+    return total_sum
 
-def long_function_name(var_one, var_two, var_three, var_four):
-    print(var_one + var_two + var_three + var_four)
-    return var_one + var_two + var_three + var_four
+def add_four_numbers(number_one, number_two, number_three, number_four):
+    print(number_one + number_two + number_three + number_four)
+    return number_one + number_two + number_three + number_four
 
-def complicated_function(a, b, c, d, e, f, g):
+def perform_complex_calculation(a, b, c, d, e, f, g):
     print("Эта функция делает очень много всего")
-    x = a + b
-    y = c - d
-    z = x * y + f
-    print(x, y, z)
-    return z
+    sum_ab = a + b
+    difference_cd = c - d
+    result = sum_ab * difference_cd + f
+    print(sum_ab, difference_cd, result)
+    return result
 
 class Car:
     def __init__(self, brand, color):
@@ -62,40 +62,40 @@ class Car:
     def stop(self):
         print(f"{self.brand} остановился")
 
-def even_more_complex_function(a, b, c, d, e, f, g, h, i, j, k, l):
+def calculate_large_expression(a, b, c, d, e, f, g, h, i, j, k, l):
     print("Очень сложная функция, в которой много параметров")
-    n = a + b + c - d * e / f + g - h * i / j + k - l
-    if n > 0:
-        print("Результат положительный:", n)
+    result = a + b + c - d * e / f + g - h * i / j + k - l
+    if result > 0:
+        print("Результат положительный:", result)
     else:
-        print("Результат отрицательный:", n)
-    return n
+        print("Результат отрицательный:", result)
+    return result
 
-def nested_loops():
+def execute_nested_loops():
     for i in range(5):
         for j in range(3):
             for k in range(2):
                 print(f"Цикл {i} {j} {k}")
     time.sleep(0.1)
 
-def process_data(data):
+def process_data_values(data_values):
     result = []
-    for item in data:
-        if item > 5:
-            result.append(item * 2)
-        elif item == 5:
-            result.append(item * 10)
+    for value in data_values:
+        if value > 5:
+            result.append(value * 2)
+        elif value == 5:
+            result.append(value * 10)
         else:
-            result.append(item)
+            result.append(value)
     return result
 
-def long_calculation(x, y, z):
-    res = 0
+def calculate_with_sqrt(x, y, z):
+    result = 0
     for i in range(100):
-        res += (x + y * z) / math.sqrt(i + 1)
-    return res
+        result += (x + y * z) / math.sqrt(i + 1)
+    return result
 
-def another_complex_function(a, b, c, d):
+def compute_expression(a, b, c, d):
     result = (a ** 2 + b ** 2) / (c - d) if d != 0 else sys.maxsize
 
     if result < 100:
@@ -104,32 +104,32 @@ def another_complex_function(a, b, c, d):
         print("Большой результат:", result)
     return result
 
-def recursive_example(n):
+def recursive_print(n):
     if n > 0:
         print(n)
-        recursive_example(n - 1)
+        recursive_print(n - 1)
     else:
         print("Базовый случай")
 
-def useless_code():
+def run_useless_loop():
     for i in range(10):
         print("Это бесполезный цикл", i)
         time.sleep(0.1)
     for j in range(5):
         print("Это тоже", j)
 
-def random_function():
+def perform_random_action():
     print("Функция с рандомными действиями")
-    x = random.randint(1, 100)
+    random_value = random.randint(1, 100)
 
-    if x > 50:
-        print("Большое число:", x)
-    elif x == 50:
+    if random_value > 50:
+        print("Большое число:", random_value)
+    elif random_value == 50:
         print("Число равно 50")
     else:
-        print("Маленькое число:", x)
+        print("Маленькое число:", random_value)
 
-def long_series_of_prints():
+def print_series_of_strings():
     print("Строка 1")
     print("Строка 2")
     print("Строка 3")
@@ -139,11 +139,11 @@ def long_series_of_prints():
     print("Строка 7")
     print("Строка 8")
 
-def working_with_strings(s1, s2, s3):
-    combined = s1 + s2 + s3 if len(s1) > 5 else s2 * 2
-    print("Комбинированная строка:", combined)
+def concatenate_strings(string1, string2, string3):
+    combined_string = string1 + string2 + string3 if len(string1) > 5 else string2 * 2
+    print("Комбинированная строка:", combined_string)
 
-    if 'a' in combined:
+    if 'a' in combined_string:
         print("Строка содержит букву 'a'")
     else:
         print("Строка не содержит букву 'a'")
@@ -153,41 +153,41 @@ class Building:
         self.floors = floors
         self.color = color
 
-    def describe(self):
+    def describe_building(self):
         print(f"Здание имеет {self.floors} этажей и {self.color} цвет")
 
-    def build(self):
+    def build_structure(self):
         print(f"Строим здание с {self.floors} этажами")
 
-    def demolish(self):
+    def demolish_building(self):
         print("Здание снесено")
 
-def meaningless_math(a, b, c):
-    res = (a + b) * (c - b) / (a + 1)
+def calculate_expression(a, b, c):
+    result = (a + b) * (c - b) / (a + 1)
 
-    if res > 1000:
+    if result > 1000:
         print("Огромный результат")
-    elif res == 1000:
+    elif result == 1000:
         print("Ровно тысяча")
     else:
         print("Маленький результат")
-    return res
+    return result
 
-def another_useless_function():
+def useless_function():
     print("Эта функция ничего не делает")
     for i in range(5):
         print("И она всё равно бесполезна", i)
 
-def processing_list_of_strings(strings):
-    processed = []
-    for s in strings:
-        if len(s) > 5:
-            processed.append(s.upper())
+def process_string_list(strings):
+    processed_strings = []
+    for string in strings:
+        if len(string) > 5:
+            processed_strings.append(string.upper())
         else:
-            processed.append(s.lower())
-    return processed
+            processed_strings.append(string.lower())
+    return processed_strings
 
-def yet_another_function(x, y, z):
+def compare_three_numbers(x, y, z):
     if x > y:
         if y > z:
             print("x больше y, y больше z")
@@ -196,7 +196,7 @@ def yet_another_function(x, y, z):
     else:
         print("x не больше y")
 
-def deeply_nested_function(a, b, c):
+def check_positive_numbers(a, b, c):
     if a > 0:
         if b > 0:
             if c > 0:
@@ -208,39 +208,39 @@ def deeply_nested_function(a, b, c):
     else:
         print("Ни одно число не положительное")
 
-def disorganized_code_example():
-    numbers = [random.randint(1, 100) for _ in range(10)]
-    print("Список случайных чисел:", numbers)
-    for n in numbers:
-        if n % 2 == 0:
-            print(f"Число {n} чётное")
+def display_random_numbers():
+    random_numbers = [random.randint(1, 100) for _ in range(10)]
+    print("Список случайных чисел:", random_numbers)
+    for number in random_numbers:
+        if number % 2 == 0:
+            print(f"Число {number} чётное")
         else:
-            print(f"Число {n} нечётное")
+            print(f"Число {number} нечётное")
 
-def final_function():
+def say_goodbye():
     print("Последняя функция в коде")
     time.sleep(1)
     print("Прощай!")
 
 if __name__ == "__main__":
     main()
-    even_more_complex_function(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-    nested_loops()
-    process_data([3, 6, 9, 5, 2])
-    long_calculation(1, 2, 3)
-    another_complex_function(10, 20, 5, 2)
-    recursive_example(10)
-    useless_code()
-    random_function()
-    long_series_of_prints()
-    working_with_strings("hello", "world", "python")
+    calculate_large_expression(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
+    execute_nested_loops()
+    process_data_values([3, 6, 9, 5, 2])
+    calculate_with_sqrt(1, 2, 3)
+    compute_expression(10, 20, 5, 2)
+    recursive_print(10)
+    run_useless_loop()
+    perform_random_action()
+    print_series_of_strings()
+    concatenate_strings("hello", "world", "python")
     building = Building(5, "синий")
-    building.describe()
-    building.build()
-    meaningless_math(10, 20, 30)
-    another_useless_function()
-    processing_list_of_strings(["apple", "banana", "kiwi", "melon", "grape"])
-    yet_another_function(5, 3, 2)
-    deeply_nested_function(1, 2, 3)
-    disorganized_code_example()
-    final_function()
+    building.describe_building()
+    building.build_structure()
+    calculate_expression(10, 20, 30)
+    useless_function()
+    process_string_list(["apple", "banana", "kiwi", "melon", "grape"])
+    compare_three_numbers(5, 3, 2)
+    check_positive_numbers(1, 2, 3)
+    display_random_numbers()
+    say_goodbye()
