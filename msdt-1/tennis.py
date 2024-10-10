@@ -21,10 +21,10 @@ class TennisGameDefactored1:
 
         if self.p1points == self.p2points:
             result = {
-                0 : "Love-All",
-                1 : "Fifteen-All",
-                2 : "Thirty-All",
-                3 : "Forty-All",
+                0: "Love-All",
+                1: "Fifteen-All",
+                2: "Thirty-All",
+                3: "Forty-All",
             }.get(self.p1points, "Deuce")
 
         elif self.p1points >= 4 or self.p2points >= 4:
@@ -48,10 +48,10 @@ class TennisGameDefactored1:
                     tempScore = self.p2points
 
                 result += {
-                    0 : "Love",
-                    1 : "Fifteen",
-                    2 : "Thirty",
-                    3 : "Forty",
+                    0: "Love",
+                    1: "Fifteen",
+                    2: "Thirty",
+                    3: "Forty",
                 }[tempScore]
 
         return result
