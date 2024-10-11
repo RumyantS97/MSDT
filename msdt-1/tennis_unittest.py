@@ -4,7 +4,6 @@ import unittest
 
 from tennis import TennisGame
 
-
 test_cases = [
     (0, 0, "Love-All", 'player1', 'player2'),
     (1, 1, "Fifteen-All", 'player1', 'player2'),
@@ -52,23 +51,25 @@ test_cases = [
 ]
 
 
-def play_game(p1Points, p2Points, p1Name, p2Name):
-    game = TennisGame(p1Name, p2Name)
-    for i in range(max(p1Points, p2Points)):
-        if i < p1Points:
-            game.won_point(p1Name)
-        if i < p2Points:
-            game.won_point(p2Name)
+def play_game(p1_points, p2_points, p1_name, p2_name):
+    """Имитирует игру между двумя игроками."""
+    game = TennisGame(p1_name, p2_name)
+    for i in range(max(p1_points, p2_points)):
+        if i < p1_points:
+            game.won_point(p1_name)
+        if i < p2_points:
+            game.won_point(p2_name)
     return game
 
 
 class TestTennis(unittest.TestCase):
 
-    def test_Score(self):
-        for testcase in test_cases:
-            (p1Points, p2Points, score, p1Name, p2Name) = testcase
-            game = play_game(p1Points, p2Points, p1Name, p2Name)
-            self.assertEquals(score, game.score())
+    def test_score(self):
+        for test_case in test_cases:
+            p1_points, p2_points, expected_score, p1_name, p2_name = test_case
+            game = play_game(p1_points, p2_points, p1_name, p2_name)
+            self.assertEqual(expected_score, game.score())
+
 
 if __name__ == "__main__":
     unittest.main()
