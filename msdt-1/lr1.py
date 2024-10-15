@@ -399,78 +399,65 @@ def create_graph():
 
 
 
-
-
 info_lr2()
-print("Введите способ заполнения списка:")
+print("Выберите способ заполнения списка:")
 print("1 - ввод элементов списка в одну строку через пробел:")
-print("любое число - автоматическая генерация списка из n случайных элементов "
-      "в заданном пользователем диапазоне:")
-v = int(input())
+print("любое другое число - автоматическая генерация списка из n случайных элементов "
+      "в заданном диапазоне:")
+selection = int(input())
 print("")
-m = []
-if v == 1:
-    print('Введите в строку элементы списка:')
-    m = input_list()
+
+numbers_list = []
+if selection == 1:
+    print('Введите элементы списка через пробел:')
+    numbers_list = input_list()
 else:
-    n = int(input('Введите количество элементов списка:'))
-    a, b = map(int, input('Введите диапазон элементов:').split())
-    m = random_list(m, n, a, b)
-    print(m)
+    num_elements = int(input('Введите количество элементов списка: '))
+    range_start, range_end = map(int, input('Введите диапазон элементов: ').split())
+    numbers_list = generate_random_list(num_elements, range_start, range_end)
+    print(numbers_list)
     print('')
+
 # Задача №1
-c = find_max(m)
-if c != -10 ** 10:
-    print('Максимальный нечётный элемент', c)
+max_odd_element = find_max_odd(numbers_list)
+if max_odd_element != -10 ** 10:
+    print('Максимальный нечётный элемент:', max_odd_element)
 else:
     print('В списке отсутствуют нечётные элементы')
 print('')
+
 # Задача №2
-kr = int(input('Введите число, кратность которому нужно проверить:'))
-ans = find_first_element(m, kr)
-if ans > len(m) - 1:
-    print('В списке отсутствуют двузначные элементы, кратные', kr)
+multiple_of = int(input('Введите число, кратность которому нужно проверить: '))
+first_two_digit_index = find_first_two_digit_multiple(numbers_list, multiple_of)
+if first_two_digit_index > len(numbers_list) - 1:
+    print('В списке отсутствуют двузначные элементы, кратные', multiple_of)
 else:
-    print('Индекс первого двузначного элемента, кратного', kr, '-', ans)
+    print('Индекс первого двузначного элемента, кратного', multiple_of, '-', first_two_digit_index)
 print('')
+
 # Задача №3
 print('Исходный список:')
-print(m)
+print(numbers_list)
 print('Список после быстрой сортировки:')
-print(quick_sort(m, 0, len(m) - 1))
-
+print(quick_sort(numbers_list, 0, len(numbers_list) - 1))
 
 info_lr3()
 
 source_filename = input('Введите имя исходного файла: ')
 if os.path.exists(source_filename):
     result_filename = input("Введите имя результирующего файла: ")
-    file_to_file(source_filename, result_filename)
+    copy_file(source_filename, result_filename)
     print('Задание выполнено')
 else:
     print('Такого файла не существует')
 
-
-
-
-
 info_lr4()
-print('Минимальное значение n, для которого F(n) равно 31 = ', min_n_31(1))
+print('Минимальное значение n, для которого F(n) равно 31 =', min_n_for_f_n(1))
+
 x = int(input('Введите значение x: '))
-result = f(x)
-print('Количество кратных 3 четных цифр результата вычисления "\
-      F(x) = ', result, ':', count_multiples_of_3_even_digits(s))
-
-
-
-
-
-
-
-
-
-
-
+result = calculate_f(x)
+print('Количество кратных 3 четных цифр результата вычисления F(x) =', result, ':',
+      count_even_digits_divisible_by_3(result))
 
 flag = True
 
@@ -486,7 +473,7 @@ while flag:
         substring = input()
 
         result_naive = naive_search(main_string, substring)
-        cmp(main_string, substring)
+        compare_strings(main_string, substring)
 
         if result_naive != -1:
             print("Подстрока найдена (наивно)")
