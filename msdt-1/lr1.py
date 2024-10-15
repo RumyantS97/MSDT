@@ -2,6 +2,7 @@ import random
 import os.path
 from collections import defaultdict
 
+
 def info_lr2():
     print('Лабораторная работа №2')
     print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
@@ -112,8 +113,6 @@ print('Список после быстрой сортировки:')
 print(QuickSort(m, 0, len(m) - 1))
 
 
-
-
 def info_lr3():
     print('Лабораторная работа №3')
     print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
@@ -172,18 +171,19 @@ def file_to_file(input_file, output_file):
     with open(input_file, 'r') as infile, open(outpu_file, 'w') as outfile:
         for line in infile.readlines():
             line = line.upper()
-            output_file.write(get_word(line) + '\n')
+            outfile.write(get_word(line) + '\n')
 
 
 info_lr3()
 
 source_filename = input('Введите имя исходного файла: ')
 if os.path.exists(source_filename):
-    result_filename: str = input("Введите имя результирующего файла: ")
+    result_filename = input("Введите имя результирующего файла: ")
     file_to_file(source_filename, result_filename)
     print('Задание выполнено')
 else:
     print('Такого файла не существует')
+
 
 def info_lr4():
     print('Лабораторная работа №4')
@@ -203,7 +203,6 @@ def info_lr4():
         )
     print()
 
-
     # Функция F(n)
     def f(n):
         if n < 2:
@@ -213,13 +212,11 @@ def info_lr4():
         else:
             return f(n - 3) + 3
 
-
     # Задание 1
     def min_n_31(n):
         while f(n) != 31:
             n += 1
         return n
-
 
     # Задание 2
     def count_multiples_of_3_even_digits(num):
@@ -230,12 +227,12 @@ def info_lr4():
         else:
             return count_multiples_of_3_even_digits(num // 10)
 
-
     info_lr4()
     print('Минимальное значение n, для которого F(n) равно 31 = ', min_n_31(1))
     x = int(input('Введите значение x: '))
     result = f(x)
-    print('Количество кратных 3 четных цифр результата вычисления F(x) = ', result, ':', count_multiples_of_3_even_digits(s))
+    print('Количество кратных 3 четных цифр результата вычисления "\
+    F(x) = ', result, ':', count_multiples_of_3_even_digits(s))
 
 
 class HuffmanNode:
@@ -292,7 +289,6 @@ class HuffmanCoding:
     def encode(self, code_map, input_data):
         return ''.join(code_map[char] for char in input_data)
 
-
     def decode(self, coded):
         decoded_string = ""
         current_node = self.root
@@ -302,6 +298,7 @@ class HuffmanCoding:
                 decoded_string += current_node.character
                 current_node = self.root
         return decoded_string
+
 
 def naive_search(text, pattern):
     text_length = len(text)
