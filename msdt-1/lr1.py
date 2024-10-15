@@ -84,15 +84,15 @@ print("")
 m = []
 if v == 1:
     print('Введите в строку элементы списка:')
-    m = inputList(m)
+    m = input_list()
 else:
     n = int(input('Введите количество элементов списка:'))
     a, b = map(int, input('Введите диапазон элементов:').split())
-    m = randomList(m, n, a, b)
+    m = random_list(m, n, a, b)
     print(m)
     print('')
 # Задача №1
-c = findMax(m)
+c = find_max(m)
 if c != -10 ** 10:
     print('Максимальный нечётный элемент', c)
 else:
@@ -100,7 +100,7 @@ else:
 print('')
 # Задача №2
 kr = int(input('Введите число, кратность которому нужно проверить:'))
-ans = firstelement(m, kr)
+ans = find_first_element(m, kr)
 if ans > len(m) - 1:
     print('В списке отсутствуют двузначные элементы, кратные', kr)
 else:
@@ -110,7 +110,7 @@ print('')
 print('Исходный список:')
 print(m)
 print('Список после быстрой сортировки:')
-print(QuickSort(m, 0, len(m) - 1))
+print(quick_sort(m, 0, len(m) - 1))
 
 
 def info_lr3():
@@ -139,12 +139,12 @@ def count_used_letters(string):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     letter_counts = [0] * 26
     result = ''
-    for char in range(len(s)):
+    for char in range(len(string)):
         for index in range(26):
-            if string[i] == alphabet[j]:
-                letter_counts[j] += 1
+            if string[char] == alphabet[index]:
+                letter_counts[index] += 1
     for index in range(26):
-        if letter_counts[k] != 0:
+        if letter_counts[index] != 0:
             result += alphabet[index]
     if string == '\n':
         return ''
@@ -168,7 +168,7 @@ def get_word(string):
 
 # Функция работает с файлами
 def file_to_file(input_file, output_file):
-    with open(input_file, 'r') as infile, open(outpu_file, 'w') as outfile:
+    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
         for line in infile.readlines():
             line = line.upper()
             outfile.write(get_word(line) + '\n')
