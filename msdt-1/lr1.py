@@ -1,5 +1,6 @@
 import random
-
+import os.path
+from collections import defaultdict
 
 def info():
     print('Лабораторная работа №2')
@@ -111,8 +112,8 @@ print('Исходный список:')
 print(m)
 print('Список после быстрой сортировки:')
 print(QuickSort(m, 0, len(m) - 1))
-# Раздел импорта модулей
-import os.path
+
+
 
 
 def info():
@@ -306,7 +307,7 @@ class HuffmanCoding:
         return s
 
 
-from collections import defaultdict
+
 
 
 def naive_search(text, pattern):
