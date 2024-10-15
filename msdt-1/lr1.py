@@ -1,8 +1,10 @@
 import random
 import os.path
+
 from collections import defaultdict
 
 
+# Информация о 2 лр
 def info_lr2():
     print('Лабораторная работа №2')
     print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
@@ -13,6 +15,59 @@ def info_lr2():
     print('3. Отсортировать список (без использования стандартных функций '
           'сортировки) по убыванию старших цифр элементов списка '
           '(быстрая сортировка)')
+
+
+# Информация о 3 лр
+def info_lr3():
+    print('Лабораторная работа №3')
+    print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
+    print()
+    print('Задание:')
+    print(
+        'В исходном текстовом файле записаны строки, содержащие произвольные '
+        'алфавитно-цифровые символы.\n'
+        'Требуется написать программу, которая для каждой строки исходного '
+        'файла будет составлять и выводить в результирующий файл слово из тех '
+        'букв английского алфавита, которые встречаются во входных данных '
+        'либо как строчные, либо как прописные,\n'
+        'причем буквы должны идти в алфавитном порядке. Каждая буква должна '
+        'быть распечатана один раз.\n'
+        'Буквы построенного слова должны быть прописными. Если во входных '
+        'данных встречаются все буквы английского алфавита, то следует вывести '
+        'строчными буквами слово "no".'
+    )
+    print()
+
+
+# Информация о 4 лр
+def info_lr4():
+    print('Лабораторная работа №4')
+    print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
+    print()
+    print('Задание:')
+    print(
+        'Алгоритм вычисления функции F(n), где n – натуральное число, задан '
+        'следующими соотношениями:\n'
+        'F(n) = 1, при n < 2,\n'
+        'F(n) = F(n // 2) + 1, когда n >= 2 и четное,\n'
+        'F(n) = F(n – 3) + 3, когда n >= 2 и нечётное.\n'
+        'Напишите программу, которая вычисляет:\n'
+        '1. Минимальное значение n, для которого F(n) равно 31\n'
+        '2. Количество кратных 3 четных цифр результата вычисления F(x), '
+        'где x – число, заданное пользователем.'
+        )
+    print()
+
+
+# Информация о дополнительной лр
+def menu():
+    print(
+        "1. Реализуйте наивный алгоритм и алгоритм Кнута-Морриса-Пратта для поиска подстроки в строке. "
+        "Сравните эффективность алгоритмов на различных входных данных.\n"
+        "2. Реализуйте алгоритм, который находит все палиндромные подстроки в данной строке.\n"
+        "3. Реализуйте алгоритм кодирования Хаффмана для сжатия текстовых данных. (отдельно)\n"
+        "4. Реализуйте алгоритм для определения циклов в графе."
+    )
 
 
 # Ввод элементов списка
@@ -45,6 +100,7 @@ def find_first_element(numbers, divisor):
     return index
 
 
+# Поиск первой цифры числа
 def find_leading_digit(number):
     number = abs(number)
     while number > 9:
@@ -74,82 +130,22 @@ def quick_sort(array, left, right):
     return array
 
 
-info_lr2()
-print("Введите способ заполнения списка:")
-print("1 - ввод элементов списка в одну строку через пробел:")
-print("любое число - автоматическая генерация списка из n случайных элементов "
-      "в заданном пользователем диапазоне:")
-v = int(input())
-print("")
-m = []
-if v == 1:
-    print('Введите в строку элементы списка:')
-    m = input_list()
-else:
-    n = int(input('Введите количество элементов списка:'))
-    a, b = map(int, input('Введите диапазон элементов:').split())
-    m = random_list(m, n, a, b)
-    print(m)
-    print('')
-# Задача №1
-c = find_max(m)
-if c != -10 ** 10:
-    print('Максимальный нечётный элемент', c)
-else:
-    print('В списке отсутствуют нечётные элементы')
-print('')
-# Задача №2
-kr = int(input('Введите число, кратность которому нужно проверить:'))
-ans = find_first_element(m, kr)
-if ans > len(m) - 1:
-    print('В списке отсутствуют двузначные элементы, кратные', kr)
-else:
-    print('Индекс первого двузначного элемента, кратного', kr, '-', ans)
-print('')
-# Задача №3
-print('Исходный список:')
-print(m)
-print('Список после быстрой сортировки:')
-print(quick_sort(m, 0, len(m) - 1))
-
-
-def info_lr3():
-    print('Лабораторная работа №3')
-    print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
-    print()
-    print('Задание:')
-    print(
-        'В исходном текстовом файле записаны строки, содержащие произвольные '
-        'алфавитно-цифровые символы.\n'
-        'Требуется написать программу, которая для каждой строки исходного '
-        'файла будет составлять и выводить в результирующий файл слово из тех '
-        'букв английского алфавита, которые встречаются во входных данных '
-        'либо как строчные, либо как прописные,\n'
-        'причем буквы должны идти в алфавитном порядке. Каждая буква должна '
-        'быть распечатана один раз.\n'
-        'Буквы построенного слова должны быть прописными. Если во входных '
-        'данных встречаются все буквы английского алфавита, то следует вывести '
-        'строчными буквами слово "no".'
-    )
-    print()
-
-
 # Функция считает кол-во использования букв
 def count_used_letters(string):
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     letter_counts = [0] * 26
-    result = ''
+    string_result = ''
     for char in range(len(string)):
         for index in range(26):
             if string[char] == alphabet[index]:
                 letter_counts[index] += 1
     for index in range(26):
         if letter_counts[index] != 0:
-            result += alphabet[index]
+            string_result += alphabet[index]
     if string == '\n':
         return ''
-    if result != '':
-        return result
+    if string_result != '':
+        return string_result
     else:
         return "В данной строке нет букв"
 
@@ -174,65 +170,31 @@ def file_to_file(input_file, output_file):
             outfile.write(get_word(line) + '\n')
 
 
-info_lr3()
+# Функция F(n)
+def f(n):
+    if n < 2:
+        return 1
+    if n % 2 == 0:
+        return f(n // 2) + 1
+    else:
+        return f(n - 3) + 3
 
-source_filename = input('Введите имя исходного файла: ')
-if os.path.exists(source_filename):
-    result_filename = input("Введите имя результирующего файла: ")
-    file_to_file(source_filename, result_filename)
-    print('Задание выполнено')
-else:
-    print('Такого файла не существует')
+
+# Задание 1 лр4
+def min_n_31(n):
+    while f(n) != 31:
+        n += 1
+    return n
 
 
-def info_lr4():
-    print('Лабораторная работа №4')
-    print('Вариант №8, выполнила студентка группы 6104-020302D, Добина Алина')
-    print()
-    print('Задание:')
-    print(
-        'Алгоритм вычисления функции F(n), где n – натуральное число, задан '
-        'следующими соотношениями:\n'
-        'F(n) = 1, при n < 2,\n'
-        'F(n) = F(n // 2) + 1, когда n >= 2 и четное,\n'
-        'F(n) = F(n – 3) + 3, когда n >= 2 и нечётное.\n'
-        'Напишите программу, которая вычисляет:\n'
-        '1. Минимальное значение n, для которого F(n) равно 31\n'
-        '2. Количество кратных 3 четных цифр результата вычисления F(x), '
-        'где x – число, заданное пользователем.'
-        )
-    print()
-
-    # Функция F(n)
-    def f(n):
-        if n < 2:
-            return 1
-        if n % 2 == 0:
-            return f(n // 2) + 1
-        else:
-            return f(n - 3) + 3
-
-    # Задание 1
-    def min_n_31(n):
-        while f(n) != 31:
-            n += 1
-        return n
-
-    # Задание 2
-    def count_multiples_of_3_even_digits(num):
-        if num == 0:
-            return 0
-        elif num % 10 == 6 or num % 10 == 0:
-            return count_multiples_of_3_even_digits(num // 10) + 1
-        else:
-            return count_multiples_of_3_even_digits(num // 10)
-
-    info_lr4()
-    print('Минимальное значение n, для которого F(n) равно 31 = ', min_n_31(1))
-    x = int(input('Введите значение x: '))
-    result = f(x)
-    print('Количество кратных 3 четных цифр результата вычисления "\
-    F(x) = ', result, ':', count_multiples_of_3_even_digits(s))
+# Задание 2 лр4
+def count_multiples_of_3_even_digits(num):
+    if num == 0:
+        return 0
+    elif num % 10 == 6 or num % 10 == 0:
+        return count_multiples_of_3_even_digits(num // 10) + 1
+    else:
+        return count_multiples_of_3_even_digits(num // 10)
 
 
 class HuffmanNode:
@@ -300,6 +262,7 @@ class HuffmanCoding:
         return decoded_string
 
 
+# Наивный алгоритм поиска строки
 def naive_search(text, pattern):
     text_length = len(text)
     pattern_length = len(pattern)
@@ -313,6 +276,7 @@ def naive_search(text, pattern):
     return -1
 
 
+# Алгоритм поиска подстроки Кнутта–Морриса–Пратта
 def kmp_search(text, pattern):
     # Построение массива префиксов
     prefix_array = [0] * len(pattern)
@@ -354,6 +318,7 @@ def kmp_search(text, pattern):
         print("Подстрока не найдена (КМП)")
 
 
+# Поиск подстроки, которая является палиндромом
 def expand_from_center(string, left_index, right_index):
     while left_index >= 0 and right_index < len(string) and string[left_index] == string[right_index]:
         left_index -= 1
@@ -361,6 +326,7 @@ def expand_from_center(string, left_index, right_index):
     return string[left_index + 1:right_index]
 
 
+# Поиск всех паллиндромов в подстроке
 def find_palindromes(input_string):
     found_palindromes = []
     for index in range(len(input_string)):
@@ -373,6 +339,7 @@ def find_palindromes(input_string):
     return found_palindromes
 
 
+# Проверка графа на содержание циклов
 def has_cycle(graph):
     visited_nodes = set()
     recursion_stack = set()
@@ -399,6 +366,7 @@ def has_cycle(graph):
     return False
 
 
+# Создание направленного графа
 def create_graph():
     graph = {}
     print("Введите вершины графа через пробел (например, A B C):")
@@ -429,14 +397,79 @@ def create_graph():
     return graph
 
 
-def menu():
-    print(
-        "1. Реализуйте наивный алгоритм и алгоритм Кнута-Морриса-Пратта для поиска подстроки в строке. "
-        "Сравните эффективность алгоритмов на различных входных данных.\n"
-        "2. Реализуйте алгоритм, который находит все палиндромные подстроки в данной строке.\n"
-        "3. Реализуйте алгоритм кодирования Хаффмана для сжатия текстовых данных. (отдельно)\n"
-        "4. Реализуйте алгоритм для определения циклов в графе."
-    )
+
+
+
+
+info_lr2()
+print("Введите способ заполнения списка:")
+print("1 - ввод элементов списка в одну строку через пробел:")
+print("любое число - автоматическая генерация списка из n случайных элементов "
+      "в заданном пользователем диапазоне:")
+v = int(input())
+print("")
+m = []
+if v == 1:
+    print('Введите в строку элементы списка:')
+    m = input_list()
+else:
+    n = int(input('Введите количество элементов списка:'))
+    a, b = map(int, input('Введите диапазон элементов:').split())
+    m = random_list(m, n, a, b)
+    print(m)
+    print('')
+# Задача №1
+c = find_max(m)
+if c != -10 ** 10:
+    print('Максимальный нечётный элемент', c)
+else:
+    print('В списке отсутствуют нечётные элементы')
+print('')
+# Задача №2
+kr = int(input('Введите число, кратность которому нужно проверить:'))
+ans = find_first_element(m, kr)
+if ans > len(m) - 1:
+    print('В списке отсутствуют двузначные элементы, кратные', kr)
+else:
+    print('Индекс первого двузначного элемента, кратного', kr, '-', ans)
+print('')
+# Задача №3
+print('Исходный список:')
+print(m)
+print('Список после быстрой сортировки:')
+print(quick_sort(m, 0, len(m) - 1))
+
+
+info_lr3()
+
+source_filename = input('Введите имя исходного файла: ')
+if os.path.exists(source_filename):
+    result_filename = input("Введите имя результирующего файла: ")
+    file_to_file(source_filename, result_filename)
+    print('Задание выполнено')
+else:
+    print('Такого файла не существует')
+
+
+
+
+
+info_lr4()
+print('Минимальное значение n, для которого F(n) равно 31 = ', min_n_31(1))
+x = int(input('Введите значение x: '))
+result = f(x)
+print('Количество кратных 3 четных цифр результата вычисления "\
+      F(x) = ', result, ':', count_multiples_of_3_even_digits(s))
+
+
+
+
+
+
+
+
+
+
 
 
 flag = True
