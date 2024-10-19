@@ -9,74 +9,30 @@ class Yahtzee:
         return 50 if dice.count(dice[0]) == 5 else 0
 
     @staticmethod
-    def ones(d1, d2, d3, d4, d5):
-        total_sum = 0
-        if d1 == 1:
-            total_sum += 1
-        if d2 == 1:
-            total_sum += 1
-        if d3 == 1:
-            total_sum += 1
-        if d4 == 1:
-            total_sum += 1
-        if d5 == 1:
-            total_sum += 1
-
-        return total_sum
+    def count_value(dice, value):
+        return dice.count(value) * value
 
     @staticmethod
-    def twos(d1, d2, d3, d4, d5):
-        total_sum = 0
-        if d1 == 2:
-            total_sum += 2
-        if d2 == 2:
-            total_sum += 2
-        if d3 == 2:
-            total_sum += 2
-        if d4 == 2:
-            total_sum += 2
-        if d5 == 2:
-            total_sum += 2
-        return total_sum
+    def ones(*dice):
+        return Yahtzee.count_value(dice, 1)
 
     @staticmethod
-    def threes(d1, d2, d3, d4, d5):
-        s = 0
-        if d1 == 3:
-            s += 3
-        if d2 == 3:
-            s += 3
-        if d3 == 3:
-            s += 3
-        if d4 == 3:
-            s += 3
-        if d5 == 3:
-            s += 3
-        return s
+    def twos(*dice):
+        return Yahtzee.count_value(dice, 2)
 
-    def __init__(self, *dice):
-        self.dice = list(dice)
+    @staticmethod
+    def threes(*dice):
+        return Yahtzee.count_value(dice, 3)
 
     def fours(self):
-        total_sum = 0
-        for at in range(5):
-            if self.dice[at] == 4:
-                total_sum += 4
-        return total_sum
+        return self.count_value(self.dice, 4)
 
     def fives(self):
-        s = 0
-        for i in range(len(self.dice)):
-            if self.dice[i] == 5:
-                s = s + 5
-        return s
+        return self.count_value(self.dice, 5)
 
     def sixes(self):
-        total_sum = 0
-        for at in range(len(self.dice)):
-            if self.dice[at] == 6:
-                total_sum = total_sum + 6
-        return total_sum
+        return self.count_value(self.dice, 6)
+
 
     @staticmethod
     def score_pair(d1, d2, d3, d4, d5):
