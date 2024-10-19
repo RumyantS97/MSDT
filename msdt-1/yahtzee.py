@@ -1,3 +1,5 @@
+from collections import Counter
+
 class Yahtzee:
 
     @staticmethod
@@ -24,73 +26,48 @@ class Yahtzee:
     def threes(*dice):
         return Yahtzee.count_value(dice, 3)
 
+    @staticmethod
     def fours(self):
         return self.count_value(self.dice, 4)
 
+    @staticmethod
     def fives(self):
         return self.count_value(self.dice, 5)
 
+    @staticmethod
     def sixes(self):
         return self.count_value(self.dice, 6)
 
-
     @staticmethod
-    def score_pair(d1, d2, d3, d4, d5):
-        counts = [0] * 6
-        counts[d1 - 1] += 1
-        counts[d2 - 1] += 1
-        counts[d3 - 1] += 1
-        counts[d4 - 1] += 1
-        counts[d5 - 1] += 1
-        for at in range(6):
-            if counts[6 - at - 1] == 2:
-                return (6 - at) * 2
+    def score_pair(*dice):
+        counts = Counter(dice)
+        for num in range(6, 0, -1):
+            if counts[num] >= 2:
+                return num * 2
         return 0
 
     @staticmethod
-    def two_pair(d1, d2, d3, d4, d5):
-        counts = [0] * 6
-        counts[d1 - 1] += 1
-        counts[d2 - 1] += 1
-        counts[d3 - 1] += 1
-        counts[d4 - 1] += 1
-        counts[d5 - 1] += 1
-        n = 0
-        score = 0
-        for i in range(6):
-            if counts[6 - i - 1] == 2:
-                n = n + 1
-                score += (6 - i)
-
-        if n == 2:
-            return score * 2
-        else:
-            return 0
-
-    @staticmethod
-    def four_of_a_kind(_1, _2, d3, d4, d5):
-        tallies = [0] * 6
-        tallies[_1 - 1] += 1
-        tallies[_2 - 1] += 1
-        tallies[d3 - 1] += 1
-        tallies[d4 - 1] += 1
-        tallies[d5 - 1] += 1
-        for i in range(6):
-            if tallies[i] == 4:
-                return (i + 1) * 4
+    def two_pair(*dice):
+        counts = Counter(dice)
+        pairs = [num for num, count in counts.items() if count >= 2]
+        if len(pairs) >= 2:
+            return sum(pairs[:2]) * 2
         return 0
 
     @staticmethod
-    def three_of_a_kind(d1, d2, d3, d4, d5):
-        t = [0] * 6
-        t[d1 - 1] += 1
-        t[d2 - 1] += 1
-        t[d3 - 1] += 1
-        t[d4 - 1] += 1
-        t[d5 - 1] += 1
-        for i in range(6):
-            if t[i] == 3:
-                return (i + 1) * 3
+    def three_of_a_kind(*dice):
+        counts = Counter(dice)
+        for num in range(6, 0, -1):
+            if counts[num] >= 3:
+                return num * 3
+        return 0
+
+    @staticmethod
+    def four_of_a_kind(*dice):
+        counts = Counter(dice)
+        for num in range(6, 0, -1):
+            if counts[num] >= 4:
+                return num * 4
         return 0
 
     @staticmethod
@@ -104,30 +81,14 @@ class Yahtzee:
         return 20 if required.issubset(dice) else 0
 
     @staticmethod
-    def fullHouse(d1, d2, d3, d4, d5):
-        _2 = False
-        _2_at = 0
-        _3 = False
-        _3_at = 0
-
-        tallies = [0] * 6
-        tallies[d1 - 1] += 1
-        tallies[d2 - 1] += 1
-        tallies[d3 - 1] += 1
-        tallies[d4 - 1] += 1
-        tallies[d5 - 1] += 1
-
-        for i in range(6):
-            if tallies[i] == 2:
-                _2 = True
-                _2_at = i + 1
-
-        for i in range(6):
-            if tallies[i] == 3:
-                _3 = True
-                _3_at = i + 1
-
-        if _2 and _3:
-            return _2_at * 2 + _3_at * 3
-        else:
-            return 0
+    def full_house(*dice):
+        counts = Counter(dice)
+        has_three = has_two = 0
+        for num, count in counts.items():
+            if count == 3:
+                has_three = num
+            elif count == 2:
+                has_two = num
+        if has_three and has_two:
+            return has_three * 3 + has_two * 2
+        return 0
