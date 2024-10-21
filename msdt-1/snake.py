@@ -3,10 +3,9 @@ from enum import Enum
 import time
 import random
 
-
-
 class PythonSnake:  # Двигать тело змеюки в текущую сторону на 1 шаг
 # При этом тело может увеличиться (add='add') в размерах или нет
+
     def __init__(self, window, canv_x, canv_y, canv_width, canv_height):
         self.__started=1
         self.__spped=10
@@ -66,10 +65,13 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
     # Обработчики клавиш изменения направления движения:
     def right(self,event):
         self.__vector=self.CONST.RIGHT.value
+
     def down(self,event):
         self.__vector=self.CONST.DOWN.value
+
     def left(self,event):
         self.__vector=self.CONST.LEFT.value
+
     def up(self,event):
         self.__vector=self.CONST.UP.value
 
@@ -218,6 +220,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
 
 
     class Food:
+
         def add(self):
             self.Food.x=random.randint(self.CONST.FOOD_THICKNESS.value
                                      //2, self.canv_width
@@ -254,6 +257,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
 
 
     class Element_Square:  # Рисую квадратик со стороной d и центром x,y
+
         def __init__(self, self_glob,x,y,d,color):
             self.self_glob = self_glob
             self.x=x
@@ -270,7 +274,6 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
                                                        y+self.d,
                                                        fill=self.color,
                                                        width=2)
-
 
 
 def main():
