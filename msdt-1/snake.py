@@ -19,30 +19,30 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         self.canv=Canvas(self.__window, width = self.canv_width,
                                 height = self.canv_height,
                                 bg = self.CONST.CANVAS_BGCOLOR.value)
-        self.canv.place(x = self.__canv_x,y = self.__canv_y)
+        self.canv.place(x = self.__canv_x, y = self.__canv_y)
         self.create_head_food()
 
-        self.__window.bind('<d>',self.right)
-        self.__window.bind('<D>',self.right)
-        self.__window.bind('<Right>',self.right)
-        self.__window.bind('<s>',self.down)
-        self.__window.bind('<S>',self.down)
-        self.__window.bind('<Down>',self.down)
-        self.__window.bind('<a>',self.left)
-        self.__window.bind('<A>',self.left)
-        self.__window.bind('<Left>',self.left)
-        self.__window.bind('<w>',self.up)
-        self.__window.bind('<W>',self.up)
-        self.__window.bind('<Up>',self.up)
+        self.__window.bind('<d>', self.right)
+        self.__window.bind('<D>', self.right)
+        self.__window.bind('<Right>', self.right)
+        self.__window.bind('<s>', self.down)
+        self.__window.bind('<S>', self.down)
+        self.__window.bind('<Down>', self.down)
+        self.__window.bind('<a>', self.left)
+        self.__window.bind('<A>', self.left)
+        self.__window.bind('<Left>', self.left)
+        self.__window.bind('<w>', self.up)
+        self.__window.bind('<W>', self.up)
+        self.__window.bind('<Up>', self.up)
 
-        self.__window.bind('<e>',self.move)
-        self.__window.bind('<q>',self.quit)
-        self.__window.bind('<Destroy>',self.quit)
-        self.__window.bind('<plus>',self.speed_key)
-        self.__window.bind('<minus>',self.speed_key)
-        self.__window.bind('<KP_Add>',self.speed_key)  # Клавиша + на боковой клаве
-        self.__window.bind('<KP_Subtract>',self.speed_key)  # Клавиша - на боковой клаве
-        # self.__window.bind('<KeyPress>',self.speed_key)  # print(event.keysym) Вычислит нажатую клавишу
+        self.__window.bind('<e>', self.move)
+        self.__window.bind('<q>', self.quit)
+        self.__window.bind('<Destroy>', self.quit)
+        self.__window.bind('<plus>', self.speed_key)
+        self.__window.bind('<minus>', self.speed_key)
+        self.__window.bind('<KP_Add>', self.speed_key)  # Клавиша + на боковой клаве
+        self.__window.bind('<KP_Subtract>', self.speed_key)  # Клавиша - на боковой клаве
+        # self.__window.bind('<KeyPress>', self.speed_key)  # print(event.keysym) Вычислит нажатую клавишу
         
 
     class CONST(Enum):  # Список возможных направлений движения и других констант
@@ -258,7 +258,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
 
     class Element_Square:  # Рисую квадратик со стороной d и центром x,y
 
-        def __init__(self, self_glob,x,y,d,color):
+        def __init__(self, self_glob, x, y, d, color):
             self.self_glob = self_glob
             self.x = x
             self.y = y
@@ -270,7 +270,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         def draw(self):
             x = self.x - (self.d // 2)  # Координата левой грани квадрата
             y = self.y - (self.d // 2)  # Координата верхней грани квадрата
-            return self.self_glob.canv.create_rectangle(x,y,x + self.d,
+            return self.self_glob.canv.create_rectangle(x, y, x + self.d,
                                                        y + self.d,
                                                        fill = self.color,
                                                        width = 2)
@@ -291,20 +291,22 @@ def main():
     root.title('Программа Змейка на питоне в графике')
     root.geometry('800x600+150+150')
 
-    frame = Frame(root,width = 740,height = 90,bg ='#f2ffe0')
-    frame.place(x = 30,y = 5)
-    text = Label(root, text='''Игра Змейка написана на Python 3 в ноябре 2016 года . Правила: Змейка должна кушать зелёные плоды. При съедании плода, скорость змейки возрастает. Скорость можно
+    frame = Frame(root, width = 740, height = 90, bg ='#f2ffe0')
+    frame.place(x = 30, y = 5)
+    text = Label(root, text='''Игра Змейка написана на Python 3 в ноябре 2016 года . 
+                 Правила: Змейка должна кушать зелёные плоды. 
+                 При съедании плода, скорость змейки возрастает. Скорость можно
                  отрегулировать вручную клавишами "+" и "-". Нельзя выползать за границы поля и есть себя.''',
                   bg = '#f2ffe0', width = 79)
-    text.place(x = 30,y = 10)
+    text.place(x = 30, y = 10)
     reload_button_img1 = PhotoImage(data = image1_data)
     reload_button = Label(image = reload_button_img1,bg = '#f2ffe0')
-    reload_button.place(x = 675,y = 13)
+    reload_button.place(x = 675, y = 13)
     reload_button_img2 = PhotoImage(data = image2_data)
-    reload_button.bind('<Button-1>',button_press)
-    reload_button.bind('<ButtonRelease-1>',button_unpress)
+    reload_button.bind('<Button-1>', button_press)
+    reload_button.bind('<ButtonRelease-1>', button_unpress)
 
-    snake=PythonSnake(root,30,100,740,470)
+    snake=PythonSnake(root, 30, 100, 740, 470)
     snake.start()
 
     root.mainloop()
