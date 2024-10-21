@@ -5,8 +5,8 @@ import random
 
 
 
-class PythonSnake:  #двигать тело змеюки в текущую сторону на 1 шаг
-#при этом тело может увеличиться (add='add') в размерах или нет
+class PythonSnake:  # Двигать тело змеюки в текущую сторону на 1 шаг
+# При этом тело может увеличиться (add='add') в размерах или нет
     def __init__(self, window, canv_x, canv_y, canv_width, canv_height):
         self.__started=1
         self.__spped=10
@@ -15,8 +15,8 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
         self.__canv_y=canv_y
         self.canv_width=canv_width
         self.canv_height=canv_height
-        self.__snake_x=self.canv_width//2  #координата старта змеи
-        self.__snake_y=self.canv_height//2  #координата старта змеи
+        self.__snake_x=self.canv_width//2  # Координата старта змеи
+        self.__snake_y=self.canv_height//2  # Координата старта змеи
         self.canv=Canvas(self.__window, width=self.canv_width,
                                 height=self.canv_height,
                                 bg=self.CONST.CANVAS_BGCOLOR.value)
@@ -41,29 +41,29 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
         self.__window.bind('<Destroy>',self.quit)
         self.__window.bind('<plus>',self.speed_key)
         self.__window.bind('<minus>',self.speed_key)
-        self.__window.bind('<KP_Add>',self.speed_key)  #клавиша + на боковой клаве
-        self.__window.bind('<KP_Subtract>',self.speed_key)  #клавиша - на боковой клаве
-        # self.__window.bind('<KeyPress>',self.speed_key)  #print(event.keysym)вычислит нажатую клавишу
+        self.__window.bind('<KP_Add>',self.speed_key)  # Клавиша + на боковой клаве
+        self.__window.bind('<KP_Subtract>',self.speed_key)  # Клавиша - на боковой клаве
+        # self.__window.bind('<KeyPress>',self.speed_key)  # print(event.keysym) Вычислит нажатую клавишу
         
 
-    class CONST(Enum):  #список возможных направлений движения и других констант
+    class CONST(Enum):  # Список возможных направлений движения и других констант
         RIGHT=1
         DOWN=2
         LEFT=3
         UP=4
-        SNAKE_HCOLOR = 'red'  #цвет головы змейки
-        SNAKE_BCOLOR = 'green'  #цвет тела змейки
-        CANVAS_BGCOLOR = '#bfcff1'  #цвет фона холста
-        SNAKE_THICKNESS = 11  #толщина тела змейки (нечётное число)
-        FOOD_THICKNESS = 15  #толщина еды (нечётное число)
-        FOOD_COLOR = '#aced95'  #цвет тела еды
-        EXPLOSIVE = 15  #диаметр взрыва при столкновении змеи с препятствием (нечётное число)
-        EXPLOSIVE_BORD = 10  #толщина контура взрыва при столкновении змеи с препятствием
-        EXPLOSIVE_BCOLOR = '#ff9999'  #цвет тела взрыва
-        EXPLOSIVE_CCOLOR = '#881a1a'  #цвет контура взрыва
+        SNAKE_HCOLOR = 'red'  # Цвет головы змейки
+        SNAKE_BCOLOR = 'green'  # Цвет тела змейки
+        CANVAS_BGCOLOR = '#bfcff1'  # Цвет фона холста
+        SNAKE_THICKNESS = 11  # Толщина тела змейки (нечётное число)
+        FOOD_THICKNESS = 15  # Толщина еды (нечётное число)
+        FOOD_COLOR = '#aced95'  # Цвет тела еды
+        EXPLOSIVE = 15  # Диаметр взрыва при столкновении змеи с препятствием (нечётное число)
+        EXPLOSIVE_BORD = 10  # Толщина контура взрыва при столкновении змеи с препятствием
+        EXPLOSIVE_BCOLOR = '#ff9999'  # Цвет тела взрыва
+        EXPLOSIVE_CCOLOR = '#881a1a'  # Цвет контура взрыва
 
 
-    #обработчики клавиш изменения направления движения:
+    # Обработчики клавиш изменения направления движения:
     def right(self,event):
         self.__vector=self.CONST.RIGHT.value
     def down(self,event):
@@ -74,7 +74,7 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
         self.__vector=self.CONST.UP.value
 
     def speed_key(self,event):
-        #print(event.keysym)
+        # print(event.keysym)
         if event.keysym=='KP_Add' or event.keysym=='plus' :
             self.speed('+')
         elif event.keysym=='KP_Subtract' or event.keysym=='minus' :
@@ -120,14 +120,14 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
         self.create_head_food()
         self.start()
 
-    def quit(self, event):  #возможность остановить змейку (пауза)
+    def quit(self, event):  # Возможность остановить змейку (пауза)
         self.quit ='y'
 
     def move(self,event):
         if self.quit!='n':
             self.start()
 
-    def start(self):  #бесконечный цикл движения змейки
+    def start(self):  # Бесконечный цикл движения змейки
         if self.__started==1:
             self.quit='n'
             i=0
@@ -150,7 +150,7 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
                         i = 1
                         break
 
-    def bump_wall(self):  #проверка на столкновение со стеной
+    def bump_wall(self):  # Проверка на столкновение со стеной
         __head_x=self.body[-1]['x']
         __head_y=self.body[-1]['y']
         if ( (__head_x<( (self.CONST.SNAKE_THICKNESS.value//2)+1 ) )
@@ -164,7 +164,7 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
         else:
             return 0
 
-    def bump_body(self):  #проверка на столкновение с телом змеи
+    def bump_body(self):  # Проверка на столкновение с телом змеи
         __head_x = self.body[-1]['x']
         __head_y = self.body[-1]['y']
         bump = 0
@@ -189,8 +189,8 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
                                outline=self.CONST.EXPLOSIVE_CCOLOR.value,
                                width=self.CONST.EXPLOSIVE_BORD.value)
 
-    def step(self, add):  #двигать тело змеюки в текущую сторону на 1 шаг
-        #при этом тело может увеличиться (add='add') в размерах или нет
+    def step(self, add):  # Двигать тело змеюки в текущую сторону на 1 шаг
+        # При этом тело может увеличиться (add='add') в размерах или нет
         if self.__vector==self.CONST.RIGHT.value:
             deltax=self.CONST.SNAKE_THICKNESS.value
             deltay=0
@@ -209,9 +209,9 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
                              self.CONST.SNAKE_THICKNESS.value,
                              self.CONST.SNAKE_HCOLOR.value)
         self.body.append({'id': self.head.draw(), 'x': self.head.x, 
-                          'y': self.head.y})  #создал новую голову
+                          'y': self.head.y})  # Создал новую голову
         self.canv.itemconfig(self.body[-2]['id'],
-                             fill=self.CONST.SNAKE_BCOLOR.value)  #перекрасил старую голову в тело
+                             fill=self.CONST.SNAKE_BCOLOR.value)  # Перекрасил старую голову в тело
         if add!='add':
             self.canv.delete(self.body[0]['id'])
             self.body.pop(0)
@@ -253,7 +253,7 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
             return eat
 
 
-    class Element_Square:  #рисую квадратик со стороной d и центром x,y
+    class Element_Square:  # Рисую квадратик со стороной d и центром x,y
         def __init__(self, self_glob,x,y,d,color):
             self.self_glob = self_glob
             self.x=x
@@ -261,11 +261,11 @@ class PythonSnake:  #двигать тело змеюки в текущую ст
             self.d=d
             self.color=color
             if (self.d%2)==0:
-                self.d+=1  #сторону квадрата делаю нечётной
+                self.d+=1  # Сторону квадрата делаю нечётной
 
         def draw(self):
-            x=self.x-(self.d//2)  #координата левой грани квадрата
-            y=self.y-(self.d//2)  #координата верхней грани квадрата
+            x=self.x-(self.d//2)  # Координата левой грани квадрата
+            y=self.y-(self.d//2)  # Координата верхней грани квадрата
             return self.self_glob.canv.create_rectangle(x,y,x+self.d,
                                                        y+self.d,
                                                        fill=self.color,
