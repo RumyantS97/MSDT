@@ -1,6 +1,5 @@
 import random
 
-
 def get_input(prompt, valid_responses):
     """
     Получает и проверяет ввод пользователя.
@@ -15,7 +14,6 @@ def get_input(prompt, valid_responses):
             return response
         print("Некорректный ввод. Попробуйте еще раз.")
 
-
 def room_one():
     """
     Обрабатывает события в первой комнате.
@@ -27,7 +25,6 @@ def room_one():
     if move == 'вперед':
         room_two()
 
-
 def room_two():
     """
     Обрабатывает события во второй комнате.
@@ -37,12 +34,9 @@ def room_two():
     print("На полу лежит старый меч.")
     action = get_input("Введите 'поднять', чтобы взять меч, "
                        "или 'вперед', чтобы двигаться дальше: ", ['поднять', 'вперед'])
-
     if action == 'поднять':
         print("Вы подняли меч.")
-
     room_three()
-
 
 def room_three():
     """
@@ -53,13 +47,11 @@ def room_three():
     print("Перед вами монстр!")
     action = get_input("Введите 'атака', чтобы сразиться с монстром, "
                        "или 'бег', чтобы убежать: ", ['атака', 'бег'])
-
     if action == 'атака':
         fight_monster()
     else:
         print("Вы убежали обратно в комнату 2.")
         room_two()
-
 
 def fight_monster():
     """
@@ -69,18 +61,15 @@ def fight_monster():
     print("Начинается бой с монстром!")
     player_health = 100
     monster_health = 50
-
     while player_health > 0 and monster_health > 0:
         action = get_input("Введите 'удар', чтобы атаковать монстра, "
                            "или 'блок', чтобы защититься: ", ['удар', 'блок'])
-
         if action == 'удар':
             damage = random.randint(5, 15)
             monster_health -= damage
             print(f"Вы нанесли {damage} урона монстру.")
         elif action == 'блок':
             print("Вы заблокировали удар монстра.")
-
         if monster_health > 0:
             monster_damage = random.randint(5, 10)
             player_health -= monster_damage
@@ -88,11 +77,9 @@ def fight_monster():
         else:
             print("Вы победили монстра!")
             room_four()
-
     if player_health <= 0:
         print("Вы погибли. Игра окончена.")
         game_over()
-
 
 def room_four():
     """
@@ -105,7 +92,6 @@ def room_four():
     if move == 'вперед':
         room_five()
 
-
 def room_five():
     """
     Обрабатывает события в пятой комнате.
@@ -115,12 +101,9 @@ def room_five():
     print("Вы встретили мудреца.")
     action = get_input("Введите 'говорить', чтобы поговорить с мудрецом, "
                        "или 'вперед', чтобы двигаться дальше: ", ['говорить', 'вперед'])
-
     if action == 'говорить':
         print("Мудрец сказал: 'Будь осторожен в следующей комнате.'")
-
     room_six()
-
 
 def room_six():
     """
@@ -131,12 +114,9 @@ def room_six():
     print("Перед вами большой сундук.")
     action = get_input("Введите 'открыть', чтобы открыть сундук, "
                        "или 'вперед', чтобы пройти дальше: ", ['открыть', 'вперед'])
-
     if action == 'открыть':
         print("В сундуке лежит золотая корона!")
-
     room_seven()
-
 
 def room_seven():
     """
@@ -149,7 +129,6 @@ def room_seven():
     if move == 'вперед':
         room_eight()
 
-
 def room_eight():
     """
     Обрабатывает события в восьмой комнате.
@@ -159,13 +138,11 @@ def room_eight():
     print("Перед вами огромный дракон!")
     action = get_input("Введите 'сразиться', чтобы атаковать дракона, "
                        "или 'бег', чтобы убежать: ", ['сразиться', 'бег'])
-
     if action == 'сразиться':
         fight_dragon()
     else:
         print("Вы убежали обратно в комнату 7.")
         room_seven()
-
 
 def fight_dragon():
     """
@@ -175,18 +152,15 @@ def fight_dragon():
     print("Начинается бой с драконом!")
     player_health = 100
     dragon_health = 200
-
     while player_health > 0 and dragon_health > 0:
         action = get_input("Введите 'удар', чтобы атаковать дракона, "
                            "или 'блок', чтобы защититься: ", ['удар', 'блок'])
-
         if action == 'удар':
             damage = random.randint(10, 20)
             dragon_health -= damage
             print(f"Вы нанесли {damage} урона дракону.")
         elif action == 'блок':
             print("Вы заблокировали огненный выдох дракона.")
-
         if dragon_health > 0:
             dragon_damage = random.randint(15, 30)
             player_health -= dragon_damage
@@ -195,11 +169,9 @@ def fight_dragon():
             print("Вы победили дракона!")
             print("Поздравляем! Вы прошли игру.")
             game_over()
-
     if player_health <= 0:
         print("Вы погибли. Игра окончена.")
         game_over()
-
 
 def game_over():
     """
@@ -212,13 +184,11 @@ def game_over():
     else:
         print("Спасибо за игру!")
 
-
 def start_game():
     """
     Начинает игру с первой комнаты.
     """
     print("Добро пожаловать в текстовую игру!")
     room_one()
-
 
 start_game()
