@@ -5,7 +5,7 @@ import random
 
 
 
-class python_snake:#двигать тело змеюки в текущую сторону на 1 шаг
+class PythonSnake:#двигать тело змеюки в текущую сторону на 1 шаг
 #при этом тело может увеличиться (add='add') в размерах или нет
     def __init__(self, window, canv_x, canv_y, canv_width, canv_height):
         self.__started=1
@@ -217,43 +217,43 @@ class python_snake:#двигать тело змеюки в текущую ст�
             self.body.pop(0)
 
 
-    class food:
+    class Food:
         def add(self):
-            self.food.x=random.randint(self.CONST.FOOD_THICKNESS.value
+            self.Food.x=random.randint(self.CONST.FOOD_THICKNESS.value
                                      //2, self.canv_width
                                      -self.CONST.FOOD_THICKNESS.value//2)
-            self.food.y=random.randint(self.CONST.FOOD_THICKNESS.value 
+            self.Food.y=random.randint(self.CONST.FOOD_THICKNESS.value 
                                      //2, self.canv_height
                                      -self.CONST.FOOD_THICKNESS.value//2)
-            self.food.body=self.element_square(self, self.food.x,
-                                       self.food.y,
+            self.Food.body=self.element_square(self, self.Food.x,
+                                       self.Food.y,
                                        self.CONST.FOOD_THICKNESS.value,
                                        self.CONST.FOOD_COLOR.value)
-            self.food.id=self.food.body.draw()
+            self.Food.id=self.Food.body.draw()
 
         def eat(self):
             head_x=self.body[-1]['x']
             head_y=self.body[-1]['y']
             eat=0
             if ( (head_x
-                     +self.CONST.SNAKE_THICKNESS.value//2>(self.food.x
+                     +self.CONST.SNAKE_THICKNESS.value//2>(self.Food.x
                                 -self.CONST.FOOD_THICKNESS.value//2) )
                      and (head_x
-                     - self.CONST.SNAKE_THICKNESS.value//2<(self.food.x
+                     - self.CONST.SNAKE_THICKNESS.value//2<(self.Food.x
                                 +self.CONST.FOOD_THICKNESS.value//2) )
                      and (head_y
-                     + self.CONST.SNAKE_THICKNESS.value // 2 > (self.food.y
+                     + self.CONST.SNAKE_THICKNESS.value // 2 > (self.Food.y
                                 - self.CONST.FOOD_THICKNESS.value // 2) )
                      and (head_y
-                     - self.CONST.SNAKE_THICKNESS.value // 2 < (self.food.y
+                     - self.CONST.SNAKE_THICKNESS.value // 2 < (self.Food.y
                                 + self.CONST.FOOD_THICKNESS.value // 2) ) ):
-                self.canv.delete(self.food.id)
-                self.food.add(self)
+                self.canv.delete(self.Food.id)
+                self.Food.add(self)
                 eat = 1
             return eat
 
 
-    class element_square:#рисую квадратик со стороной d и центром x,y
+    class Element_Square:#рисую квадратик со стороной d и центром x,y
         def __init__(self, self_glob,x,y,d,color):
             self.self_glob = self_glob
             self.x=x
@@ -301,7 +301,7 @@ def main():
     reload_button.bind('<Button-1>',button_press)
     reload_button.bind('<ButtonRelease-1>',button_unpress)
 
-    snake=python_snake(root,30,100,740,470)
+    snake=PythonSnake(root,30,100,740,470)
     snake.start()
 
     root.mainloop()
