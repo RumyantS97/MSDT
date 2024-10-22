@@ -59,12 +59,18 @@ class Car:
 def calculate_large_expression(a, b, c, d, e, f, g, h, i, j, k, l):
     result = (a + b + c - d * e / f + g - h * i / j + k - l)
 
-    print("Результат положительный:", result) if result > 0 else print("Результат отрицательный:", result)
+    if result > 0:
+        print("Результат положительный:", result)
+    else:
+        print("Результат отрицательный:", result)
     return result
 
 
 def process_data_values(data_values):
-    return [(value * 2 if value > 5 else value * 10 if value == 5 else value) for value in data_values]
+    return [
+        (value * 2 if value > 5 else value * 10 if value == 5 else value)
+        for value in data_values
+    ]
 
 
 def calculate_with_sqrt(x, y, z):
@@ -75,7 +81,10 @@ def compute_expression(a, b, c, d):
     if d == 0:
         return sys.maxsize
     result = (a ** 2 + b ** 2) / (c - d)
-    print("Результат:", "Маленький" if result < 100 else "Большой", result)
+    if result < 100:
+        print("Результат: Маленький", result)
+    else:
+        print("Результат: Большой", result)
     return result
 
 
@@ -101,7 +110,10 @@ def concatenate_strings(string1, string2, string3):
     combined_string = string1 + string2 + string3 if len(string1) > 5 else string2 * 2
     print("Комбинированная строка:", combined_string)
 
-    print("Строка содержит букву 'a'") if 'a' in combined_string else print("Строка не содержит букву 'a'")
+    if 'a' in combined_string:
+        print("Строка содержит букву 'a'")
+    else:
+        print("Строка не содержит букву 'a'")
 
 
 class Building:
