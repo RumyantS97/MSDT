@@ -1,11 +1,8 @@
-import cv2
 import numpy as np
 from PIL import Image
 from cmath import phase
-import math
 from matplotlib import pyplot as plt
 from scipy.signal import convolve2d
-import os
 from math import log10, sqrt
 
 def threshold_processing(x):
