@@ -33,6 +33,9 @@ def psnr_1(c, cw):
 
 
 def auto_selection(image):
+    """
+    selects the best alpha value automatically
+    """
     psnr = 0
     best_alpha = 0
     best_p = 0
@@ -102,6 +105,9 @@ def false_detection(false_detection_cvz, cvz):
 
 
 def rotation(rotation_angle):
+    """
+    rotates the image by an angle an get the proximity
+    """
     rotated_image = reverse_image.rotate(rotation_angle)
     rotated_image_array = np.asarray(rotated_image)
     spectre_array = np.fft.fft2(rotated_image_array)
@@ -120,6 +126,9 @@ def rotation(rotation_angle):
 
 
 def cut(replacement_proportion):
+    """
+    change the part of reversed image with part of original image
+    """
     reverse_array[
         0:int(replacement_proportion * len(reverse_array)),
         0:int(replacement_proportion * len(reverse_array))
