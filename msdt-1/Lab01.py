@@ -14,11 +14,7 @@ def process_threshold(x):
     """
     Applies a threshold to the input value x.
     """
-    if x > 0.1:
-        x = 1
-    else:
-        x = 0
-    return x
+    return 1 if x > 0.1 else 0
 
 
 def calculate_psnr(original, compressed):
@@ -29,8 +25,7 @@ def calculate_psnr(original, compressed):
     if (mse == 0):
         return 100
     max_pixel = 255.0
-    psnr_value = 20 * log10(max_pixel / sqrt(mse))
-    return psnr_value
+    return 20 * log10(max_pixel / sqrt(mse))
 
 
 def calculate_psnr_alternative(c, cw):
