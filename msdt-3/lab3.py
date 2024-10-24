@@ -25,7 +25,7 @@ def check_row(row):
 
 
 def check_file():
-    with open('8.csv', newline='', encoding='utf-16') as file:
+    with open('72.csv', newline='', encoding='utf-16') as file:
         reader = csv.DictReader(file, delimiter=';')
         index = 0
         invalid_rows = []
@@ -36,6 +36,6 @@ def check_file():
         return invalid_rows
 
 
-variant = 8
+variant = 72
 checksum = calculate_checksum(check_file())
 serialize_result(variant, checksum)
