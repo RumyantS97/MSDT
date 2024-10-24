@@ -44,7 +44,7 @@ def select_best_alpha(image):
     best_alpha = 0
     best_proximities = 0
     for alpha in range(1, 1001, 100):
-        image_array = np.asarray(image)
+        image_array = np.asarray(image)  # Convert the image to the frequency domain using FFT
         spectre_array = np.fft.fft2(image_array)
         get_phase = np.vectorize(phase)
         phase_array = get_phase(spectre_array)
@@ -66,11 +66,11 @@ def select_best_alpha(image):
         reverse_array = save_reverse_array.copy()
         reverse_spectre_array = np.fft.fft2(reverse_array)
         reverse_abs_spectrum = abs(reverse_spectre_array /
-                                np.exp(phase_array * 1j))
+                                np.exp(phase_array * 1j))  # Calculate the embedded CVZ noise in the modified spectrum
         included_cvz = (reverse_abs_spectrum[128:384, 128:384] -
                         original_abs_spectrum[128:384, 128:384]) / ALPHA
         flatten_cvz = CVZ.flatten()
-        flatten_included_cvz = included_cvz.flatten()
+        flatten_included_cvz = included_cvz.flatten()  # Compute the correlation between the original and embedded CVZ
         p = sum(flatten_cvz * flatten_included_cvz) / (
             ((sum(flatten_cvz ** 2)) ** (1 / 2)) *
             ((sum(flatten_included_cvz ** 2)) ** (1 / 2)))
