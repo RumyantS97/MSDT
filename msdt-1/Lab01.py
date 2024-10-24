@@ -10,7 +10,10 @@ ALPHA = 1
 CVZ = np.random.normal(0, 1, size=[256, 256])
 
 
-def threshold_processing(x):
+def process_threshold(x):
+    """
+    Applies a threshold to the input value x.
+    """
     if x > 0.1:
         x = 1
     else:
@@ -18,7 +21,10 @@ def threshold_processing(x):
     return x
 
 
-def psnr(original, compressed):
+def calculate_psnr(original, compressed):
+    """
+    Calculates the Peak Signal-to-Noise Ratio between the original and compressed images.
+    """
     mse = np.mean((original - compressed) ** 2)
     if (mse == 0):
         return 100
@@ -27,14 +33,17 @@ def psnr(original, compressed):
     return psnr_value
 
 
-def psnr_1(c, cw):
+def calculate_psnr_alternative(c, cw):
+    """
+    Alternative method to calculate the PSNR.
+    """
     return 10 * np.log10(np.power(255, 2) /
                         np.mean(np.power((c - cw), 2)))
 
 
-def auto_selection(image):
+def select_best_alpha(image):
     """
-    selects the best alpha value automatically
+    Selects the best alpha value automatically by maximizing PSNR.
     """
     psnr = 0
     best_alpha = 0
@@ -70,10 +79,10 @@ def auto_selection(image):
         p = sum(flatten_cvz * flatten_included_cvz) / (
             ((sum(flatten_cvz ** 2)) ** (1 / 2)) *
             ((sum(flatten_included_cvz ** 2)) ** (1 / 2)))
-        included_cvz_estimation = threshold_processing(p)
+        included_cvz_estimation = process_threshold(p)
         if included_cvz_estimation:
             reverse_array = np.asarray(reverse_array)
-            new_psnr = psnr_1(image_array, reverse_array)
+            new_psnr = calculate_psnr_alternative(image_array, reverse_array)
             if new_psnr > psnr:
                 psnr = new_psnr
                 best_alpha = alpha
@@ -82,29 +91,38 @@ def auto_selection(image):
     return(best_alpha, psnr, best_p)
 
 
-def generate_false_detection_cvz(count):
+def generate_false_detection_vectors(count):
+    """
+    Generates a list of false detection vectors (CVZ) with the specified count.
+    """
     false_detection_cvz = []
     for i in range(count):
         false_detection_cvz.append(np.random.normal(0, 1, size=[65536]))
     return false_detection_cvz
 
 
-def proximity_function(first_cvz, second_cvz):
+def calculate_proximity(first_cvz, second_cvz):
+    """
+    Calculates the proximity between two vectors.
+    """
     return sum(first_cvz * second_cvz) / (
             ((sum(first_cvz ** 2)) ** (1 / 2)) *
             ((sum(second_cvz ** 2)) ** (1 / 2)))
 
 
-def false_detection(false_detection_cvz, cvz):
+def detect_false_proximity(false_detection_cvz, cvz):
+    """
+    Detects the proximity of false CVZ vectors relative to the given CVZ vector.
+    """
     false_detection_proximity_array = []
     for false_cvz in false_detection_cvz:
         false_detection_proximity_array.append(
-            proximity_function(cvz, false_cvz)
+            calculate_proximity(cvz, false_cvz)
         )
     return false_detection_proximity_array
 
 
-def rotation(rotation_angle):
+def rotate_and_calculate_proximity(rotation_angle):
     """
     rotates the image by an angle an get the proximity
     """
@@ -125,9 +143,9 @@ def rotation(rotation_angle):
     return p
 
 
-def cut(replacement_proportion):
+def apply_cut_and_calculate_proximity(replacement_proportion):
     """
-    change the part of reversed image with part of original image
+    change the part of reversed image with part of original image and calculate proximity
     """
     reverse_array[
         0:int(replacement_proportion * len(reverse_array)),
@@ -149,7 +167,10 @@ def cut(replacement_proportion):
     return p
 
 
-def smooth(m):
+def smooth_and_calculate_proximity(m):
+    """
+    Applies smoothing with a window of given size and calculates proximity.
+    """
     window = np.full((m, m), 1) / (m*m)
     smooth_array = convolve2d(
         reverse_image, window,
@@ -170,7 +191,10 @@ def smooth(m):
     return p
 
 
-def jpeg(qf):
+def compress_jpeg_and_calculate_proximity(qf):
+    """
+    Compresses the image to JPEG with the specified quality factor and calculates proximity.
+    """
     rgb_reverse_image = reverse_image.convert("RGB")
     rgb_reverse_image.save("JPEG_image.jpg", quality=qf)
     jpeg_image = Image.open("JPEG_image.jpg").convert("L")
@@ -191,9 +215,9 @@ def jpeg(qf):
 
 
 flatten_CVZ = CVZ.flatten()
-false_detection_cvz = generate_false_detection_cvz(100)
+false_detection_cvz = generate_false_detection_vectors(100)
 false_detection_proximity_array = (
-    false_detection(false_detection_cvz, CVZ.flatten()))
+    detect_false_proximity(false_detection_cvz, CVZ.flatten()))
 
 x = np.arange(0, 100, 1)
 y = false_detection_proximity_array
@@ -231,39 +255,39 @@ flatten_included_cvz = included_cvz.flatten()
 p = (sum(flatten_cvz*flatten_included_cvz) /
      (((sum(flatten_cvz**2))**(1/2)) *
       ((sum(flatten_included_cvz**2))**(1/2))))
-included_cvz_estimation = threshold_processing(p)
+included_cvz_estimation = process_threshold(p)
 print(p)
 print(included_cvz_estimation)
 reverse_image = Image.fromarray(reverse_array)
-print(auto_selection(image))
+print(select_best_alpha(image))
 
 
 # CUT
 cut_param_array = np.arange(0.55, 1.45, 0.15)
 cut_p = []
 for cut_param in cut_param_array:
-    cut_p.append(cut(cut_param))
+    cut_p.append(apply_cut_and_calculate_proximity(cut_param))
 
 
 # ROTATION
 rotation_param_array = np.arange(1, 90, 8.9)
 rotation_p = []
 for rotation_param in rotation_param_array:
-    rotation_p.append(rotation(rotation_param))
+    rotation_p.append(rotate_and_calculate_proximity(rotation_param))
 
 
 # SMOOTH
 smooth_param_array = np.arange(3, 15, 2)
 smooth_p = []
 for smooth_param in smooth_param_array:
-    smooth_p.append(smooth(smooth_param))
+    smooth_p.append(smooth_and_calculate_proximity(smooth_param))
 
 
 # JPEG
 jpeg_param_array = np.arange(30, 91, 10)
 jpeg_p = []
 for jpeg_param in jpeg_param_array:
-    jpeg_p.append(jpeg(int(jpeg_param)))
+    jpeg_p.append(compress_jpeg_and_calculate_proximity(int(jpeg_param)))
 
 
 # OUTPUT
