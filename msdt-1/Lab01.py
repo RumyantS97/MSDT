@@ -47,21 +47,21 @@ def select_best_alpha(image):
     """
     psnr = 0
     best_alpha = 0
-    best_p = 0
+    best_proximities = 0
     for alpha in range(1, 1001, 100):
         image_array = np.asarray(image)
         spectre_array = np.fft.fft2(image_array)
         get_phase = np.vectorize(phase)
         phase_array = get_phase(spectre_array)
 
-        abs_spectre = abs(spectre_array)
-        abs_spectre1 = abs(spectre_array)
-        changed_abs_spectre = abs_spectre
-        changed_abs_spectre[128:384, 128:384] = (
-                abs_spectre[128:384, 128:384] + ALPHA * CVZ)
-        changed_spectre = (changed_abs_spectre *
+        abs_spectrum = abs(spectre_array)
+        original_abs_spectrum = abs(spectre_array)
+        modified_abs_spectrum = abs_spectrum
+        modified_abs_spectrum[128:384, 128:384] = (
+                abs_spectrum[128:384, 128:384] + ALPHA * CVZ)
+        modified_spectrum = (modified_abs_spectrum *
                            np.exp(phase_array * 1j))
-        reverse_array = abs(np.fft.ifft2(changed_spectre))
+        reverse_array = abs(np.fft.ifft2(modified_spectrum))
         reverse_image = Image.fromarray(reverse_array)
         reverse_image.convert("RGB").save("img_with_cvz.png")
 
@@ -70,10 +70,10 @@ def select_best_alpha(image):
         save_reverse_array = reverse_array
         reverse_array = save_reverse_array.copy()
         reverse_spectre_array = np.fft.fft2(reverse_array)
-        reverse_abs_spectre = abs(reverse_spectre_array /
+        reverse_abs_spectrum = abs(reverse_spectre_array /
                                 np.exp(phase_array * 1j))
-        included_cvz = (reverse_abs_spectre[128:384, 128:384] -
-                        abs_spectre1[128:384, 128:384]) / ALPHA
+        included_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+                        original_abs_spectrum[128:384, 128:384]) / ALPHA
         flatten_cvz = CVZ.flatten()
         flatten_included_cvz = included_cvz.flatten()
         p = sum(flatten_cvz * flatten_included_cvz) / (
@@ -86,9 +86,9 @@ def select_best_alpha(image):
             if new_psnr > psnr:
                 psnr = new_psnr
                 best_alpha = alpha
-                best_p = p
-            print(best_p)
-    return(best_alpha, psnr, best_p)
+                best_proximities = p
+            print(best_proximities)
+    return(best_alpha, psnr, best_proximities)
 
 
 def generate_false_detection_vectors(count):
@@ -124,17 +124,17 @@ def detect_false_proximity(false_detection_cvz, cvz):
 
 def rotate_and_calculate_proximity(rotation_angle):
     """
-    rotates the image by an angle an get the proximity
+    Rotates the image by an angle and get the proximity
     """
     rotated_image = reverse_image.rotate(rotation_angle)
     rotated_image_array = np.asarray(rotated_image)
     spectre_array = np.fft.fft2(rotated_image_array)
     reverse_array = abs(np.fft.ifft2(spectre_array))
     reverse_spectre_array = np.fft.fft2(reverse_array)
-    reverse_abs_spectre = abs(reverse_spectre_array /
+    reverse_abs_spectrum = abs(reverse_spectre_array /
                               np.exp(phase_array * 1j))
-    rotated_cvz = (reverse_abs_spectre[128:384, 128:384] -
-                   abs_spectre1[128:384, 128:384]) / ALPHA
+    rotated_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+                   original_abs_spectrum[128:384, 128:384]) / ALPHA
     flatten_cvz = CVZ.flatten()
     flatten_rotated_cvz = rotated_cvz.flatten()
     p = sum(flatten_cvz * flatten_rotated_cvz) / (
@@ -155,10 +155,10 @@ def apply_cut_and_calculate_proximity(replacement_proportion):
         0:int(replacement_proportion * len(image_array))
     ]
     reverse_spectre_array = np.fft.fft2(reverse_array)
-    reverse_abs_spectre = abs(reverse_spectre_array /
+    reverse_abs_spectrum = abs(reverse_spectre_array /
                               np.exp(phase_array * 1j))
-    cut_cvz = (reverse_abs_spectre[128:384, 128:384] -
-               abs_spectre1[128:384, 128:384]) / ALPHA
+    cut_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+               original_abs_spectrum[128:384, 128:384]) / ALPHA
     flatten_cvz = CVZ.flatten()
     flatten_cut_cvz = cut_cvz.flatten()
     p = sum(flatten_cvz * flatten_cut_cvz) / (
@@ -179,10 +179,10 @@ def smooth_and_calculate_proximity(m):
     spectre_array = np.fft.fft2(smooth_array)
     reverse_array = abs(np.fft.ifft2(spectre_array))
     reverse_spectre_array = np.fft.fft2(reverse_array)
-    reverse_abs_spectre = abs(reverse_spectre_array /
+    reverse_abs_spectrum = abs(reverse_spectre_array /
                               np.exp(phase_array * 1j))
-    rotated_cvz = (reverse_abs_spectre[128:384, 128:384] -
-                   abs_spectre1[128:384, 128:384]) / ALPHA
+    rotated_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+                   original_abs_spectrum[128:384, 128:384]) / ALPHA
     flatten_cvz = CVZ.flatten()
     flatten_smoothed_cvz = rotated_cvz.flatten()
     p = sum(flatten_cvz * flatten_smoothed_cvz) / (
@@ -202,10 +202,10 @@ def compress_jpeg_and_calculate_proximity(qf):
     spectre_array = np.fft.fft2(jpeg_array)
     reverse_array = abs(np.fft.ifft2(spectre_array))
     reverse_spectre_array = np.fft.fft2(reverse_array)
-    reverse_abs_spectre = abs(reverse_spectre_array /
+    reverse_abs_spectrum = abs(reverse_spectre_array /
                               np.exp(phase_array * 1j))
-    rotated_cvz = (reverse_abs_spectre[128:384, 128:384] -
-                   abs_spectre1[128:384, 128:384]) / ALPHA
+    rotated_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+                   original_abs_spectrum[128:384, 128:384]) / ALPHA
     flatten_cvz = CVZ.flatten()
     flatten_jpeg_cvz = rotated_cvz.flatten()
     p = sum(flatten_cvz * flatten_jpeg_cvz) / (
@@ -231,13 +231,13 @@ image_array = np.asarray(image)
 spectre_array = np.fft.fft2(image_array)
 get_phase = np.vectorize(phase)
 phase_array = get_phase(spectre_array)
-abs_spectre = abs(spectre_array)
-abs_spectre1 = abs(spectre_array)
-changed_abs_spectre = abs_spectre
-changed_abs_spectre[128:384, 128:384] = (
-        abs_spectre[128:384, 128:384] + ALPHA*CVZ)
-changed_spectre = changed_abs_spectre * np.exp(phase_array*1j)
-reverse_array = abs(np.fft.ifft2(changed_spectre))
+abs_spectrum = abs(spectre_array)
+original_abs_spectrum = abs(spectre_array)
+modified_abs_spectrum = abs_spectrum
+modified_abs_spectrum[128:384, 128:384] = (
+        abs_spectrum[128:384, 128:384] + ALPHA*CVZ)
+modified_spectrum = modified_abs_spectrum * np.exp(phase_array*1j)
+reverse_array = abs(np.fft.ifft2(modified_spectrum))
 reverse_image = Image.fromarray(reverse_array)
 reverse_image.convert("RGB").save("img_with_cvz.png")
 
@@ -246,10 +246,10 @@ reverse_array = np.asarray(new_image)
 save_reverse_array = reverse_array
 reverse_array = save_reverse_array.copy()
 reverse_spectre_array = np.fft.fft2(reverse_array)
-reverse_abs_spectre = abs(reverse_spectre_array /
+reverse_abs_spectrum = abs(reverse_spectre_array /
                           np.exp(phase_array*1j))
-included_cvz = (reverse_abs_spectre[128:384, 128:384] -
-                abs_spectre1[128:384, 128:384]) / ALPHA
+included_cvz = (reverse_abs_spectrum[128:384, 128:384] -
+                original_abs_spectrum[128:384, 128:384]) / ALPHA
 flatten_cvz = CVZ.flatten()
 flatten_included_cvz = included_cvz.flatten()
 p = (sum(flatten_cvz*flatten_included_cvz) /
@@ -264,35 +264,35 @@ print(select_best_alpha(image))
 
 # CUT
 cut_param_array = np.arange(0.55, 1.45, 0.15)
-cut_p = []
+cut_proximities = []
 for cut_param in cut_param_array:
-    cut_p.append(apply_cut_and_calculate_proximity(cut_param))
+    cut_proximities.append(apply_cut_and_calculate_proximity(cut_param))
 
 
 # ROTATION
 rotation_param_array = np.arange(1, 90, 8.9)
-rotation_p = []
+rotation_proximities = []
 for rotation_param in rotation_param_array:
-    rotation_p.append(rotate_and_calculate_proximity(rotation_param))
+    rotation_proximities.append(rotate_and_calculate_proximity(rotation_param))
 
 
 # SMOOTH
 smooth_param_array = np.arange(3, 15, 2)
-smooth_p = []
+smooth_proximities = []
 for smooth_param in smooth_param_array:
-    smooth_p.append(smooth_and_calculate_proximity(smooth_param))
+    smooth_proximities.append(smooth_and_calculate_proximity(smooth_param))
 
 
 # JPEG
 jpeg_param_array = np.arange(30, 91, 10)
-jpeg_p = []
+jpeg_proximities = []
 for jpeg_param in jpeg_param_array:
-    jpeg_p.append(compress_jpeg_and_calculate_proximity(int(jpeg_param)))
+    jpeg_proximities.append(compress_jpeg_and_calculate_proximity(int(jpeg_param)))
 
 
 # OUTPUT
 x = cut_param_array
-y = cut_p
+y = cut_proximities
 plt.title("CUT")
 plt.xlabel("X axis")
 plt.ylabel("Y axis")
@@ -300,7 +300,7 @@ plt.plot(x, y, color="red")
 plt.show()
 
 x = rotation_param_array
-y = rotation_p
+y = rotation_proximities
 plt.title("ROTATION")
 plt.xlabel("X axis")
 plt.ylabel("Y axis")
@@ -308,7 +308,7 @@ plt.plot(x, y, color="red")
 plt.show()
 
 x = smooth_param_array
-y = smooth_p
+y = smooth_proximities
 plt.title("SMOOTH")
 plt.xlabel("X axis")
 plt.ylabel("Y axis")
@@ -316,7 +316,7 @@ plt.plot(x, y, color="red")
 plt.show()
 
 x = jpeg_param_array
-y = jpeg_p
+y = jpeg_proximities
 plt.title("JPEG")
 plt.xlabel("X axis")
 plt.ylabel("Y axis")
