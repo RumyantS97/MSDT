@@ -22,26 +22,26 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         self.canv.place(x = self.__canv_x, y = self.__canv_y)
         self.create_head_food()
 
-        self.__window.bind('<d>', self.right)
-        self.__window.bind('<D>', self.right)
-        self.__window.bind('<Right>', self.right)
-        self.__window.bind('<s>', self.down)
-        self.__window.bind('<S>', self.down)
-        self.__window.bind('<Down>', self.down)
-        self.__window.bind('<a>', self.left)
-        self.__window.bind('<A>', self.left)
-        self.__window.bind('<Left>', self.left)
-        self.__window.bind('<w>', self.up)
-        self.__window.bind('<W>', self.up)
-        self.__window.bind('<Up>', self.up)
+        self.__window.bind('<d>', self.turn_right)
+        self.__window.bind('<D>', self.turn_right)
+        self.__window.bind('<Right>', self.turn_right)
+        self.__window.bind('<s>', self.turn_down)
+        self.__window.bind('<S>', self.turn_down)
+        self.__window.bind('<Down>', self.turn_down)
+        self.__window.bind('<a>', self.turn_left)
+        self.__window.bind('<A>', self.turn_left)
+        self.__window.bind('<Left>', self.turn_left)
+        self.__window.bind('<w>', self.turn_up)
+        self.__window.bind('<W>', self.turn_up)
+        self.__window.bind('<Up>', self.turn_up)
 
         self.__window.bind('<e>', self.move)
-        self.__window.bind('<q>', self.quit)
-        self.__window.bind('<Destroy>', self.quit)
-        self.__window.bind('<plus>', self.speed_key)
-        self.__window.bind('<minus>', self.speed_key)
-        self.__window.bind('<KP_Add>', self.speed_key)  # Клавиша + на боковой клаве
-        self.__window.bind('<KP_Subtract>', self.speed_key)  # Клавиша - на боковой клаве
+        self.__window.bind('<q>', self.pause_game)
+        self.__window.bind('<Destroy>', self.pause_game)
+        self.__window.bind('<plus>', self.choose_speed_key)
+        self.__window.bind('<minus>', self.choose_speed_key)
+        self.__window.bind('<KP_Add>', self.choose_speed_key)  # Клавиша + на боковой клаве
+        self.__window.bind('<KP_Subtract>', self.choose_speed_key)  # Клавиша - на боковой клаве
         # self.__window.bind('<KeyPress>', self.speed_key)  # print(event.keysym) Вычислит нажатую клавишу
         
 
@@ -63,24 +63,24 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
 
 
     # Обработчики клавиш изменения направления движения:
-    def right(self,event):
+    def turn_right(self,event):
         self.__vector = self.CONST.RIGHT.value
 
-    def down(self,event):
+    def turn_down(self,event):
         self.__vector = self.CONST.DOWN.value
 
-    def left(self,event):
+    def turn_left(self,event):
         self.__vector = self.CONST.LEFT.value
 
-    def up(self,event):
+    def turn_up(self,event):
         self.__vector = self.CONST.UP.value
 
-    def speed_key(self,event):
+    def choose_speed_key(self,event):
         # print(event.keysym)
         if event.keysym =='KP_Add' or event.keysym == 'plus' :
-            self.speed('+')
+            self.adjust_speed('+')
         elif event.keysym =='KP_Subtract' or event.keysym == 'minus' :
-            self.speed('-')
+            self.adjust_speed('-')
 
     def create_head_food(self):
         rand_vect = random.randint(1,4)
@@ -101,19 +101,19 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         self.body.append({'id': self.head.draw(),
                         'x': self.__snake_x,
                         'y': self.__snake_y})
-        self.step('add')
-        self.step('add')
-        self.step('add')
-        self.step('add')
+        self.move_forward ('add')
+        self.move_forward ('add')
+        self.move_forward ('add')
+        self.move_forward ('add')
 
-    def speed(self, way):
+    def adjust_speed(self, way):
         if way == '+' and self.__spped > 1:
             self.__spped -= 1
         elif way == '-' and self.__spped < 20:
             self.__spped += 1
 
     def reload(self):
-        self.quit = 'n'
+        self.pause_game = 'n'
         self.__started = 1
         self.__spped = 10
         self.canv.delete('all')
@@ -122,23 +122,23 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         self.create_head_food()
         self.start()
 
-    def quit(self, event):  # Возможность остановить змейку (пауза)
-        self.quit = 'y'
+    def pause_game(self, event):  # Возможность остановить змейку (пауза)
+        self.pause_game = 'y'
 
     def move(self,event):
-        if self.quit != 'n':
+        if self.pause_game!= 'n':
             self.start()
 
     def start(self):  # Бесконечный цикл движения змейки
         if self.__started == 1:
-            self.quit = 'n'
+            self.pause_game = 'n'
             i = 0
             add='del'
             while i == 0:
-                self.step(add)
+                self.move_forward (add)
                 if self.food.eat(self) == 1:
                     add='add'
-                    self.speed('+')
+                    self.adjust_speed('+')
                 elif add == 'add':
                     add = 'del'
                 if self.bump_wall() == 'the end':
@@ -148,7 +148,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
                 for x in range(1, (self.__spped + 1) ):
                     time.sleep(0.05)
                     self.__window.update()
-                    if self.quit == 'y':
+                    if self.pause_game== 'y':
                         i = 1
                         break
 
@@ -161,7 +161,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
                          - (self.CONST.SNAKE_THICKNESS.value // 2) + 1) )
               or (__head_y > ( self.canv_height
                          - (self.CONST.SNAKE_THICKNESS.value // 2) +1 ) ) ):
-            self.explosive()
+            self.create_explosion()
             return 'the end'
         else:
             return 0
@@ -173,11 +173,11 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
         for i in range(0,(len(self.body)-1) ):
             if ( (__head_x == self.body[i]['x'])
                   and (__head_y == self.body[i]['y']) ):
-                self.explosive()
+                self.create_explosion()
                 bump = 'the end'
         return bump
 
-    def explosive(self):
+    def create_explosion(self):
         self.__started = 0
         self.canv.create_oval( (self.body[-1]['x'] 
                                -self.CONST.EXPLOSIVE.value),
@@ -191,7 +191,7 @@ class PythonSnake:  # Двигать тело змеюки в текущую с�
                                outline=self.CONST.EXPLOSIVE_CCOLOR.value,
                                width=self.CONST.EXPLOSIVE_BORD.value)
 
-    def step(self, add):  # Двигать тело змеюки в текущую сторону на 1 шаг
+    def move_forward(self, add):  # Двигать тело змеюки в текущую сторону на 1 шаг
         # При этом тело может увеличиться (add='add') в размерах или нет
         if self.__vector == self.CONST.RIGHT.value:
             deltax = self.CONST.SNAKE_THICKNESS.value
