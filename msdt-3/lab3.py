@@ -10,7 +10,7 @@ PATTERNS = {
     'snils': r'^\b\d{11}\b',
     'identifier': r'^\d{2}-\d{2}/\d{2}$',
     'occupation': r'^[A-Za-zА-Яа-яёЁ\s-]+$',
-    'longitude': r'^(?<![-\d.])-?(90(\.0+)?|[1-8]?\d(\.\d+)?(?![\d.]))(?![-\d.])',
+    'longitude': r'^(-?(180(\.0{1,6})?|(\d{1,2}|1[0-7]\d)(\.\d{1,6})?))$',
     'blood_type': r'^(A|B|AB|O)(\+|\u2212)$',
     'issn': r'^\d{4}-\d{4}$',
     'locale_code': r'^[a-z]{2}(-[a-z]{2})?$',
@@ -23,6 +23,7 @@ def check_row(row: dict) -> bool:
     """
     for key, pattern in PATTERNS.items():
         if not(re.match(pattern, row[key])):
+            print(row[key])
             return False
     return True
 
@@ -41,5 +42,6 @@ def read_my_csv() -> list:
 
 variant = 76
 row_numbers = read_my_csv()
+print(len(row_numbers))
 checksum = calculate_checksum(row_numbers)
 serialize_result(variant, checksum)
