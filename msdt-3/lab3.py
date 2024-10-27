@@ -23,7 +23,6 @@ def check_row(row: dict) -> bool:
     """
     for key, pattern in PATTERNS.items():
         if not(re.match(pattern, row[key])):
-            print(row[key])
             return False
     return True
 
@@ -42,6 +41,5 @@ def read_my_csv() -> list:
 
 variant = 76
 row_numbers = read_my_csv()
-print(len(row_numbers))
 checksum = calculate_checksum(row_numbers)
 serialize_result(variant, checksum)
