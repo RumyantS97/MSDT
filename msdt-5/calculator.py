@@ -27,7 +27,6 @@ class Calculator:
 
     def sqrt(self, a):
         # Возвращает корень числа. Имеется ValueError если a < 0
-        """Returns the square root of a number. Raises ValueError if the number is negative."""
         if not isinstance(a, (int, float)):
             raise TypeError("Input must be int or float")
         if a < 0:
