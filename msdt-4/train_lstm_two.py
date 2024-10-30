@@ -49,9 +49,11 @@ class PipelineTrainLSTMSymbolDay(PipelineTrainLSTMBase):
     def testFileLoader(self, files: List[str]):
         len_file = len(files)
         count_files = 0
+        self.logger.info("Starting testFileLoader with %d files", len_file)
 
         while count_files < len_file:
             file = files[count_files]
+            self.logger.debug("Loading test data for file: %s", file)
             symbol_candles_arr = self.get_dataset(f"{file}_candles.pt", f"{self.s3_dataset_path}test_data")
             symbol_tone_arr = self.get_dataset(f"{file}_tone.pt", f"{self.s3_dataset_path}test_data")
             count_files += 1
@@ -60,9 +62,11 @@ class PipelineTrainLSTMSymbolDay(PipelineTrainLSTMBase):
     def fileLoader(self, files: List[str], file_type="train_data"):
         len_file = len(files)
         count_files = 0
+        self.logger.info("Starting fileLoader with %d files, file type: %s", len_file, file_type)
 
         while count_files < len_file:
             file = files[count_files]
+            self.logger.debug("Loading %s data for file: %s", file_type, file)
             symbol_candles_arr = self.get_dataset(f"{file}_candles.pt", f"{self.s3_dataset_path}{file_type}")
             symbol_tone_arr = self.get_dataset(f"{file}_tone.pt", f"{self.s3_dataset_path}{file_type}")
             count_files += 1
@@ -75,43 +79,65 @@ class PipelineTrainLSTMSymbolDay(PipelineTrainLSTMBase):
                 yield (symbol_candles_arr_i.float(), symbol_tone_arr_i.float())
 
     def start(self):
-        self.logger.info(f"GPU: {torch.cuda.is_available()}")
+        self.logger.info(f"GPU available: {torch.cuda.is_available()}")
         self.logger.info(f"Counts epochs: {self.epochs}, lr: {self.lr}, max lr: {self.max_lr}")
 
         s3_files_train = self.s3_service.get_files_by_type(f"{self.s3_dataset_path}train_data", ".pt")
         s3_files_train = list(set([i.replace("_tone.pt", "").replace("_candles.pt", "") for i in s3_files_train]))
+        self.logger.info("Loaded %d train files", len(s3_files_train))
+
         s3_files_val = self.s3_service.get_files_by_type(f"{self.s3_dataset_path}val_data", ".pt")
         s3_files_val = list(set([i.replace("_tone.pt", "").replace("_candles.pt", "") for i in s3_files_val]))
+        self.logger.info("Loaded %d validation files", len(s3_files_val))
+
         s3_files_test = self.s3_service.get_files_by_type(f"{self.s3_dataset_path}test_data", ".pt")
         s3_files_test = list(set([i.replace("_tone.pt", "").replace("_candles.pt", "") for i in s3_files_test]))
+        self.logger.info("Loaded %d test files", len(s3_files_test))
 
         model = self.model_service_base.create_model(input_size=self.n_features, hidden_size=30, num_layers=5, output_size=2)
         pytorch_total_params = sum(p.numel() for p in model.parameters())
+        self.logger.info("Model created with %d parameters", pytorch_total_params)
 
         if torch.cuda.is_available():
             model = model.to("cuda")
+            self.logger.info("Model moved to GPU")
 
         criterion, optimizer, scheduler = self.model_service_base.get_params(
             model_params=model.parameters(), lr=self.lr, max_lr=self.max_lr, steps_per_epoch=1_000_000, epochs=self.epochs, anneal_strategy="linear"
         )
+        self.logger.info("Training parameters set up with optimizer and scheduler")
 
         df_test = pd.DataFrame(columns=["symbol", "acc", "mse"])
 
         for epoch in range(self.epochs):
+            self.logger.info("Starting epoch %d", epoch + 1)
             model = self.train(criterion, optimizer, scheduler, model, s3_files_train, epoch)
             model = self.validation(model, s3_files_val)
+
+        self.logger.info("Training completed, starting testing")
         model, df_test = self.test(model, s3_files_test, df_test)
 
         if not os.path.exists(self.local_path):
             os.mkdir(self.local_path)
+            self.logger.info("Created local directory: %s", self.local_path)
 
         self.s3_service.load_df_csv_to_s3(df_test, self.local_path, "symbol_test.csv", f"{self.s3_path_model}plt/")
+        self.logger.info("Test results saved to S3")
+
         self.model_service_base.save_model(model, "ready_model.pt", self.local_path, f"{self.s3_path_model}models/")
+        self.logger.info("Model saved to S3")
+
         self.save_single_plot(f"{self.local_path}/sheduler_OneCycleLR_c.jpg", self.shed_list, "sheduler_OneCycleLR_c.jpg", f"{self.s3_path_model}plt/")
+        self.logger.info("Scheduler plot saved")
+
         self.save_single_plot(f"{self.local_path}/pair_loss.jpg", self.loss_list, "pair_loss.jpg", f"{self.s3_path_model}plt/")
+        self.logger.info("Loss plot saved")
+
         self.save_multi_plot(f"{self.local_path}/symbol_acc.jpg", [self.acc_list_train, self.acc_list_val], "symbol_acc.jpg", f"{self.s3_path_model}plt/")
+        self.logger.info("Accuracy plot saved")
 
         shutil.rmtree(self.local_path, ignore_errors=True)
+        self.logger.info("Local directory cleaned up")
 
 
 if __name__ == "__main__":
