@@ -1,23 +1,35 @@
+import logging
+
+# Настройка базового логгера
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler("app.log"), logging.StreamHandler()]
+)
+
 class Node:
     def __init__(self, value):
         self.value = value
         self.next = None
         self.random = None
-
+        logging.debug(f"Node создан со значением: {value}")
 
 def find_loop_start(head):
     slow = head
     fast = head
+    logging.info("Начинаем поиск начала петли")
 
     # Поиск точки встречи черепахи и зайца
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
         if slow == fast:
+            logging.debug("Петля обнаружена")
             break
 
     # Проверка на отсутствие петли
     if slow != fast:
+        logging.info("Петля не обнаружена в списке")
         return None
 
     # Нахождение начального узла петли
@@ -25,43 +37,44 @@ def find_loop_start(head):
     while slow != fast:
         slow = slow.next
         fast = fast.next
-
+    logging.info(f"Начало петли найдено на узле со значением: {slow.value}")
     return slow
-
 
 def copy_list(head):
     if not head:
+        logging.warning("Попытка копирования пустого списка")
         return None
 
-    # Создаем копии узлов и вставляем их после исходных узлов
+    logging.info("Начинаем копирование списка с random-ссылками")
     current = head
     while current:
         new_node = Node(current.value)
         new_node.next = current.next
         current.next = new_node
         current = new_node.next
+    logging.debug("Узлы созданы и вставлены")
 
-    # Настройка указателей random в новых узлах
     current = head
     while current:
         current.next.random = current.random.next if current.random else None
         current = current.next.next
+    logging.debug("Random-ссылки настроены для новых узлов")
 
-    # Разделение копий узлов от исходных узлов
     current = head
     new_head = head.next
     while current:
         temp = current.next
         current.next = temp.next if temp else None
         current = temp
-
+    logging.info("Копирование завершено")
     return new_head
-
 
 def remove_duplicates(head):
     if not head:
+        logging.warning("Пустой список, дубликаты не найдены")
         return
-
+    logging.info("Начинаем удаление дубликатов")
+    
     unique_values = set()
     unique_values.add(head.value)
     current = head
@@ -69,10 +82,11 @@ def remove_duplicates(head):
     while current.next:
         if current.next.value in unique_values:
             current.next = current.next.next
+            logging.debug(f"Дубликат найден и удален: {current.value}")
         else:
             unique_values.add(current.next.value)
             current = current.next
-
+    logging.info("Удаление дубликатов завершено")
 
 # создание списка для 1 задания
 def first():
@@ -91,7 +105,6 @@ def first():
         return "Начальный узел цикла: " + str(loop_start.value)
     else:
         return "Нет цикла в связанном списке."
-
 
 def second():
     node1 = Node(1)
@@ -115,10 +128,7 @@ def second():
         current = current.next
     return result
 
-
-# Пример использования
 def third():
-    # Создание несортированного связанного списка с дубликатами
     node1 = Node(1)
     node2 = Node(2)
     node3 = Node(1)
@@ -141,7 +151,13 @@ def third():
         current = current.next
     return result
 
+if __name__ == "__main__":
+    logging.info("Запуск первого задания")
+    print('Первое задание\n' + first())
+    
+    logging.info("Запуск второго задания")
+    print('\nВторое задание\n' + second())
+    
+    logging.info("Запуск третьего задания")
+    print('\nТретье задание\n' + third())
 
-print('Первое задание\n' + first())
-print('\nВторое задание\n' + second())
-print('\nТретье задание\n' + third())
