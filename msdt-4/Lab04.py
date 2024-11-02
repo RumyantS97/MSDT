@@ -82,7 +82,6 @@ def select_best_alpha(image):
                 psnr = new_psnr
                 best_alpha = alpha
                 best_proximities = p
-            print(best_proximities)
     return(best_alpha, psnr, best_proximities)
 
 
@@ -251,10 +250,7 @@ p = (sum(flatten_cvz*flatten_included_cvz) /
      (((sum(flatten_cvz**2))**(1/2)) *
       ((sum(flatten_included_cvz**2))**(1/2))))
 included_cvz_estimation = process_threshold(p)
-print(p)
-print(included_cvz_estimation)
 reverse_image = Image.fromarray(reverse_array)
-print(select_best_alpha(image))
 
 
 # CUT
@@ -317,5 +313,3 @@ plt.xlabel("X axis")
 plt.ylabel("Y axis")
 plt.plot(x, y, color="red")
 plt.show()
-
-print()
