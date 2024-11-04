@@ -235,12 +235,12 @@ false_detection_cvz = generate_false_detection_vectors(100)
 false_detection_proximity_array = (
     detect_false_proximity(false_detection_cvz, CVZ.flatten()))
 
-x = np.arange(0, 100, 1)
-y = false_detection_proximity_array
-plt.xlabel("X axis")
-plt.ylabel("Y axis")
-plt.plot(x, y, color="red")
-plt.show()
+# x = np.arange(0, 100, 1)
+# y = false_detection_proximity_array
+# plt.xlabel("X axis")
+# plt.ylabel("Y axis")
+# plt.plot(x, y, color="red")
+# plt.show()
 
 logging.info("Loading image and converting to array")
 image = Image.open("bridge.tif")
@@ -322,39 +322,39 @@ for jpeg_param in jpeg_param_array:
     logging.debug(f"JPEG quality parameter: {jpeg_param}, proximity: {proximity}")
 
 
-# OUTPUT
-logging.info("Construction CUT process graph")
-x = cut_param_array
-y = cut_proximities
-plt.title("CUT")
-plt.xlabel("X axis")
-plt.ylabel("Y axis")
-plt.plot(x, y, color="red")
-plt.show()
-
-logging.info("Construction ROTATION process graph")
-x = rotation_param_array
-y = rotation_proximities
-plt.title("ROTATION")
-plt.xlabel("X axis")
-plt.ylabel("Y axis")
-plt.plot(x, y, color="red")
-plt.show()
-
-logging.info("Construction SMOOTH process graph")
-x = smooth_param_array
-y = smooth_proximities
-plt.title("SMOOTH")
-plt.xlabel("X axis")
-plt.ylabel("Y axis")
-plt.plot(x, y, color="red")
-plt.show()
-
-logging.info("Construction JPEG process graph")
-x = jpeg_param_array
-y = jpeg_proximities
-plt.title("JPEG")
-plt.xlabel("X axis")
-plt.ylabel("Y axis")
-plt.plot(x, y, color="red")
-plt.show()
+# # OUTPUT
+# logging.info("Construction CUT process graph")
+# x = cut_param_array
+# y = cut_proximities
+# plt.title("CUT")
+# plt.xlabel("X axis")
+# plt.ylabel("Y axis")
+# plt.plot(x, y, color="red")
+# plt.show()
+#
+# logging.info("Construction ROTATION process graph")
+# x = rotation_param_array
+# y = rotation_proximities
+# plt.title("ROTATION")
+# plt.xlabel("X axis")
+# plt.ylabel("Y axis")
+# plt.plot(x, y, color="red")
+# plt.show()
+#
+# logging.info("Construction SMOOTH process graph")
+# x = smooth_param_array
+# y = smooth_proximities
+# plt.title("SMOOTH")
+# plt.xlabel("X axis")
+# plt.ylabel("Y axis")
+# plt.plot(x, y, color="red")
+# plt.show()
+#
+# logging.info("Construction JPEG process graph")
+# x = jpeg_param_array
+# y = jpeg_proximities
+# plt.title("JPEG")
+# plt.xlabel("X axis")
+# plt.ylabel("Y axis")
+# plt.plot(x, y, color="red")
+# plt.show()
