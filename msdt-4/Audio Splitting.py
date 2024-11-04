@@ -7,10 +7,19 @@ import sys
 import wave
 import os
 import webrtcvad
+import logging
+
+
+# Настройка логгирования
+logging.basicConfig(level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[logging.FileHandler("audio_processing.log"),
+    logging.StreamHandler()])
 
 
 def read_wave(path):
 
+    logging.debug(f"Attempting to read wave file: {path}")
     with contextlib.closing(wave.open(path, 'rb')) as wf:
         num_channels = wf.getnchannels()
         assert num_channels == 1
@@ -19,17 +28,20 @@ def read_wave(path):
         sample_rate = wf.getframerate()
         assert sample_rate in (8000, 16000, 32000, 48000)
         pcm_data = wf.readframes(wf.getnframes())
+        logging.debug(f"Wave file read successfully: {path} (Channels: {num_channels}, Sample Rate: {sample_rate})")
         return pcm_data, sample_rate
 
 
 def write_wave(path, audio, sample_rate):
 
+    logging.debug(f"Attempting to write wave file: {path}")
     with contextlib.closing(wave.open(path, 'wb')) as wf:
         wf.setnchannels(1)
         wf.setsampwidth(2)
         wf.setframerate(sample_rate)
         wf.writeframes(audio)
         frames = wf.getnframes()
+        logging.debug(f"Written {frames} frames to {path}")
         return frames / float(sample_rate)
 
 
@@ -48,6 +60,7 @@ def frame_generator(frame_duration_ms, audio, sample_rate):
     timestamp = 0.0
     duration = (float(n) / sample_rate) / 2.0
     while offset + n < len(audio):
+        logging.debug(f"Generating frame: Timestamp={timestamp}, Duration={duration}, Offset={offset}")
         yield Frame(audio[offset:offset + n], timestamp, duration)
         timestamp += duration
         offset += n
@@ -63,6 +76,7 @@ def vad_collector(sample_rate, frame_duration_ms,
     voiced_frames = []
     for frame in frames:
         is_speech = vad.is_speech(frame.bytes, sample_rate)
+        logging.debug(f"Frame speech detection: {is_speech} (Timestamp={frame.timestamp})")
 
         if not triggered:
             ring_buffer.append((frame, is_speech))
@@ -74,6 +88,7 @@ def vad_collector(sample_rate, frame_duration_ms,
                 for f, s in ring_buffer:
                     voiced_frames.append(f)
                 ring_buffer.clear()
+                logging.debug("Speech detected - triggering.")
         else:
 
             voiced_frames.append(frame)
@@ -86,6 +101,8 @@ def vad_collector(sample_rate, frame_duration_ms,
                 yield b''.join([f.bytes for f in voiced_frames])
                 ring_buffer.clear()
                 voiced_frames = []
+                logging.debug("Silence detected - yielding voiced frames.")
+
     if triggered:
         pass
 
@@ -105,9 +122,10 @@ else:
 def folder(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        print("Output folder created")
+        logging.debug(f"Output folder created: {path}")
+        
     else:
-        print("Output folder already present")
+     logging.debug(f"Output folder already present: {path}")
 
 
 path = "./frontend/speech-transcription-app/public/Original data"
@@ -137,7 +155,9 @@ def main(file_name, op_path):
     for i, segment in enumerate(segments):
         path = op_path+'/'+'chunk%004d.wav' % (i+1,)
         print(' Writing %s' % (path,))
+        logging.info(f'Writing {path}')
         write_wave(path, segment, sample_rate)
+        
 
 
 # sys.argv[1]
