@@ -5,9 +5,13 @@ from tqdm import tqdm
 import logging
 from typing import Any, Dict
 
+# Set up logging
+def setup_logging():
+    logging.basicConfig(filename='validation.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Function to calculate SNILS checksum
 def calc_snils(s):
+    logging.info('Calculating SNILS checksum...')
     sum = 0
     sumstr = ""
     for i in range(9):
@@ -20,6 +24,8 @@ def calc_snils(s):
             sumstr = "0" + sumstr
     elif sum == 100 or sum == 101:
         sumstr = "00"
+    logging.debug(f'Intermediate sum: {sum}')
+    logging.debug(f'Final checksum: {sumstr}')
     return sumstr
 
 
@@ -48,8 +54,11 @@ class Entry:
         self.data = d.copy()
 
     def check_telephone(self) -> bool:
+        logging.info('Checking telephone number...')
         if re.match(patterns['telephone'], self.data['telephone']):
+            logging.info('Telephone number is valid')
             return True
+        logging.warning('Telephone number is invalid')
         return False
 
     def check_weight(self) -> bool:
@@ -102,18 +111,26 @@ class Validator:
     entries: list
 
     def __init__(self, path: str) -> None:
+        logging.info('Loading data from JSON file...')
+        logging.debug(f'Path: {path}')
         self.entries = []
         tmp = json.load(open(path, encoding="windows-1251"))
         for i in tmp:
             self.entries.append(Entry(i.copy()))
 
     def process(self, path: str) -> None:
+        logging.info('Validation process started...')
         tmp = []
         for i in tqdm(range(len(self.entries)), desc="Writing valid entries to file", ncols=100):
             if not (False in self.validate(i).values()):
                 logging.info(f'Entry {i} is valid')
                 tmp.append(self.entries[i].data.copy())
+            else:
+                logging.warning(f'Entry {i} is invalid')
+        logging.info(f'Number of valid entries found: {len(tmp)}')
         json.dump(tmp, open(path, "w", encoding="windows-1251"), ensure_ascii=False, sort_keys=True, indent=4)
+        logging.info('Validation process completed')
+
 
     def validate(self, index: int) -> dict:
         res = {}
@@ -128,6 +145,8 @@ class Validator:
         res['academic_degree'] = self.entries[index].check_academic_degree()
         res['worldview'] = self.entries[index].check_worldview()
         res['address'] = self.entries[index].check_address()
+
+        logging.info(f"Validation results for entry at index {index}: {res}")
 
         return res.copy()
 
@@ -152,5 +171,10 @@ class Validator:
 
 
 if __name__ == "__main__":
+    setup_logging()
     val = Validator(input_path)
+    logging.info(f"Number of valid entries: {val.count_entries(True)}")
+    logging.info(f"Number of invalid entries: {val.count_entries(False)}")
+    for i in val.validate(0).keys():
+        logging.info(f"Number of entries with error in {i}: {val.count_by_error(i)}")
     val.process(output_path)
