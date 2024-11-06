@@ -125,10 +125,22 @@ class TaskManagerApp(tk.Tk):
 
     def create_widgets(self):
         """Creates the application widgets."""
-        self.title_label = tk.Label(self, text="Task Manager", font=("Arial", 20, "bold"), bg="#f4f4f9", fg="#333")
+        self.title_label = tk.Label(
+            self,
+            text="Task Manager",
+            font=("Arial", 20, "bold"),
+            bg="#f4f4f9",
+            fg="#333"
+        )
         self.title_label.pack(pady=10)
 
-        self.task_list = tk.Text(self, height=10, width=80, wrap="word", font=("Arial", 10))
+        self.task_list = tk.Text(
+            self,
+            height=10,
+            width=80,
+            wrap="word",
+            font=("Arial", 10)
+        )
         self.task_list.pack(pady=10)
         self.task_list.config(state=tk.DISABLED)
 
@@ -137,55 +149,135 @@ class TaskManagerApp(tk.Tk):
         button_frame = tk.Frame(self, bg="#f4f4f9")
         button_frame.pack(pady=10)
 
-        self.add_task_button = tk.Button(button_frame, text="Add Task", command=self.open_add_task_window, bg="#4CAF50", fg="white", width=25)
+        self.add_task_button = tk.Button(
+            button_frame,
+            text="Add Task",
+            command=self.open_add_task_window,
+            bg="#4CAF50",
+            fg="white",
+            width=25
+        )
         self.add_task_button.grid(row=0, column=0, padx=5, pady=5)
 
-        self.show_tasks_button = tk.Button(button_frame, text="Show All Tasks", command=self.show_tasks, bg="#2196F3", fg="white", width=25)
+        self.show_tasks_button = tk.Button(
+            button_frame,
+            text="Show All Tasks",
+            command=self.show_tasks,
+            bg="#2196F3",
+            fg="white",
+            width=25
+        )
         self.show_tasks_button.grid(row=0, column=1, padx=5, pady=5)
 
-        self.delete_task_button = tk.Button(button_frame, text="Delete Task", command=self.delete_task, bg="#F44336", fg="white", width=25)
+        self.delete_task_button = tk.Button(
+            button_frame,
+            text="Delete Task",
+            command=self.delete_task,
+            bg="#F44336",
+            fg="white",
+            width=25
+        )
         self.delete_task_button.grid(row=1, column=0, padx=5, pady=5)
 
-        self.complete_task_button = tk.Button(button_frame, text="Complete Task", command=self.complete_task, bg="#9C27B0", fg="white", width=25)
+        self.complete_task_button = tk.Button(
+            button_frame,
+            text="Complete Task",
+            command=self.complete_task,
+            bg="#9C27B0",
+            fg="white",
+            width=25
+        )
         self.complete_task_button.grid(row=1, column=1, padx=5, pady=5)
 
-        self.search_task_button = tk.Button(button_frame, text="Search Task", command=self.search_task, bg="#FF9800", fg="white", width=25)
+        self.search_task_button = tk.Button(
+            button_frame,
+            text="Search Task",
+            command=self.search_task,
+            bg="#FF9800",
+            fg="white",
+            width=25
+        )
         self.search_task_button.grid(row=2, column=0, padx=5, pady=5)
 
-        self.hold_task_button = tk.Button(button_frame, text="Hold Task", command=self.hold_task,
-                                          bg="#FF6347", fg="white", width=25)
+        self.hold_task_button = tk.Button(
+            button_frame,
+            text="Hold Task",
+            command=self.hold_task,
+            bg="#FF6347",
+            fg="white",
+            width=25
+        )
         self.hold_task_button.grid(row=2, column=1, padx=5, pady=5)
 
-        self.resume_task_button = tk.Button(button_frame, text="Resume Task", command=self.resume_task,
-                                            bg="#32CD32", fg="white", width=25)
+        self.resume_task_button = tk.Button(
+            button_frame,
+            text="Resume Task",
+            command=self.resume_task,
+            bg="#32CD32",
+            fg="white",
+            width=25
+        )
         self.resume_task_button.grid(row=3, column=0, padx=5, pady=5)
 
-        self.sort_priority_button = tk.Button(button_frame, text="Sort by Priority",
-                                              command=self.sort_by_priority, bg="#8B0000", fg="white", width=25)
+        self.sort_priority_button = tk.Button(
+            button_frame,
+            text="Sort by Priority",
+            command=self.sort_by_priority,
+            bg="#8B0000",
+            fg="white",
+            width=25
+        )
         self.sort_priority_button.grid(row=3, column=1, padx=5, pady=5)
 
-        self.sort_due_date_button = tk.Button(button_frame, text="Sort by Due Date", command=self.sort_by_due_date,
-                                              bg="#1E90FF", fg="white", width=25)
+        self.sort_due_date_button = tk.Button(
+            button_frame,
+            text="Sort by Due Date",
+            command=self.sort_by_due_date,
+            bg="#1E90FF",
+            fg="white",
+            width=25
+        )
         self.sort_due_date_button.grid(row=4, column=0, padx=5, pady=5)
 
-        self.add_comment_button = tk.Button(button_frame, text="Add Comment", command=self.add_comment,
-                                            bg="#FFD700", fg="black", width=25)
+        self.add_comment_button = tk.Button(
+            button_frame,
+            text="Add Comment",
+            command=self.add_comment,
+            bg="#FFD700",
+            fg="black",
+            width=25
+        )
         self.add_comment_button.grid(row=4, column=1, padx=5, pady=5)
 
     def create_pet(self):
         """Creates a visual representation of the pet."""
-        self.canvas = tk.Canvas(self, width=200, height=100, bg="lightgreen",
-                                highlightthickness=0)  # Canvas dimensions remain reduced
+        self.canvas = tk.Canvas(
+            self,
+            width=200,
+            height=100,
+            bg="lightgreen",
+            highlightthickness=0
+        )  # Canvas dimensions remain reduced
         self.canvas.pack(anchor="n", padx=10, pady=10)  # Changed anchor to "n" (north) and added padding
 
         self.canvas.body_color = "magenta"
 
         # The pet parameters remain unchanged
-        self.body = self.canvas.create_oval(10, 5, 190, 95, outline=self.canvas.body_color, fill=self.canvas.body_color)
-        self.ear_left = self.canvas.create_polygon(30, 0, 30, 15, 15, 5, outline=self.canvas.body_color,
-                                                   fill=self.canvas.body_color)
-        self.ear_right = self.canvas.create_polygon(170, 0, 170, 15, 185, 5, outline=self.canvas.body_color,
-                                                    fill=self.canvas.body_color)
+        self.body = self.canvas.create_oval(
+            10, 5, 190, 95,
+            outline=self.canvas.body_color,
+            fill=self.canvas.body_color
+        )
+        self.ear_left = self.canvas.create_polygon(
+            30, 0, 30, 15, 15, 5,
+            outline=self.canvas.body_color,
+            fill=self.canvas.body_color
+        )
+        self.ear_right = self.canvas.create_polygon(
+            170, 0, 170, 15, 185, 5,
+            outline=self.canvas.body_color,
+            fill=self.canvas.body_color
+        )
         self.eye_left = self.canvas.create_oval(40, 35, 55, 50, outline="black", fill="white")
         self.pupil_left = self.canvas.create_oval(45, 40, 50, 45, outline="black", fill="black")
         self.eye_right = self.canvas.create_oval(145, 35, 160, 50, outline="black", fill="white")
@@ -274,7 +366,10 @@ class TaskManagerApp(tk.Tk):
         tk.Radiobutton(priority_frame, text="Normal", variable=self.priority_var, value="Normal").pack(side=tk.LEFT)
         tk.Radiobutton(priority_frame, text="Low", variable=self.priority_var, value="Low").pack(side=tk.LEFT)
 
-        tk.Button(add_task_window, text="Add", command=lambda: self.add_task(title_entry, description_entry, calendar)).pack(pady=10)
+        tk.Button(add_task_window,
+                  text="Add",
+                  command=lambda: self.add_task(title_entry, description_entry, calendar))\
+            .pack(pady=10)
 
     def add_task(self, title_entry, description_entry, calendar):
         """Adds a task using the input from the task form."""
