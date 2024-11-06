@@ -1,7 +1,10 @@
 import datetime
 import tkinter as tk
-from tkinter import messagebox,simpledialog,HIDDEN,NORMAL
+from tkinter import messagebox
+from tkinter import simpledialog
+from tkinter import HIDDEN, NORMAL
 from tkcalendar import Calendar  # Импорт для календаря
+
 
 
 class Task:
