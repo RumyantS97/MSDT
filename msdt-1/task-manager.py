@@ -7,32 +7,34 @@ from tkcalendar import Calendar  # Импорт для календаря
 
 
 class Task:
- def __init__(self, title, description, due_date):
-  self.title = title
-  self.description = description
-  self.due_date = due_date
-  self.completed = False
-  self.priority = "Нормальный"
-  self.on_hold = False
-  self.comments = []
+    def __init__(self, title, description, due_date):
+        self.title = title
+        self.description = description
+        self.due_date = due_date
+        self.completed = False
+        self.priority = "Нормальный"
+        self.on_hold = False
+        self.comments = []
 
- def set_priority(self, priority):
-  """Устанавливает приоритет задачи."""
-  if priority in ["Высокий","Нормальный","Низкий"]:
-   self.priority=priority
-  else:
-   raise ValueError("Недопустимый приоритет")
+    def set_priority(self, priority):
+        """Устанавливает приоритет задачи."""
+        if priority in ["Высокий", "Нормальный", "Низкий"]:
+            self.priority = priority
+        else:
+            raise ValueError("Недопустимый приоритет")
 
- def mark_as_completed(self):
-  """Отмечает задачу как завершённую."""
-  self.completed=True
+    def mark_as_completed(self):
+        """Отмечает задачу как завершённую."""
+        self.completed = True
 
- def __str__(self):
-  """Возвращает строковое представление задачи."""
-  status = "Завершено" if self.completed else "В процессе"
-  hold_status = "На паузе" if self.on_hold else "Активно"
-  comments = "\n  Комментарии: " + ";".join(self.comments) if self.comments else ""
-  return f"{self.title} - {self.description} (Срок: {self.due_date}, Статус: {status}, Приоритет: {self.priority}, Состояние: {hold_status}){comments}"
+    def __str__(self):
+        """Возвращает строковое представление задачи."""
+        status = "Завершено" if self.completed else "В процессе"
+        hold_status = "На паузе" if self.on_hold else "Активно"
+        comments = "\n  Комментарии: " + "; ".join(self.comments) if self.comments else ""
+        return (f"{self.title} - {self.description} "
+                f"(Срок: {self.due_date}, Статус: {status}, "
+                f"Приоритет: {self.priority}, Состояние: {hold_status}){comments}")
 
 
 class TaskManager:
