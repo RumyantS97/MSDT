@@ -58,7 +58,7 @@ def to_player_2():
     btn_colour_12.grid_remove()
     btn_colour_13.grid_remove()
     ru.title('O')
-    lbl_pl1.configure(text = 'Игрок НОЛИКИ, выберите цвет:')
+    lbl_pl1.configure(text='Игрок НОЛИКИ, выберите цвет:')
 
     global colour21
     colour21 = random.choice(colours_list)
@@ -67,9 +67,9 @@ def to_player_2():
     global colour23
     colour23 = random.choice(colours_list)
 
-    btn_colour_21.configure(bg=colour21)
-    btn_colour_22.configure(bg=colour22)
-    btn_colour_23.configure(bg=colour23)
+    btn_colour_21.configure(bg = colour21)
+    btn_colour_22.configure(bg = colour22)
+    btn_colour_23.configure(bg = colour23)
 
     btn_colour_21.grid(row=1, column=0)
     btn_colour_22.grid(row=1, column=1)
@@ -107,10 +107,10 @@ def first_turn():
     btn_change.grid_remove()
 
     ru.title('Кто первый?')
-    lbl_ft.grid(row = 0, columnspan = 3)
-    btn_kr.grid(row = 1, column = 0)
-    btn_rand.grid(row = 1, column = 1)
-    btn_nol.grid(row = 1, column = 2)
+    lbl_ft.grid(row=0, columnspan=3)
+    btn_kr.grid(row=1, column=0)
+    btn_rand.grid(row=1, column=1)
+    btn_nol.grid(row=1, column=2)
 
 
 # Первым ходит игрок КРЕСТИКИ
@@ -134,14 +134,14 @@ def first_turn_random():
     btn_nol.grid_remove()
 
     if number_of_turn == 1:
-        lbl_turn.configure(text = 'Первым ходит игрок КРЕСТИКИ')
+        lbl_turn.configure(text='Первым ходит игрок КРЕСТИКИ')
         ru.title('X')
     else:
         lbl_turn.configure(text='Первым ходит игрок НОЛИКИ')
         ru.title('O')
 
-    lbl_turn.grid(row = 0, columnspan = 3)
-    btn_ok_choice.grid(row = 1, column = 1)
+    lbl_turn.grid(row=0, columnspan=3)
+    btn_ok_choice.grid(row=1, column=1)
 
 # Переход к игровому полю
 def to_game():
@@ -172,9 +172,9 @@ def game():
     btn8.grid(row=2, column=1)
     btn9.grid(row=2, column=2)
 
-    btn_verdict.grid(row = 3, column = 0)
-    btn_itog.grid(row = 3, column = 1)
-    btn_hooray.grid(row = 3, column = 2)
+    btn_verdict.grid(row=3, column=0)
+    btn_itog.grid(row=3, column=1)
+    btn_hooray.grid(row=3, column=2)
 
 # Функции хода на определённую позицию
 def stand1():
@@ -229,60 +229,60 @@ def matritsa(btn_value, btn_number):
 
         if number_of_turn == 1:
             if btn_number == 1:
-                btn1.configure(text = 'X')
-                btn1.configure(bg = choiceof1)
+                btn1.configure(text='X')
+                btn1.configure(bg=choiceof1)
             elif btn_number == 2:
-                btn2.configure(text = 'X')
+                btn2.configure(text='X')
                 btn2.configure(bg=choiceof1)
             elif btn_number == 3:
-                btn3.configure(text = 'X')
+                btn3.configure(text='X')
                 btn3.configure(bg=choiceof1)
             elif btn_number == 4:
-                btn4.configure(text = 'X')
+                btn4.configure(text='X')
                 btn4.configure(bg=choiceof1)
             elif btn_number == 5:
-                btn5.configure(text = 'X')
+                btn5.configure(text='X')
                 btn5.configure(bg=choiceof1)
             elif btn_number == 6:
-                btn6.configure(text = 'X')
+                btn6.configure(text='X')
                 btn6.configure(bg=choiceof1)
             elif btn_number == 7:
-                btn7.configure(text = 'X')
+                btn7.configure(text='X')
                 btn7.configure(bg=choiceof1)
             elif btn_number == 8:
-                btn8.configure(text = 'X')
+                btn8.configure(text='X')
                 btn8.configure(bg=choiceof1)
             else:
-                btn9.configure(text = 'X')
+                btn9.configure(text='X')
                 btn9.configure(bg=choiceof1)
 
         else:
             if btn_number == 1:
-                btn1.configure(text = 'O')
-                btn1.configure(bg = choiceof2)
+                btn1.configure(text='O')
+                btn1.configure(bg=choiceof2)
             elif btn_number == 2:
-                btn2.configure(text = 'O')
+                btn2.configure(text='O')
                 btn2.configure(bg=choiceof2)
             elif btn_number == 3:
-                btn3.configure(text = 'O')
+                btn3.configure(text='O')
                 btn3.configure(bg=choiceof2)
             elif btn_number == 4:
-                btn4.configure(text = 'O')
+                btn4.configure(text='O')
                 btn4.configure(bg=choiceof2)
             elif btn_number == 5:
-                btn5.configure(text = 'O')
+                btn5.configure(text='O')
                 btn5.configure(bg=choiceof2)
             elif btn_number == 6:
-                btn6.configure(text = 'O')
+                btn6.configure(text='O')
                 btn6.configure(bg=choiceof2)
             elif btn_number == 7:
-                btn7.configure(text = 'O')
+                btn7.configure(text='O')
                 btn7.configure(bg=choiceof2)
             elif btn_number == 8:
-                btn8.configure(text = 'O')
+                btn8.configure(text='O')
                 btn8.configure(bg=choiceof2)
             else:
-                btn9.configure(text = 'O')
+                btn9.configure(text='O')
                 btn9.configure(bg=choiceof2)
 
         if number_of_turn == 1:
@@ -299,10 +299,10 @@ def matritsa(btn_value, btn_number):
         btn2.configure(bg='red')
         btn3.configure(bg='red')
 
-        btn_itog.configure(text = 'Крестики')
-        btn_again.grid(row = 4, column = 0)
-        btn_quit.grid(row = 4, column = 1)
-        btn_hooray.configure(text = random.choice(hooray_list))
+        btn_itog.configure(text='Крестики')
+        btn_again.grid(row=4, column=0)
+        btn_quit.grid(row=4, column=1)
+        btn_hooray.configure(text=random.choice(hooray_list))
 
     elif pole[0][0] == pole[0][1] == pole[0][2] == 2:
         btn1.configure(bg='red')
@@ -365,7 +365,7 @@ def matritsa(btn_value, btn_number):
         btn_itog.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
-        btn_hooray.configure(text=random.choice(hooray_list))
+        btn_hooray.configure(text = random.choice(hooray_list))
     elif pole[0][0] == pole[1][0] == pole[2][0] == 2:
         btn1.configure(bg='red')
         btn4.configure(bg='red')
@@ -472,7 +472,7 @@ def matritsa(btn_value, btn_number):
 
 # Очистка поля для игры заново
 def again():
-    btn1.configure(text = 'Поставить', bg = 'gray95')
+    btn1.configure(text='Поставить', bg='gray95')
     btn1.grid_remove()
     btn2.configure(text='Поставить', bg='gray95')
     btn2.grid_remove()
@@ -491,8 +491,8 @@ def again():
     btn9.configure(text='Поставить', bg='gray95')
     btn9.grid_remove()
 
-    btn_itog.configure(text = '')
-    btn_hooray.configure(text = '')
+    btn_itog.configure(text='')
+    btn_hooray.configure(text='')
 
     btn_verdict.grid_remove()
     btn_itog.grid_remove()
@@ -504,8 +504,8 @@ def again():
         for j in range(3):
             pole[i][j] = 0
 
-    btn_stay.grid(row = 0, column = 0, sticky = W)
-    btn_change.grid(row = 1, column = 0, sticky = W)
+    btn_stay.grid(row=0, column=0, sticky=W)
+    btn_change.grid(row=1, column=0, sticky=W)
 
     ru.title('Смена цвета')
 
@@ -518,63 +518,63 @@ ru = Tk()
 ru.title('Халоу!')
 ru.geometry('240x339')
 ru.resizable(0, 0)
-lbl_hello = Label(ru, text = 'Крестики-нолики', font = 'Calibri 14')
-lbl_hello.grid(row = 0, column = 0)
-btn_start = Button(text = 'Начать игру ->', font = 'Calibri 14',
-                   command = to_player_1)
-btn_start.grid(row = 1, column = 0, sticky = W)
+lbl_hello = Label(ru, text='Крестики-нолики', font='Calibri 14')
+lbl_hello.grid(row=0, column=0)
+btn_start = Button(text='Начать игру ->', font='Calibri 14',
+                   command=to_player_1)
+btn_start.grid(row=1, column=0, sticky=W)
 
 # Виджеты для функций
-lbl_pl1 = Label(ru, text = 'Игрок КРЕСТИКИ, выберите цвет:',
-                font = 'Calibri 12')
-btn_colour_11 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice1)
-btn_colour_12 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice2)
-btn_colour_13 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice3)
+lbl_pl1 = Label(ru, text='Игрок КРЕСТИКИ, выберите цвет:',
+                font='Calibri 12')
+btn_colour_11 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice1)
+btn_colour_12 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice2)
+btn_colour_13 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice3)
 
-btn_colour_21 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice4)
-btn_colour_22 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice5)
-btn_colour_23 = Button(ru, text = '', width = 7, height = 3,
-                       bg = 'magenta', command = choice6)
-###############################################################################
-lbl_ft = Label(ru, text = 'Кто ходит первым?', font = 'Calibri 12')
-btn_kr = Button(ru, text = 'X', font = 'Calibri 12',
-                command = first_turn_kr)
-btn_rand = Button(ru, text = 'random', font = 'Calibri 12',
-                  command = first_turn_random)
-btn_nol = Button(ru, text = 'O', font = 'Calibri 12',
-                 command = first_turn_nol)
+btn_colour_21 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice4)
+btn_colour_22 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice5)
+btn_colour_23 = Button(ru, text='', width=7, height=3,
+                       bg='magenta', command=choice6)
 
-lbl_turn = Label(ru, text = 'Первый игрок -', font = 'Calibri 12')
-btn_ok_choice = Button(ru, text = 'ОК', font = 'Calibri 12',
-                       command = to_game)
+lbl_ft = Label(ru, text='Кто ходит первым?', font='Calibri 12')
+btn_kr = Button(ru, text='X', font='Calibri 12',
+                command=first_turn_kr)
+btn_rand = Button(ru, text='random', font='Calibri 12',
+                  command=first_turn_random)
+btn_nol = Button(ru, text='O', font='Calibri 12',
+                 command=first_turn_nol)
 
-btn1 = Button(text = 'Поставить', width = 10, height = 5, command = stand1)
-btn2 = Button(text = 'Поставить', width = 10, height = 5, command = stand2)
-btn3 = Button(text = 'Поставить', width = 10, height = 5, command = stand3)
-btn4 = Button(text = 'Поставить', width = 10, height = 5, command = stand4)
-btn5 = Button(text = 'Поставить', width = 10, height = 5, command = stand5)
-btn6 = Button(text = 'Поставить', width = 10, height = 5, command = stand6)
-btn7 = Button(text = 'Поставить', width = 10, height = 5, command = stand7)
-btn8 = Button(text = 'Поставить', width = 10, height = 5, command = stand8)
-btn9 = Button(text = 'Поставить', width = 10, height = 5, command = stand9)
-###############################################################################
-btn_verdict = Button(text = 'Победа:', width = 10, height = 2)
-btn_itog = Button(text = '', width = 10, height = 2)
-btn_hooray = Button(text = '', width = 10, height = 2)
-btn_again = Button(ru, text = 'Играть снова', width = 10, height = 2,
-                   command = again)
-btn_quit = Button(ru, text = 'Выйти', width = 10, height = 2,
-                  command = quit)
+lbl_turn = Label(ru, text='Первый игрок -', font='Calibri 12')
+btn_ok_choice = Button(ru, text='ОК', font='Calibri 12',
+                       command=to_game)
 
-btn_stay = Button(text = 'Оставить те же цвета', font = 'Calibri 14',
-                  command = first_turn)
-btn_change = Button(text = 'Сменить цвета', font = 'Calibri 14',
-                    command = to_player_1)
+btn1 = Button(text='Поставить', width=10, height=5, command=stand1)
+btn2 = Button(text='Поставить', width=10, height=5, command=stand2)
+btn3 = Button(text='Поставить', width=10, height=5, command=stand3)
+btn4 = Button(text='Поставить', width=10, height=5, command=stand4)
+btn5 = Button(text='Поставить', width=10, height=5, command=stand5)
+btn6 = Button(text='Поставить', width=10, height=5, command=stand6)
+btn7 = Button(text='Поставить', width=10, height=5, command=stand7)
+btn8 = Button(text='Поставить', width=10, height=5, command=stand8)
+btn9 = Button(text='Поставить', width=10, height=5, command=stand9)
+
+btn_verdict = Button(text='Победа:', width=10, height=2)
+btn_itog = Button(text='', width=10, height=2)
+btn_hooray = Button(text='', width=10, height=2)
+btn_again = Button(ru, text='Играть снова', width=10, height=2,
+                   command=again)
+btn_quit = Button(ru, text='Выйти', width=10, height=2,
+                  command=quit)
+
+btn_stay = Button(text='Оставить те же цвета', font='Calibri 14',
+                  command=first_turn)
+btn_change = Button(text='Сменить цвета', font='Calibri 14',
+                    command=to_player_1)
 
 # Переменные для функций
 colour11 = ''
@@ -602,11 +602,11 @@ stand8_value = [2, 1]
 stand9_value = [2, 2]
 
 # Списки цветов и восклицаний для случайного выбора
-###############################################################################
+
 hooray_list = ['Ура!', 'Круто!', 'Еее)', 'Молодец!', 'Супер!', 'Вау!']
 random.shuffle(hooray_list)
 
-colours_list =[
+colours_list = [
     'blanched almond', 'bisque', 'peach puff', 'lemon chiffon',
     'mint cream', 'azure', 'alice blue', 'lavender',
     'lavender blush', 'misty rose', 'midnight blue', 'navy',
