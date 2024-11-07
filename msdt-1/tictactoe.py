@@ -4,6 +4,7 @@
 from tkinter import *
 import random
 
+
 # Игрок КРЕСТИКИ выбирает цвет
 def to_player_1():
     lbl_hello.destroy()
@@ -31,12 +32,14 @@ def to_player_1():
     btn_colour_12.grid(row=1, column=1)
     btn_colour_13.grid(row=1, column=2)
 
+
 # Фиксируется 1й цвет для игрока КРЕСТИКИ
 def choice1():
     global colour11
     global choiceof1
     choiceof1 = colour11
     to_player_2()
+
 
 # Фиксируется 2й цвет для игрока КРЕСТИКИ
 def choice2():
@@ -45,12 +48,14 @@ def choice2():
     choiceof1 = colour12
     to_player_2()
 
+
 # Фиксируется 3й цвет для игрока КРЕСТИКИ
 def choice3():
     global colour13
     global choiceof1
     choiceof1 = colour13
     to_player_2()
+
 
 # Игрок НОЛИКИ выбирает цвет
 def to_player_2():
@@ -67,13 +72,14 @@ def to_player_2():
     global colour23
     colour23 = random.choice(colours_list)
 
-    btn_colour_21.configure(bg = colour21)
-    btn_colour_22.configure(bg = colour22)
-    btn_colour_23.configure(bg = colour23)
+    btn_colour_21.configure(bg=colour21)
+    btn_colour_22.configure(bg=colour22)
+    btn_colour_23.configure(bg=colour23)
 
     btn_colour_21.grid(row=1, column=0)
     btn_colour_22.grid(row=1, column=1)
     btn_colour_23.grid(row=1, column=2)
+
 
 # Фиксируется 1й цвет для игрока НОЛИКИ
 def choice4():
@@ -82,6 +88,7 @@ def choice4():
     choiceof2 = colour21
     first_turn()
 
+
 # Фиксируется 2й цвет для игрока НОЛИКИ
 def choice5():
     global colour22
@@ -89,12 +96,14 @@ def choice5():
     choiceof2 = colour22
     first_turn()
 
+
 # Фиксируется 3й цвет для игрока НОЛИКИ
 def choice6():
     global colour23
     global choiceof2
     choiceof2 = colour23
     first_turn()
+
 
 # Выбирается игрок, который ходит первым
 def first_turn():
@@ -124,6 +133,7 @@ def first_turn_kr():
     btn_nol.grid_remove()
     game()
 
+
 # Первый игрок выбирается случайным образом
 def first_turn_random():
     global number_of_turn
@@ -143,11 +153,13 @@ def first_turn_random():
     lbl_turn.grid(row=0, columnspan=3)
     btn_ok_choice.grid(row=1, column=1)
 
+
 # Переход к игровому полю
 def to_game():
     lbl_turn.grid_remove()
     btn_ok_choice.grid_remove()
     game()
+
 
 # Первым ходит игрок НОЛИКИ
 def first_turn_nol():
@@ -159,6 +171,7 @@ def first_turn_nol():
     btn_rand.grid_remove()
     btn_nol.grid_remove()
     game()
+
 
 # Отображение игрового поля
 def game():
@@ -176,42 +189,52 @@ def game():
     btn_itog.grid(row=3, column=1)
     btn_hooray.grid(row=3, column=2)
 
+
 # Функции хода на определённую позицию
 def stand1():
     global stand1_value
     matritsa(stand1_value, 1)
 
+
 def stand2():
     global stand2_value
     matritsa(stand2_value, 2)
+
 
 def stand3():
     global stand3_value
     matritsa(stand3_value, 3)
 
+
 def stand4():
     global stand4_value
     matritsa(stand4_value, 4)
+
 
 def stand5():
     global stand5_value
     matritsa(stand5_value, 5)
 
+
 def stand6():
     global stand6_value
     matritsa(stand6_value, 6)
+
 
 def stand7():
     global stand7_value
     matritsa(stand7_value, 7)
 
+
 def stand8():
     global stand8_value
     matritsa(stand8_value, 8)
 
+
 def stand9():
     global stand9_value
     matritsa(stand9_value, 9)
+
 
 # Обновление матрицы игрового поля
 def matritsa(btn_value, btn_number):
@@ -366,6 +389,7 @@ def matritsa(btn_value, btn_number):
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text = random.choice(hooray_list))
+
     elif pole[0][0] == pole[1][0] == pole[2][0] == 2:
         btn1.configure(bg='red')
         btn4.configure(bg='red')
@@ -465,10 +489,12 @@ def matritsa(btn_value, btn_number):
           and pole[1][1] != 0 and pole[1][2] != 0
           and pole[2][0] != 0 and pole[2][1] != 0
           and pole[2][2] != 0):
+
         btn_itog.configure(text='Ничья')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text='Эх...')
+
 
 # Очистка поля для игры заново
 def again():
@@ -509,15 +535,18 @@ def again():
 
     ru.title('Смена цвета')
 
+
 # Функция выхода (закрытия окна)
 def quit():
     ru.destroy()
+
 
 # Инициализация окна
 ru = Tk()
 ru.title('Халоу!')
 ru.geometry('240x339')
 ru.resizable(0, 0)
+
 lbl_hello = Label(ru, text='Крестики-нолики', font='Calibri 14')
 lbl_hello.grid(row=0, column=0)
 btn_start = Button(text='Начать игру ->', font='Calibri 14',
@@ -602,7 +631,6 @@ stand8_value = [2, 1]
 stand9_value = [2, 2]
 
 # Списки цветов и восклицаний для случайного выбора
-
 hooray_list = ['Ура!', 'Круто!', 'Еее)', 'Молодец!', 'Супер!', 'Вау!']
 random.shuffle(hooray_list)
 
