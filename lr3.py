@@ -33,6 +33,5 @@ def process_file():
 
 variant = 92
 row_numbers = process_file()
-print(len(row_numbers))
 checksum= calculate_checksum(row_numbers)
 serialize_result(variant, checksum)
