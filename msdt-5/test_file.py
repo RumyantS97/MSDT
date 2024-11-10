@@ -88,8 +88,7 @@ def mock_reverse_image():
     # Создаём изображение или возвращаем необходимые данные для теста
     return [[0 for _ in range(256)] for _ in range(256)]
 
-def test_compress_jpeg_and_calculate_proximity(
-        mocker, mock_reverse_image):
+def test_compress_jpeg_and_calculate_proximity(mock_reverse_image):
     qf = 50
     original_image_array = [[128 for _ in range(512)] for _ in range(512)]  # Пример изображения
 
