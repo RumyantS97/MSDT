@@ -35,3 +35,4 @@ variant = 92
 row_numbers = process_file()
 checksum= calculate_checksum(row_numbers)
 serialize_result(variant, checksum)
+print(checksum)
