@@ -1,8 +1,8 @@
 import heapq
 
 
-# ЗАДАНИЕ 1
-# Наивный алгоритм
+# TASK 1
+# Naive algorithm
 def naive_algorithm(s, p):
     for i in range(len(s) - len(p) + 1):
         for j in range(len(p)):
@@ -13,7 +13,7 @@ def naive_algorithm(s, p):
     return -1
 
 
-# Алгоритм Кнута-Морриса-Пратта
+# The Knuth-Morris-Pratt algorithm
 def prefix_function(p):
     array = [0] * len(p)
     j = 0
@@ -34,9 +34,9 @@ def prefix_function(p):
 
 def kmp(s, p):
     if not p:
-        return 0  # Если шаблон пустой, возвращаем 0
+        return 0   # The substring is empty
     if not s:
-        return -1  # Если строка пустая, возвращаем -1
+        return -1  # The string is empty
     prefix_array = prefix_function(p)
     i = 0
     j = 0
@@ -55,19 +55,19 @@ def kmp(s, p):
         return -1
 
 
-# ЗАДАНИЕ 2
-# Алгоритм, который находит все палиндромные подстроки в данной строке
+# TASK 2
+# An algorithm that finds all palindromic substrings in a given string
 def find_palindromes(s):
     if not s:
         return []
 
     palindromes = []
 
-    # Ищем палиндромы нечетной длины
+    # Looking for odd-length palindromes
     for center in range(len(s)):
         radius = 0
         while center - radius >= 0 and center + radius < len(s) and s[center - radius] == s[center + radius]:
-            if 2 * radius + 1 > 1:  # Добавляем только палиндромы длиной больше одного символа
+            if 2 * radius + 1 > 1:  # Adding only palindromes longer than one character
                 palindromes.append(s[center - radius:center + radius + 1])
             radius += 1
 
@@ -75,7 +75,7 @@ def find_palindromes(s):
     for center in range(len(s) - 1):
         radius = 0
         while center - radius >= 0 and center + radius + 1 < len(s) and s[center - radius] == s[center + radius + 1]:
-            if 2 * (radius + 1) > 1:  # Добавляем только палиндромы длиной больше одного символа
+            if 2 * (radius + 1) > 1:  # Adding only palindromes longer than one character
                 palindromes.append(s[center - radius:center + radius + 2])
             radius += 1
 
@@ -85,8 +85,8 @@ def count_palindromes_in_string(s):
     palindromes = find_palindromes(s)
     return len(palindromes)
 
-# ЗАДАНИЕ 3
-# Алгоритм кодирования Хаффмана для сжатия текстовых данных
+#  TASK 3
+# Huffman encoding algorithm for text data compression
 def build_huffman_tree(symbols_freq):
     heap = [[weight, [symbol, ""]] for symbol, weight in symbols_freq.items()]
     heapq.heapify(heap)
@@ -132,8 +132,8 @@ def decompress_data(compressed_data, huff_codes):
     return decoded_data
 
 
-# ЗАДАНИЕ 4
-# Алгоритм для определения циклов в графе
+# TASK 4
+# Algorithm for determining cycles in a graph
 def dfs(node, visited, stack, graph):
     visited[node] = True
     stack[node] = True
