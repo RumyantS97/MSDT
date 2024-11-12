@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from collections import deque
 
-from LR02 import check_brackets, MinStack, max_in_window, find_duplicates, zero_matrix
+from LR02 import check_brackets, max_in_window, find_duplicates, zero_matrix, MinStack
 
 
 # Задание 1
