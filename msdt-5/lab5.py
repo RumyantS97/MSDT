@@ -1,6 +1,3 @@
-import mysql.connector
-
-
 def factorial(n):
     if n == 1:
         return 1
@@ -12,19 +9,11 @@ def check_duplicate(lst):
 
 
 def db_connection(client_id):
-    result = None
-    cnx = mysql.connector.connect(user='root',
-                                  password='root',
-                                  host='localhost',
-                                  database='project')
-    cursor = cnx.cursor()
-    query = f"SELECT * FROM client WHERE card_id = {client_id};"
-    cursor.execute(query)
-    for (card_id, name, address, phone) in cursor:
-        result = [card_id, name, address, phone]
-    cursor.close()
-    cnx.close()
-    return result
+    with open("db.txt", 'r') as file:
+        for line in file.readlines():
+            card_id, name, address, phone = line.split(' ')
+            if int(card_id) == 1:
+                return [int(card_id), name, address, phone]
 
 
 def get_phone_and_address_by_id(client_id):
