@@ -52,7 +52,7 @@ def test_weather_response():
     def stub_get_current_weather(lat, lon, api_key):
         return {
             "coord": {"lat": lat, "lon": lon},
-            "weather": [{id: 800, "main": "Clear", "description": "clear sky"}],
+            "weather": [{"id": 800, "main": "Clear", "description": "clear sky"}],
             "main": {"temp": 289.57, "feels_like": 288.78, "humidity": 89, "temp_min": 288.15, "temp_max": 290.15}
         }
     bl.get_current_weather = stub_get_current_weather
