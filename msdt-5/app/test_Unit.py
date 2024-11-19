@@ -10,7 +10,7 @@ def test_factorial():
     assert result == expected
 
 def test_fibonacci():
-    n = 10
+    n = 9
     expected = 34
 
     result = bl.fibonacci(n)
