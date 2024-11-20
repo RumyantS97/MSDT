@@ -1,4 +1,12 @@
-# Определение всех классов
+import logging
+
+# Настройка логгирования
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
 
 class Node1:
     """Класс для задачи 1 (поиск петли в списке)."""
@@ -22,11 +30,10 @@ class Node:
         self.next = None
 
 
-# Определение вспомогательных функций
-
 def print_linked_list(head):
     """Выводит связный список."""
     current = head
+    logging.debug("Печать связного списка.")
     while current:
         print(current.value, end=" -> ")
         current = current.next
@@ -35,47 +42,53 @@ def print_linked_list(head):
 
 def find_loop_start(head):
     """Находит начальный узел петли в связном списке."""
+    logging.info("Начало поиска петли в списке.")
     slow = head
     fast = head
 
-    # Поиск места встречи медленного и быстрого указателей
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
         if slow == fast:
+            logging.info("Петля обнаружена.")
             break
 
-    # Проверка наличия петли
     if slow != fast:
+        logging.warning("Петля не найдена.")
         return None
 
-    # Поиск начального узла петли
     slow = head
     while slow != fast:
         slow = slow.next
         fast = fast.next
 
+    logging.info("Начальный узел петли найден: %s", slow.value)
     return slow
 
 
 def copy_list(head):
     """Копирует связный список с указателями random."""
     if not head:
+        logging.warning("Список пуст, копирование невозможно.")
         return None
 
-    # Шаг 1: Создание копий узлов
+    logging.info("Начало копирования связного списка.")
     current = head
+
+    # Шаг 1: Создание копий узлов
     while current:
         new_node = Node2(current.value)
         new_node.next = current.next
         current.next = new_node
         current = new_node.next
+    logging.debug("Создание копий узлов завершено.")
 
     # Шаг 2: Установка указателей random
     current = head
     while current:
         current.next.random = current.random.next if current.random else None
         current = current.next.next
+    logging.debug("Указатели random установлены.")
 
     # Шаг 3: Разделение списков
     new_head = head.next
@@ -86,21 +99,25 @@ def copy_list(head):
         current = current.next
         new_current.next = current.next if current else None
         new_current = new_current.next
+    logging.info("Копирование завершено.")
 
     return new_head
 
 
 def remove_duplicates(head):
     """Удаляет дубликаты в несортированном связном списке."""
+    logging.info("Начало удаления дубликатов из связного списка.")
     current = head
     while current:
         runner = current
         while runner.next:
             if runner.next.value == current.value:
+                logging.debug("Удален дубликат значения: %s", current.value)
                 runner.next = runner.next.next
             else:
                 runner = runner.next
         current = current.next
+    logging.info("Удаление дубликатов завершено.")
 
 
 # Задание 1
