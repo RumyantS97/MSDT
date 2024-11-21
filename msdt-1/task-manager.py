@@ -31,7 +31,8 @@ class Task:
         """Returns a string representation of the task."""
         status = "Completed" if self.completed else "In Progress"
         hold_status = "On Hold" if self.on_hold else "Active"
-        comments = "\n  Comments: " + "; ".join(self.comments) if self.comments else ""
+        comments = "\n  Comments: " + "; ".join(self.comments) \
+            if self.comments else ""
         return (f"{self.title} - {self.description} "
                 f"(Due: {self.due_date}, Status: {status}, "
                 f"Priority: {self.priority}, State: {hold_status}){comments}")
@@ -59,7 +60,9 @@ class TaskManager:
 
     def sort_tasks_by_priority(self):
         """Sorts tasks by priority."""
-        self.tasks.sort(key=lambda task: {"High": 1, "Normal": 2, "Low": 3}[task.priority])
+        self.tasks.sort(
+            key=lambda task: {"High": 1, "Normal": 2, "Low": 3}[task.priority]
+        )
         return "Tasks sorted by priority."
 
     def sort_tasks_by_due_date(self):
@@ -258,7 +261,7 @@ class TaskManagerApp(tk.Tk):
             bg="lightgreen",
             highlightthickness=0
         )  # Canvas dimensions remain reduced
-        self.canvas.pack(anchor="n", padx=10, pady=10)  # Changed anchor to "n" (north) and added padding
+        self.canvas.pack(anchor="n", padx=10, pady=10)
 
         self.canvas.body_color = "magenta"
 
@@ -278,14 +281,49 @@ class TaskManagerApp(tk.Tk):
             outline=self.canvas.body_color,
             fill=self.canvas.body_color
         )
-        self.eye_left = self.canvas.create_oval(40, 35, 55, 50, outline="black", fill="white")
-        self.pupil_left = self.canvas.create_oval(45, 40, 50, 45, outline="black", fill="black")
-        self.eye_right = self.canvas.create_oval(145, 35, 160, 50, outline="black", fill="white")
-        self.pupil_right = self.canvas.create_oval(150, 40, 155, 45, outline="black", fill="black")
-        self.mouth_normal = self.canvas.create_line(60, 75, 100, 85, 140, 75, smooth=1, width=2)
-        self.mouth_happy = self.canvas.create_line(60, 75, 100, 95, 140, 75, smooth=1, width=2, state=HIDDEN)
-        self.cheek_left = self.canvas.create_oval(35, 65, 45, 75, outline="pink", fill="pink", state=HIDDEN)
-        self.cheek_right = self.canvas.create_oval(155, 65, 165, 75, outline="pink", fill="pink", state=HIDDEN)
+        self.eye_left = self.canvas.create_oval(
+            40, 35, 55, 50,
+             outline="black",
+             fill="white"
+        )
+        self.pupil_left = self.canvas.create_oval(
+            45, 40, 50, 45,
+            outline="black",
+            fill="black"
+        )
+        self.eye_right = self.canvas.create_oval(
+            145, 35, 160, 50,
+             outline="black",
+             fill="white"
+        )
+        self.pupil_right = self.canvas.create_oval(
+            150, 40, 155, 45,
+            outline="black",
+            fill="black"
+        )
+        self.mouth_normal = self.canvas.create_line(
+            60, 75, 100, 85, 140, 75,
+            smooth=1,
+            width=2
+        )
+        self.mouth_happy = self.canvas.create_line(
+            60, 75, 100, 95, 140, 75,
+            smooth=1,
+            width=2,
+            state=HIDDEN
+        )
+        self.cheek_left = self.canvas.create_oval(
+            35, 65, 45, 75,
+            outline="pink",
+            fill="pink",
+            state=HIDDEN
+        )
+        self.cheek_right = self.canvas.create_oval(
+            155, 65, 165, 75,
+            outline="pink",
+            fill="pink",
+            state=HIDDEN
+        )
 
         self.toggle_eyes()
         self.canvas.bind('<Motion>', self.show_happy)
@@ -345,7 +383,7 @@ class TaskManagerApp(tk.Tk):
         """Opens a window to add a new task."""
         add_task_window = tk.Toplevel(self)
         add_task_window.title("Add Task")
-        add_task_window.geometry("500x500")  # Increased window size for task input
+        add_task_window.geometry("500x500")
 
         tk.Label(add_task_window, text="Task Title:").pack(pady=5)
         title_entry = tk.Entry(add_task_window, width=50)
@@ -362,13 +400,31 @@ class TaskManagerApp(tk.Tk):
         tk.Label(add_task_window, text="Priority:").pack(pady=5)
         priority_frame = tk.Frame(add_task_window)
         priority_frame.pack(pady=5)
-        tk.Radiobutton(priority_frame, text="High", variable=self.priority_var, value="High").pack(side=tk.LEFT)
-        tk.Radiobutton(priority_frame, text="Normal", variable=self.priority_var, value="Normal").pack(side=tk.LEFT)
-        tk.Radiobutton(priority_frame, text="Low", variable=self.priority_var, value="Low").pack(side=tk.LEFT)
+        tk.Radiobutton(
+            priority_frame,
+            text="High",
+            variable=self.priority_var,
+            value="High"
+        ).pack(side=tk.LEFT)
+        tk.Radiobutton(
+            priority_frame,
+            text="Normal",
+            variable=self.priority_var,
+            value="Normal"
+        ).pack(side=tk.LEFT)
+        tk.Radiobutton(
+            priority_frame,
+            text="Low",
+            variable=self.priority_var,
+            value="Low"
+        ).pack(side=tk.LEFT)
 
         tk.Button(add_task_window,
                   text="Add",
-                  command=lambda: self.add_task(title_entry, description_entry, calendar))\
+                  command=lambda: self.add_task(
+                      title_entry,
+                      description_entry,
+                      calendar))\
             .pack(pady=10)
 
     def add_task(self, title_entry, description_entry, calendar):
