@@ -6,7 +6,7 @@ import random
 
 
 # Игрок КРЕСТИКИ выбирает цвет
-def to_player_1():
+def go_to_player_1():
     lbl_hello.destroy()
     btn_start.destroy()
     ru.title('X')
@@ -34,31 +34,31 @@ def to_player_1():
 
 
 # Фиксируется 1й цвет для игрока КРЕСТИКИ
-def choice1():
+def set_colour_choice1():
     global colour11
     global choiceof1
     choiceof1 = colour11
-    to_player_2()
+    go_to_player_2()
 
 
 # Фиксируется 2й цвет для игрока КРЕСТИКИ
-def choice2():
+def set_colour_choice2():
     global colour12
     global choiceof1
     choiceof1 = colour12
-    to_player_2()
+    go_to_player_2()
 
 
 # Фиксируется 3й цвет для игрока КРЕСТИКИ
-def choice3():
+def set_colour_choice3():
     global colour13
     global choiceof1
     choiceof1 = colour13
-    to_player_2()
+    go_to_player_2()
 
 
 # Игрок НОЛИКИ выбирает цвет
-def to_player_2():
+def go_to_player_2():
     btn_colour_11.grid_remove()
     btn_colour_12.grid_remove()
     btn_colour_13.grid_remove()
@@ -82,31 +82,31 @@ def to_player_2():
 
 
 # Фиксируется 1й цвет для игрока НОЛИКИ
-def choice4():
+def set_colour_choice4():
     global colour21
     global choiceof2
     choiceof2 = colour21
-    first_turn()
+    choose_first_turn()
 
 
 # Фиксируется 2й цвет для игрока НОЛИКИ
-def choice5():
+def set_colour_choice5():
     global colour22
     global choiceof2
     choiceof2 = colour22
-    first_turn()
+    choose_first_turn()
 
 
 # Фиксируется 3й цвет для игрока НОЛИКИ
-def choice6():
+def set_colour_choice6():
     global colour23
     global choiceof2
     choiceof2 = colour23
-    first_turn()
+    choose_first_turn()
 
 
 # Выбирается игрок, который ходит первым
-def first_turn():
+def choose_first_turn():
     lbl_pl1.grid_remove()
     btn_colour_21.grid_remove()
     btn_colour_22.grid_remove()
@@ -117,31 +117,31 @@ def first_turn():
 
     ru.title('Кто первый?')
     lbl_ft.grid(row=0, columnspan=3)
-    btn_kr.grid(row=1, column=0)
-    btn_rand.grid(row=1, column=1)
-    btn_nol.grid(row=1, column=2)
+    btn_crosses_turn.grid(row=1, column=0)
+    btn_rand_turn.grid(row=1, column=1)
+    btn_noughts_turn.grid(row=1, column=2)
 
 
 # Первым ходит игрок КРЕСТИКИ
-def first_turn_kr():
+def set_first_turn_crosses():
     global number_of_turn
     number_of_turn = 1
     ru.title('X')
     lbl_ft.grid_remove()
-    btn_kr.grid_remove()
-    btn_rand.grid_remove()
-    btn_nol.grid_remove()
-    game()
+    btn_crosses_turn.grid_remove()
+    btn_rand_turn.grid_remove()
+    btn_noughts_turn.grid_remove()
+    show_game()
 
 
 # Первый игрок выбирается случайным образом
-def first_turn_random():
+def set_first_turn_random():
     global number_of_turn
     number_of_turn = random.randint(1, 2)
     lbl_ft.grid_remove()
-    btn_kr.grid_remove()
-    btn_rand.grid_remove()
-    btn_nol.grid_remove()
+    btn_crosses_turn.grid_remove()
+    btn_rand_turn.grid_remove()
+    btn_noughts_turn.grid_remove()
 
     if number_of_turn == 1:
         lbl_turn.configure(text='Первым ходит игрок КРЕСТИКИ')
@@ -155,26 +155,26 @@ def first_turn_random():
 
 
 # Переход к игровому полю
-def to_game():
+def go_to_game():
     lbl_turn.grid_remove()
     btn_ok_choice.grid_remove()
-    game()
+    show_game()
 
 
 # Первым ходит игрок НОЛИКИ
-def first_turn_nol():
+def set_first_turn_noughts():
     global number_of_turn
     number_of_turn = 2
     ru.title('O')
     lbl_ft.grid_remove()
-    btn_kr.grid_remove()
-    btn_rand.grid_remove()
-    btn_nol.grid_remove()
-    game()
+    btn_crosses_turn.grid_remove()
+    btn_rand_turn.grid_remove()
+    btn_noughts_turn.grid_remove()
+    show_game()
 
 
 # Отображение игрового поля
-def game():
+def show_game():
     btn1.grid(row=0, column=0)
     btn2.grid(row=0, column=1)
     btn3.grid(row=0, column=2)
@@ -186,69 +186,69 @@ def game():
     btn9.grid(row=2, column=2)
 
     btn_verdict.grid(row=3, column=0)
-    btn_itog.grid(row=3, column=1)
+    btn_result.grid(row=3, column=1)
     btn_hooray.grid(row=3, column=2)
 
 
 # Функции хода на определённую позицию
 def stand1():
     global stand1_value
-    matritsa(stand1_value, 1)
+    set_matrix_btn(stand1_value, 1)
 
 
 def stand2():
     global stand2_value
-    matritsa(stand2_value, 2)
+    set_matrix_btn(stand2_value, 2)
 
 
 def stand3():
     global stand3_value
-    matritsa(stand3_value, 3)
+    set_matrix_btn(stand3_value, 3)
 
 
 def stand4():
     global stand4_value
-    matritsa(stand4_value, 4)
+    set_matrix_btn(stand4_value, 4)
 
 
 def stand5():
     global stand5_value
-    matritsa(stand5_value, 5)
+    set_matrix_btn(stand5_value, 5)
 
 
 def stand6():
     global stand6_value
-    matritsa(stand6_value, 6)
+    set_matrix_btn(stand6_value, 6)
 
 
 def stand7():
     global stand7_value
-    matritsa(stand7_value, 7)
+    set_matrix_btn(stand7_value, 7)
 
 
 def stand8():
     global stand8_value
-    matritsa(stand8_value, 8)
+    set_matrix_btn(stand8_value, 8)
 
 
 def stand9():
     global stand9_value
-    matritsa(stand9_value, 9)
+    set_matrix_btn(stand9_value, 9)
 
 
 # Обновление матрицы игрового поля
-def matritsa(btn_value, btn_number):
+def set_matrix_btn(btn_value, btn_number):
     a = btn_value[0]
     b = btn_value[1]
 
-    global pole
+    global matrix
 
     # Запрет на ход в уже занятую клетку
-    if pole[a][b] != 0:
+    if matrix[a][b] != 0:
         pass
     else:
         global number_of_turn
-        pole[a][b] = number_of_turn
+        matrix[a][b] = number_of_turn
 
         if number_of_turn == 1:
             if btn_number == 1:
@@ -317,187 +317,187 @@ def matritsa(btn_value, btn_number):
 
     # Нужно проверить, выиграл ли кто-нибудь
     # Проверка верхней строки
-    if pole[0][0] == pole[0][1] == pole[0][2] == 1:
+    if matrix[0][0] == matrix[0][1] == matrix[0][2] == 1:
         btn1.configure(bg='red')
         btn2.configure(bg='red')
         btn3.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[0][0] == pole[0][1] == pole[0][2] == 2:
+    elif matrix[0][0] == matrix[0][1] == matrix[0][2] == 2:
         btn1.configure(bg='red')
         btn2.configure(bg='red')
         btn3.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка средней строки
-    elif pole[1][0] == pole[1][1] == pole[1][2] == 1:
+    elif matrix[1][0] == matrix[1][1] == matrix[1][2] == 1:
         btn4.configure(bg='red')
         btn5.configure(bg='red')
         btn6.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[1][0] == pole[1][1] == pole[1][2] == 2:
+    elif matrix[1][0] == matrix[1][1] == matrix[1][2] == 2:
         btn4.configure(bg='red')
         btn5.configure(bg='red')
         btn6.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка нижней строки
-    elif pole[2][0] == pole[2][1] == pole[2][2] == 1:
+    elif matrix[2][0] == matrix[2][1] == matrix[2][2] == 1:
         btn7.configure(bg='red')
         btn8.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[2][0] == pole[2][1] == pole[2][2] == 2:
+    elif matrix[2][0] == matrix[2][1] == matrix[2][2] == 2:
         btn7.configure(bg='red')
         btn8.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка левого столбца
-    elif pole[0][0] == pole[1][0] == pole[2][0] == 1:
+    elif matrix[0][0] == matrix[1][0] == matrix[2][0] == 1:
         btn1.configure(bg='red')
         btn4.configure(bg='red')
         btn7.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text = random.choice(hooray_list))
 
-    elif pole[0][0] == pole[1][0] == pole[2][0] == 2:
+    elif matrix[0][0] == matrix[1][0] == matrix[2][0] == 2:
         btn1.configure(bg='red')
         btn4.configure(bg='red')
         btn7.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка среднего столбца
-    elif pole[0][1] == pole[1][1] == pole[2][1] == 1:
+    elif matrix[0][1] == matrix[1][1] == matrix[2][1] == 1:
         btn2.configure(bg='red')
         btn5.configure(bg='red')
         btn8.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[0][1] == pole[1][1] == pole[2][1] == 2:
+    elif matrix[0][1] == matrix[1][1] == matrix[2][1] == 2:
         btn2.configure(bg='red')
         btn5.configure(bg='red')
         btn8.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка правого столбца
-    elif pole[0][2] == pole[1][2] == pole[2][2] == 1:
+    elif matrix[0][2] == matrix[1][2] == matrix[2][2] == 1:
         btn3.configure(bg='red')
         btn6.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[0][2] == pole[1][2] == pole[2][2] == 2:
+    elif matrix[0][2] == matrix[1][2] == matrix[2][2] == 2:
         btn3.configure(bg='red')
         btn6.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка первой диагонали
-    elif pole[0][0] == pole[1][1] == pole[2][2] == 1:
+    elif matrix[0][0] == matrix[1][1] == matrix[2][2] == 1:
         btn1.configure(bg='red')
         btn5.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[0][0] == pole[1][1] == pole[2][2] == 2:
+    elif matrix[0][0] == matrix[1][1] == matrix[2][2] == 2:
         btn1.configure(bg='red')
         btn5.configure(bg='red')
         btn9.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
     # Проверка второй диагонали
-    elif pole[2][0] == pole[1][1] == pole[0][2] == 1:
+    elif matrix[2][0] == matrix[1][1] == matrix[0][2] == 1:
         btn7.configure(bg='red')
         btn5.configure(bg='red')
         btn3.configure(bg='red')
 
-        btn_itog.configure(text='Крестики')
+        btn_result.configure(text='Крестики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif pole[2][0] == pole[1][1] == pole[0][2] == 2:
+    elif matrix[2][0] == matrix[1][1] == matrix[0][2] == 2:
         btn7.configure(bg='red')
         btn5.configure(bg='red')
         btn3.configure(bg='red')
 
-        btn_itog.configure(text='Нолики')
+        btn_result.configure(text='Нолики')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text=random.choice(hooray_list))
 
-    elif (pole[0][0] != 0 and pole[0][1] != 0
-          and pole[0][2] != 0 and pole[1][0] != 0
-          and pole[1][1] != 0 and pole[1][2] != 0
-          and pole[2][0] != 0 and pole[2][1] != 0
-          and pole[2][2] != 0):
+    elif (matrix[0][0] != 0 and matrix[0][1] != 0
+          and matrix[0][2] != 0 and matrix[1][0] != 0
+          and matrix[1][1] != 0 and matrix[1][2] != 0
+          and matrix[2][0] != 0 and matrix[2][1] != 0
+          and matrix[2][2] != 0):
 
-        btn_itog.configure(text='Ничья')
+        btn_result.configure(text='Ничья')
         btn_again.grid(row=4, column=0)
         btn_quit.grid(row=4, column=1)
         btn_hooray.configure(text='Эх...')
 
 
 # Очистка поля для игры заново
-def again():
+def play_again():
     btn1.configure(text='Поставить', bg='gray95')
     btn1.grid_remove()
     btn2.configure(text='Поставить', bg='gray95')
@@ -517,18 +517,18 @@ def again():
     btn9.configure(text='Поставить', bg='gray95')
     btn9.grid_remove()
 
-    btn_itog.configure(text='')
+    btn_result.configure(text='')
     btn_hooray.configure(text='')
 
     btn_verdict.grid_remove()
-    btn_itog.grid_remove()
+    btn_result.grid_remove()
     btn_hooray.grid_remove()
     btn_again.grid_remove()
     btn_quit.grid_remove()
 
     for i in range(3):
         for j in range(3):
-            pole[i][j] = 0
+            matrix[i][j] = 0
 
     btn_stay.grid(row=0, column=0, sticky=W)
     btn_change.grid(row=1, column=0, sticky=W)
@@ -550,37 +550,37 @@ ru.resizable(0, 0)
 lbl_hello = Label(ru, text='Крестики-нолики', font='Calibri 14')
 lbl_hello.grid(row=0, column=0)
 btn_start = Button(text='Начать игру ->', font='Calibri 14',
-                   command=to_player_1)
+                   command=go_to_player_1)
 btn_start.grid(row=1, column=0, sticky=W)
 
 # Виджеты для функций
 lbl_pl1 = Label(ru, text='Игрок КРЕСТИКИ, выберите цвет:',
                 font='Calibri 12')
 btn_colour_11 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice1)
+                       bg='magenta', command=set_colour_choice1)
 btn_colour_12 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice2)
+                       bg='magenta', command=set_colour_choice2)
 btn_colour_13 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice3)
+                       bg='magenta', command=set_colour_choice3)
 
 btn_colour_21 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice4)
+                       bg='magenta', command=set_colour_choice4)
 btn_colour_22 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice5)
+                       bg='magenta', command=set_colour_choice5)
 btn_colour_23 = Button(ru, text='', width=7, height=3,
-                       bg='magenta', command=choice6)
+                       bg='magenta', command=set_colour_choice6)
 
 lbl_ft = Label(ru, text='Кто ходит первым?', font='Calibri 12')
-btn_kr = Button(ru, text='X', font='Calibri 12',
-                command=first_turn_kr)
-btn_rand = Button(ru, text='random', font='Calibri 12',
-                  command=first_turn_random)
-btn_nol = Button(ru, text='O', font='Calibri 12',
-                 command=first_turn_nol)
+btn_crosses_turn = Button(ru, text='X', font='Calibri 12',
+                command=set_first_turn_crosses)
+btn_rand_turn = Button(ru, text='random', font='Calibri 12',
+                  command=set_first_turn_random)
+btn_noughts_turn = Button(ru, text='O', font='Calibri 12',
+                 command=set_first_turn_noughts)
 
 lbl_turn = Label(ru, text='Первый игрок -', font='Calibri 12')
 btn_ok_choice = Button(ru, text='ОК', font='Calibri 12',
-                       command=to_game)
+                       command=go_to_game)
 
 btn1 = Button(text='Поставить', width=10, height=5, command=stand1)
 btn2 = Button(text='Поставить', width=10, height=5, command=stand2)
@@ -593,17 +593,17 @@ btn8 = Button(text='Поставить', width=10, height=5, command=stand8)
 btn9 = Button(text='Поставить', width=10, height=5, command=stand9)
 
 btn_verdict = Button(text='Победа:', width=10, height=2)
-btn_itog = Button(text='', width=10, height=2)
+btn_result = Button(text='', width=10, height=2)
 btn_hooray = Button(text='', width=10, height=2)
 btn_again = Button(ru, text='Играть снова', width=10, height=2,
-                   command=again)
+                   command=play_again)
 btn_quit = Button(ru, text='Выйти', width=10, height=2,
                   command=quit)
 
 btn_stay = Button(text='Оставить те же цвета', font='Calibri 14',
-                  command=first_turn)
+                  command=choose_first_turn)
 btn_change = Button(text='Сменить цвета', font='Calibri 14',
-                    command=to_player_1)
+                    command=go_to_player_1)
 
 # Переменные для функций
 colour11 = ''
@@ -618,7 +618,7 @@ choiceof2 = ''
 
 number_of_turn = 0
 
-pole = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
 stand1_value = [0, 0]
 stand2_value = [0, 1]
