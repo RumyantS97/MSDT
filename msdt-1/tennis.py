@@ -100,8 +100,7 @@ class TennisGame2:
             p1_res = "Love"
             result = p1_res + "-" + p2_res
         
-        
-       class TennisGame2:
+      class TennisGame2:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
         self.player2_name = player2_name
@@ -223,5 +222,4 @@ class TennisGame3:
             leading_player = self.player1_name if self.player1_points > self.player2_points else self.player2_name
             return f"Advantage {leading_player}" if abs(self.player1_points - self.player2_points) == 1 else f"Win for {leading_player}"
 
-# NOTE: You must change this to point at the one of the three examples that you're working on!
 TennisGame = TennisGame3
