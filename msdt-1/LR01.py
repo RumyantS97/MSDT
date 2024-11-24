@@ -9,11 +9,11 @@ from attributes.models.photo import get_default_photo_url
 from common.serializers import mixins
 
 
-def imageExists(image) -> bool:
+def image_exists(image) -> bool:
     return os.path.exists(image.path)
 
 
-def toRepresentationByImageFormat(file) -> dict:
+def to_representation_by_image_format(file) -> dict:
     res = {}
     if file.endswith('.webp'):
         res = {
@@ -28,25 +28,25 @@ def toRepresentationByImageFormat(file) -> dict:
     return res
 
 
-class extended_serializer(serializers.Serializer):
+class ExtendedSerializer(serializers.Serializer):
     class Meta:
         abstract = True
 
-    def toRepresentation(self , instance):
-        data = super().toRepresentation(instance)
+    def to_representation(self , instance):
+        data = super().to_representation(instance)
         for key in data:
             if data[key] == '':
                 data[key] = None
         return data
 
 
-class extended_model_serializer(extended_serializer , serializers.ModelSerializer):
+class ExtendedModelSerializer(ExtendedSerializer , serializers.ModelSerializer):
     class Meta:
         abstract = True
 
 
 # Тестовый сериализатор
-class attribute_mixin_serializer(extended_serializer):
+class AttributeMixinSerializer(ExtendedSerializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
     slug = serializers.SlugField()
@@ -55,7 +55,7 @@ class attribute_mixin_serializer(extended_serializer):
         abstract = True
 
 
-class recursive_serializer(serializers.Serializer):
+class RecursiveSerializer(serializers.Serializer):
     """
     Сериализатор который вызывает сам себя. Полезен для вывода вложенных объектов
     """
@@ -63,12 +63,12 @@ class recursive_serializer(serializers.Serializer):
     class Meta:
         abstract = True
 
-    def toRepresentation(self , value):
+    def to_representation(self , value):
         serializer = self.parent.parent.__class__(value , context=self.context)
         return serializer.data
 
 
-class photo_serializer(extended_model_serializer):
+class PhotoSerialize(ExtendedModelSerializer):
     """
     Сериализатор для фотографий с полным выводом (ссылка на фото, формат фото и источник)
     """
@@ -83,14 +83,14 @@ class photo_serializer(extended_model_serializer):
         fields = ('image' , 'source')
         abstract = True
 
-    def toRepresentation(self , instance):
-        data = super().toRepresentation(instance)
+    def to_representation(self , instance):
+        data = super().to_representation(instance)
         if self.is_represent_by_format:
-            data['image'] = toRepresentationByImageFormat(instance.image.url)
+            data['image'] = to_representation_by_image_format(instance.image.url)
         return data
 
 
-class organizer_serializer(serializers.Serializer):
+class OrganizerSerializer(serializers.Serializer):
     """
     Шаблон сериализатора для организаторов с минимальной информацией (id и имя)
     """
@@ -103,7 +103,7 @@ class organizer_serializer(serializers.Serializer):
         abstract = True
 
 
-class socials_serializer(extended_serializer):
+class SocialsSerializer(ExtendedSerializer):
     """
     Шаблон сериализатора для социальных сетей
     """
@@ -161,7 +161,7 @@ class socials_serializer(extended_serializer):
         return value
 
 
-class tags_serializer(serializers.Serializer):
+class TagsSerializer(serializers.Serializer):
     """
     Шаблон сериализатора для тегов
     """
@@ -171,7 +171,7 @@ class tags_serializer(serializers.Serializer):
         abstract = True
 
 
-class contact_serializer(extended_serializer):
+class ContactSerializer(ExtendedSerializer):
     """
     Шаблон сериализатора для контактов
     """
@@ -185,13 +185,13 @@ class contact_serializer(extended_serializer):
         fields = ('contact', 'phone', 'email', 'site')
         abstract = True
 
-    def getContact(self , instance):
-        contact = self.getContactByFields(instance)
+    def get_contact(self , instance):
+        contact = self.get_contact_by_fields(instance)
         if contact:
             return contact
         return instance.vk or instance.x_site or instance.instagram or instance.telegram or instance.zen or instance.youtube or instance.rutube or instance.facebook
 
-    def getContactByFields(self , obj):
+    def get_contact_by_fields(self , obj):
         attrs = ['site', 'email', 'phone']
         for attr in attrs:
             if getattr(obj, attr):
@@ -203,7 +203,7 @@ class contact_serializer(extended_serializer):
                     return f'tel:{getattr(obj, attr)}'
         return None
 
-    def toRepresentation(self , instance):
+    def to_representation(self , instance):
         if instance is None:
             return {
                 'contact': None,
@@ -211,13 +211,13 @@ class contact_serializer(extended_serializer):
                 'email': None,
                 'site': None
             }
-        data = super().toRepresentation(instance)
+        data = super().to_representation(instance)
         return data
 
 
 
 
-class place_serializer(extended_serializer):
+class PlaceSerializer(ExtendedSerializer):
     id = serializers.CharField(source='custom_id', read_only=True)
     name = serializers.CharField(read_only=True)
     url = serializers.URLField(source='place_url', read_only=True)
@@ -226,7 +226,7 @@ class place_serializer(extended_serializer):
         fields = ('id', 'name', 'url')
 
 
-class attribute_serializer(serializers.Serializer):
+class AttributeSerializer(serializers.Serializer):
     """
     Шаблон сериализатора для атрибутов
     """
@@ -237,27 +237,27 @@ class attribute_serializer(serializers.Serializer):
         abstract = True
 
 
-class serializer_with_photo(serializers.Serializer):
+class SerializerWithPhoto(serializers.Serializer):
     photo_url = 'photos'
     photo = serializers.SerializerMethodField()
     is_source = False
     is_format = True
 
-    def getPhoto(self , obj):
-        if hasattr(obj , 'photo') and hasattr(obj.photo , 'image') and imageExists(obj.photo.image):
+    def get_photo(self , obj):
+        if hasattr(obj , 'photo') and hasattr(obj.photo , 'image') and image_exists(obj.photo.image):
             source = obj.photo.source if obj.photo.source != '' else None
             url = obj.photo.image.url
             # pdb.set_trace()
-            data = self.photoToRepresent(url , source)
+            data = self.photo_to_represent(url , source)
         else:
             url = get_default_photo_url(self.photo_url)
-            data = self.photoToRepresent(url)
+            data = self.photo_to_represent(url)
         return data
 
-    def photoToRepresent(self , url , source=None) -> dict:
+    def photo_to_represent(self , url , source=None) -> dict:
         data = {}
         if self.is_format:
-            data['image'] = toRepresentationByImageFormat(url)
+            data['image'] = to_representation_by_image_format(url)
         else:
             data['image'] = url
         if self.is_source:
@@ -265,7 +265,7 @@ class serializer_with_photo(serializers.Serializer):
         return data
 
 
-class serializer_with_contacts(serializers.Serializer):
+class SerializerWithContacts(serializers.Serializer):
     contacts = serializers.SerializerMethodField()
     socials = serializers.SerializerMethodField()
 
@@ -281,7 +281,7 @@ class serializer_with_contacts(serializers.Serializer):
                 'site': None
             }
         else:
-            return contact_serializer(obj.contacts).data
+            return ContactSerializer(obj.contacts).data
     def get_socials(self , obj):
         if hasattr(obj , 'contacts') or not obj.contacts or obj.contacts.socials_empty():
             return {
@@ -295,4 +295,4 @@ class serializer_with_contacts(serializers.Serializer):
                 'facebook': None
             }
         else:
-            return socials_serializer(obj.contacts).data
+            return SocialsSerializer(obj.contacts).data
