@@ -48,7 +48,6 @@ class TennisGame1:
         
         return result
 
-
 class TennisGame2:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
@@ -88,7 +87,7 @@ class TennisGame2:
                 p1_res = "Forty"
             
             p2_res = "Love"
-            result = p1_res + "-" + p2_res
+            result = f"{p1_res}-{p2_res}"
         if self.player2_points > 0 and self.player1_points == 0:
             if self.player2_points == 1:
                 p2_res = "Fifteen"
@@ -98,9 +97,9 @@ class TennisGame2:
                 p2_res = "Forty"
             
             p1_res = "Love"
-            result = p1_res + "-" + p2_res
+            result = f"{p1_res}-{p2_res}"
         
-      class TennisGame2:
+    class TennisGame2:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
         self.player2_name = player2_name
