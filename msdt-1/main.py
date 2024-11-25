@@ -1,9 +1,11 @@
+import random
+import sys
+import time
 import pygame as pg
-import random, time, sys
-from pygame.locals import *
 
-# Type hints
+from pygame.locals import *
 from typing import Dict, List, Optional, Tuple
+
 
 FPS: int = 25
 WINDOW_WIDTH, WINDOW_HEIGHT = 600, 500
