@@ -5,24 +5,24 @@ from pygame.locals import *
 # Type hints
 from typing import Dict, List, Optional, Tuple
 
-fps: int = 25
-window_w, window_h = 600, 500
-block, cup_h, cup_w = 20, 20, 10
+FPS: int = 25
+WINDOW_W, WINDOW_H = 600, 500
+BLOCK, CUP_H, CUP_W = 20, 20, 10
 
-side_freq: float = 0.15  # Side movement frequency
-down_freq: float = 0.1  # Downward movement frequency
+SIDE_FREQ: float = 0.15  # Side movement frequency
+DOWN_FREQ: float = 0.1  # Downward movement frequency
 
-side_margin: int = int((window_w - cup_w * block) / 2)
-top_margin: int = window_h - (cup_h * block) - 5
+SIDE_MARGIN: int = int((WINDOW_W - CUP_W * BLOCK) / 2)
+TOP_MARGIN: int = WINDOW_H - (CUP_H * BLOCK) - 5
 
 # Color definitions
-colors: Tuple[Tuple[int, int, int], ...] = ((0, 0, 225), (0, 225, 0), (225, 0, 0), (225, 225, 0))
-lightcolors: Tuple[Tuple[int, int, int], ...] = ((30, 30, 255), (50, 255, 50), (255, 30, 30), (255, 255, 30))
-white, gray, black = (255, 255, 255), (185, 185, 185), (0, 0, 0)
-brd_color, bg_color, txt_color, title_color, info_color = white, black, white, colors[3], colors[0]
+COLORS: Tuple[Tuple[int, int, int], ...] = ((0, 0, 225), (0, 225, 0), (225, 0, 0), (225, 225, 0))
+LIGHTCOLORS: Tuple[Tuple[int, int, int], ...] = ((30, 30, 255), (50, 255, 50), (255, 30, 30), (255, 255, 30))
+WHITE, GRAY, BLACK = (255, 255, 255), (185, 185, 185), (0, 0, 0)
+BRD_COLOR, BG_COLOR, TXT_COLOR, TITLE_COLOR, INFO_COLOR = WHITE, BLACK, WHITE, COLORS[3], COLORS[0]
 
-fig_w, fig_h = 5, 5
-empty: str = 'o'
+FIG_W, FIG_H = 5, 5
+EMPTY: str = 'o'
 
 # Tetris figures
 figures: Dict[str, List[List[str]]] = {
@@ -63,7 +63,7 @@ def main() -> None:
     global fps_clock, display_surf, basic_font, big_font
     pg.init()
     fps_clock = pg.time.Clock()
-    display_surf = pg.display.set_mode((window_w, window_h))
+    display_surf = pg.display.set_mode((WINDOW_W, WINDOW_H))
     basic_font = pg.font.SysFont('arial', 20)
     big_font = pg.font.SysFont('verdana', 45)
     pg.display.set_caption('Tetris Lite')
@@ -145,20 +145,20 @@ def runTetris() -> None:
                     going_down = False
                     going_left = False
                     going_right = False
-                    for i in range(1, cup_h):
+                    for i in range(1, CUP_H):
                         if not checkPos(cup, fallingFig, adjY=i):
                             break
                     fallingFig['y'] += i - 1
 
         # управление падением фигуры при удержании клавиш
-        if (going_left or going_right) and time.time() - last_side_move > side_freq:
+        if (going_left or going_right) and time.time() - last_side_move > SIDE_FREQ:
             if going_left and checkPos(cup, fallingFig, adjX=-1):
                 fallingFig['x'] -= 1
             elif going_right and checkPos(cup, fallingFig, adjX=1):
                 fallingFig['x'] += 1
             last_side_move = time.time()
 
-        if going_down and time.time() - last_move_down > down_freq and checkPos(cup, fallingFig, adjY=1):
+        if going_down and time.time() - last_move_down > DOWN_FREQ and checkPos(cup, fallingFig, adjY=1):
             fallingFig['y'] += 1
             last_move_down = time.time()
 
@@ -174,7 +174,7 @@ def runTetris() -> None:
                 last_fall = time.time()
 
         # рисуем окно игры со всеми надписями
-        display_surf.fill(bg_color)
+        display_surf.fill(BG_COLOR)
         drawTitle()
         gamecup(cup)
         drawInfo(points, level)
@@ -182,7 +182,7 @@ def runTetris() -> None:
         if fallingFig != None:
             drawFig(fallingFig)
         pg.display.update()
-        fps_clock.tick(fps)
+        fps_clock.tick(FPS)
 
 def txtObjects(text: str, font: pg.font.Font, color: Tuple[int, int, int]) -> Tuple[pg.Surface, pg.Rect]:
     """
@@ -220,12 +220,12 @@ def showText(text: str) -> None:
     """
     Displays a message on the screen, waiting for the player to press a key.
     """
-    titleSurf, titleRect = txtObjects(text, big_font, title_color)
-    titleRect.center = (int(window_w / 2) - 3, int(window_h / 2) - 3)
+    titleSurf, titleRect = txtObjects(text, big_font, TITLE_COLOR)
+    titleRect.center = (int(WINDOW_W / 2) - 3, int(WINDOW_H / 2) - 3)
     display_surf.blit(titleSurf, titleRect)
 
-    pressKeySurf, pressKeyRect = txtObjects('Нажмите любую клавишу для продолжения', basic_font, title_color)
-    pressKeyRect.center = (int(window_w / 2), int(window_h / 2) + 100)
+    pressKeySurf, pressKeyRect = txtObjects('Нажмите любую клавишу для продолжения', basic_font, TITLE_COLOR)
+    pressKeyRect.center = (int(WINDOW_W / 2), int(WINDOW_H / 2) + 100)
     display_surf.blit(pressKeySurf, pressKeyRect)
 
     while checkKeys() == None:
@@ -270,9 +270,9 @@ def getNewFig() -> Dict[str, int]:
     shape = random.choice(list(figures.keys()))
     newFigure = {'shape': shape,
                 'rotation': random.randint(0, len(figures[shape]) - 1),
-                'x': int(cup_w / 2) - int(fig_w / 2),
+                'x': int(CUP_W / 2) - int(FIG_W / 2),
                 'y': -2,
-                'color': random.randint(0, len(colors)-1)}
+                'color': random.randint(0, len(COLORS) - 1)}
     return newFigure
 
 
@@ -284,9 +284,9 @@ def addToCup(cup: List[List[str]], fig: Dict[str, int]) -> None:
         cup (List[List[str]]): The game area.
         fig (Dict[str, int]): The figure to be added.
     """
-    for x in range(fig_w):
-        for y in range(fig_h):
-            if figures[fig['shape']][fig['rotation']][y][x] != empty:
+    for x in range(FIG_W):
+        for y in range(FIG_H):
+            if figures[fig['shape']][fig['rotation']][y][x] != EMPTY:
                 cup[x + fig['x']][y + fig['y']] = fig['color']
 
 
@@ -298,8 +298,8 @@ def emptycup() -> List[List[str]]:
         List[List[str]]: A 2D list representing the empty game area.
     """
     cup = []
-    for i in range(cup_w):
-        cup.append([empty] * cup_h)
+    for i in range(CUP_W):
+        cup.append([EMPTY] * CUP_H)
     return cup
 
 
@@ -314,7 +314,7 @@ def incup(x: int, y: int) -> bool:
     Returns:
         bool: True if inside the cup, False otherwise.
     """
-    return x >= 0 and x < cup_w and y < cup_h
+    return x >= 0 and x < CUP_W and y < CUP_H
 
 
 def checkPos(cup: List[List[str]], fig: Dict[str, int], adjX: int = 0, adjY: int = 0) -> bool:
@@ -330,14 +330,14 @@ def checkPos(cup: List[List[str]], fig: Dict[str, int], adjX: int = 0, adjY: int
     Returns:
         bool: True if the position is valid, False otherwise.
     """
-    for x in range(fig_w):
-        for y in range(fig_h):
+    for x in range(FIG_W):
+        for y in range(FIG_H):
             abovecup = y + fig['y'] + adjY < 0
-            if abovecup or figures[fig['shape']][fig['rotation']][y][x] == empty:
+            if abovecup or figures[fig['shape']][fig['rotation']][y][x] == EMPTY:
                 continue
             if not incup(x + fig['x'] + adjX, y + fig['y'] + adjY):
                 return False
-            if cup[x + fig['x'] + adjX][y + fig['y'] + adjY] != empty:
+            if cup[x + fig['x'] + adjX][y + fig['y'] + adjY] != EMPTY:
                 return False
     return True
 
@@ -353,8 +353,8 @@ def isCompleted(cup: List[List[str]], y: int) -> bool:
     Returns:
         bool: True if the row is filled, False otherwise.
     """
-    for x in range(cup_w):
-        if cup[x][y] == empty:
+    for x in range(CUP_W):
+        if cup[x][y] == EMPTY:
             return False
     return True
 
@@ -370,14 +370,14 @@ def clearCompleted(cup: List[List[str]]) -> int:
         int: The number of removed rows.
     """
     removed_lines = 0
-    y = cup_h - 1
+    y = CUP_H - 1
     while y >= 0:
         if isCompleted(cup, y):
            for pushDownY in range(y, 0, -1):
-                for x in range(cup_w):
+                for x in range(CUP_W):
                     cup[x][pushDownY] = cup[x][pushDownY-1]
-           for x in range(cup_w):
-                cup[x][0] = empty
+           for x in range(CUP_W):
+                cup[x][0] = EMPTY
            removed_lines += 1
         else:
             y -= 1
@@ -395,30 +395,30 @@ def convertCoords(block_x: int, block_y: int) -> Tuple[int, int]:
     Returns:
         Tuple[int, int]: Pixel coordinates.
     """
-    return (side_margin + (block_x * block)), (top_margin + (block_y * block))
+    return (SIDE_MARGIN + (block_x * BLOCK)), (TOP_MARGIN + (block_y * BLOCK))
 
 
 def drawBlock(block_x: Optional[int], block_y: Optional[int], color: int, pixelx: Optional[int] = None, pixely: Optional[int] = None) -> None:
     """
     Draws a single block on the screen.
     """
-    if color == empty:
+    if color == EMPTY:
         return
     if pixelx == None and pixely == None:
         pixelx, pixely = convertCoords(block_x, block_y)
-    pg.draw.rect(display_surf, colors[color], (pixelx + 1, pixely + 1, block - 1, block - 1), 0, 3)
-    pg.draw.rect(display_surf, lightcolors[color], (pixelx + 1, pixely + 1, block - 4, block - 4), 0, 3)
-    pg.draw.circle(display_surf, colors[color], (pixelx + block / 2, pixely + block / 2), 5)
+    pg.draw.rect(display_surf, COLORS[color], (pixelx + 1, pixely + 1, BLOCK - 1, BLOCK - 1), 0, 3)
+    pg.draw.rect(display_surf, LIGHTCOLORS[color], (pixelx + 1, pixely + 1, BLOCK - 4, BLOCK - 4), 0, 3)
+    pg.draw.circle(display_surf, COLORS[color], (pixelx + BLOCK / 2, pixely + BLOCK / 2), 5)
 
 
 def gamecup(cup: List[List[str]]) -> None:
     """
     Draws the game area with blocks and borders.
     """
-    pg.draw.rect(display_surf, brd_color, (side_margin - 4, top_margin - 4, (cup_w * block) + 8, (cup_h * block) + 8), 5)
-    pg.draw.rect(display_surf, bg_color, (side_margin, top_margin, block * cup_w, block * cup_h))
-    for x in range(cup_w):
-        for y in range(cup_h):
+    pg.draw.rect(display_surf, BRD_COLOR, (SIDE_MARGIN - 4, TOP_MARGIN - 4, (CUP_W * BLOCK) + 8, (CUP_H * BLOCK) + 8), 5)
+    pg.draw.rect(display_surf, BG_COLOR, (SIDE_MARGIN, TOP_MARGIN, BLOCK * CUP_W, BLOCK * CUP_H))
+    for x in range(CUP_W):
+        for y in range(CUP_H):
             drawBlock(x, y, cup[x][y])
 
 
@@ -426,9 +426,9 @@ def drawTitle() -> None:
     """
     Displays the title on the screen.
     """
-    titleSurf = big_font.render('Тетрис Lite', True, title_color)
+    titleSurf = big_font.render('Тетрис Lite', True, TITLE_COLOR)
     titleRect = titleSurf.get_rect()
-    titleRect.topleft = (window_w - 425, 30)
+    titleRect.topleft = (WINDOW_W - 425, 30)
     display_surf.blit(titleSurf, titleRect)
 
 
@@ -436,24 +436,24 @@ def drawInfo(points: int, level: int) -> None:
     """
     Displays the game information such as points and level.
     """
-    pointsSurf = basic_font.render(f'Баллы: {points}', True, txt_color)
+    pointsSurf = basic_font.render(f'Баллы: {points}', True, TXT_COLOR)
     pointsRect = pointsSurf.get_rect()
-    pointsRect.topleft = (window_w - 550, 180)
+    pointsRect.topleft = (WINDOW_W - 550, 180)
     display_surf.blit(pointsSurf, pointsRect)
 
-    levelSurf = basic_font.render(f'Уровень: {level}', True, txt_color)
+    levelSurf = basic_font.render(f'Уровень: {level}', True, TXT_COLOR)
     levelRect = levelSurf.get_rect()
-    levelRect.topleft = (window_w - 550, 250)
+    levelRect.topleft = (WINDOW_W - 550, 250)
     display_surf.blit(levelSurf, levelRect)
 
-    pausebSurf = basic_font.render('Пауза: пробел', True, info_color)
+    pausebSurf = basic_font.render('Пауза: пробел', True, INFO_COLOR)
     pausebRect = pausebSurf.get_rect()
-    pausebRect.topleft = (window_w - 550, 420)
+    pausebRect.topleft = (WINDOW_W - 550, 420)
     display_surf.blit(pausebSurf, pausebRect)
 
-    escbSurf = basic_font.render('Выход: Esc', True, info_color)
+    escbSurf = basic_font.render('Выход: Esc', True, INFO_COLOR)
     escbRect = escbSurf.get_rect()
-    escbRect.topleft = (window_w - 550, 450)
+    escbRect.topleft = (WINDOW_W - 550, 450)
     display_surf.blit(escbSurf, escbRect)
 
 
@@ -466,21 +466,21 @@ def drawFig(fig: Dict[str, int], pixelx: Optional[int] = None, pixely: Optional[
         pixelx, pixely = convertCoords(fig['x'], fig['y'])
 
     #отрисовка элементов фигур
-    for x in range(fig_w):
-        for y in range(fig_h):
-            if figToDraw[y][x] != empty:
-                drawBlock(None, None, fig['color'], pixelx + (x * block), pixely + (y * block))
+    for x in range(FIG_W):
+        for y in range(FIG_H):
+            if figToDraw[y][x] != EMPTY:
+                drawBlock(None, None, fig['color'], pixelx + (x * BLOCK), pixely + (y * BLOCK))
 
 
 def drawnextFig(fig: Dict[str, int]) -> None:
     """
     Displays the preview of the next Tetris figure.
     """
-    nextSurf = basic_font.render('Следующая:', True, txt_color)
+    nextSurf = basic_font.render('Следующая:', True, TXT_COLOR)
     nextRect = nextSurf.get_rect()
-    nextRect.topleft = (window_w - 150, 180)
+    nextRect.topleft = (WINDOW_W - 150, 180)
     display_surf.blit(nextSurf, nextRect)
-    drawFig(fig, pixelx=window_w-150, pixely=230)
+    drawFig(fig, pixelx=WINDOW_W - 150, pixely=230)
 
 
 if __name__ == '__main__':
