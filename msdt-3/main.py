@@ -53,7 +53,7 @@ def validate_uuid(uuid):
 
 
 def validate_date(date):
-    pattern = r'^\d{4}-\d{2}-\d{2}$'
+    pattern = r'^\d{4}-(([0]\d)|([1][0-2]))-(([0-2]\d)|([3][0-1]))$'
     return re.match(pattern, date) is not None
 
 
