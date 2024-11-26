@@ -43,10 +43,7 @@ tetris_shapes = [
 ]
 
 def rotate_clockwise(shape):
-    return [
-        [ shape[y][x] for y in range(len(shape)) ]
-        for x in range(len(shape[0]) - 1, -1, -1)
-    ]
+    return [list(row) for row in zip(*shape[::-1])]
 
 def check_collision(board, shape, offset):
     off_x, off_y = offset
