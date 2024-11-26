@@ -160,7 +160,6 @@ print(reverse_string(s))  # Выведет "olleh"
 # 2. Задание 2
 from collections import Counter
 
-
 def find_anagrams(word, text):
     word_len = len(word)
     word_counter = Counter(word)
@@ -169,9 +168,13 @@ def find_anagrams(word, text):
     for i in range(len(text) - word_len + 1):
         window = text[i:i + word_len]
         if Counter(window) == word_counter:
-            result.append(window)
+            # Добавляем только уникальные анаграммы в порядке появления
+            if window not in result:
+                result.append(window)
 
     return result
+
+
 
 
 # Пример использования
