@@ -10,6 +10,7 @@ class Yahtzee:
         total += d5
         return total
 
+
     @staticmethod
     def yahtzee(dice):
         counts = [0] * (len(dice) + 1)
@@ -18,6 +19,7 @@ class Yahtzee:
             if counts[i] == 5: 
                 return 50
         return 0
+
 
     @staticmethod
     def ones(d1, d2, d3, d4, d5):
@@ -29,6 +31,7 @@ class Yahtzee:
         if (d5 == 1): sum += 1
         return sum
 
+
     @staticmethod
     def twos(d1, d2, d3, d4, d5):
         sum = 0
@@ -38,6 +41,7 @@ class Yahtzee:
         if (d4 == 2): sum += 2
         if (d5 == 2): sum += 2
         return sum
+
 
     @staticmethod
     def threes(d1, d2, d3, d4, d5):
@@ -49,6 +53,7 @@ class Yahtzee:
         if (d5 == 3): s += 3
         return s
 
+
     def __init__(self, d1, d2, d3, d4, _5):
         self.dice = [0] * 5
         self.dice[0] = d1
@@ -57,12 +62,14 @@ class Yahtzee:
         self.dice[3] = d4
         self.dice[4] = _5
 
+
     def fours(self): 
         sum = 0
         for at in range(5):
             if (self.dice[at] == 4): 
                 sum += 4
         return sum
+
 
     def fives(self):
         s = 0
@@ -72,12 +79,14 @@ class Yahtzee:
                 s = s + 5
         return s
 
+
     def sixes(self):
         sum = 0
         for at in range(len(self.dice)): 
             if (self.dice[at] == 6):
                 sum = sum + 6
         return sum
+
 
     @staticmethod
     def score_pair(d1, d2, d3, d4, d5):
@@ -92,6 +101,7 @@ class Yahtzee:
             if (counts[6 - at - 1] == 2):
                 return (6 - at) * 2
         return 0
+
 
     @staticmethod
     def two_pair(d1, d2, d3, d4, d5):
@@ -112,6 +122,7 @@ class Yahtzee:
         else:
             return 0
 
+
     @staticmethod
     def four_of_a_kind(_1, _2, d3, d4, d5): 
         tallies = [0] * 6
@@ -124,6 +135,7 @@ class Yahtzee:
             if (tallies[i] == 4):
                 return (i + 1) * 4
         return 0
+
 
     @staticmethod
     def three_of_a_kind(d1, d2, d3, d4, d5):
@@ -138,6 +150,7 @@ class Yahtzee:
                 return (i + 1) * 3
         return 0
 
+
     @staticmethod
     def smallStraight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
@@ -150,6 +163,7 @@ class Yahtzee:
             return 15
         return 0
 
+
     @staticmethod
     def largeStraight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
@@ -161,6 +175,7 @@ class Yahtzee:
         if (tallies[1] == 1 and tallies[2] == 1 and tallies[3] == 1 and tallies[4] == 1 and tallies[5] == 1):
             return 20
         return 0
+
 
     @staticmethod
     def fullHouse(d1, d2, d3, d4, d5):
@@ -189,6 +204,7 @@ class Yahtzee:
         else:
             return 0
 
+
     @staticmethod
     def is_yahtzee_possible(d1, d2, d3, d4, d5):
         tallies = [0] * 6
@@ -204,6 +220,7 @@ class Yahtzee:
             else:
                 raise ValueError("Индексы кубиков должны быть от 1 до 5.")
     
+
     def calculate_score(self):
         d1, d2, d3, d4, d5 = self.dice
         scores = {
@@ -224,6 +241,8 @@ class Yahtzee:
             "Full House":self.fullHouse(d1, d2, d3, d4, d5),
         }
         return scores
+    
+
     @staticmethod
     def validate_combination(combination_name, d1, d2, d3, d4, d5):
         possible_scores = {
@@ -245,6 +264,7 @@ class Yahtzee:
         }
         return possible_scores
 
+
     @staticmethod
     def score_pair(d1, d2, d3, d4, d5):
         counts = [0] * 6
@@ -257,6 +277,7 @@ class Yahtzee:
             if counts[6 - at - 1] == 2:
                 return (6 - at) * 2
         return 0
+
 
     @staticmethod
     def two_pair(d1, d2, d3, d4, d5):
@@ -277,6 +298,7 @@ class Yahtzee:
         else:
             return 0
 
+
     @staticmethod
     def four_of_a_kind(_1, _2, d3, d4, d5):
         tallies = [0] * 6
@@ -289,6 +311,7 @@ class Yahtzee:
             if tallies[i] == 4:
                 return (i + 1) * 4
         return 0
+
 
     @staticmethod
     def three_of_a_kind(d1, d2, d3, d4, d5):
@@ -303,6 +326,7 @@ class Yahtzee:
                 return (i + 1) * 3
         return 0
 
+
     @staticmethod
     def smallStraight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
@@ -315,6 +339,7 @@ class Yahtzee:
             return 15
         return 0
 
+
     @staticmethod
     def largeStraight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
@@ -326,6 +351,7 @@ class Yahtzee:
         if tallies[1] == 1 and tallies[2] == 1 and tallies[3] == 1 and tallies[4] == 1 and tallies[5] == 1:
             return 20
         return 0
+
 
     @staticmethod
     def fullHouse(d1, d2, d3, d4, d5):
@@ -354,6 +380,7 @@ class Yahtzee:
         else:
             return 0
 
+
     @staticmethod
     def yahtzee(dice):
         counts = [0] * (len(dice) + 1)
@@ -363,6 +390,7 @@ class Yahtzee:
             if counts[i] == 5:
                 return 50
         return 0
+
 
     @staticmethod
     def ones(d1, d2, d3, d4, d5):
@@ -379,6 +407,7 @@ class Yahtzee:
             sum += 1
         return sum
 
+
     @staticmethod
     def twos(d1, d2, d3, d4, d5):
         sum = 0
@@ -394,6 +423,7 @@ class Yahtzee:
             sum += 2
         return sum
 
+
     def __init__(self, d1, d2, d3, d4, _5):
         self.dice = [0] * 5
         self.dice[0] = d1
@@ -402,12 +432,14 @@ class Yahtzee:
         self.dice[3] = d4
         self.dice[4] = _5
 
+
     def fours(self):
         sum = 0
         for at in range(5):
             if self.dice[at] == 4:
                 sum += 4
         return sum
+
 
     def reroll_dice(self, reroll_indices):
         from random import randint
@@ -417,10 +449,13 @@ class Yahtzee:
             else:
                 raise ValueError("Индексы кубиков должны быть от 1 до 5.")
 
+
     @staticmethod
     def max_die(d1, d2, d3, d4, d5):
         return max(d1, d2, d3, d4, d5)
 
+
     @staticmethod
     def min_die(d1, d2, d3, d4, d5):
         return min(d1, d2, d3, d4, d5)
+
