@@ -44,7 +44,7 @@ def test_max_in_window(arr, k, expected):
 
 # Использование mock для функции max_in_window
 def test_max_in_window_mock():
-    with patch('collections.deque', return_value=deque([1, 3, 5])) as mock_deque:
+    with patch('LR02.deque', return_value=deque([1, 3, 5])) as mock_deque:
         arr = [1, 3, -1, -3, 5, 3, 6, 7]
         k = 3
         max_in_window(arr, k)
