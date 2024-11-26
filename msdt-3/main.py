@@ -1,15 +1,12 @@
 import re
 import pandas as pd
 import json
-import hashlib
 
 
-from typing import List
 from checksum import calculate_checksum
 
 
 # Функции для валидации данных с использованием регулярных выражений
-
 def validate_telephone(telephone):
     pattern = r'^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$'
     return re.match(pattern, telephone) is not None
@@ -26,7 +23,7 @@ def validate_inn(inn):
 
 
 def validate_identifier(identifier):
-    pattern = r'^\d{2}-\d{2}/\d{2}$'
+    pattern = r'^\d{2}-\d{2}\/\d{2}$'
     return re.match(pattern, identifier) is not None
 
 
@@ -41,12 +38,12 @@ def validate_latitude(latitude):
 
 
 def validate_blood_type(blood_type):
-    pattern = r'^(A|B|AB|O)[\+\-]$'
+    pattern = r'^(A|B|AB|O)[\+\−]$'
     return re.match(pattern, blood_type) is not None
 
 
 def validate_isbn(isbn):
-    pattern = r'^\d{3}-\d-\d{5}-\d{3}-\d$'
+    pattern = r'^(\d{3}\-)?\d-\d{5}-\d{3}-\d$'
     return re.match(pattern, isbn) is not None
 
 
