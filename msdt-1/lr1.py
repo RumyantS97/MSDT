@@ -20,7 +20,7 @@ class Yahtzee:
         return  0
 
     @staticmethod
-    def ones(d1, d2,d3,d4,d5):
+    def ones(d1, d2, d3, d4, d5):
         sum = 0
         if (d1 == 1): sum += 1
         if(d2 == 1): sum += 1
@@ -30,7 +30,7 @@ class Yahtzee:
         return sum
 
     @staticmethod
-    def twos(d1,  d2, d3,d4,d5):
+    def twos(d1, d2, d3, d4, d5):
         sum = 0
         if(d1 == 2):sum += 2
         if(d2 == 2):sum += 2
@@ -40,7 +40,7 @@ class Yahtzee:
         return sum
 
     @staticmethod
-    def threes(d1, d2,d3, d4,d5):
+    def threes(d1, d2, d3, d4, d5):
         s = 0
         if(d1 == 3):s += 3
         if(d2 == 3): s += 3
@@ -49,7 +49,7 @@ class Yahtzee:
         if(d5 == 3): s += 3
         return s
 
-    def __init__(self,d1,d2,d3,d4,_5):
+    def __init__(self, d1, d2, d3, d4, _5):
         self.dice = [0] * 5
         self.dice[0] = d1
         self.dice[1] = d2
@@ -78,7 +78,7 @@ class Yahtzee:
         return sum
 
     @staticmethod
-    def score_pair(d1,d2, d3,d4,d5):
+    def score_pair(d1, d2, d3, d4, d5):
         counts = [0] * 6
         counts[d1 - 1] += 1
         counts[d2 - 1] += 1
@@ -91,7 +91,7 @@ class Yahtzee:
         return  0
 
     @staticmethod
-    def two_pair(d1,d2,d3, d4,d5):
+    def two_pair(d1, d2, d3, d4, d5):
         counts = [0] * 6
         counts[d1 - 1] += 1
         counts[d2 - 1] += 1
@@ -107,7 +107,7 @@ class Yahtzee:
         else:return 0
 
     @staticmethod
-    def four_of_a_kind(_1,_2,d3,d4,d5): 
+    def four_of_a_kind(_1, _2, d3, d4, d5): 
         tallies = [0] * 6
         tallies[_1 - 1] += 1
         tallies[_2 - 1] += 1
@@ -119,7 +119,7 @@ class Yahtzee:
         return 0
 
     @staticmethod
-    def three_of_a_kind(d1,d2,d3,d4,d5):
+    def three_of_a_kind(d1, d2, d3, d4, d5):
         t = [0] * 6
         t[d1 - 1] += 1
         t[d2 - 1] += 1
@@ -131,7 +131,7 @@ class Yahtzee:
         return 0
 
     @staticmethod
-    def smallStraight(d1,d2, d3,d4, d5):
+    def smallStraight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -153,7 +153,7 @@ class Yahtzee:
         return 0
 
     @staticmethod
-    def fullHouse(d1,d2,d3,d4,d5):
+    def fullHouse(d1, d2, d3, d4, d5):
         tallies = []
         _2 = False
         i = 0
@@ -191,23 +191,23 @@ class Yahtzee:
                 raise ValueError("Индексы кубиков должны быть от 1 до 5.")
     
     def calculate_score(self):
-        d1,d2,d3,d4,d5 = self.dice
+        d1, d2, d3, d4, d5 = self.dice
         scores = {
-            "Chance":self.chance(d1,d2,d3,d4,d5),
+            "Chance":self.chance(d1, d2, d3, d4, d5),
             "Yahtzee":self.yahtzee(self.dice),
-            "Ones":self.ones(d1,d2,d3,d4,d5),
-            "Twos":self.twos(d1,d2,d3,d4,d5),
-            "Threes":self.threes(d1,d2,d3,d4,d5),
+            "Ones":self.ones(d1, d2, d3, d4, d5),
+            "Twos":self.twos(d1, d2, d3, d4, d5),
+            "Threes":self.threes(d1, d2, d3, d4, d5),
             "Fours":self.fours(),
             "Fives":self.fives(),
             "Sixes":self.sixes(),
-            "Score Pair":self.score_pair(d1,d2,d3,d4,d5),
-            "Two Pair":self.two_pair(d1,d2,d3,d4,d5),
-            "Three of a Kind":self.three_of_a_kind(d1,d2,d3,d4,d5),
-            "Four of a Kind":self.four_of_a_kind(d1,d2,d3,d4,d5),
-            "Small Straight":self.smallStraight(d1,d2,d3,d4,d5),
-            "Large Straight":self.largeStraight(d1,d2,d3,d4,d5),
-            "Full House":self.fullHouse(d1,d2,d3,d4,d5),
+            "Score Pair":self.score_pair(d1, d2, d3, d4, d5),
+            "Two Pair":self.two_pair(d1, d2, d3, d4, d5),
+            "Three of a Kind":self.three_of_a_kind(d1, d2, d3, d4, d5),
+            "Four of a Kind":self.four_of_a_kind(d1, d2, d3, d4, d5),
+            "Small Straight":self.smallStraight(d1, d2, d3, d4, d5),
+            "Large Straight":self.largeStraight(d1, d2, d3, d4, d5),
+            "Full House":self.fullHouse(d1, d2, d3, d4, d5),
         }
         return scores
     @staticmethod
