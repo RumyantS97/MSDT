@@ -16,37 +16,37 @@ class TennisGameDefactored1:
     
     def score(self):
         result = ""
-        tempScore=0
-        if (self.player1_points==self.player2_points):
+        temp_score = 0
+        if self.player1_points == self.player2_points:
             result = {
-                0 : "Love-All",
-                1 : "Fifteen-All",
-                2 : "Thirty-All",
-                3 : "Forty-All",
+                0: "Love-All",
+                1: "Fifteen-All",
+                2: "Thirty-All",
+                3: "Forty-All",
             }.get(self.player1_points, "Deuce")
-        elif self.player1_points>=4 or self.player2_points>=4:
+        elif self.player1_points >= 4 or self.player2_points >= 4:
             minus_result = self.player1_points-self.player2_points
-            if (minus_result==1):
-                result ="Advantage " + self.player1_name
-            elif (minus_result ==-1):
-                result ="Advantage " + self.player2_name
-            elif (minus_result>=2):
+            if minus_result == 1:
+                result = "Advantage " + self.player1_name
+            elif minus_result == -1:
+                result = "Advantage " + self.player2_name
+            elif minus_result >= 2:
                 result = "Win for " + self.player1_name
             else:
-                result ="Win for " + self.player2_name
+                result = "Win for " + self.player2_name
         else:
-            for i in range(1,3):
-                if (i==1):
-                    tempScore = self.player1_points
+            for i in range(1, 3):
+                if i == 1:
+                    temp_score = self.player1_points
                 else:
-                    result+="-"
-                    tempScore = self.player2_points
+                    result += "-"
+                    temp_score = self.player2_points
                 result += {
-                    0 : "Love",
-                    1 : "Fifteen",
-                    2 : "Thirty",
-                    3 : "Forty",
-                }[tempScore]
+                    0: "Love",
+                    1: "Fifteen",
+                    2: "Thirty",
+                    3: "Forty",
+                }[temp_score]
         return result
 
 
