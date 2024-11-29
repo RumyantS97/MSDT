@@ -143,11 +143,9 @@ class TennisGameDefactored2:
         for i in range(number):
             self.set_player2_score()
     
-    def P1Score(self):
+    def player1_score(self):
         self.player1_points +=1
-    
-    
-    def P2Score(self):
+    def player2_score(self):
         self.player2_points +=1
         
 class TennisGameDefactored3:
