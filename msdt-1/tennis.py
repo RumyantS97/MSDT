@@ -166,8 +166,8 @@ class TennisGameDefactored3:
         if self.player1_score < 4 and self.player2_score < 4:
             points = ["Love", "Fifteen", "Thirty", "Forty"]
             score = points[self.player1_score]
-            return score + "-All" if (self.player1_score == self.player2_score) else score + "-" + points[
-                self.player2_score]
+            return score + "-All" if self.player1_score == self.player2_score \
+                else score + "-" + points[self.player2_score]
         else:
             if self.player1_score == self.player2_score:
                 return "Deuce"
