@@ -2,45 +2,45 @@
 
 class TennisGameDefactored1:
 
-    def __init__(self, player1Name, player2Name):
-        self.player1Name = player1Name
-        self.player2Name = player2Name
-        self.p1points = 0
-        self.p2points = 0
+    def __init__(self, player1_name, player2_name):
+        self.player1_name = player1_name
+        self.player2_name = player2_name
+        self.player1_points = 0
+        self.player2_points = 0
         
-    def won_point(self, playerName):
-        if playerName == self.player1Name:
-            self.p1points += 1
+    def won_point(self, player_name):
+        if player_name == self.player1_name:
+            self.player1_points += 1
         else:
-            self.p2points += 1
+            self.player2_points += 1
     
     def score(self):
         result = ""
         tempScore=0
-        if (self.p1points==self.p2points):
+        if (self.player1_points==self.player2_points):
             result = {
                 0 : "Love-All",
                 1 : "Fifteen-All",
                 2 : "Thirty-All",
                 3 : "Forty-All",
-            }.get(self.p1points, "Deuce")
-        elif (self.p1points>=4 or self.p2points>=4):
-            minusResult = self.p1points-self.p2points
-            if (minusResult==1):
-                result ="Advantage " + self.player1Name
-            elif (minusResult ==-1):
-                result ="Advantage " + self.player2Name
-            elif (minusResult>=2):
-                result = "Win for " + self.player1Name
+            }.get(self.player1_points, "Deuce")
+        elif self.player1_points>=4 or self.player2_points>=4:
+            minus_result = self.player1_points-self.player2_points
+            if (minus_result==1):
+                result ="Advantage " + self.player1_name
+            elif (minus_result ==-1):
+                result ="Advantage " + self.player2_name
+            elif (minus_result>=2):
+                result = "Win for " + self.player1_name
             else:
-                result ="Win for " + self.player2Name
+                result ="Win for " + self.player2_name
         else:
             for i in range(1,3):
                 if (i==1):
-                    tempScore = self.p1points
+                    tempScore = self.player1_points
                 else:
                     result+="-"
-                    tempScore = self.p2points
+                    tempScore = self.player2_points
                 result += {
                     0 : "Love",
                     1 : "Fifteen",
