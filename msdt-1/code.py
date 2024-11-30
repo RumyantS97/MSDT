@@ -145,30 +145,39 @@ def calculate_loss(group_probabilities: np.ndarray, groups: np.ndarray) -> float
     return (-groups * np.log(group_probabilities) - (1.0 - groups) * np.log(1.0 - group_probabilities)).mean()
 
 
-def draw_logistic_regression_data(features: np.ndarray, groups: np.ndarray, theta: np.ndarray = None):
-    [plt.plot(features[i, 0], features[i, 1], '+b') if groups[i] == 0 else plt.plot(features[i, 0], features[i, 1],
-                                                                                    '*r') for i in
-     range(features.shape[0] // 2)]
-
-    if theta is None:
-        plt.show()
-    else:
-        b = theta[0] / np.abs(theta[2])
-        k = theta[1] / np.abs(theta[2])
-        x_0, x_1 = features[:, 0].min(), features[:, 0].max()
-        y_0, y_1 = features[:, 1].min(), features[:, 1].max()
-        y_1 = (y_1 - b) / k
-        y_0 = (y_0 - b) / k
-        if y_0 < y_1:
-            x_1 = min(x_1, y_1)
-            x_0 = max(x_0, y_0)
+def draw_logistic_regression_data(features: np.ndarray, groups: np.ndarray, theta: np.ndarray = None) -> None:
+    for i in range(features.shape[0]):
+        if groups[i] == 0:
+            plt.plot(features[i, 0], features[i, 1], '+b')
         else:
-            x_1 = min(x_1, y_0)
-            x_0 = max(x_0, y_1)
-        x = [x_0, x_1]
-        y = [b + x_0 * k, b + x_1 * k]
+            plt.plot(features[i, 0], features[i, 1], '*r')
+
+    if theta is not None:
+        # theta[1] * x + theta[2] * y + theta[0] * 1 = 0
+        if abs(theta[2]) < ACCURACY: # Check for division by zero
+            return
+
+        b = theta[0] / abs(theta[2])
+        k = theta[1] / abs(theta[2])
+
+        x_min, x_max = features[:, 0].min(), features[:, 0].max()
+        y_min, y_max = features[:, 1].min(), features[:, 1].max()
+
+        y_max = (y_max - b) / k
+        y_min = (y_min - b) / k
+
+        if y_min < y_max:
+            x_max = min(x_max, y_max)
+            x_min = max(x_min, y_min)
+        else:
+            x_max = min(x_max, y_min)
+            x_min = max(x_min, y_max)
+
+        x = [x_min, x_max]
+        y = [b + x_min * k, b + x_max * k]
         plt.plot(x, y, 'k')
-        plt.show()
+
+    plt.show()
 
 
 class LogisticRegression:
@@ -190,60 +199,52 @@ class LogisticRegression:
                f"\t\"Losses\": {self.losses}\n" \
                f"}}"
     def predict(self, features: np.ndarray) -> np.ndarray:
-        # проверка размерности - количество принаков группы == количество элементов в толбце
         if features.shape[1] != self.thetas.size - 1:
-            raise NameError('Неверные данные о прогнозируемых характеристиках')
-        return calculate_sigmoid(features @ self.thetas[1::] + self.thetas[0])
+            raise ValueError('Incorrect data on predicted features')
+        return calculate_sigmoid(features @ self.thetas[1:] + self.thetas[0])
 
-    def train(self, features: np.ndarray, groups: np.ndarray):
-        # проверка размерности -  количество принаков группы == количество элементов в толбце
-        # реализация градиентного спуска для обучения логистической регрессии.
-        # формула thetas(i) = thetas(i - 1) - learning_rate * (X^T * sigmoid(X *  thetas(i - 1)) - groups)
-        # количество признаков у группы (в нашем случае их 2 - это x и y)
-        self._GroupFeaturesCount = features.shape[1]
-        # Инициализируются параметры модели (веса) thetas случайными значениями
-        self._Thetas = np.array([generate_random_value_in_range(1000) for _ in range(self._GroupFeaturesCount + 1)])
+    def train(self, features: np.ndarray, groups: np.ndarray) -> None:
+        self.group_features_count = features.shape[1]
+        self.thetas = np.array([generate_random_value_in_range(1000) for _ in range(self.group_features_count + 1)])
         x = np.hstack((np.ones((features.shape[0], 1), dtype=float), features))
-        # _thetas в нашем случае - это СТОЛБЕЦ из трех рандомных чисел
-        # theta[0] * 1 + theta[1] * x + theta[2] * y = 0
-        # Добавили слева столбец единиц к точкам (типо b = 1)
-        x = np.hstack((np.ones((features.shape[0], 1), dtype=float), features))
-        # К признакам добавляется столбец из единиц для учета свободного члена
-        # Добавление столбца из единиц позволяет нам умножать его на соответствующий параметр thetas
-        # Запускается цикл обучения с использованием градиентного спуска. На каждой итерации обновляются параметры модели согласно формуле градиентного спуска
-        for iteration in range(self.max_train_iters):
-            thetas = self.thetas.copy()
-            self._Thetas = self._Thetas - self.learning_rate * (x.T @ (calculate_sigmoid(x @ thetas) - groups))
-            # Проверяется условие остановки: если разница между предыдущими и текущими значениями параметров модели становится меньше заданной точности, то обучение завершается
-            if (np.power(thetas - self.thetas, 2.0).sum()) <= self.learning_accuracy * self.learning_accuracy: break
+
+        for iteration in range(self.max_train_iterations):
+            previous_thetas = self.thetas.copy()
+            self.thetas = self.thetas - self.learning_rate * (x.T @ (calculate_sigmoid(x @ previous_thetas) - groups))
+            if (np.power(previous_thetas - self.thetas, 2.0).sum()) <= self.learning_accuracy ** 2:
+                break
+        self.losses = calculate_loss(self.predict(features), groups)
 
 
 def run_linear_regression_test():
-    # features - массив точек, group - массив классов (если 1, то красная типо, если 0, то точка синяя)
-    # Точку характеризует x y на i-ой позиции в features и её класс на i-ой позиции в group
-    features, group = generate_log_reg_test_data()
-    lg = LogisticRegression()
-    lg.train(features, group)
-    draw_logistic_regression_data(features, group, lg.thetas)
+    features, groups = generate_log_reg_test_data()
+    logistic_regression = LogisticRegression()
+    logistic_regression.train(features, groups)
+    draw_logistic_regression_data(features, groups, logistic_regression.thetas)
 
 
 def run_non_linear_regression_test():
-    features, group = generate_log_reg_ellipsoid_test_data((0.08, -0.08, 1.6, 1.0, 1.0))
-    lg = LogisticRegression()
-    lg.train(features, group)
-    print(lg)
-    def _ellipsoid(x, y):
-        return lg.thetas[0] + x * lg.thetas[1] + y * lg.thetas[2] + x * y * lg.thetas[3] + x * x * lg.thetas[
-            4] + y * y * lg.thetas[5]
-    sections = calculate_march_squares_2d(_ellipsoid)
+    features, groups = generate_log_reg_ellipsoid_test_data((0.08, -0.08, 1.6, 1.0, 1.0))
+    logistic_regression = LogisticRegression()
+    logistic_regression.train(features, groups)
+    print(logistic_regression)
+
+    thetas = logistic_regression.thetas
+
+    def ellipsoid_function(x: float, y: float) -> float:\
+        return thetas[0] + x * thetas[1] + y * thetas[2] + x * y * thetas[3] + x * x * thetas[4] + y * y * thetas[5]
+
+    sections = calculate_march_squares_2d(ellipsoid_function)
+
     for arc in sections:
-        p_0, p_1 = arc
-        plt.plot([p_0[0], p_1[0]], [p_0[1], p_1[1]], 'k')
+        p0, p1 = arc
+        plt.plot([p0[0], p1[0]], [p0[1], p1[1]], 'k')
+
     plt.xlabel("x")
     plt.ylabel("y")
     plt.grid(True)
-    print(lg.thetas / np.abs(lg.thetas[0]))
-    draw_logistic_regression_data(features, group)
+    print(logistic_regression.thetas / abs(logistic_regression.thetas[0]))
+    draw_logistic_regression_data(features, groups)
 
 
 if __name__ == "__main__":
