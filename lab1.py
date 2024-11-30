@@ -73,7 +73,7 @@ class Solution:
 
             # Использование "Лекарства" экстренно
             if MI["Cigarettes"] == 0 and ( MI["Adrenalin"] == 0 and HI["Cigarettes"] == 0 and
-                                         Simulation.KillMe( YHP, LR, BL, MI, HI ) > 0.5 and
+                                         Simulation.kill_me( YHP, LR, BL, MI, HI ) > 0.5 and
                                          Simulation.can_kill( DHP, LR, BL, MI, HI )
                                          ) < 0.5:
                 
@@ -761,6 +761,13 @@ class Solution:
                                 self.ev[-1] += ch
                                 self.dealer_calculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
+    '''
+    self - результаты, YHP - здоровье игрока, DHP - здоровье дилера, LR - боевые патроны, BL - холостые патроны,
+    ch - вероятность события, path - путь действий, MI - предметы игрока, HI - предметы дилера,
+    BM - знания игроком патронов, BD - знания дилером патронов, FM - первый ход,
+    ind - номер текущего патрона, capt - наличие на руках наручников
+    '''
+    
     # Задача 1. Добавить логику предметам
     def dealer_calculate( self, YHP, DHP, LR, BL, ch, path, MI, HI, BM, BD, FM, ind, capt ):
 
