@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-_debug_mode = True
-_accuracy = 1e-6
+# Constants
+DEBUG_MODE = True
+ACCURACY = 1e-6
 Vector2Int = Tuple[int, int]
 Vector2 = Tuple[float, float]
 Section = Tuple[Vector2, Vector2]
@@ -49,25 +50,25 @@ def calculate_march_squares_2d(
             # b = (col + dx, row + dy * 0.5)
             # c = (col + dx * 0.5, row + dy)
             # d = (col, row + dy * 0.5)
-            if np.abs(d_t) >= _accuracy:
+            if np.abs(d_t) >= ACCURACY:
                 t_val = (threshold - a_val) / d_t
                 a = (perform_linear_interpolation(col, col + dx, t_val), row)
             else:
                 a = (perform_linear_interpolation(col, col + dx, np.sign(threshold - a_val)), row)
             d_t = c_val - b_val
-            if np.abs(d_t) >= _accuracy:
+            if np.abs(d_t) >= ACCURACY:
                 t_val = (threshold - b_val) / d_t
                 b = (col + dx, perform_linear_interpolation(row, row + dy, t_val))
             else:
                 b = (col + dx, perform_linear_interpolation(row, row + dy, np.sign(threshold - b_val)))
             d_t = c_val - d_val
-            if np.abs(d_t) >= _accuracy:
+            if np.abs(d_t) >= ACCURACY:
                 t_val = (threshold - d_val) / d_t
                 c = (perform_linear_interpolation(col, col + dx, t_val), row + dy)
             else:
                 c = (perform_linear_interpolation(col, col + dx, np.sign(threshold - d_val)), row + dy)
             d_t = d_val - a_val
-            if np.abs(d_t) >= _accuracy:
+            if np.abs(d_t) >= ACCURACY:
                 t_val = (threshold - a_val) / d_t
                 d = (col, perform_linear_interpolation(row, row + dy, t_val))
             else:
@@ -128,7 +129,7 @@ def generate_log_reg_ellipsoid_test_data(
     rand_range: float = 1.0,
     n_points: int = 3000
 ) -> Tuple[np.ndarray, np.ndarray]:
-    if _debug_mode:
+    if DEBUG_MODE:
         print(f"logistic regression f(x,y) = {params[0]:1.3}x + {params[1]:1.3}y + {params[2]:1.3}xy +"
               f"{params[3]:1.3}x^2 + {params[4]:1.3}y^2 - 1,\n"
               f"arg_range =  [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
@@ -150,7 +151,7 @@ def generate_log_reg_test_data(
     rand_range: float = 0.0,
     n_points: int = 3000
 ) -> Tuple[np.ndarray, np.ndarray]:
-    if _debug_mode:
+    if DEBUG_MODE:
         print(f"logistic regression test data b = {b:1.3}, k = {k:1.3},\n"
               f"arg_range = [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
               f"rand_range = [{-rand_range * 0.5:1.3}, {rand_range * 0.5:1.3}]")
