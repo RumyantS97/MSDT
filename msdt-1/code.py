@@ -27,7 +27,12 @@ EmptyArray = np.ndarray([])
 def perform_linear_interpolation(a: float, b: float, t: float) -> float:
     return a + (b - a) * t
 
-def calculate_march_squares_2d(field: Callable[[float, float], float], min_bound: Vector2 = MIN_BOUND, max_bound: Vector2 = MAX_BOUND, march_resolution: Vector2Int = MARCH_RESOLUTION, threshold: float = THRESHOLD) -> List[Section]:
+
+def calculate_march_squares_2d(field: Callable[[float, float], float],
+                               min_bound: Vector2 = MIN_BOUND,
+                               max_bound: Vector2 = MAX_BOUND,
+                               march_resolution: Vector2Int = MARCH_RESOLUTION,
+                               threshold: float = THRESHOLD) -> List[Section]:
     rows, cols = max(march_resolution[1], 3), max(march_resolution[0], 3)
     cols_minus_one = cols - 1
     rows_minus_one = rows - 1
@@ -52,19 +57,22 @@ def calculate_march_squares_2d(field: Callable[[float, float], float], min_bound
 
         if state == 0 or state == 15:
             continue
+        # Interpolation
         a = get_interpolated_point(col, col + dx, row, a_val, b_val, threshold)
         b = get_interpolated_point(col, col + dx, row, b_val, c_val, threshold)
         c = get_interpolated_point(col, col + dx, row, d_val, c_val, threshold)
         d = get_interpolated_point(col, col + dx, row, a_val, d_val, threshold)
-        # без интерполяции
-        # a = (col + dx * 0.5, row)
-        # b = (col + dx, row + dy * 0.5)
-        # c = (col + dx * 0.5, row + dy)
-        # d = (col, row + dy * 0.5)
+        # Without interpolation
+        # a = (col + dx * 0.5, row           )
+        # b = (col + dx,       row + dy * 0.5)
+        # c = (col + dx * 0.5, row + dy      )
+        # d = (col,            row + dy * 0.5)
 
         sections.extend(get_sections_from_state(state, a, b, c, d))
 
     return sections
+
+
 def get_interpolated_point(x1, x2, y, val1, val2, threshold):
     delta_t = val2 - val1
     if abs(delta_t) < ACCURACY:
@@ -73,17 +81,18 @@ def get_interpolated_point(x1, x2, y, val1, val2, threshold):
         t = (threshold - val1) / delta_t
     return (perform_linear_interpolation(x1, x2, t), y)
 
+
 def get_sections_from_state(state: int, a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> List[Section]:
     segment_map = {
-        1: [(c, d)],
-        2: [(b, c)],
-        3: [(b, d)],
-        4: [(a, b)],
-        5: [(a, d), (b, c)],
-        6: [(a, c)],
-        7: [(a, d)],
-        8: [(a, d)],
-        9: [(a, c)],
+        1:  [(c, d)],
+        2:  [(b, c)],
+        3:  [(b, d)],
+        4:  [(a, b)],
+        5:  [(a, d), (b, c)],
+        6:  [(a, c)],
+        7:  [(a, d)],
+        8:  [(a, d)],
+        9:  [(a, c)],
         10: [(a, b), (c, d)],
         11: [(a, b)],
         12: [(b, d)],
@@ -106,7 +115,9 @@ def calculate_ellipsoid(x: float, y: float, params: Tuple[float, float, float, f
     return x * params[0] + y * params[1] + x * y * params[2] + x * x * params[3] + y * y * params[4] - 1
 
 
-def generate_log_reg_ellipsoid_test_data(parameters: Tuple[float, float, float, float, float], arg_range: float = ARG_RANGE, rand_range: float = RAND_RANGE, n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
+def generate_log_reg_ellipsoid_test_data(parameters: Tuple[float, float, float, float, float],
+                                         arg_range: float = ARG_RANGE, rand_range: float = RAND_RANGE,
+                                         n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
     if DEBUG_MODE:
         print(f"logistic regression f(x, y) = {parameters[0]:1.3}x + {parameters[1]:1.3}y + {parameters[2]:1.3}xy +"
               f"{parameters[3]:1.3}x^2 + {parameters[4]:1.3}y^2 - 1,\n"
@@ -122,7 +133,8 @@ def generate_log_reg_ellipsoid_test_data(parameters: Tuple[float, float, float, 
     return features, groups
 
 
-def generate_log_reg_test_data(k: float = -1.5, b: float = 0.1, arg_range: float = 1.0, rand_range: float = 0.0, n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
+def generate_log_reg_test_data(k: float = -1.5, b: float = 0.1, arg_range: float = 1.0,
+                               rand_range: float = 0.0, n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
     if DEBUG_MODE:
         print(f"logistic regression test data b = {b:1.3}, k = {k:1.3},\n"
               f"arg_range = [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
