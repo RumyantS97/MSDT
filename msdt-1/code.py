@@ -6,108 +6,91 @@ import random
 # Constants
 DEBUG_MODE = True
 ACCURACY = 1e-6
+LEARNING_RATE = 1.0
+MAX_ITERS = 1000
+LEARNING_ACCURACY = 1e-2
+ARG_RANGE = 5.0
+RAND_RANGE = 1.0
+N_POINTS = 3000
+MARCH_RESOLUTION = (128, 128)
+THRESHOLD = 0.5
+MIN_BOUND = (-5.0, -5.0)
+MAX_BOUND = (5.0, 5.0)
+SMOOTHING_CONSTANT = 1e-15
+
 Vector2Int = Tuple[int, int]
 Vector2 = Tuple[float, float]
 Section = Tuple[Vector2, Vector2]
 EmptyArray = np.ndarray([])
 
 
-def calculate_march_squares_2d(
-    field: Callable[[float, float], float],
-    min_bound: Vector2 = (-5.0, -5.0),
-    max_bound: Vector2 = (5.0, 5.0),
-    march_resolution: Vector2Int = (128, 128),
-    threshold: float = 0.5
-):
-    def perform_linear_interpolation(_a: float, _b: float, t: float) -> float:
-        return _a + (_b - _a) * t
+def perform_linear_interpolation(a: float, b: float, t: float) -> float:
+    return a + (b - a) * t
+
+def calculate_march_squares_2d(field: Callable[[float, float], float], min_bound: Vector2 = MIN_BOUND, max_bound: Vector2 = MAX_BOUND, march_resolution: Vector2Int = MARCH_RESOLUTION, threshold: float = THRESHOLD) -> List[Section]:
     rows, cols = max(march_resolution[1], 3), max(march_resolution[0], 3)
-    cols_ = cols - 1
-    rows_ = cols - 1
-    dx = (max_bound[0] - min_bound[0]) / cols_
-    dy = (max_bound[1] - min_bound[1]) / rows_
-    shape = []
-    for i in range(cols_ * rows_):
-        state = 0
-        row = (i // cols_) * dy + min_bound[1]
-        col = (i % cols_) * dx + min_bound[0]
+    cols_minus_one = cols - 1
+    rows_minus_one = rows - 1
+    dx = (max_bound[0] - min_bound[0]) / cols_minus_one
+    dy = (max_bound[1] - min_bound[1]) / rows_minus_one
+    sections = []
+
+    for i in range(cols_minus_one * rows_minus_one):
+        row = (i // cols_minus_one) * dy + min_bound[1]
+        col = (i % cols_minus_one) * dx + min_bound[0]
+
         a_val = field(col, row)
         b_val = field(col + dx, row)
         c_val = field(col + dx, row + dy)
         d_val = field(col, row + dy)
+
+        state = 0
         state += 8 if a_val >= threshold else 0
         state += 4 if b_val >= threshold else 0
         state += 2 if c_val >= threshold else 0
         state += 1 if d_val >= threshold else 0
-        if state == 0:
-            pass
-        elif state == 15:
-            pass
-        else:
-            d_t = b_val - a_val
-            # без интерполяции
-            # a = (col + dx * 0.5, row)
-            # b = (col + dx, row + dy * 0.5)
-            # c = (col + dx * 0.5, row + dy)
-            # d = (col, row + dy * 0.5)
-            if np.abs(d_t) >= ACCURACY:
-                t_val = (threshold - a_val) / d_t
-                a = (perform_linear_interpolation(col, col + dx, t_val), row)
-            else:
-                a = (perform_linear_interpolation(col, col + dx, np.sign(threshold - a_val)), row)
-            d_t = c_val - b_val
-            if np.abs(d_t) >= ACCURACY:
-                t_val = (threshold - b_val) / d_t
-                b = (col + dx, perform_linear_interpolation(row, row + dy, t_val))
-            else:
-                b = (col + dx, perform_linear_interpolation(row, row + dy, np.sign(threshold - b_val)))
-            d_t = c_val - d_val
-            if np.abs(d_t) >= ACCURACY:
-                t_val = (threshold - d_val) / d_t
-                c = (perform_linear_interpolation(col, col + dx, t_val), row + dy)
-            else:
-                c = (perform_linear_interpolation(col, col + dx, np.sign(threshold - d_val)), row + dy)
-            d_t = d_val - a_val
-            if np.abs(d_t) >= ACCURACY:
-                t_val = (threshold - a_val) / d_t
-                d = (col, perform_linear_interpolation(row, row + dy, t_val))
-            else:
-                d = (col, perform_linear_interpolation(row, row + dy, np.sign(threshold - a_val)))
 
-            if state == 1:
-                shape.append((c, d))
-            elif state == 2:
-                shape.append((b, c))
-            elif state == 3:
-                shape.append((b, d))
-            elif state == 4:
-                shape.append((a, b))
-            elif state == 5:
-                shape.append((a, d));
-                shape.append((b, c))
-            elif state == 6:
-                shape.append((a, c))
-            elif state == 7:
-                shape.append((a, d))
-            elif state == 8:
-                shape.append((a, d))
-            elif state == 9:
-                shape.append((a, c))
-            elif state == 10:
-                shape.append((a, b));
-                shape.append((c, d))
-            elif state == 11:
-                shape.append((a, b))
-            elif state == 12:
-                shape.append((b, d))
-            elif state == 13:
-                shape.append((b, c))
-            elif state == 14:
-                shape.append((c, d))
-            else:
-                pass
+        if state == 0 or state == 15:
+            continue
+        a = get_interpolated_point(col, col + dx, row, a_val, b_val, threshold)
+        b = get_interpolated_point(col, col + dx, row, b_val, c_val, threshold)
+        c = get_interpolated_point(col, col + dx, row, d_val, c_val, threshold)
+        d = get_interpolated_point(col, col + dx, row, a_val, d_val, threshold)
+        # без интерполяции
+        # a = (col + dx * 0.5, row)
+        # b = (col + dx, row + dy * 0.5)
+        # c = (col + dx * 0.5, row + dy)
+        # d = (col, row + dy * 0.5)
 
-    return shape
+        sections.extend(get_sections_from_state(state, a, b, c, d))
+
+    return sections
+def get_interpolated_point(x1, x2, y, val1, val2, threshold):
+    delta_t = val2 - val1
+    if abs(delta_t) < ACCURACY:
+        t = np.sign(threshold - val1)
+    else:
+        t = (threshold - val1) / delta_t
+    return (perform_linear_interpolation(x1, x2, t), y)
+
+def get_sections_from_state(state: int, a: Vector2, b: Vector2, c: Vector2, d: Vector2) -> List[Section]:
+    segment_map = {
+        1: [(c, d)],
+        2: [(b, c)],
+        3: [(b, d)],
+        4: [(a, b)],
+        5: [(a, d), (b, c)],
+        6: [(a, c)],
+        7: [(a, d)],
+        8: [(a, d)],
+        9: [(a, c)],
+        10: [(a, b), (c, d)],
+        11: [(a, b)],
+        12: [(b, d)],
+        13: [(b, c)],
+        14: [(c, d)],
+    }
+    return segment_map.get(state, [])  # Return empty list if state not found
 
 
 def generate_random_value_in_range(rand_range: Union[float, Tuple[float, float]] = 1.0) -> float:
