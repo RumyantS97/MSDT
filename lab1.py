@@ -72,8 +72,10 @@ class Solution:
             # 1. Процесс хила
 
             # Использование "Лекарства" экстренно
-            if MI["Cigarettes"] == 0 and ( MI["Adrenalin"] == 0 and HI["Cigarettes"] == 0 and \
-               Simulation.KillMe( YHP, LR, BL, MI, HI ) > 0.5 and Simulation.CanKill( DHP, LR, BL, MI, HI ) ) < 0.5:
+            if MI["Cigarettes"] == 0 and ( MI["Adrenalin"] == 0 and HI["Cigarettes"] == 0 and
+                                         Simulation.KillMe( YHP, LR, BL, MI, HI ) > 0.5 and
+                                         Simulation.CanKill( DHP, LR, BL, MI, HI )
+                                         ) < 0.5:
                 
                 # Нам выгодно есть таблетку
                 if FM:
@@ -125,7 +127,8 @@ class Solution:
 
                     # Наручники + 2 Инвертора
                     if BL >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and
-                       MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ) ) > 1 ):
+                                     MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ) ) > 1
+                                   ):
                         if FM:
                             self.choice[-1] += "Handcuffs Inverter Dealer Inverter Dealer"
                             path += "Handcuffs Inverter Dealer Inverter Dealer"
@@ -133,8 +136,9 @@ class Solution:
                         self.DealerCalculate( YHP, DHP - 2, LR, BL - 2, ch, path, MI, HI, BM, BD, False, ind + 2, capt )
                     
                     # Пила + Инвертор
-                    elif MI["Saw"] + min( MI["Adrenalin"], HI["Saw"] ) != 0 and \
-                         MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) != 0:
+                    elif MI["Saw"] + min( MI["Adrenalin"], HI["Saw"] ) != 0 and MI["Inverter"] + min( MI["Adrenalin"] -\
+                                          Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"]
+                                        ) != 0:
                         if FM:
                             self.choice[-1] += "Inverter Saw Dealer"
                             path += "Inverter Saw Dealer"
@@ -159,9 +163,10 @@ class Solution:
 
                     # Наручники + Пила + 2 Инвертора
                     if BL >=2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Saw"] + \
-                                   min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"]), HI["Saw"] ) != 0 and
-                                   MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 2, MI["Handcuffs"] + \
-                                   MI["Saw"] ), HI["Inverter"] ) > 1 ):
+                                    min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"]), HI["Saw"] ) != 0 and
+                                    MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 2, MI["Handcuffs"] + \
+                                    MI["Saw"] ), HI["Inverter"] ) > 1
+                                  ):
                         if (FM):
                             self.choice[-1] += "Handcuffs Inverter Saw Dealer Inverter Dealer"
                             path += "Handcuffs Inverter Saw Dealer Inverter Dealer"
@@ -169,8 +174,10 @@ class Solution:
                         self.DealerCalculate( YHP, DHP - 3, LR, BL - 2, ch, path, MI, HI, BM, BD, False, ind + 2, capt )
                     
                     # На 2 патрона Наручники + 2 инвертора
-                    elif BL == 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and \
-                            MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) > 1 ):
+                    elif BL == 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and
+                                       MI["Inverter"] + min( MI["Adrenalin"] -\
+                                       Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) > 1
+                                     ):
                         if FM:
                             self.choice[-1] += "Handcuffs Inverter Dealer Inverter Dealer"
                             path += "Handcuffs Inverter Dealer Inverter Dealer"
@@ -179,7 +186,8 @@ class Solution:
 
                     # На последний патрон Пила + Инвертор
                     elif BL == 1 and ( MI["Saw"] + min( MI["Adrenalin"], HI["Saw"] ) != 0 and MI["Inverter"] + \
-                                      min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"]), HI["Inverter"] ) != 0 ):
+                                       min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"]), HI["Inverter"] ) != 0
+                                     ):
                         if FM:
                             self.choice[-1] += "Inverter Saw Dealer"
                             path += "Inverter Saw Dealer"
@@ -205,8 +213,10 @@ class Solution:
 
                     # Наручники + 2 Пилы + 2 Инвертора
                     if BL >= 2 and ( MI["Handcuffs"] + min(MI["Adrenalin"], HI["Handcuffs"]) != 0 and MI["Saw"] + \
-                                    min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) > 1 and \
-                        MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 3, MI["Handcuffs"] + MI["Saw"] ), HI["Inverter"] ) > 1):
+                                     min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) > 1 and \
+                                     MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 3, MI["Handcuffs"] +\
+                                     MI["Saw"] ), HI["Inverter"] ) > 1
+                                   ):
                         if FM:
                             self.choice[-1] += "Handcuffs Inverter Saw Dealer Inverter Saw Dealer"
                             path += "Handcuffs Inverter Saw Dealer Inverter Saw Dealer"
@@ -215,8 +225,9 @@ class Solution:
                     
                     # На 2 патрона Наручники + Пила + 2 Инвертора
                     elif BL == 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and \
-                         MI["Saw"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"]), HI["Saw"] ) != 0 and \
-                         MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 2, MI["Handcuffs"] + MI["Saw"] ), HI["Inverter"] ) > 1 ):
+                                       MI["Saw"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"]), HI["Saw"] ) != 0 and \
+                                       MI["Inverter"] + min( MI["Adrenalin"] - Simulation.UseAdrenalin( 2, MI["Handcuffs"] + MI["Saw"] ), HI["Inverter"] ) > 1
+                                     ):
                         if FM:
                             self.choice[-1] += "Handcuffs Inverter Saw Dealer Inverter Dealer"
                             path += "Handcuffs Inverter Saw Dealer Inverter Dealer"
@@ -225,7 +236,8 @@ class Solution:
                     
                     # На 2 патрона Наручники + 2 инвертора
                     elif BL == 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Inverter"] + \
-                                      min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) > 1 ):
+                                       min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) > 1
+                                     ):
                         if FM:
                             self.choice[-1] += "Handcuffs Inverter Dealer Inverter Dealer"
                             path += "Handcuffs Inverter Dealer Inverter Dealer"
@@ -234,7 +246,8 @@ class Solution:
 
                     # На последний патрон Пила + Инвертор
                     elif BL == 1 and ( MI["Saw"] + min( MI["Adrenalin"], HI["Saw"] ) != 0 and MI["Inverter"] + min( MI["Adrenalin"] - \
-                                      Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) != 0 ):
+                                       Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) != 0
+                                     ):
                         if FM:
                             self.choice[-1] += "Inverter Saw Dealer"
                             path += "Inverter Saw Dealer"
@@ -373,7 +386,8 @@ class Solution:
 
                     # Наручники + Пила
                     if LR >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Saw"] + \
-                                    min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) != 0 ):
+                                     min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) != 0
+                                   ):
                         if FM:
                             self.choice[-1] += "Handcuffs Saw Dealer Dealer"
                             path += "Handcuffs Saw Dealer Dealer"
@@ -535,7 +549,8 @@ class Solution:
 
                     # Наручники + 2 Пилы
                     if LR >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Saw"] + \
-                                    min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) > 1 ):
+                                     min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) > 1
+                                   ):
                         if FM:
                             self.choice[-1] += "Handcuffs Saw Dealer Saw Dealer"
                             path += "Handcuffs Saw Dealer Saw Dealer"
@@ -562,7 +577,8 @@ class Solution:
                     
                     # На последний патрон Пила
                     elif BL == 1 and ( MI["Saw"] + min( MI["Adrenalin"], HI["Saw"] ) != 0 and MI["Inverter"] + \
-                                      min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) != 0 ):
+                                       min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Saw"] ), HI["Inverter"] ) != 0
+                                     ):
                         if FM:
                             self.choice[-1] += "Saw Dealer"
                             path += "Saw Dealer"
