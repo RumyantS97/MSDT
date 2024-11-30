@@ -11,8 +11,14 @@ Section = Tuple[Vector2, Vector2]
 EmptyArray = np.ndarray([])
 
 
-def calculate_march_squares_2d(field, min_bound=(-5.0, -5.0), max_bound=(5.0, 5.0), march_resolution=(128, 128), threshold=0.5):
-    def perform_linear_interpolation(_a, _b, t):
+def calculate_march_squares_2d(
+    field: Callable[[float, float], float],
+    min_bound: Vector2 = (-5.0, -5.0),
+    max_bound: Vector2 = (5.0, 5.0),
+    march_resolution: Vector2Int = (128, 128),
+    threshold: float = 0.5
+):
+    def perform_linear_interpolation(_a: float, _b: float, t: float) -> float:
         return _a + (_b - _a) * t
     rows, cols = max(march_resolution[1], 3), max(march_resolution[0], 3)
     cols_ = cols - 1
@@ -103,7 +109,7 @@ def calculate_march_squares_2d(field, min_bound=(-5.0, -5.0), max_bound=(5.0, 5.
     return shape
 
 
-def generate_random_value_in_range(rand_range=1.0):
+def generate_random_value_in_range(rand_range: Union[float, Tuple[float, float]] = 1.0) -> float:
     if isinstance(rand_range, float):
         return random.uniform(-0.5 * rand_range, 0.5 * rand_range)
     elif isinstance(rand_range, tuple):
@@ -112,11 +118,16 @@ def generate_random_value_in_range(rand_range=1.0):
         return random.uniform(-0.5, 0.5)
 
 
-def calculate_ellipsoid(x, y, params):
+def calculate_ellipsoid(x: float, y: float, params: Tuple[float, float, float, float, float]) -> float:
     return x * params[0] + y * params[1] + x * y * params[2] + x * x * params[3] + y * y * params[4] - 1
 
 
-def generate_log_reg_ellipsoid_test_data(params, arg_range=5.0, rand_range=1.0, n_points=3000):
+def generate_log_reg_ellipsoid_test_data(
+    params: Tuple[float, float, float, float, float],
+    arg_range: float = 5.0,
+    rand_range: float = 1.0,
+    n_points: int = 3000
+) -> Tuple[np.ndarray, np.ndarray]:
     if _debug_mode:
         print(f"logistic regression f(x,y) = {params[0]:1.3}x + {params[1]:1.3}y + {params[2]:1.3}xy +"
               f"{params[3]:1.3}x^2 + {params[4]:1.3}y^2 - 1,\n"
@@ -132,7 +143,13 @@ def generate_log_reg_ellipsoid_test_data(params, arg_range=5.0, rand_range=1.0, 
     return features, groups
 
 
-def generate_log_reg_test_data(k=-1.5, b=0.1, arg_range=1.0, rand_range=0.0, n_points=3000):
+def generate_log_reg_test_data(
+    k: float = -1.5,
+    b: float = 0.1,
+    arg_range: float = 1.0,
+    rand_range: float = 0.0,
+    n_points: int = 3000
+) -> Tuple[np.ndarray, np.ndarray]:
     if _debug_mode:
         print(f"logistic regression test data b = {b:1.3}, k = {k:1.3},\n"
               f"arg_range = [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
@@ -145,16 +162,16 @@ def generate_log_reg_test_data(k=-1.5, b=0.1, arg_range=1.0, rand_range=0.0, n_p
     return features, groups
 
 
-def calculate_sigmoid(x):
+def calculate_sigmoid(x: np.ndarray) -> np.ndarray:
     x = np.clip(x, -500, 500)
     return 1.0 / (1.0 + np.exp(-x))
 
 
-def calculate_loss(groups_probs, groups):
+def calculate_loss(groups_probs: np.ndarray, groups: np.ndarray) -> float:
     return (-groups * np.log(groups_probs) - (1.0 - groups) * np.log(1.0 - groups_probs)).mean()
 
 
-def draw_logistic_regression_data(features, groups, theta=None):
+def draw_logistic_regression_data(features: np.ndarray, groups: np.ndarray, theta: np.ndarray = None):
     [plt.plot(features[i, 0], features[i, 1], '+b') if groups[i] == 0 else plt.plot(features[i, 0], features[i, 1],
                                                                                     '*r') for i in
      range(features.shape[0] // 2)]
@@ -208,11 +225,11 @@ class LogisticRegression:
                f"}}"
 
     @property
-    def group_features_count(self):
+    def group_features_count(self) -> int:
         return self._GroupFeaturesCount
 
     @property
-    def max_train_iters(self):
+    def max_train_iters(self) -> int:
         return self._MaxTrainIters
 
     @max_train_iters.setter
@@ -220,7 +237,7 @@ class LogisticRegression:
         self._MaxTrainIters = min(max(value, 100), 100000)
 
     @property
-    def learning_rate(self):
+    def learning_rate(self) -> float:
         return self._LearningRate
 
     @learning_rate.setter
@@ -228,7 +245,7 @@ class LogisticRegression:
         self._LearningRate = min(max(value, 0.01), 1.0)
 
     @property
-    def learning_accuracy(self):
+    def learning_accuracy(self) -> float:
         return self._LearningAccuracy
 
     @learning_accuracy.setter
@@ -236,20 +253,20 @@ class LogisticRegression:
         self._LearningAccuracy = min(max(value, 0.01), 1.0)
 
     @property
-    def thetas(self):
+    def thetas(self) -> np.ndarray:
         return self._Thetas
 
     @property
-    def losses(self):
+    def losses(self) -> float:
         return self._Losses
 
-    def predict(self, features):
+    def predict(self, features: np.ndarray) -> np.ndarray:
         # проверка размерности - количество принаков группы == количество элементов в толбце
         if features.shape[1] != self.thetas.size - 1:
             raise NameError('Неверные данные о прогнозируемых характеристиках')
         return calculate_sigmoid(features @ self.thetas[1::] + self.thetas[0])
 
-    def train(self, features, groups):
+    def train(self, features: np.ndarray, groups: np.ndarray):
         # проверка размерности -  количество принаков группы == количество элементов в толбце
         # реализация градиентного спуска для обучения логистической регрессии.
         # формула thetas(i) = thetas(i - 1) - learning_rate * (X^T * sigmoid(X *  thetas(i - 1)) - groups)
@@ -286,10 +303,10 @@ def run_non_linear_regression_test():
     lg = LogisticRegression()
     lg.train(features, group)
     print(lg)
-    def ellipsoid_function(x, y):
+    def _ellipsoid(x, y):
         return lg.thetas[0] + x * lg.thetas[1] + y * lg.thetas[2] + x * y * lg.thetas[3] + x * x * lg.thetas[
             4] + y * y * lg.thetas[5]
-    sections = calculate_march_squares_2d(ellipsoid_function)
+    sections = calculate_march_squares_2d(_ellipsoid)
     for arc in sections:
         p_0, p_1 = arc
         plt.plot([p_0[0], p_1[0]], [p_0[1], p_1[1]], 'k')
