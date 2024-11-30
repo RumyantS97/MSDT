@@ -1,0 +1,1 @@
+CSV_PATH = "c:/users/henry/desktop/datasets/b_cancer.csv"
