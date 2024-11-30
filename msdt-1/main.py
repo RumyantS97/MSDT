@@ -25,7 +25,7 @@ def main():
 	y_test = y_test.T
 	layer_dims =[x_train.shape[0],42,62,12,20,11,1]
 	learning_rate=1e-3
-	print("learning_rate for training is " + str(learning_rate))
+	print(f"learning_rate for training is {learning_rate}")
 	print(y_test)
 	parameters = network_model(x_train,y_train,x_test,y_test,learning_rate=learning_rate,epochs=10000,layer_dims=layer_dims,lambd=0.0,learning_decay=0.00000001,p_keep=1.0,beta=0.9,optimizer="gradient descent")
 	train_predictions = predict(x_train,parameters)
@@ -41,8 +41,8 @@ def initialize_parameters(layer_dims):
 	parameters = {}
 	L = len(layer_dims)
 	for l in range(1,L):
-		parameters["W" + str(l)] = np.random.randn(layer_dims[l],layer_dims[l-1]) * np.sqrt(2/(layer_dims[l-1])) # He weight initialization technique..By He et Al
-		parameters["b" + str(l)] = np.zeros((layer_dims[l],1))
+		parameters[f"W{l}"] = np.random.randn(layer_dims[l],layer_dims[l-1]) * np.sqrt(2/(layer_dims[l-1])) # He weight initialization technique..By He et Al
+		parameters[f"b{l}"] = np.zeros((layer_dims[l],1))
 	return parameters
 
 def linear_forward(A,W,b):
@@ -83,13 +83,13 @@ def L_model_forward(X, parameters,p_keep=1):
 	A = X
 	for i in range(1,L):
 		A_prev = A
-		A,cache = linear_activation_forward(A_prev,parameters["W" + str(i)],parameters["b" + str(i)], activation="relu")
-		dropout_dict["D"+ str(i)]= np.random.rand(A.shape[0],A.shape[1])
-		dropout_dict["D" + str(i)] = dropout_dict["D" + str(i)] < p_keep
-		A = A*dropout_dict["D" + str(i)]
+		A,cache = linear_activation_forward(A_prev,parameters[f"W{i}"],parameters[f"b{i}"], activation="relu")
+		dropout_dict[f"D{i}"]= np.random.rand(A.shape[0],A.shape[1])
+		dropout_dict[f"D{i}"] = dropout_dict[f"D{i}"] < p_keep
+		A = A*dropout_dict[f"D{i}"]
 		A/=p_keep
 		caches.append(cache)
-	AL, cache = linear_activation_forward(A,parameters["W" + str(L)], parameters["b" + str(L)], activation = "sigmoid")
+	AL, cache = linear_activation_forward(A,parameters[f"W{L}"], parameters[f"b{L}"], activation = "sigmoid")
 	caches.append(cache)
 	return AL, caches,dropout_dict
 def relu_backward(dA,Z):
@@ -133,24 +133,24 @@ def l_model_backward(AL,Y,cache,lambd,dropout_dict,p_keep):
 	dAL = -np.divide(Y,AL) + np.divide(1-Y,1-AL+(1e-18))
 	current_cache = cache[-1]
 	L = len(cache)
-	grads["dW" + str(L)],grads["db" + str(L)], grads["dA" + str(L-1)] = linear_backward_activation(dAL, current_cache, activation ="sigmoid",lambd=0.0)
-	grads["dA"+ str(L-1)] = grads["dA" + str(L-1)] *dropout_dict["D" + str(L-1)]
-	grads["dA" + str(L-1)]/=p_keep
+	grads[f"dW{L}"],grads[f"db{L}"], grads[f"dA{L - 1}"] = linear_backward_activation(dAL, current_cache, activation ="sigmoid",lambd=0.0)
+	grads[f"dA{L - 1}"] = grads[f"dA{L - 1}"] *dropout_dict[f"D{L - 1}"]
+	grads[f"dA{L - 1}"]/=p_keep
 	for i in reversed(range(L-1)):
 		current_cache = cache[i]
-		grads["dW"+ str(i+1)], grads["db" + str(i+1)], grads["dA"+ str(i)] = linear_backward_activation(grads["dA" + str(i+1)],current_cache,activation="relu",lambd=0.0)
+		grads[f"dW{i+1}"], grads[f"db{i + 1}"], grads[f"dA{i}"] = linear_backward_activation(grads[f"dA{i+1}"],current_cache,activation="relu",lambd=0.0)
 		if i == 0:
 			break
 		else:
-			grads["dA"+ str(i)] = grads["dA" + str(i)] * dropout_dict["D" + str(i)]
-			grads["dA" + str(i)] /=p_keep
+			grads[f"dA{i}"] = grads[f"dA{i}"] * dropout_dict[f"D{i}"]
+			grads[f"dA{i}"] /=p_keep
 	return grads
 
 def update_parameters(parameters,grads, learning_rate):
 	L = len(parameters) //2
 	for l  in range(1,L):
-		parameters["W"+ str(l)] =parameters["W" + str(l)] - learning_rate * grads["dW" + str(l)]
-		parameters["b" + str(l)] = parameters["b"+ str(l)] - learning_rate * grads["db" + str(l)]
+		parameters[f"W{l}"] =parameters[f"W{l}"] - learning_rate * grads[f"dW{l}"]
+		parameters[f"b{l}"] = parameters[f"b{l}"] - learning_rate * grads[f"db{l}"]
 	return parameters
 
 def dict_to_vector(dictionary):
@@ -168,7 +168,7 @@ def vector_to_dict(vector,keys):
     dict={}
     for i in range(len(keys)):
         dict[keys[i]]  = vector[i]
-    return dictionary
+    return dict
 
 def extract_weight(dict):
     L = len(dict)//2
@@ -208,39 +208,39 @@ def initialize_velocities(params):
 	v ={}
 	L = len(params)//2
 	for i in range(L):
-		v["dW" + str(i+1)] = np.zeros_like(params["W" + str(i+1)])
-		v["db" + str(i+1)] = np.zeros_like(params["b" + str(i+1)])
+		v[f"dW{i+1}"] = np.zeros_like(params[f"W{i+1}"])
+		v[f"db{i+1}"] = np.zeros_like(params[f"b{i+1}"])
 	return v
 
 
 def update_parameters_with_momentum(params,learning_rate,grads,v,beta):
 	L = len(params)//2
 	for i in range(L):
-		v["dW" + str(i+1)] = beta*v["dW" + str(i+1)] + (1-beta)*grads["dW" + str(i+1)]
-		v["db" + str(i+1)] = beta*v["db" + str(i+1)] + (1-beta)*grads["db" + str(i+1)]
+		v[f"dW{i+1}"] = beta*v[f"dW{i+1}"] + (1-beta)*grads[f"dW{i+1}"]
+		v[f"db{i+1}"] = beta*v[f"db{i+1}"] + (1-beta)*grads[f"db{i+1}"]
 
-		params["W"+ str(i+1)] = params["W" + str(i+1)] - learning_rate*v["dW"+ str(i+1)]
-		params["b" + str(i+1)] = params["b" + str(i+1)] - learning_rate*v["db" + str(i+1)]
+		params[f"W{i+1}"] = params[f"W{i+1}"] - learning_rate*v[f"dW{i+1}"]
+		params[f"b{i+1}"] = params[f"b{i+1}"] - learning_rate*v[f"db{i+1}"]
 	return params,v
 
 def initialize_rmsprop(params):
 	L = len(params)//2
 	s={}
 	for l in range(L):
-		s["dW" + str(l+1)] = np.zeros_like(params["W" +  str(l+1)])
-		s["db" + str(l+1)] = np.zeros_like(params["W"+ str((l+1))])
+		s[f"dW{l+1}"] = np.zeros_like(params[f"W{l+1}"])
+		s[f"db{l+1}"] = np.zeros_like(params[f"W{l+1}"])
 	return s
 
 def update_rmsprop(s,t,params,grads,learning_rate,beta_2=0.999,epsilon=1e-8):
 	L = len(grads)//2
 	s_corrected ={}
 	for l in range(L):
-		s["dW" + str(l+1)] = (s["dW"+ str(l+1)]*beta2) + (1-beta2) * np.square(grads["dW" + str(l+1)])
-		s["db" + str(l+1)] = (s["db"+ str(l+1)]*beta2) + (1-beta2) * np.square(grads["db" + str(l+1)])
-		s_corrected["dW" + str(l+1)] = np.divide(s["dW" + str(l+1)],1 - np.power(beta2,t))
-		s_corrected["db" + str(l+1)] = np.divide(s["db" + str(l+1)],1 - np.power(beta2,t))
-		params["W" + str(l+1)] = params["W" + str(l+1)] - np.divide(learning_rate,np.sqrt(s_corrected["dW" + str(l+1)]  + epsilon))
-		params["b" + str(l+1)] = params["b" + str(l+1)] - np.divide(learning_rate,np.sqrt(s_corrected["db" + str(l+1)] + epsilon))
+		s[f"dW{l+1}"] = (s[f"dW{l+1}"]*beta_2) + (1-beta_2) * np.square(grads[f"dW{l+1}"])
+		s[f"db{l+1}"] = (s[f"db{l+1}"]*beta_2) + (1-beta_2) * np.square(grads[f"db{l+1}"])
+		s_corrected[f"dW{l+1}"] = np.divide(s[f"dW{l+1}"],1 - np.power(beta_2,t))
+		s_corrected[f"db{l+1}"] = np.divide(s[f"db{l+1}"],1 - np.power(beta_2,t))
+		params[f"W{l+1}"] = params[f"W{l+1}"] - np.divide(learning_rate,np.sqrt(s_corrected[f"dW{l+1}"]  + epsilon))
+		params[f"b{l+1}"] = params[f"b{l+1}"] - np.divide(learning_rate,np.sqrt(s_corrected[f"db{l+1}"] + epsilon))
 	return params,s_corrected
 
 def initialize_adam(params):
@@ -248,10 +248,10 @@ def initialize_adam(params):
 	s={}
 	v={}
 	for l in range(L):
-		v["dW" + str(l+1)] = np.zeros_like(params["W" + str(l+1)])
-		v["db" + str(l+1)] = np.zeros_like(params["b" + str(l+1)])
-		s["dW" + str(l+1)] = np.zeros_like(params["W" + str(l+1)])
-		s["db"+ str(l+1)] = np.zeros_like(params["b" + str(l+1)])
+		v[f"dW{l+1}"] = np.zeros_like(params[f"W{l+1}"])
+		v[f"db{l+1}"] = np.zeros_like(params[f"b{l+1}"])
+		s[f"dW{l+1}"] = np.zeros_like(params[f"W{l+1}"])
+		s[f"db{l+1}"] = np.zeros_like(params[f"b{l+1}"])
 	return v,s
 
 def update_adam(params,grads,v,s,t,learning_rate,epsilon=1e-8,beta1=0.9,beta2=0.999):
@@ -259,16 +259,16 @@ def update_adam(params,grads,v,s,t,learning_rate,epsilon=1e-8,beta1=0.9,beta2=0.
 	s_corrected ={}
 	L =len(params)//2
 	for l in range(L):
-		v["dW" + str(l+1)] = v["dW" + str(l+1)]*beta1 + (1-beta1)*grads["dW" + str(l+1)]
-		v["db" + str(l+1)] = v["db" + str(l+1)]*beta1 + (1-beta1)*grads["db" + str(l+1)]
-		v_corrected["dW" + str(l+1)] = v["dW" + str(l+1)]/(1-np.power(beta1,t))
-		v_corrected["db" + str(l+1)] = v["db" + str(l+1)]/(1-np.power(beta1,t))
-		s["dW" + str(l+1)] = s["dW" + str(l+1)]*beta2 + (1-beta2)*(grads["dW" + str(l+1)])**2
-		s["db" + str(l+1)] = s["db" + str(l+1)]*beta2 + (1-beta2)*(grads["db" + str(l+1)])**2
-		s_corrected["dW" + str(l+1)] = (s["dW" + str(l+1)])/(1 - np.power(beta2,t))
-		s_corrected["db" + str(l+1)] = (s["db" + str(l+1)])/(1 - np.power(beta2,t))
-		params["W" + str(l+1)] = params["W" + str(l+1)] - learning_rate*np.divide(v_corrected["dW" + str(l+1)],np.sqrt(s_corrected["dW" + str(l+1)]+epsilon))
-		params["b" + str(l+1)] = params["b" + str(l+1)] - learning_rate*np.divide(v_corrected["db" + str(l+1)],np.sqrt(s_corrected["db" + str(l+1)]+epsilon))
+		v[f"dW{l+1}"] = v[f"dW{l+1}"]*beta1 + (1-beta1)*grads[f"dW{l+1}"]
+		v[f"db{l+1}"] = v[f"db{l+1}"]*beta1 + (1-beta1)*grads[f"db{l+1}"]
+		v_corrected[f"dW{l+1}"] = v[f"dW{l+1}"]/(1-np.power(beta1,t))
+		v_corrected[f"db{l+1}"] = v[f"db{l+1}"]/(1-np.power(beta1,t))
+		s[f"dW{l+1}"] = s[f"dW{l+1}"]*beta2 + (1-beta2)*(grads[f"dW{l+1}"])**2
+		s[f"db{l+1}"] = s[f"db{l+1}"]*beta2 + (1-beta2)*(grads[f"db{l+1}"])**2
+		s_corrected[f"dW{l+1}"] = (s[f"dW{l+1}"])/(1 - np.power(beta2,t))
+		s_corrected[f"db{l+1}"] = (s[f"db{l+1}"])/(1 - np.power(beta2,t))
+		params[f"W{l+1}"] = params[f"W{l+1}"] - learning_rate*np.divide(v_corrected[f"dW{l+1}"],np.sqrt(s_corrected[f"dW{l+1}"]+epsilon))
+		params[f"b{l+1}"] = params[f"b{l+1}"] - learning_rate*np.divide(v_corrected[f"db{l+1}"],np.sqrt(s_corrected[f"db{l+1}"]+epsilon))
 	return params,s_corrected,v_corrected
 
 def compute_cost(AL,Y,lambd,parameters):
@@ -325,9 +325,9 @@ def network_model(x_train,y_train,x_test,y_test,learning_rate,epochs,layer_dims,
 			score = accuracy_score(predictions,y_train)
 			scores1.append(score)
 		if i%50 ==0:
-			print("cross entropy loss after "+ str(i) + "th epoch = " + str(cost_train))
-			print("accuracy after " + str(i) + "th epoch = " + str(score))
-			print("current learning_rate = " + str(learning_rate))
+			print(f"cross entropy loss after {i} th epoch = {cost_train}")
+			print(f"accuracy after {i} th epoch = {score}")
+			print(f"current learning_rate = {learning_rate}")
 	ax1.plot(costs)
 	ax2.plot(scores1, label = " training set")
 	plt.legend()
