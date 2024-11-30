@@ -266,6 +266,7 @@ class Solution:
                     self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
                 elif DHP == 2:
+
                     # 2 патрона + Наручники
                     if LR >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 ):
                         if FM:
@@ -290,8 +291,11 @@ class Solution:
                         self.ev[-1] += ch
                         self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                     
-                    else: # Тратим предметы, пытаясь пропустить раунд
-                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0: # Если дилер не убивает на своём ходе
+                    # Тратим предметы, пытаясь пропустить раунд
+                    else:
+
+                        # Если дилер не убивает на своём ходе
+                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0:
 
                             # По EV мы впереди: 2 в него 1 в себя
                             if LR == 3 and HI["Handcuffs"] == 0:
@@ -323,8 +327,9 @@ class Solution:
                                     path += "Dealer"
                                 self.ev[-1] += ch
                                 self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
-                        
-                        else: # Пытаемся выжить
+
+                        # Пытаемся выжить
+                        else:
                             if MI["Beer"] != 0:
                                 if FM:
                                     self.choice[-1] += "Beer "
@@ -356,6 +361,7 @@ class Solution:
                                 self.MeCalculate( YHP, DHP, LR - 1, BL, ch, path, MI, HI, BM, BD, FM, ind + 1, capt )
 
                             else:
+
                                 # Увы и ах
                                 if FM:
                                     self.choice[-1] += "Dealer"
@@ -364,6 +370,7 @@ class Solution:
                                 self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                 
                 elif DHP == 3:
+
                     # Наручники + Пила
                     if LR >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Saw"] + \
                                     min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) != 0 ):
@@ -391,7 +398,8 @@ class Solution:
                     
                     else: # Тратим предметы для скипа
 
-                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0: # Если диллер не убивает на своём ходе
+                         # Если диллер не убивает на своём ходе
+                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0:
 
                             # Наручники сразу используем т.к. их использование всегда выгодно
                             if HI["Handcuffs"] != 0 and MI["Adrenalin"] != 0:
@@ -413,6 +421,7 @@ class Solution:
 
                             # Используем пилу или просто бьём когда патронов нечётно
                             elif LR == 3 and HI["Handcuffs"] == 0:
+
                                 # Используем пилу
                                 if HI["Saw"] != 0 and MI["Adrenalin"] != 0:
                                     if FM:
@@ -431,7 +440,8 @@ class Solution:
                                     self.ev[-1] += ch * 2
                                     self.DealerCalculate( YHP, DHP - 2, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                                 
-                                else: # Просто бьём
+                                # Просто бьём
+                                else:
                                     if FM:
                                         self.choice[-1] += "Dealer"
                                         path += "Dealer"
@@ -472,14 +482,16 @@ class Solution:
                                     self.ev[-1] += ch * 2
                                     self.DealerCalculate( YHP, DHP - 2, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
-                                else: # Просто бьём
+                                # Просто бьём
+                                else:
                                     if FM:
                                         self.choice[-1] += "Dealer"
                                         path += "Dealer"
                                     self.ev[-1] += ch
                                     self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
-                        else: # Пробуем выжить
+                        # Пробуем выжить
+                        else:
                             if MI["Beer"] != 0:
                                 if FM:
                                     self.choice[-1] += "Beer "
@@ -514,11 +526,13 @@ class Solution:
                                 if FM:
                                     self.choice[-1] += "Dealer"
                                     path += "Dealer"
+
                                 # Надеемся на лучшее
                                 self.ev[-1] += ch
                                 self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
                 else: # DHP == 4
+
                     # Наручники + 2 Пилы
                     if LR >= 2 and ( MI["Handcuffs"] + min( MI["Adrenalin"], HI["Handcuffs"] ) != 0 and MI["Saw"] + \
                                     min( MI["Adrenalin"] - Simulation.UseAdrenalin( 1, MI["Handcuffs"] ), HI["Saw"] ) > 1 ):
@@ -555,8 +569,11 @@ class Solution:
                         self.ev[-1] += ch * 2
                         self.DealerCalculate( YHP, DHP - 2, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                     
-                    else: # Пробуем скипнуть патроны для комбы
-                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0: # Если диллер не убивает на своём ходе
+                    # Пробуем скипнуть патроны для комбы
+                    else:
+
+                        # Если диллер не убивает на своём ходе
+                        if Simulation.CanKill( YHP, LR - 1, BL, MI, HI ) == 0:
 
                             # Используем наручники и пилу поскольку это всегда выгодно
                             if HI["Handcuffs"] != 0 and HI["Saw"] != 0 and MI["Adrenalin"] > 1:
@@ -637,14 +654,16 @@ class Solution:
                                     self.ev[-1] += ch * 2
                                     self.DealerCalculate( YHP, DHP - 2, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                                 
-                                else: # Просто бьём
+                                # Просто бьём
+                                else:
                                     if FM:
                                         self.choice[-1] += "Dealer"
                                         path += "Dealer"
                                     self.ev[-1] += ch
                                     self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
-                            else: # Пробуем скипнуть патрон
+                            # Пробуем скипнуть патрон
+                            else:
                                 if MI["Beer"] != 0:
                                     if FM:
                                         self.choice[-1] += "Beer "
@@ -677,14 +696,16 @@ class Solution:
                                     self.ev[-1] += ch * 2
                                     self.DealerCalculate( YHP, DHP - 2, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
                                 
-                                else: # Просто бьём
+                                # Просто бьём
+                                else:
                                     if FM:
                                         self.choice[-1] += "Dealer"
                                         path += "Dealer"
                                     self.ev[-1] += ch
                                     self.DealerCalculate( YHP, DHP - 1, LR - 1, BL, ch, path, MI, HI, BM, BD, False, ind + 1, capt )
 
-                        else: # Пробуем скипнуть патрон
+                        # Пробуем скипнуть патрон
+                        else:
                             if MI["Beer"] != 0:
                                 if FM:
                                     self.choice[-1] += "Beer "
@@ -716,6 +737,7 @@ class Solution:
                                 self.MeCalculate( YHP, DHP, LR - 1, BL, ch, path, MI, HI, BM, BD, FM, ind + 1, capt )
 
                             else:
+
                                 # Надеемся на лучшее
                                 if FM:
                                     self.choice[-1] += "Dealer"
@@ -735,13 +757,19 @@ class Solution:
 
         # 2. Кончились патроны
         elif LR + BL != 0:
-            damage = LR / ( LR + BL ) # Шанс боевого патрона
-            if LR > BL or ( DHP == 1 and LR != 0 ): # Боевых больше холостых /1 HP при наличии боевых - в меня
+
+            # Шанс боевого патрона
+            damage = LR / ( LR + BL )
+
+            # Боевых больше холостых /1 HP при наличии боевых - в меня
+            if LR > BL or ( DHP == 1 and LR != 0 ):
                 self.ev[ self.choice.IndexOf(path) ] -= ch * damage
                 self.MeCalculate( YHP - 1, DHP, LR - 1, BL, ch * damage, path, MI, HI, BM, BD, FM, ind, capt )
                 if (BL != 0):
                     self.MeCalculate( YHP, DHP, LR, BL - 1, ch * ( 1 - damage ), path, MI, HI, BM, BD, FM, ind, capt )
-            else: # Иначе - в себя
+            
+            # Иначе - в себя
+            else:
                 self.ev[ self.choice.IndexOf(path) ] += ch * damage
                 if (LR != 0):
                     self.MeCalculate( YHP, DHP - 1, LR - 1, BL, ch * damage, path, MI, HI, BM, BD, FM, ind, capt )
