@@ -106,34 +106,23 @@ def calculate_ellipsoid(x: float, y: float, params: Tuple[float, float, float, f
     return x * params[0] + y * params[1] + x * y * params[2] + x * x * params[3] + y * y * params[4] - 1
 
 
-def generate_log_reg_ellipsoid_test_data(
-    params: Tuple[float, float, float, float, float],
-    arg_range: float = 5.0,
-    rand_range: float = 1.0,
-    n_points: int = 3000
-) -> Tuple[np.ndarray, np.ndarray]:
+def generate_log_reg_ellipsoid_test_data(parameters: Tuple[float, float, float, float, float], arg_range: float = ARG_RANGE, rand_range: float = RAND_RANGE, n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
     if DEBUG_MODE:
-        print(f"logistic regression f(x,y) = {params[0]:1.3}x + {params[1]:1.3}y + {params[2]:1.3}xy +"
-              f"{params[3]:1.3}x^2 + {params[4]:1.3}y^2 - 1,\n"
+        print(f"logistic regression f(x, y) = {parameters[0]:1.3}x + {parameters[1]:1.3}y + {parameters[2]:1.3}xy +"
+              f"{parameters[3]:1.3}x^2 + {parameters[4]:1.3}y^2 - 1,\n"
               f"arg_range =  [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
               f"rand_range = [{-rand_range * 0.5:1.3}, {rand_range * 0.5:1.3}]")
     features = np.zeros((n_points, 5), dtype=float)
     features[:, 0] = np.array([generate_random_value_in_range(arg_range) for _ in range(n_points)])
     features[:, 1] = np.array([generate_random_value_in_range(arg_range) for _ in range(n_points)])
     features[:, 2] = features[:, 0] * features[:, 1]
-    features[:, 3] = features[:, 0] * features[:, 0]
-    features[:, 4] = features[:, 1] * features[:, 1]
-    groups = np.array([np.sign(calculate_ellipsoid(features[i, 0], features[i, 1], params)) * 0.5 + 0.5 for i in range(n_points)])
+    features[:, 3] = features[:, 0] ** 2
+    features[:, 4] = features[:, 1] ** 2
+    groups = np.array([np.sign(calculate_ellipsoid(features[i, 0], features[i, 1], parameters)) * 0.5 + 0.5 for i in range(n_points)])
     return features, groups
 
 
-def generate_log_reg_test_data(
-    k: float = -1.5,
-    b: float = 0.1,
-    arg_range: float = 1.0,
-    rand_range: float = 0.0,
-    n_points: int = 3000
-) -> Tuple[np.ndarray, np.ndarray]:
+def generate_log_reg_test_data(k: float = -1.5, b: float = 0.1, arg_range: float = 1.0, rand_range: float = 0.0, n_points: int = N_POINTS) -> Tuple[np.ndarray, np.ndarray]:
     if DEBUG_MODE:
         print(f"logistic regression test data b = {b:1.3}, k = {k:1.3},\n"
               f"arg_range = [{-arg_range * 0.5:1.3}, {arg_range * 0.5:1.3}],\n"
@@ -141,8 +130,8 @@ def generate_log_reg_test_data(
     features = np.zeros((n_points, 2), dtype=float)
     features[:, 0] = np.array([generate_random_value_in_range(arg_range) for _ in range(n_points)])
     features[:, 1] = np.array([generate_random_value_in_range(arg_range) for _ in range(n_points)])
-    groups = np.array([1 if features[i, 0] * k + b > features[i, 1] + generate_random_value_in_range(rand_range) else 0.0 for i in
-                       range(n_points)])
+    groups = np.array([1 if features[i, 0] * k + b > features[i, 1] + generate_random_value_in_range(rand_range)
+                       else 0.0 for i in range(n_points)])
     return features, groups
 
 
@@ -151,8 +140,9 @@ def calculate_sigmoid(x: np.ndarray) -> np.ndarray:
     return 1.0 / (1.0 + np.exp(-x))
 
 
-def calculate_loss(groups_probs: np.ndarray, groups: np.ndarray) -> float:
-    return (-groups * np.log(groups_probs) - (1.0 - groups) * np.log(1.0 - groups_probs)).mean()
+def calculate_loss(group_probabilities: np.ndarray, groups: np.ndarray) -> float:
+    group_probabilities = np.clip(group_probabilities, SMOOTHING_CONSTANT, 1.0 - SMOOTHING_CONSTANT)
+    return (-groups * np.log(group_probabilities) - (1.0 - groups) * np.log(1.0 - group_probabilities)).mean()
 
 
 def draw_logistic_regression_data(features: np.ndarray, groups: np.ndarray, theta: np.ndarray = None):
@@ -182,22 +172,14 @@ def draw_logistic_regression_data(features: np.ndarray, groups: np.ndarray, thet
 
 
 class LogisticRegression:
-    def __init__(self, learning_rate=1.0, max_iters=1000, accuracy=1e-2):
-        # максимальное количество шагов градиентным спуском
-        self._MaxTrainIters = 0
-        # длина шага вдоль направления градиента
-        self._LearningRate = 0
-        # точность к которой мы стремимся
-        self._LearningAccuracy = 0
-        # колическто признаков одной группы
-        self._GroupFeaturesCount = 0
-        # параметры тетта (подробное описание в pdf файле)
-        self._Thetas = None
-        # текущее знаение функции потерь
-        self._Losses = 0.0
-        self.max_train_iters = max_iters
+    def __init__(self, learning_rate: float = LEARNING_RATE,
+                 max_iters: int = MAX_ITERS, accuracy: float = LEARNING_ACCURACY):
+        self.max_train_iterations = max_iters
         self.learning_rate = learning_rate
         self.learning_accuracy = accuracy
+        self.group_features_count = 0
+        self.thetas = None
+        self.losses = 0.0
     def __str__(self):
         return f"{{\n" \
                f"\t\"GroupFeaturesCount\": {self.group_features_count},\n" \
@@ -207,43 +189,6 @@ class LogisticRegression:
                f"\t\"Thetas\": [{', '.join(str(e) for e in self.thetas.flat)}],\n" \
                f"\t\"Losses\": {self.losses}\n" \
                f"}}"
-
-    @property
-    def group_features_count(self) -> int:
-        return self._GroupFeaturesCount
-
-    @property
-    def max_train_iters(self) -> int:
-        return self._MaxTrainIters
-
-    @max_train_iters.setter
-    def max_train_iters(self, value):
-        self._MaxTrainIters = min(max(value, 100), 100000)
-
-    @property
-    def learning_rate(self) -> float:
-        return self._LearningRate
-
-    @learning_rate.setter
-    def learning_rate(self, value):
-        self._LearningRate = min(max(value, 0.01), 1.0)
-
-    @property
-    def learning_accuracy(self) -> float:
-        return self._LearningAccuracy
-
-    @learning_accuracy.setter
-    def learning_accuracy(self, value):
-        self._LearningAccuracy = min(max(value, 0.01), 1.0)
-
-    @property
-    def thetas(self) -> np.ndarray:
-        return self._Thetas
-
-    @property
-    def losses(self) -> float:
-        return self._Losses
-
     def predict(self, features: np.ndarray) -> np.ndarray:
         # проверка размерности - количество принаков группы == количество элементов в толбце
         if features.shape[1] != self.thetas.size - 1:
