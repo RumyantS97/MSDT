@@ -28,20 +28,20 @@ def calculate_checksum(row_numbers: List[int]) -> str:
     return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
 
 
-def serialize_result(variant: int, checksum: str, output_file: str = "result.json") -> None:
+def serialize_result(variant: int, checksum: str) -> None:
     """
     Writes the variant and checksum to a JSON file.
 
     :param variant: the variant number.
     :param checksum: the calculated checksum.
-    :param output_file: the path to the output JSON file (default: "result.json")
     """
-    result = {"variant": str(variant), "checksum": checksum}
-    try:
-        with open(output_file, 'w', encoding='utf-8') as json_file:
-            json.dump(result, json_file, indent=4)
-    except Exception as e:
-        print(f"Error writing to {output_file}: {e}")
+    result = {
+        "variant": str(variant),
+        "checksum": checksum
+    }
+
+    with open("result.json", "w", encoding="utf-8") as file:
+        json.dump(result, file, indent=2, ensure_ascii=False)
 
 
 def is_valid_row(row: list[str]) -> bool:
