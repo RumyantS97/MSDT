@@ -1,11 +1,21 @@
-import pygame
 import logging
-import numpy as np
 import math
+
+import pygame
+import numpy as np
 from pygame.locals import K_w, K_a, K_s, K_d, K_UP, K_DOWN, K_LEFT, K_RIGHT, QUIT, K_q, K_e
 
+from constants import FILEPATH
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] [%(funcName)s] %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(FILEPATH, encoding='utf-8')
+    ]
+)
 pygame.init()
 
 # Размер окна
