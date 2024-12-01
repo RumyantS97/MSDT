@@ -85,7 +85,7 @@ def get_invalid_rows(csv_file: str) -> list[int]:
     return invalid_rows
 
 
-csv_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), "14.csv")
+csv_file = os.path.join("14.csv")
 invalid_rows = get_invalid_rows(csv_file)
 checksum = calculate_checksum(invalid_rows)
 serialize_result(14, checksum)
