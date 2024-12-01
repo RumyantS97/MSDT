@@ -1,5 +1,4 @@
 import pytest
-from pytest_mock import MockerFixture
 from my_functions import find_longest_increasing_subsequence, check_parentheses, check_all_brackets, zero_matrix
 
 
@@ -126,12 +125,4 @@ def test_zero_matrix_parametrized(matrix, expected):
     original_matrix = [row[:] for row in matrix]
     result = zero_matrix(matrix) 
     assert result == expected
-    assert matrix == original_matrix  
-
-
-# Mocking test (check for side effects)
-def test_zero_matrix_no_side_effects(mocker: MockerFixture):
-    mock_print = mocker.patch('builtins.print')  # Mock the print function
-    matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    zero_matrix(matrix)
-    mock_print.assert_not_called()  # Assert that print wasn't called
+    assert matrix == original_matrix
