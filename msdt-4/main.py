@@ -16,6 +16,9 @@ logging.basicConfig(
         logging.FileHandler(FILEPATH, encoding='utf-8')
     ]
 )
+
+logger = logging.getLogger(__name__)
+
 pygame.init()
 
 # Размер окна
@@ -34,6 +37,7 @@ N = 10   # Количество ярусов
 BLOCKS = 3  # Количество блоков
 
 def generate_tree_block(H, R, N, start_z):
+    logger.info(f"Generating tree block: H={H}, R={R}, N={N}, start_z={start_z}")
     points = []
     edges = []
     for k in np.linspace(0, 1, N):
@@ -46,71 +50,94 @@ def generate_tree_block(H, R, N, start_z):
         if (i + 1) % N != 0:
             edges.append((i, i + 1))
             edges.append((i, i + N))
+    logger.info(f"Generated {len(points)} points and {len(edges)} edges for tree block.")
     return points, edges
 
 def generate_tree(H, R, N, blocks):
+    logger.info(f"Generating tree with H={H}, R={R}, N={N}, blocks={blocks}")
     points = []
     edges = []
     for i in range(blocks):
+        logger.info(f"Generating block {i + 1}/{blocks}")
         block_points, block_edges = generate_tree_block(H, R * (1 - 0.3 * i), N, H * i)
         offset = len(points)
         points.extend(block_points)
         edges.extend([(e[0] + offset, e[1] + offset) for e in block_edges])
+    logger.info(f"Generated tree with {len(points)} points and {len(edges)} edges.")
     return np.array(points), edges
 
 def apply_transformation(points, transformation_matrix):
+    logger.info(f"Applying transformation to {len(points)} points.")
     return np.dot(points, transformation_matrix.T)
 
 def scale_matrix(sx, sy, sz):
-    return np.array([
+    logger.info(f"Creating scale matrix: sx={sx}, sy={sy}, sz={sz}")
+    matrix = np.array([
         [sx, 0,  0,  0],
         [0,  sy, 0,  0],
         [0,  0,  sz, 0],
         [0,  0,  0,  1]
     ])
+    logger.info(f"Scale matrix created: {matrix}")
+    return matrix
 
 def translate_matrix(tx, ty, tz):
-    return np.array([
+    logger.info(f"Creating translation matrix: tx={tx}, ty={ty}, tz={tz}")
+    matrix = np.array([
         [1, 0, 0, tx],
         [0, 1, 0, ty],
         [0, 0, 1, tz],
         [0, 0, 0, 1]
     ])
+    logger.info(f"Translation matrix created: {matrix}")
+    return matrix
 
 def rotate_matrix(axis, angle):
+    logger.info(f"Creating rotation matrix: axis={axis}, angle={angle}")
     angle = math.radians(angle)
     if axis == 'x':
-        return np.array([
+        matrix = np.array([
             [1, 0, 0, 0],
             [0, math.cos(angle), -math.sin(angle), 0],
             [0, math.sin(angle), math.cos(angle), 0],
             [0, 0, 0, 1]
         ])
     elif axis == 'y':
-        return np.array([
+        matrix = np.array([
             [math.cos(angle), 0, math.sin(angle), 0],
             [0, 1, 0, 0],
             [-math.sin(angle), 0, math.cos(angle), 0],
             [0, 0, 0, 1]
         ])
     elif axis == 'z':
-        return np.array([
+        matrix = np.array([
             [math.cos(angle), -math.sin(angle), 0, 0],
             [math.sin(angle), math.cos(angle), 0, 0],
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ])
+    else:
+        logger.error(f"Invalid rotation axis: {axis}")
+        raise ValueError(f"Invalid axis '{axis}', must be 'x', 'y', or 'z'.")
+    logger.info(f"Rotation matrix created for axis {axis}: {matrix}")
+    return matrix
 
 def project_with_perspective(points, zk, znn, width, height):
+    logger.info(f"Projecting {len(points)} points with perspective: zk={zk}, znn={znn}, width={width}, height={height}")
     projected_points = []
     for point in points:
         x, y, z, _ = point
-        x_proj = int((x / (zk - z)) * zk + width // 2)
-        y_proj = int((y / (zk - z)) * zk + height // 2)
-        projected_points.append((x_proj, y_proj))
+        try:
+            x_proj = int((x / (zk - z)) * zk + width // 2)
+            y_proj = int((y / (zk - z)) * zk + height // 2)
+            projected_points.append((x_proj, y_proj))
+        except ZeroDivisionError:
+            logger.warning(f"ZeroDivisionError while projecting point {point}")
+    logger.info(f"Projection completed with {len(projected_points)} points.")
     return projected_points
 
 def main():
+    logger.info("Starting main loop")
     clock = pygame.time.Clock()
     points, edges = generate_tree(H, R, N, BLOCKS)
     angle_x, angle_y, angle_z = 0, 0, 0
@@ -124,6 +151,7 @@ def main():
         screen.fill(BLACK)
         for event in pygame.event.get():
             if event.type == QUIT:
+                logger.info("Quit event detected. Exiting...")
                 running = False
         keys = pygame.key.get_pressed()
         if keys[K_w]:  # Вращение вокруг оси X
@@ -146,6 +174,8 @@ def main():
             tx -= 10
         if keys[K_RIGHT]:  # Перемещение вправо
             tx += 10
+        logger.info(f"Transformation: angle_x={angle_x}, angle_y={angle_y}, angle_z={angle_z}, "
+                    f"scale_factor={scale_factor}, tx={tx}, ty={ty}, tz={tz}")
 
         transformation = (
             translate_matrix(tx, ty, tz) @
@@ -165,6 +195,9 @@ def main():
         clock.tick(60)
 
     pygame.quit()
+    logger.info("Pygame successfully quit")
 
 if __name__ == "__main__":
+    logger.info("Application started")
     main()
+    logger.info("Application terminated")
