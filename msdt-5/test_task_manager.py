@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 from task_manager import Task, TaskManager
 
 
@@ -58,11 +59,12 @@ def test_add_multiple_tasks(title, description):
     assert not task.completed
 
 
-def test_mark_task_completed_with_mocker(mocker):
+def test_mark_task_completed_with_mock():
     manager = TaskManager()
-    mock_task = mocker.Mock(spec=Task)
+    mock_task = Mock(spec=Task)
     mock_task.title = "Mock Task"
     manager.tasks.append(mock_task)
+
     result = manager.mark_task_completed("Mock Task")
     assert result
     mock_task.mark_completed.assert_called_once()
