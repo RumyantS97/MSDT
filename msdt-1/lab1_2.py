@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional, Tuple
 
 from model_objects import Customer, ShoppingList, CustomerType, Address
 
@@ -13,11 +13,11 @@ class CustomerMatches:
         """
         Initializes the CustomerMatches object.
         """
-        self.matchTerm = None
-        self.customer = None
-        self.duplicates = []
+        self.matchTerm: Optional[str] = None
+        self.customer: Optional[Customer] = None
+        self.duplicates: List[Customer] = []
 
-    def has_duplicates(self):
+    def has_duplicates(self) -> bool:
         """
         Checks if there are any duplicate customers.
 
@@ -26,7 +26,7 @@ class CustomerMatches:
         """
         return bool(self.duplicates)
 
-    def add_duplicate(self, duplicate):
+    def add_duplicate(self, duplicate: Customer):
         """
         Adds a duplicate customer to the list of duplicates.
 
@@ -48,9 +48,9 @@ class CustomerDataAccess:
         Args:
             db: The database connection object.
         """
-        self.customerDataLayer = CustomerDataLayer(db)
+        self.customerDataLayer: CustomerDataLayer = CustomerDataLayer(db)
 
-    def loadCompanyCustomer(self, externalId, companyNumber):
+    def loadCompanyCustomer(self, externalId: str, companyNumber: str) -> CustomerMatches:
         """
         Loads a company customer by external ID and company number, checking for duplicates.
 
@@ -62,22 +62,22 @@ class CustomerDataAccess:
             CustomerMatches: An object containing the matched customer and any duplicates.
         """
         matches = CustomerMatches()
-        matchByExternalId: Customer = self.customerDataLayer.findByExternalId(externalId)
+        matchByExternalId: Optional[Customer] = self.customerDataLayer.findByExternalId(externalId)
         if matchByExternalId is not None:
             matches.customer = matchByExternalId
             matches.matchTerm = "ExternalId"
-            matchByMasterId: Customer = self.customerDataLayer.findByMasterExternalId(externalId)
+            matchByMasterId: Optional[Customer] = self.customerDataLayer.findByMasterExternalId(externalId)
             if matchByMasterId is not None:
                 matches.add_duplicate(matchByMasterId)
         else:
-            matchByCompanyNumber: Customer = self.customerDataLayer.findByCompanyNumber(companyNumber)
+            matchByCompanyNumber: Optional[Customer] = self.customerDataLayer.findByCompanyNumber(companyNumber)
             if matchByCompanyNumber is not None:
                 matches.customer = matchByCompanyNumber
                 matches.matchTerm = "CompanyNumber"
 
         return matches
 
-    def loadPersonCustomer(self, externalId):
+    def loadPersonCustomer(self, externalId: str) -> CustomerMatches:
         """
         Loads a person customer by external ID.
 
@@ -88,13 +88,13 @@ class CustomerDataAccess:
             CustomerMatches: An object containing the matched customer.
         """
         matches = CustomerMatches()
-        matchByPersonalNumber: Customer = self.customerDataLayer.findByExternalId(externalId)
+        matchByPersonalNumber: Optional[Customer] = self.customerDataLayer.findByExternalId(externalId)
         matches.customer = matchByPersonalNumber
         if matchByPersonalNumber is not None:
             matches.matchTerm = "ExternalId"
         return matches
 
-    def updateCustomerRecord(self, customer):
+    def updateCustomerRecord(self, customer: Customer):
         """
         Updates an existing customer record in the database.
 
@@ -103,7 +103,7 @@ class CustomerDataAccess:
         """
         self.customerDataLayer.updateCustomerRecord(customer)
 
-    def createCustomerRecord(self, customer):
+    def createCustomerRecord(self, customer: Customer) -> Customer:
         """
         Creates a new customer record in the database.
 
@@ -143,7 +143,7 @@ class CustomerDataLayer:
         self.conn = conn
         self.cursor = self.conn.cursor()
 
-    def findByExternalId(self, externalId):
+    def findByExternalId(self, externalId: str) -> Optional[Customer]:
         """
         Finds a customer by their external ID.
 
@@ -151,7 +151,7 @@ class CustomerDataLayer:
             externalId (str): The external ID of the customer.
 
         Returns:
-            Customer: The customer object if found, None otherwise.
+            Optional[Customer]: The customer object if found, None otherwise.
         """
         self.cursor.execute(
             'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE externalId=?',
@@ -159,7 +159,7 @@ class CustomerDataLayer:
         customer = self._customer_from_sql_select_fields(self.cursor.fetchone())
         return customer
 
-    def _find_addressId(self, customer):
+    def _find_addressId(self, customer: Customer) -> Optional[int]:
         """
         Finds the address ID associated with a customer.
 
@@ -167,7 +167,7 @@ class CustomerDataLayer:
             customer (Customer): The customer object.
 
         Returns:
-            int: The address ID if found, None otherwise.
+            Optional[int]: The address ID if found, None otherwise.
         """
         self.cursor.execute('SELECT addressId FROM customers WHERE internalId=?', (customer.internalId,))
         (addressId,) = self.cursor.fetchone()
@@ -175,15 +175,15 @@ class CustomerDataLayer:
             return int(addressId)
         return None
 
-    def _customer_from_sql_select_fields(self, fields):
+    def _customer_from_sql_select_fields(self, fields: Optional[Tuple]) -> Optional[Customer]:
         """
         Constructs a Customer object from SQL select fields.
 
         Args:
-            fields (tuple): The fields returned from the SQL query.
+            fields (Optional[Tuple]): The fields returned from the SQL query.
 
         Returns:
-            Customer: The constructed customer object.
+            Optional[Customer]: The constructed customer object.
         """
         if not fields:
             return None
@@ -208,7 +208,7 @@ class CustomerDataLayer:
             customer.addShoppingList(ShoppingList(products))
         return customer
 
-    def findByMasterExternalId(self, masterExternalId):
+    def findByMasterExternalId(self, masterExternalId: str) -> Optional[Customer]:
         """
         Finds a customer by their master external ID.
 
@@ -216,14 +216,14 @@ class CustomerDataLayer:
             masterExternalId (str): The master external ID of the customer.
 
         Returns:
-            Customer: The customer object if found, None otherwise.
+            Optional[Customer]: The customer object if found, None otherwise.
         """
         self.cursor.execute(
             'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE masterExternalId=?',
             (masterExternalId,))
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
-    def findByCompanyNumber(self, companyNumber):
+    def findByCompanyNumber(self, companyNumber: str) -> Optional[Customer]:
         """
         Finds a customer by their company number.
 
@@ -231,14 +231,14 @@ class CustomerDataLayer:
             companyNumber (str): The company number of the customer.
 
         Returns:
-            Customer: The customer object if found, None otherwise.
+            Optional[Customer]: The customer object if found, None otherwise.
         """
         self.cursor.execute(
             'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE companyNumber=?',
             (companyNumber,))
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
-    def createCustomerRecord(self, customer):
+    def createCustomerRecord(self, customer: Customer) -> Customer:
         """
         Creates a new customer record in the database.
 
@@ -270,7 +270,7 @@ class CustomerDataLayer:
         self.conn.commit()
         return customer
 
-    def _nextid(self, tablename):
+    def _nextid(self, tablename: str) -> int:
         """
         Generates the next ID for a given table.
 
@@ -287,7 +287,7 @@ class CustomerDataLayer:
         else:
             return 1
 
-    def updateCustomerRecord(self, customer):
+    def updateCustomerRecord(self, customer: Customer):
         """
         Updates an existing customer record in the database.
 
@@ -322,7 +322,7 @@ class CustomerDataLayer:
 
         self.conn.commit()
 
-    def updateShoppingList(self, shoppingList):
+    def updateShoppingList(self, shoppingList: ShoppingList):
         """
         Updates a shopping list in the database.
 
