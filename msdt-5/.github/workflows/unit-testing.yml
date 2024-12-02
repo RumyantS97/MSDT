@@ -41,5 +41,8 @@ jobs:
 
     - name: Run tests
       run: |
+        sudo apt-get install -y xvfb
+        Xvfb :99 -screen 0 1024x768x24 &
+        export DISPLAY=:99
         coverage run -m pytest
         coverage report
