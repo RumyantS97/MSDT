@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import mock_open, patch
-from src.encryptor import shift_encrypt, encrypt_file
+from encryptor import shift_encrypt, encrypt_file
 
 # Тесты для функции shift_encrypt
 
