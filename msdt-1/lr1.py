@@ -224,21 +224,21 @@ class Yahtzee:
     def calculate_score(self):
         d1, d2, d3, d4, d5 = self.dice
         scores = {
-            "Chance":self.chance(d1, d2, d3, d4, d5),
-            "Yahtzee":self.yahtzee(self.dice),
-            "Ones":self.ones(d1, d2, d3, d4, d5),
-            "Twos":self.twos(d1, d2, d3, d4, d5),
-            "Threes":self.threes(d1, d2, d3, d4, d5),
-            "Fours":self.fours(),
-            "Fives":self.fives(),
-            "Sixes":self.sixes(),
-            "Score Pair":self.score_pair(d1, d2, d3, d4, d5),
-            "Two Pair":self.two_pair(d1, d2, d3, d4, d5),
-            "Three of a Kind":self.three_of_a_kind(d1, d2, d3, d4, d5),
-            "Four of a Kind":self.four_of_a_kind(d1, d2, d3, d4, d5),
-            "Small Straight":self.small_straight(d1, d2, d3, d4, d5),
-            "Large Straight":self.large_straight(d1, d2, d3, d4, d5),
-            "Full House":self.full_house(d1, d2, d3, d4, d5),
+            "Chance":            self.chance(d1, d2, d3, d4, d5),
+            "Yahtzee":           self.yahtzee(self.dice),
+            "Ones":              self.ones(d1, d2, d3, d4, d5),
+            "Twos":              self.twos(d1, d2, d3, d4, d5),
+            "Threes":            self.threes(d1, d2, d3, d4, d5),
+            "Fours":             self.fours(),
+            "Fives":             self.fives(),
+            "Sixes":             self.sixes(),
+            "Score Pair":        self.score_pair(d1, d2, d3, d4, d5),
+            "Two Pair":         self.two_pair(d1, d2, d3, d4, d5),
+            "Three of a Kind":   self.three_of_a_kind(d1, d2, d3, d4, d5),
+            "Four of a Kind":    self.four_of_a_kind(d1, d2, d3, d4, d5),
+            "Small Straight":    self.small_straight(d1, d2, d3, d4, d5),
+            "Large Straight":    self.large_straight(d1, d2, d3, d4, d5),
+            "Full House":        self.full_house(d1, d2, d3, d4, d5),
         }
         return scores
     
@@ -246,21 +246,21 @@ class Yahtzee:
     @staticmethod
     def validate_combination(combination_name, d1, d2, d3, d4, d5):
         possible_scores = {
-            "Chance": self.chance(d1, d2, d3, d4, d5),
-            "Yahtzee": self.yahtzee(self.dice),
-            "Ones": self.ones(d1, d2, d3, d4, d5),
-            "Twos": self.twos(d1, d2, d3, d4, d5),
-            "Threes": self.threes(d1, d2, d3, d4, d5),
-            "Fours": self.fours(),
-            "Fives": self.fives(),
-            "Sixes": self.sixes(),
-            "Score Pair": self.score_pair(d1, d2, d3, d4, d5),
-            "Two Pair": self.two_pair(d1, d2, d3, d4, d5),
-            "Three of a Kind": self.three_of_a_kind(d1, d2, d3, d4, d5),
-            "Four of a Kind": self.four_of_a_kind(d1, d2, d3, d4, d5),
-            "Small Straight": self.small_straight(d1, d2, d3, d4, d5),
-            "Large Straight": self.large_straight(d1, d2, d3, d4, d5),
-            "Full House": self.full_house(d1, d2, d3, d4, d5),
+            "Chance":            self.chance(d1, d2, d3, d4, d5),
+            "Yahtzee":           self.yahtzee(self.dice),
+            "Ones":              self.ones(d1, d2, d3, d4, d5),
+            "Twos":              self.twos(d1, d2, d3, d4, d5),
+            "Threes":            self.threes(d1, d2, d3, d4, d5),
+            "Fours":             self.fours(),
+            "Fives":             self.fives(),
+            "Sixes":             self.sixes(),
+            "Score Pair":        self.score_pair(d1, d2, d3, d4, d5),
+            "Two Pair":         self.two_pair(d1, d2, d3, d4, d5),
+            "Three of a Kind":   self.three_of_a_kind(d1, d2, d3, d4, d5),
+            "Four of a Kind":    self.four_of_a_kind(d1, d2, d3, d4, d5),
+            "Small Straight":    self.small_straight(d1, d2, d3, d4, d5),
+            "Large Straight":    self.large_straight(d1, d2, d3, d4, d5),
+            "Full House":        self.full_house(d1, d2, d3, d4, d5),
         }
         return possible_scores
 
