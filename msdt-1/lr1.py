@@ -124,10 +124,10 @@ class Yahtzee:
 
 
     @staticmethod
-    def four_of_a_kind(_1, _2, d3, d4, d5): 
+    def four_of_a_kind(x1, x2, d3, d4, d5): 
         tallies = [0] * 6
-        tallies[_1 - 1] += 1
-        tallies[_2 - 1] += 1
+        tallies[x1 - 1] += 1
+        tallies[x2 - 1] += 1
         tallies[d3 - 1] += 1
         tallies[d4 - 1] += 1
         tallies[d5 - 1] += 1
@@ -152,7 +152,7 @@ class Yahtzee:
 
 
     @staticmethod
-    def smallStraight(d1, d2, d3, d4, d5):
+    def small_straight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -165,7 +165,7 @@ class Yahtzee:
 
 
     @staticmethod
-    def largeStraight(d1, d2, d3, d4, d5):
+    def large_straight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -178,13 +178,13 @@ class Yahtzee:
 
 
     @staticmethod
-    def fullHouse(d1, d2, d3, d4, d5):
+    def full_house(d1, d2, d3, d4, d5):
         tallies = []
-        _2 = False
+        x2 = False
         i = 0
-        _2_at = 0
-        _3 = False
-        _3_at = 0
+        x2_at = 0
+        x3 = False
+        x3_at = 0
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -193,14 +193,14 @@ class Yahtzee:
         tallies[d5 - 1] += 1
         for i in range(6):
             if (tallies[i] == 2): 
-                _2 = True
-            _2_at = i + 1
+                x2 = True
+            x2_at = i + 1
         for i in range(6):
             if (tallies[i] == 3):
-                _3 = True
-            _3_at = i + 1
-        if (_2 and _3):
-            return _2_at * 2 + _3_at * 3
+                x3 = True
+            x3_at = i + 1
+        if (x2 and x3):
+            return x2_at * 2 + x3_at * 3
         else:
             return 0
 
@@ -236,9 +236,9 @@ class Yahtzee:
             "Two Pair":self.two_pair(d1, d2, d3, d4, d5),
             "Three of a Kind":self.three_of_a_kind(d1, d2, d3, d4, d5),
             "Four of a Kind":self.four_of_a_kind(d1, d2, d3, d4, d5),
-            "Small Straight":self.smallStraight(d1, d2, d3, d4, d5),
-            "Large Straight":self.largeStraight(d1, d2, d3, d4, d5),
-            "Full House":self.fullHouse(d1, d2, d3, d4, d5),
+            "Small Straight":self.small_straight(d1, d2, d3, d4, d5),
+            "Large Straight":self.large_straight(d1, d2, d3, d4, d5),
+            "Full House":self.full_house(d1, d2, d3, d4, d5),
         }
         return scores
     
@@ -258,9 +258,9 @@ class Yahtzee:
             "Two Pair": self.two_pair(d1, d2, d3, d4, d5),
             "Three of a Kind": self.three_of_a_kind(d1, d2, d3, d4, d5),
             "Four of a Kind": self.four_of_a_kind(d1, d2, d3, d4, d5),
-            "Small Straight": self.smallStraight(d1, d2, d3, d4, d5),
-            "Large Straight": self.largeStraight(d1, d2, d3, d4, d5),
-            "Full House": self.fullHouse(d1, d2, d3, d4, d5),
+            "Small Straight": self.small_straight(d1, d2, d3, d4, d5),
+            "Large Straight": self.large_straight(d1, d2, d3, d4, d5),
+            "Full House": self.full_house(d1, d2, d3, d4, d5),
         }
         return possible_scores
 
@@ -300,10 +300,10 @@ class Yahtzee:
 
 
     @staticmethod
-    def four_of_a_kind(_1, _2, d3, d4, d5):
+    def four_of_a_kind(x1, x2, d3, d4, d5):
         tallies = [0] * 6
-        tallies[_1 - 1] += 1
-        tallies[_2 - 1] += 1
+        tallies[x1 - 1] += 1
+        tallies[x2 - 1] += 1
         tallies[d3 - 1] += 1
         tallies[d4 - 1] += 1
         tallies[d5 - 1] += 1
@@ -328,7 +328,7 @@ class Yahtzee:
 
 
     @staticmethod
-    def smallStraight(d1, d2, d3, d4, d5):
+    def small_straight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -341,7 +341,7 @@ class Yahtzee:
 
 
     @staticmethod
-    def largeStraight(d1, d2, d3, d4, d5):
+    def large_straight(d1, d2, d3, d4, d5):
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -354,13 +354,13 @@ class Yahtzee:
 
 
     @staticmethod
-    def fullHouse(d1, d2, d3, d4, d5):
+    def full_house(d1, d2, d3, d4, d5):
         tallies = []
-        _2 = False
+        x2 = False
         i = 0
-        _2_at = 0
-        _3 = False
-        _3_at = 0
+        x2_at = 0
+        x3 = False
+        x3_at = 0
         tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
@@ -369,14 +369,14 @@ class Yahtzee:
         tallies[d5 - 1] += 1
         for i in range(6):
             if tallies[i] == 2:
-                _2 = True
-                _2_at = i + 1
+                x2 = True
+                x2_at = i + 1
         for i in range(6):
             if tallies[i] == 3:
-                _3 = True
-                _3_at = i + 1
-        if _2 and _3:
-            return _2_at * 2 + _3_at * 3
+                x3 = True
+                x3_at = i + 1
+        if x2 and x3:
+            return x2_at * 2 + x3_at * 3
         else:
             return 0
 
