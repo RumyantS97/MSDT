@@ -34,4 +34,15 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+
+     # Формируем структуру JSON
+    result = {
+        "variant": variant,
+        "checksum": checksum
+    }
+
+    # Записываем результат в файл result.json
+    with open(r'C:\Users\dasha\OneDrive\Рабочий стол\гитхаб\MSDT\msdt-3\result.json', "w") as f:
+        json.dump(result, f)
+
+    return print(f"Результат успешно сохранен в result.json: {result}")
