@@ -1,5 +1,7 @@
 import pandas as pd
 import re
+from checksum import calculate_checksum
+import json
 
 def validation_string_values(array_params):
 
@@ -97,9 +99,11 @@ def validation_string_values(array_params):
     color_pattern = re.compile(r"""^#[0-9a-fA-F]{6}$""")
 
     # Проверка isbn
+    
     '''
         Формат кода книги тоже задаётся иным образом
     '''
+    
     isbn_pattern = re.compile(r"""
         ^
         (\d{3}-)?\d-\d{5}-\d{3}-\d
@@ -179,7 +183,15 @@ def validation_string_values(array_params):
     
     # Если всё верно
     return True
-        
+
+
+def serialize_result(variant: int, checksum: str) -> None:
+    result = {
+        'variant': variant,
+        'checksum': checksum
+    }
+    with open ( 'result.json', 'w', encoding='utf-8' ) as json_file:
+        json.dump( result, json_file, ensure_ascii = False, indent = 4 )
  
 # Читаем CSV файл
 df = pd.read_csv('57.csv', encoding = 'utf-16', delimiter='\t')
@@ -194,3 +206,7 @@ for i in range (10000):
         
 print(error_strings)
 print(len(error_strings))
+
+# Получаем контрольную сумму и перезаписываем JSON файл
+checksum = calculate_checksum(error_strings)
+serialize_result(57, checksum)
