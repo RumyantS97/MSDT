@@ -15,7 +15,7 @@ def test_inverse_matrix():
 
 
 @pytest.mark.parametrize("matrix1, matrix2, expected", [
-    ([[1, 2], [3, 4]], [[5, 6], [7, 8]], [[6, 8], [10, 2]]),
+    ([[1, 2], [3, 4]], [[5, 6], [7, 8]], [[6, 8], [10, 12]]),
     ([[0, 0], [0, 0]], [[1, 1], [1, 1]], [[1, 1], [1, 1]]),
 ])
 def test_add_matrices(matrix1, matrix2, expected):
