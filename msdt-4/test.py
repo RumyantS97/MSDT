@@ -11,6 +11,7 @@ import sys
 from Tkinter import *
 import tkFont
 import ttk
+import logging
 
 class App:
 
@@ -22,30 +23,33 @@ class App:
 
     # refresh menu
     def RefreshMenu(self):
+        logging.info("Refreshing menu")
         self._tree.delete(*self._tree.get_children())
         self.ReReadFile()
 
     # double click on a node
     def OnDoubleClick(self, event):
         selected_item = self._tree.focus()
-        #value = self._tree.item(selected_item, "values") # "values when"
         value = self._tree.item(selected_item, "values")
-        #print(value)
         if (len(value) > 0):
-
             string_line = str(value[1])
             lineArray = string_line.split(",")
             line = str(lineArray)
             line = line.replace("'", " ")
             line = line.strip()
             to_clipboard = line[line.find("/home"):line.find(": ")]
-            #print(to_clipboard)
             self.root.clipboard_clear()
             self.root.clipboard_append(to_clipboard.decode('utf-8'))
             print ("===============================================================")
             print (to_clipboard.decode('utf-8'))
             print ("===============================================================")
+            logging.info(f"Copied to clipboard: {to_clipboard.decode('utf-8')}")
+
     def __init__(self):
+        # Настройка логгера
+        logging.basicConfig(filename='app.log', level=logging.INFO, 
+                            format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.info("Starting the application")
 
         self.root=Tk()
         self.root.title("Make Log Parser")
@@ -61,7 +65,6 @@ class App:
 
         # init tree
         self._tree = ttk.Treeview(self.root)
-        #_tree.LabelEdit = TRUE
         self._tree["columns"]=("one","two")
         self._tree.heading("#0", text="Tags")
         self._tree.heading("one", text="Problem")
@@ -73,7 +76,6 @@ class App:
 
         # event listener double click
         self._tree.bind("<Double-1>", self.OnDoubleClick)
-        #ttk.Style().configure('Treeview', rowheight=50)
         
         # scroll bar to root
         self.yscrollbar=Scrollbar(self.root, orient=VERTICAL, command=self._tree.yview)
@@ -95,13 +97,15 @@ class App:
         logFile = sys.argv[1]
 
         if(os.path.exists(logFile)):
+            logging.info(f"File {logFile} exists, starting to read")
             self.ReReadFile()
         else:
+            logging.error(f"{logFile} is not a valid file")
             print(logFile + " is not a valid file")
             sys.exit(-1)
+
     # content reader
     def ReReadFile(self):
-
         global logFile
         allWarnings = 0
 
@@ -109,7 +113,7 @@ class App:
         with open(logFile, "r") as f:
             content = f.read()
             content = content.strip()
-
+            logging.info(f"File {logFile} read successfully")
 
             # split the content by the pointer arrow ^
             contentList = content.split("^")
@@ -118,23 +122,22 @@ class App:
             # the first root tag what shows "All Warnings"
             tagMap = {"[root]": 0}
             tagMap["[root]"] = self._tree.insert("", 0, "[root]", text="[All Warnings: 0]")
+            logging.info("Root tag '[root]' created")
 
             tagIndex = 1
 
             # iterate throu the splitted elements
             for i, line in enumerate(contentList):
-                #line = line.strip()
-
                 #get the tag, like: [-Wsomething]
                 if re.search("\[\-W.*\]", line):
-                    #tag = "["+line[line.find("[")+1:line.find("]")]+"]"
                     tag = re.search("\[\-W.*\]", line).group()
 
                     # insert a tag if it is not exsist
                     if(tag not in tagTypes):
                         tagTypes.add(tag)
                         tagMap[tag] = self._tree.insert("", tagIndex, tag, text=tag + " [1]")
-                        ++tagIndex
+                        logging.info(f"New tag '{tag}' created")
+                        tagIndex += 1
 
                     # update the tags child counter
                     if(len(self._tree.get_children(tagMap[tag])) > 0):
@@ -145,15 +148,15 @@ class App:
 
                     # Place - column
                     placeColumn = line[line.find("/home"):line.find(": ")]
-                    #placeColumn = line.search("/:]", line).group()
 
                     # Problem - column
                     lineArray = line.splitlines()
                     problemColumn = lineArray[len(lineArray)-2]
-                    #problemColumn = line[line.find("]\n"):]
+
                     #insert an element under the tag
                     self._tree.insert(tagMap[tag], "end", i, 
                         text=tagColumn, values=(problemColumn, placeColumn)); 
+                    logging.info(f"Element added under tag '{tag}'")
 
                 # if can't find a tag then add it to the "root" "All warnings"
                 else:
@@ -165,11 +168,11 @@ class App:
                     lineArray = line.splitlines()
 
                     problemColumn = lineArray[len(lineArray)-2]
-                    #problemColumn = line[line.find("]\n"):]
 
                     #insert an element under the tag
                     self._tree.insert(tagMap["[root]"], "end", i, 
                         text=tagColumn, values=(problemColumn, placeColumn));
+                    logging.info("Element added under root tag '[root]'")
 
                 allWarnings = i;
 
@@ -177,9 +180,10 @@ class App:
         # get the elements under the all warnings to the second counter
         self._tree.item("[root]", text="[All Warnings: " + str(allWarnings) +"]"
             " ["+ str(len(self._tree.get_children(tagMap["[root]"]))+1) +"]")
+        logging.info(f"Total warnings counted: {allWarnings}")
 
-        #self._tree.pack()
         self.root.mainloop();
+
 if __name__ == '__main__':
 
     if len(sys.argv) < 2:
