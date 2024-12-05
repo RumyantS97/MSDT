@@ -99,7 +99,7 @@ class TennisGameDefactored2:
             p1_res = "Love"
             score_output = p1_res + "-" + p2_res
 
-        if self.p1_points > self.p2_points and self.p1_points < 4:
+        if self.p2_points < self.p1_points < 4:
             if self.p1_points == 2:
                 p1_res = "Thirty"
             if self.p1_points == 3:
@@ -110,7 +110,7 @@ class TennisGameDefactored2:
                 p2_res = "Thirty"
             score_output = p1_res + "-" + p2_res
 
-        if self.p2_points > self.p1_points and self.p2_points < 4:
+        if self.p1_points < self.p2_points < 4:
             if self.p2_points == 2:
                 p2_res = "Thirty"
             if self.p2_points == 3:
@@ -121,9 +121,9 @@ class TennisGameDefactored2:
                 p1_res = "Thirty"
             score_output = p1_res + "-" + p2_res
 
-        if self.p1_points > self.p2_points and self.p2_points >= 3:
+        if self.p1_points > self.p2_points >= 3:
             score_output = "Advantage " + self.player1_name
-        if self.p2_points > self.p1_points and self.p1_points >= 3:
+        if self.p2_points > self.p1_points >= 3:
             score_output = "Advantage " + self.player2_name
 
         if self.p1_points >= 4 and self.p2_points >= 0 and (self.p1_points - self.p2_points) >= 2:
