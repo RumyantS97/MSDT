@@ -17,13 +17,13 @@ def to_representation_by_image_format(file) -> dict:
     res = {}
     if file.endswith('.webp'):
         res = {
-            'webp': file,
-            'other': None
+            'webp'  : file,
+            'other' : None
         }
     else:
         res = {
-            'webp': None,
-            'other': file
+            'webp'  : None,
+            'other' : file
         }
     return res
 
@@ -149,8 +149,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://vk.com/')):
+        if (value and not 
+            value.startswith('https://vk.com/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://vk.com/'
                 )
@@ -160,9 +160,9 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://x.com') 
-                    and not value.startswith('https://twitter.com')):
+        if (value and not 
+            value.startswith('https://x.com') and not
+              value.startswith('https://twitter.com')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://x.com или https://twitter.com'
             )
@@ -172,8 +172,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://instagram.com/')):
+        if (value and not
+             value.startswith('https://instagram.com/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://instagram.com/'
                 )
@@ -183,8 +183,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://t.me/')):
+        if (value and not
+             value.startswith('https://t.me/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://t.me/'
             )
@@ -194,9 +194,9 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://dzen.ru/') 
-                    and value.startswith('https://zen.yandex.ru/')):
+        if (value and not
+             value.startswith('https://dzen.ru/') and
+               value.startswith('https://zen.yandex.ru/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://dzen.ru или https://zen.yandex.ru/'
                 )
@@ -206,8 +206,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://youtube.com/')):
+        if (value and not
+             value.startswith('https://youtube.com/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://youtube.com/'
                 )
@@ -217,8 +217,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://rutube.ru/')):
+        if (value and not
+             value.startswith('https://rutube.ru/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://rutube.ru/'
                 )
@@ -228,8 +228,8 @@ class SocialsSerializer(ExtendedSerializer):
         self, 
         value
         ):
-        if (value 
-                and not value.startswith('https://facebook.com/')):
+        if (value and not
+             value.startswith('https://facebook.com/')):
             raise serializers.ValidationError(
                 'Ссылка должна начинаться с https://facebook.com/'
                 )
@@ -310,10 +310,10 @@ class ContactSerializer(ExtendedSerializer):
             ):
         if instance is None:
             return {
-                'contact': None,
-                'phone': None,
-                'email': None,
-                'site': None
+                'contact'   : None,
+                'phone'     : None,
+                'email'     : None,
+                'site'      : None
             }
         data = super().to_representation(instance)
         return data
@@ -355,9 +355,9 @@ class SerializerWithPhoto(serializers.Serializer):
             self, 
             obj
             ):
-        if (hasattr(obj, 'photo') 
-                and hasattr(obj.photo, 'image') 
-                    and image_exists(obj.photo.image)):
+        if (hasattr(obj, 'photo') and
+             hasattr(obj.photo, 'image') and
+               image_exists(obj.photo.image)):
             source = obj.photo.source if obj.photo.source != '' else None
             url = obj.photo.image.url
             # pdb.set_trace()
@@ -396,14 +396,14 @@ class SerializerWithContacts(serializers.Serializer):
             self, 
             obj
             ):
-        if (hasattr(obj, 'contacts') 
-                or not obj.contacts 
-                    or obj.contacts.contacts_empty()):
+        if (hasattr(obj, 'contacts') or not
+             obj.contacts or
+               obj.contacts.contacts_empty()):
             return {
-                'contact': None,
-                'phone': None,
-                'email': None,
-                'site': None
+                'contact'   : None,
+                'phone'     : None,
+                'email'     : None,
+                'site'      : None
             }
         else:
             return ContactSerializer(obj.contacts).data
@@ -412,18 +412,18 @@ class SerializerWithContacts(serializers.Serializer):
             self, 
             obj
             ):
-        if (hasattr(obj, 'contacts') 
-                or not obj.contacts 
-                    or obj.contacts.socials_empty()):
+        if (hasattr(obj, 'contacts') or not
+             obj.contacts or
+               obj.contacts.socials_empty()):
             return {
-                'vk': None,
-                'x_site': None,
-                'instagram': None,
-                'telegram': None,
-                'zen': None,
-                'youtube': None,
-                'rutube': None,
-                'facebook': None
+                'vk'        : None,
+                'x_site'    : None,
+                'instagram' : None,
+                'telegram'  : None,
+                'zen'       : None,
+                'youtube'   : None,
+                'rutube'    : None,
+                'facebook'  : None
             }
         else:
             return SocialsSerializer(obj.contacts).data
