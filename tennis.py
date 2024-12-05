@@ -99,7 +99,6 @@ class TennisGameDefactored2:
             p1_res = "Love"
             score_output = p1_res + "-" + p2_res
 
-
         if self.p1_points > self.p2_points and self.p1_points < 4:
             if self.p1_points == 2:
                 p1_res = "Thirty"
@@ -110,6 +109,7 @@ class TennisGameDefactored2:
             if self.p2_points == 2:
                 p2_res = "Thirty"
             score_output = p1_res + "-" + p2_res
+
         if self.p2_points > self.p1_points and self.p2_points < 4:
             if self.p2_points == 2:
                 p2_res = "Thirty"
@@ -123,7 +123,6 @@ class TennisGameDefactored2:
 
         if self.p1_points > self.p2_points and self.p2_points >= 3:
             score_output = "Advantage " + self.player1_name
-
         if self.p2_points > self.p1_points and self.p1_points >= 3:
             score_output = "Advantage " + self.player2_name
 
@@ -131,6 +130,7 @@ class TennisGameDefactored2:
             score_output = "Win for " + self.player1_name
         if self.p2_points >= 4 and self.p1_points >= 0 and (self.p2_points - self.p1_points) >= 2:
             score_output = "Win for " + self.player2_name
+
         return score_output
 
     def SetP1Score(self, number):
@@ -144,9 +144,9 @@ class TennisGameDefactored2:
     def p1_score(self):
         self.p1_points += 1
 
-
     def p2_score(self):
         self.p2_points += 1
+
 
 class TennisGameDefactored3:
     def __init__(self, player1_name, player2_name):
