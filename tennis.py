@@ -133,11 +133,11 @@ class TennisGameDefactored2:
 
         return score_output
 
-    def SetP1Score(self, number):
+    def set_p1_score(self, number):
         for i in range(number):
             self.p1_score()
 
-    def SetP2Score(self, number):
+    def set_p2_score(self, number):
         for i in range(number):
             self.p2_score()
 
