@@ -60,9 +60,11 @@ class TennisGameRefactored2:
         if self.p2_points > 0 and self.p1_points == 0:
             score_output = f"Love-{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p2_points]}"
         if self.p1_points > self.p2_points and self.p2_points < 4:
-            score_output = f"{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p1_points]}-{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p2_points]}"
+            score_output = (f"{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p1_points]}"
+                            f"-{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p2_points]}")
         if self.p2_points > self.p1_points and self.p1_points < 4:
-            score_output = f"{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p1_points]}-{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p2_points]}"
+            score_output = (f"{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p1_points]}"
+                            f"-{['Love', 'Fifteen', 'Thirty', 'Forty'][self.p2_points]}")
         if self.p1_points >= 4 and self.p2_points >= 0 and (self.p1_points - self.p2_points) >= 2:
             score_output = f"Win for {self.player1_name}"
         if self.p2_points >= 4 and self.p1_points >= 0 and (self.p2_points - self.p1_points) >= 2:
