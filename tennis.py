@@ -14,7 +14,6 @@ class TennisGameDefactored1:
 
     def score(self):
         score_output = ""
-        current_score = 0
         if self.p1_points == self.p2_points:
             score_output = {
                 0: "Love-All",
