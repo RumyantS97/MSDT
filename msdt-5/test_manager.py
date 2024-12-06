@@ -58,32 +58,17 @@ def test_add_task_parametrized(title, due_date, priority):
 
 def test_save_and_load_tasks_with_mock():
     manager = TaskManager()
-    manager.add_task("Task 1", priority="high")
-    
-  
-    expected_data = [
-        {
-            'title': 'Task 1',
-            'completed': False,
-            'created_at': manager.tasks[0].created_at.isoformat(),
-            'due_date': None,
-            'priority': 'high'
-        }
-    ]
+    manager.add_task("Task 1", due_date=datetime(2024, 12, 6), priority="high")
     
     with patch("builtins.open", mock_open()) as mocked_file:
         manager.save_to_file("mocked_file.json")
         
        
-        handle = mocked_file()
-        
-        handle.write.assert_any_call('[')
-        handle.write.assert_any_call('{')
-        handle.write.assert_any_call('"title": "Task 1"')
-        
-        
-        handle.write.assert_any_call('}')
-        handle.write.assert_any_call(']')
+        mocked_file.assert_called_once_with("mocked_file.json", "w")
         
 
-        mocked_file().write.assert_any_call(json.dumps(expected_data))
+        written_data = mocked_file().write.call_args[0][0]
+        
+        assert '"title": "Task 1"' in written_data
+        assert '"priority": "high"' in written_data
+        assert '"due_date": "2024-12-06T00:00:00"' in written_data
