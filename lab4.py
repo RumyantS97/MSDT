@@ -2,7 +2,16 @@ import re
 import pandas as pd
 from typing import List
 import hashlib
-import json # Модуль для вычисления контрольной суммы
+import json
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.StreamHandler()]
+)
+logger = logging.getLogger("data_processing")
+logger.info("Log is connected")
 
 def calculate_checksum(row_numbers: List[int]) -> str:
     """
@@ -93,10 +102,12 @@ def serialize_result(variant, checksum):
               }
     with open('result2.json', 'w', encoding='utf-8') as json_file:
         json.dump(result, json_file, ensure_ascii=False, indent=4)
+        logger.info(f"Result was serialize to file result2.json")
 
 
 def read_and_validate_csv(file_path, variant_number):
     df = pd.read_csv(file_path, sep=";", encoding="utf-16")
+    logger.info(f"Read {len(df)} rows from CSV file.")
     validation_results = []
     error_rows = []
 
@@ -119,15 +130,16 @@ def read_and_validate_csv(file_path, variant_number):
 
         if any(not valid for valid in result.values()):
             error_rows.append(index)
-
     checksum = calculate_checksum(error_rows)
+    logger.info(f"Checksum was obtained and is equal to {checksum}")
     serialize_result(variant_number, checksum)
 
     return validation_results, error_rows
 
 
 if __name__ == "__main__":
-    file_path = '12.csv'  # Укажите путь к вашему файлу CSV
+    logger.info("Code has started its work")
+    file_path = '12.csv'
     variant_number = 12
 
     validation_results, error_rows = read_and_validate_csv(file_path, variant_number)
