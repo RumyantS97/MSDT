@@ -1,0 +1,28 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Иван Иванов
+N:Иванов;Иван;;;
+TEL;TYPE=CELL:+7-900-123-4567
+TEL;TYPE=HOME:+7-900-765-4321
+EMAIL;TYPE=WORK:ivan.ivanov@example.com
+BDAY:1990-05-12
+ADR;TYPE=HOME:;;Ленина 1, кв. 2;Москва;;123456;Россия
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+FN:Мария Смирнова
+N:Смирнова;Мария;;;
+TEL;TYPE=CELL:+7-901-234-5678
+EMAIL;TYPE=HOME:maria.smirnova@example.com
+BDAY:1988-10-23
+ADR;TYPE=HOME:;;Октябрьская 20;Санкт-Петербург;;654321;Россия
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+FN:Алексей Кузнецов
+N:Кузнецов;Алексей;;;
+TEL;TYPE=WORK:+7-902-345-6789
+EMAIL;TYPE=WORK:aleksey.k@example.com
+END:VCARD
