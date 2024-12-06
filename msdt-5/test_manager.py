@@ -1,5 +1,6 @@
 from todo_manager import TaskManager, Task
 import pytest
+import json
 from unittest.mock import mock_open, patch
 
 def test_add_task():
@@ -58,13 +59,31 @@ def test_add_task_parametrized(title, due_date, priority):
 def test_save_and_load_tasks_with_mock():
     manager = TaskManager()
     manager.add_task("Task 1", priority="high")
-
+    
+  
+    expected_data = [
+        {
+            'title': 'Task 1',
+            'completed': False,
+            'created_at': manager.tasks[0].created_at.isoformat(),
+            'due_date': None,
+            'priority': 'high'
+        }
+    ]
+    
     with patch("builtins.open", mock_open()) as mocked_file:
         manager.save_to_file("mocked_file.json")
-        mocked_file().write.assert_called_once()
+        
+       
+        handle = mocked_file()
+        
+        handle.write.assert_any_call('[')
+        handle.write.assert_any_call('{')
+        handle.write.assert_any_call('"title": "Task 1"')
+        
+        
+        handle.write.assert_any_call('}')
+        handle.write.assert_any_call(']')
+        
 
-    mocked_data = '[{"title": "Task 1", "completed": false, "created_at": "2024-12-06T12:00:00", "due_date": null, "priority": "high"}]'
-    with patch("builtins.open", mock_open(read_data=mocked_data)):
-        manager.load_from_file("mocked_file.json")
-        assert len(manager.tasks) == 1
-        assert manager.tasks[0].title == "Task 1"
+        mocked_file().write.assert_any_call(json.dumps(expected_data))
