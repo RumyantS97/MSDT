@@ -7,7 +7,8 @@ class Character:
     """Класс для создания персонажа и врагов."""
 
     def __init__(self, name, health, attack_power, defense=0, evasion=0):
-        self.name = name.upper()  # имя персонажа в заглавных буквах
+        # Имя персонажа в заглавных буквах
+        self.name = name.upper()  
         self.health = health
         self.attack_power = attack_power
         self.defense = defense
@@ -38,23 +39,24 @@ class Item:
     """Класс для предметов в инвентаре."""
 
     def __init__(self, name, effect, item_type):
-        self.name = name.upper()  # имя предмета в заглавных буквах
+        # Имя предмета в заглавных буквах
+        self.name = name.upper()  
         self.effect = effect
         self.item_type = item_type
 
     def use(self, character):
         """Использовать предмет на персонажа."""
         if self.item_type == "health":
-            # если это обычное зелье здоровья,восстанавливает 30 здоровья
+            # Если это обычное зелье здоровья,восстанавливает 30 здоровья
             if self.name == "ЗЕЛЬЕ СУПЕР ИСЦЕЛЕНИЯ":
-                character.health += 40  # в два раза больше
+                character.health += 40  # В два раза больше
             else:
                 character.health += 30
             print(f"{character.name} восстанавливает здоровье! Текущее здоровье: {character.health}")
         elif self.item_type == "strength":
-            # если это обычное зелье силы,увеличивает на 5
+            # Если это обычное зелье силы,увеличивает на 5
             if self.name == "ЗЕЛЬЕ СУПЕР СИЛЫ":
-                character.attack_power += 10  # в два раза больше
+                character.attack_power += 10  # В два раза больше
             else:
                 character.attack_power += 5
             print(f"{character.name} получает силу атаки! Сила атаки: {character.attack_power}")
@@ -142,8 +144,8 @@ class Game:
 
     def createcharacter(self):
         """Создать персонажа игрока."""
-        name = input("Введите имя вашего персонажа: ").upper()  # имя игрока в заглавных
-        health = random.randint(80, 150)  # увеличиваем здоровье игрока
+        name = input("Введите имя вашего персонажа: ").upper()  # Имя игрока в заглавных
+        health = random.randint(80, 150)  # Увеличиваем здоровье игрока
         attack_power = random.randint(10, 20)
         self.player = Character(name, health, attack_power)
         print(
@@ -151,7 +153,7 @@ class Game:
 
     def createenemy(self):
         """Создать обычного врага."""
-        enemy_type = random.choice([Goblin(), Orc(), Knight(), Shadow(self.player)])  # добавляем шанс на Тень
+        enemy_type = random.choice([Goblin(), Orc(), Knight(), Shadow(self.player)])  # Добавляем шанс на Тень
         self.enemy = enemy_type
         self.enemy.displayinfo()
 
@@ -219,35 +221,35 @@ class Game:
         while self.player.isalive():
             self.createenemy()
             while self.enemy.isalive() and self.player.isalive():
-                self.clearscreen()  # очистить экран
+                self.clearscreen()  # Очистить экран
                 self.playerturn()
                 if self.checkwinner():
                     break
                 self.enemyturn()
                 if self.checkwinner():
                     break
-            # после победы над боссом,появляется тень
+            # После победы над боссом,появляется тень
             if self.enemy_count == 3:
-                self.createboss()  # создаем тень с параметрами игрока
+                self.createboss()  # Создаем тень с параметрами игрока
                 while not self.checkwinner():
-                    self.clearscreen()  # очистить экран
+                    self.clearscreen()  # Очистить экран
                     self.playerturn()
                     if self.checkwinner():
                         break
                     self.enemyturn()
                     if self.checkwinner():
                         break
-            # прокачка
+            # Прокачка
             self.levelup()
-            self.enemy_count = 0  # сброс счетчика врагов
-            # добавление предметов в инвентарь
+            self.enemy_count = 0  # Сброс счетчика врагов
+            # Добавление предметов в инвентарь
             if random.random() < 0.5:  # 50% шанс на предмет
                 potion = Item("Зелье здоровья", "Восстанавливает 20 здоровья", "health")
                 self.inventory.add_item(potion)
             if random.random() < 0.3:  # 30% шанс на зелье силы
                 potion = Item("Зелье силы", "Увеличивает силу атаки на 5", "strength")
                 self.inventory.add_item(potion)
-            # добавление супер зелья исцеления и супер зелья силы
+            # Добавление супер зелья исцеления и супер зелья силы
             if random.random() < 0.2:  # 20% шанс на супер зелье исцеления
                 potion = Item("Зелье супер исцеления", "Восстанавливает 40 здоровья", "health")
                 self.inventory.add_item(potion)
