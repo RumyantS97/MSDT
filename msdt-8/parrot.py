@@ -6,7 +6,6 @@ class ParrotType(Enum):
     AFRICAN = 2
     NORWEGIAN_BLUE = 3
 
-
 class Parrot:
 
     def __init__(self, type_of_parrot, number_of_coconuts, voltage, nailed):
