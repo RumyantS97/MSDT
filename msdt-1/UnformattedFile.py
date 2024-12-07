@@ -2,13 +2,11 @@ import random
 import os
 import time
 
-
 class Character:
     """Класс для создания персонажа и врагов."""
 
     def __init__(self, name, health, attack_power, defense=0, evasion=0):
-        # Имя персонажа в заглавных буквах
-        self.name = name.upper()  
+        self.name = name.upper()  # Имя персонажа в заглавных буквах
         self.health = health
         self.attack_power = attack_power
         self.defense = defense
@@ -23,11 +21,11 @@ class Character:
         print(f"{self.name} атакует {other.name} и наносит {damage} урона.")
         return damage
 
-    def isalive(self):
-        """Проверить,жив ли персонаж."""
+    def is_alive(self):
+        """Проверить, жив ли персонаж."""
         return self.health > 0
 
-    def applyevasion(self):
+    def apply_evasion(self):
         """Проверка на уклонение от атаки."""
         if random.random() < self.evasion:
             print(f"{self.name} увернулся от атаки!")
@@ -39,22 +37,21 @@ class Item:
     """Класс для предметов в инвентаре."""
 
     def __init__(self, name, effect, item_type):
-        # Имя предмета в заглавных буквах
-        self.name = name.upper()  
+        self.name = name.upper()  # Имя предмета в заглавных буквах
         self.effect = effect
         self.item_type = item_type
 
     def use(self, character):
         """Использовать предмет на персонажа."""
         if self.item_type == "health":
-            # Если это обычное зелье здоровья,восстанавливает 30 здоровья
+            # Если это обычное зелье здоровья, восстанавливает 30 здоровья
             if self.name == "ЗЕЛЬЕ СУПЕР ИСЦЕЛЕНИЯ":
                 character.health += 40  # В два раза больше
             else:
                 character.health += 30
             print(f"{character.name} восстанавливает здоровье! Текущее здоровье: {character.health}")
         elif self.item_type == "strength":
-            # Если это обычное зелье силы,увеличивает на 5
+            # Если это обычное зелье силы, увеличивает на 5
             if self.name == "ЗЕЛЬЕ СУПЕР СИЛЫ":
                 character.attack_power += 10  # В два раза больше
             else:
@@ -76,7 +73,7 @@ class Inventory:
         self.items.append(item)
         print(f"Вы получили предмет: {item.name}")
 
-    def showinventory(self):
+    def show_inventory(self):
         """Показать инвентарь."""
         if not self.items:
             print("Ваш инвентарь пуст.")
@@ -93,9 +90,9 @@ class Enemy(Character):
         super().__init__(name, health, attack_power, defense, evasion)
         self.enemy_type = enemy_type
 
-    def displayinfo(self):
+    def display_info(self):
         """Вывод информации о враге."""
-        print(f"Тип врага: {self.enemy_type},Здоровье: {self.health},Сила атаки: {self.attack_power}")
+        print(f"Тип врага: {self.enemy_type}, Здоровье: {self.health}, Сила атаки: {self.attack_power}")
 
 
 class Goblin(Enemy):
@@ -127,7 +124,7 @@ class Boss(Enemy):
 
 
 class Shadow(Enemy):
-    """Тень,с теми же параметрами,что и у игрока."""
+    """Тень, с теми же параметрами, что и у игрока."""
 
     def __init__(self, player):
         super().__init__(player.name, player.health, player.attack_power, "ТЕНЬ", player.defense, player.evasion)
@@ -142,43 +139,41 @@ class Game:
         self.inventory = Inventory()
         self.enemy_count = 0
 
-    def createcharacter(self):
+    def create_character(self):
         """Создать персонажа игрока."""
         name = input("Введите имя вашего персонажа: ").upper()  # Имя игрока в заглавных
         health = random.randint(80, 150)  # Увеличиваем здоровье игрока
         attack_power = random.randint(10, 20)
         self.player = Character(name, health, attack_power)
-        print(
-            f"Персонаж {self.player.name} создан с {self.player.health} здоровья и {self.player.attack_power} силы атаки.")
+        print(f"Персонаж {self.player.name} создан с {self.player.health} здоровья и {self.player.attack_power} силы атаки.")
 
-    def createenemy(self):
+    def create_enemy(self):
         """Создать обычного врага."""
         enemy_type = random.choice([Goblin(), Orc(), Knight(), Shadow(self.player)])  # Добавляем шанс на Тень
         self.enemy = enemy_type
-        self.enemy.displayinfo()
+        self.enemy.display_info()
 
-    def createboss(self):
+    def create_boss(self):
         """Создать босса."""
         self.enemy = Boss()
-        self.enemy.displayinfo()
+        self.enemy.display_info()
 
-    def clearscreen(self):
+    def clear_screen(self):
         """Очистить экран."""
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def playerturn(self):
+    def player_turn(self):
         """Ход игрока."""
-        if self.player.isalive() and self.enemy.isalive():
-            action = input("Вы хотите атаковать (a),использовать предмет (i) или пропустить ход (s)? ").lower()
+        if self.player.is_alive() and self.enemy.is_alive():
+            action = input("Вы хотите атаковать (a), использовать предмет (i) или пропустить ход (s)? ").lower()
             if action == 'a':
-                if not self.enemy.applyevasion():
+                if not self.enemy.apply_evasion():
                     self.player.attack(self.enemy)
                 else:
                     print(f"{self.enemy.name} увернулся от атаки!")
             elif action == 'i':
-                self.inventory.showinventory()
-                choice = input(
-                    "Выберите предмет для использования (по имени): ").upper()  # ввод имени предмета в заглавных
+                self.inventory.show_inventory()
+                choice = input("Выберите предмет для использования (по имени): ").upper()  # Ввод имени предмета в заглавных
                 for item in self.inventory.items:
                     if item.name == choice:
                         item.use(self.player)
@@ -190,75 +185,84 @@ class Game:
             else:
                 print("Неверный ввод! Ход пропущен.")
 
-    def enemyturn(self):
+    def enemy_turn(self):
         """Ход врага."""
-        if self.enemy.isalive() and not self.player.applyevasion():
+        if self.enemy.is_alive() and not self.player.apply_evasion():
             self.enemy.attack(self.player)
-        elif self.player.applyevasion():
+        elif self.player.apply_evasion():
             print(f"{self.player.name} увернулся от атаки!")
 
-    def checkwinner(self):
+    def check_winner(self):
         """Проверить победителя."""
-        if not self.player.isalive():
+        if not self.player.is_alive():
             print(f"{self.player.name} погиб!")
             return True
-        elif not self.enemy.isalive():
+        elif not self.enemy.is_alive():
             print(f"{self.enemy.name} повержен!")
             self.enemy_count += 1
             return True
         return False
 
-    def levelup(self):
+    def level_up(self):
         """Прокачка игрока."""
         self.player.attack_power += random.randint(5, 10)
         self.player.health += random.randint(10, 20)
-        print(
-            f"{self.player.name} прокачался! Теперь сила атаки: {self.player.attack_power},здоровье: {self.player.health}.")
+        print(f"{self.player.name} прокачался! Теперь сила атаки: {self.player.attack_power}, здоровье: {self.player.health}.")
 
     def play(self):
         """Основной игровой процесс."""
-        self.createcharacter()
-        while self.player.isalive():
-            self.createenemy()
-            while self.enemy.isalive() and self.player.isalive():
-                self.clearscreen()  # Очистить экран
-                self.playerturn()
-                if self.checkwinner():
+        self.create_character()
+
+        while self.player.is_alive():
+            self.create_enemy()
+
+            while self.enemy.is_alive() and self.player.is_alive():
+                self.clear_screen()  # Очистить экран
+                self.player_turn()
+                if self.check_winner():
                     break
-                self.enemyturn()
-                if self.checkwinner():
+                self.enemy_turn()
+                if self.check_winner():
                     break
-            # После победы над боссом,появляется тень
+
+            # После победы над боссом, появляется тень
             if self.enemy_count == 3:
-                self.createboss()  # Создаем тень с параметрами игрока
-                while not self.checkwinner():
-                    self.clearscreen()  # Очистить экран
-                    self.playerturn()
-                    if self.checkwinner():
+                self.create_shadow()  # Создаем тень с параметрами игрока
+                while not self.check_winner():
+                    self.clear_screen()  # Очистить экран
+                    self.player_turn()
+                    if self.check_winner():
                         break
-                    self.enemyturn()
-                    if self.checkwinner():
+                    self.enemy_turn()
+                    if self.check_winner():
                         break
+
             # Прокачка
-            self.levelup()
+            self.level_up()
             self.enemy_count = 0  # Сброс счетчика врагов
+
             # Добавление предметов в инвентарь
             if random.random() < 0.5:  # 50% шанс на предмет
                 potion = Item("Зелье здоровья", "Восстанавливает 20 здоровья", "health")
                 self.inventory.add_item(potion)
+
             if random.random() < 0.3:  # 30% шанс на зелье силы
                 potion = Item("Зелье силы", "Увеличивает силу атаки на 5", "strength")
                 self.inventory.add_item(potion)
+
             # Добавление супер зелья исцеления и супер зелья силы
             if random.random() < 0.2:  # 20% шанс на супер зелье исцеления
                 potion = Item("Зелье супер исцеления", "Восстанавливает 40 здоровья", "health")
                 self.inventory.add_item(potion)
+
             if random.random() < 0.2:  # 20% шанс на супер зелье силы
                 potion = Item("Зелье супер силы", "Увеличивает силу атаки на 10", "strength")
                 self.inventory.add_item(potion)
+
             print("Хочешь продолжить играть? (y/n)")
             if input().lower() != 'y':
                 break
+
         print("Игра окончена. Спасибо за игру!")
 
 
