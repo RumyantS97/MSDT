@@ -2,7 +2,8 @@ import re
 import pandas as pd
 from typing import List
 import hashlib
-import json # Модуль для вычисления контрольной суммы
+import json  # Модуль для вычисления контрольной суммы
+
 
 def calculate_checksum(row_numbers: List[int]) -> str:
     """
@@ -17,6 +18,7 @@ def calculate_checksum(row_numbers: List[int]) -> str:
     """
     row_numbers.sort()
     return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
+
 
 def validate_telephone(telephone):
     pattern = r'^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$'
@@ -88,9 +90,10 @@ def validate_data(data):
 
 
 def serialize_result(variant, checksum):
-    result = {'variant': variant,
-              'checksum': checksum
-              }
+    result = {
+        'variant': variant,
+        'checksum': checksum
+    }
     with open('result.json', 'w', encoding='utf-8') as json_file:
         json.dump(result, json_file, ensure_ascii=False, indent=4)
 
