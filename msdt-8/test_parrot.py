@@ -1,6 +1,5 @@
 import pytest
-from parrot import ParrotType
-from parrot_classes import create_parrot
+from parrot_creation import ParrotType, create_parrot
 
 
 def test_speed_of_european_parrot():

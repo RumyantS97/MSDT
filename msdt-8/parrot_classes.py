@@ -1,15 +1,4 @@
-from parrot import Parrot, ParrotType
-
-def create_parrot(type_of_parrot, number_of_coconuts, voltage, nailed):
-    match type_of_parrot:
-        case ParrotType.EUROPEAN:
-            parrot = EuropeanParrot()
-        case ParrotType.AFRICAN:
-            parrot = AfricanParrot(number_of_coconuts)
-        case ParrotType.NORWEGIAN_BLUE:
-            parrot = NorwegianBlueParrot(voltage, nailed)
-
-    return parrot
+from parrot import Parrot
 
 class EuropeanParrot(Parrot):
 
@@ -18,6 +7,7 @@ class EuropeanParrot(Parrot):
 
     def cry(self):
         return "Sqoork!"
+
 
 class AfricanParrot(Parrot):
     def __init__(self, number_of_coconuts):
@@ -31,6 +21,7 @@ class AfricanParrot(Parrot):
 
     def _load_factor(self):
         return 9.0
+
 
 class NorwegianBlueParrot(Parrot):
     def __init__(self, voltage, nailed):

@@ -1,16 +1,13 @@
-from enum import Enum
+from abc import ABC, abstractmethod
 
-class ParrotType(Enum):
-    EUROPEAN = 1
-    AFRICAN = 2
-    NORWEGIAN_BLUE = 3
+class Parrot(ABC):
+    @abstractmethod
+    def speed(self):
+        pass
 
-class Parrot:
-
-    #def __init__(self, type_of_parrot, number_of_coconuts, voltage, nailed):
-     #   self._type = type_of_parrot
-      #  self._number_of_coconuts = number_of_coconuts
-
+    @abstractmethod
+    def cry(self):
+        pass
 
     def _base_speed(self):
         return 12.0
