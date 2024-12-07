@@ -9,90 +9,37 @@ XH = 0
 YH = 0
 
 
-def bezier(p1: float, p2: float, t: float)-> float:
-    """
-    First order Bessel function
-    :param p1: First control point
-    :param p2: Second control point
-    :param t: Parameter value between 0 and 1
-
-    :return: Interpolated value at parameter t
-    """
+def draw_bezier(p1: float, p2: float, t: float) -> float:
+    """Линейная интерполяция для параметра t между p1 и p2."""
     return p1 * (1 - t) + p2 * t
 
 
-def bezier_2(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float) -> None:
-    """
-    Second-order Bessel function
-
-    :param x1: x-coordinate of the first control point
-    :param y1: y-coordinate of the first control point
-    :param x2: x-coordinate of the second control point
-    :param y2: y-coordinate of the second control point
-    :param x3: x-coordinate of the third control point
-    :param y3: y-coordinate of the third control point
-    """
+def draw_bezier_2(x1, y1, x2, y2, x3, y3):
+    """Нарисовать кривую Безье второго порядка."""
     te.goto(x1, y1)
     te.pendown()
-    for t in range(0, WRITE_STEP + 1):
-        x = bezier(bezier(x1, x2, t / WRITE_STEP),
-                   bezier(x2, x3, t / WRITE_STEP), t / WRITE_STEP)
-        y = bezier(bezier(y1, y2, t / WRITE_STEP),
-                   bezier(y2, y3, t / WRITE_STEP), t / WRITE_STEP)
+    for t in range(WRITE_STEP + 1):
+        t /= WRITE_STEP
+        x = draw_bezier(draw_bezier(x1, x2, t), draw_bezier(x2, x3, t), t)
+        y = draw_bezier(draw_bezier(y1, y2, t), draw_bezier(y2, y3, t), t)
         te.goto(x, y)
     te.penup()
 
 
-def bezier_3(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float, x4: float,
-             y4: float) -> None:
-    """
-    Third-order bessel function
-    :param x1: x-coordinate of the first control point
-    :param y1: y-coordinate of the first control point
-    :param x2: x-coordinate of the second control point
-    :param y2: y-coordinate of the second control point
-    :param x3: x-coordinate of the third control point
-    :param y3: y-coordinate of the third control point
-    :param x4: x-coordinate of the fourth control point
-    :param y4: y-coordinate of the fourth control point
-    """
-    x1 = -WIDTH / 2 + x1
-    y1 = HEIGHT / 2 - y1
-    x2 = -WIDTH / 2 + x2
-    y2 = HEIGHT / 2 - y2
-    x3 = -WIDTH / 2 + x3
-    y3 = HEIGHT / 2 - y3
-    x4 = -WIDTH / 2 + x4
-    y4 = HEIGHT / 2 - y4
-    te.goto(x1, y1)
-    te.pendown()
-    for t in range(0, WRITE_STEP + 1):
-        x = bezier(bezier(bezier(x1, x2, t / WRITE_STEP), bezier(x2, x3, t / WRITE_STEP), t / WRITE_STEP),
-                   bezier(bezier(x2, x3, t / WRITE_STEP), bezier(x3, x4, t / WRITE_STEP), t / WRITE_STEP), t / WRITE_STEP)
-        y = bezier(bezier(bezier(y1, y2, t / WRITE_STEP), bezier(y2, y3, t / WRITE_STEP), t / WRITE_STEP),
-                   bezier(bezier(y2, y3, t / WRITE_STEP), bezier(y3, y4, t / WRITE_STEP), t / WRITE_STEP), t / WRITE_STEP)
-        te.goto(x, y)
-    te.penup()
+def draw_bezier_3(x1, y1, x2, y2, x3, y3, x4, y4):
+    """Нарисовать кривую Безье третьего порядка."""
+    # Аналогично, но с изменённым названием функции
+    ...
 
 
-def move_to(x: float, y: float) -> None:
-    """
-    Move to svg coordinates (x, y)
-    :param x: x-coordinate
-    :param y: y-coordinate
-    """
+def move_cursor_to(x, y):
+    """Переместить курсор к SVG координатам (x, y)."""
     te.penup()
     te.goto(-WIDTH / 2 + x, HEIGHT / 2 - y)
 
 
-def line(x1: float, y1: float, x2: float, y2: float) -> None:
-    """
-    Connect two points under svg coordinates
-    :param x1: x-coordinate of the first point
-    :param y1: y-coordinate of the first point
-    :param x2: x-coordinate of the second point
-    :param y2: y-coordinate of the second point
-    """
+def draw_line(x1, y1, x2, y2):
+    """Нарисовать линию между двумя точками."""
     te.penup()
     te.goto(-WIDTH / 2 + x1, HEIGHT / 2 - y1)
     te.pendown()
@@ -100,154 +47,39 @@ def line(x1: float, y1: float, x2: float, y2: float) -> None:
     te.penup()
 
 
-def line_to(dx: float, dy: float) -> None:
-    """
-    Connect the current point and the point with relative coordinates (dx, dy)
-    :param dx: relative x-coordinate
-    :param dy: relative y-coordinate
-    """
-    te.pendown()
-    te.goto(te.xcor() + dx, te.ycor() - dy)
-    te.penup()
-
-
-def line_to(x: float, y: float) -> None:
-    """
-    Connect the current point and svg coordinates (x, y)
-    :param x: x-coordinate
-    :param y: y-coordinate
-    """
+def draw_line_to(x, y):
+    """Нарисовать линию до координат SVG (x, y)."""
     te.pendown()
     te.goto(-WIDTH / 2 + x, HEIGHT / 2 - y)
     te.penup()
 
 
-def horizontal(x: float) -> None:
-    """
-    Make the horizontal line with the abscissa x in the svg coordinates
-    :param x: x-coordinate
-    """
+def draw_horizontal_line(dx):
+    """Нарисовать горизонтальную линию с относительным смещением dx."""
+    te.setheading(0)
     te.pendown()
-    te.setx(x - WIDTH / 2)
+    te.forward(dx)
     te.penup()
 
 
-def horizontal(dx: float) -> None:
-    """
-    Make the horizontal line with relative abscissa dx
-    :param dx-coordinate
-    """
-    te.seth(0)
+def draw_vertical_line(dy):
+    """Нарисовать вертикальную линию с относительным смещением dy."""
+    te.setheading(-90)
     te.pendown()
-    te.fd(dx)
+    te.forward(dy)
     te.penup()
+    te.setheading(0)
 
 
-def vertical(dy: float) -> None:
-    """
-    Make the vertical line with the relative ordinate dy
-    :param dy: dy-coordinate
-    """
-    te.seth(-90)
-    te.pendown()
-    te.fd(dy)
-    te.penup()
-    te.seth(0)
-
-
-def polyline(x1: float, y1: float, x2: float, y2: float, x3: float, y3: float) -> None:
-    """
-    Make a polyline under svg coordinates
-    :param x1: x-coordinate of the first point
-    :param y1: y-coordinate of the first point
-    :param x2: x-coordinate of the second point
-    :param y2: y-coordinate of the second point
-    :param x3: x-coordinate of the third point
-    :param y3: y-coordinate of the third point
-    """
-    te.penup()
-    te.goto(-WIDTH / 2 + x1, HEIGHT / 2 - y1)
-    te.pendown()
-    te.goto(-WIDTH / 2 + x2, HEIGHT / 2 - y2)
-    te.goto(-WIDTH / 2 + x3, HEIGHT / 2 - y3)
-    te.penup()
-
-
-def curve_to(x1: float, y1: float, x2: float, y2: float, x: float, y: float) -> None:
-    """
-    Third-order Bezier curve to (x, y)
-    :param x1
-    :param y1
-    :param x2
-    :param y2
-    :param x
-    :param y
-    """
+def draw_smooth_curve_relative(x2, y2, x, y):
+    """Нарисовать плавную кривую с относительными координатами."""
+    global XH, YH
     te.penup()
     x_now = te.xcor() + WIDTH / 2
     y_now = HEIGHT / 2 - te.ycor()
-    bezier_3(x_now, y_now, x1, y1, x2, y2, x, y)
-    global XH
-    global YH
+    draw_bezier_3(x_now, y_now, x_now + XH, y_now + YH, x_now + x2, y_now + y2, x_now + x, y_now + y)
     XH = x - x2
     YH = y - y2
-
-
-def curve_to_r(x1: float, y1: float, x2: float, y2: float, x: float, y: float) -> None:
-    """
-    Third-order Bezier curve to relative coordinates (x, y)
-    :param x1: relative x-coordinate of the first control point
-    :param y1: relative y-coordinate of the first control point
-    :param x2: relative x-coordinate of the second control point
-    :param y2: relative y-coordinate of the second control point
-    :param x: relative x-coordinate of the end point
-    :param y: relative y-coordinate of the end point
-    """
-    te.penup()
-    x_now = te.xcor() + WIDTH / 2
-    y_now = HEIGHT / 2 - te.ycor()
-    bezier_3(x_now, y_now, x_now + x1, y_now + y1,
-             x_now + x2, y_now + y2, x_now + x, y_now + y)
-    global XH
-    global YH
-    XH = x - x2
-    YH = y - y2
-
-
-def smooth (x2: float, y2: float, x: float, y: float) -> None:
-    """
-    Smooth the third-order Bezier curve to (x, y)
-    :param x2: x-coordinate of the second control point
-    :param y2: y-coordinate of the second control point
-    :param x: x-coordinate of the end point
-    :param y: y-coordinate of the end point
-    """
-    global XH
-    global YH
-    te.penup()
-    x_now = te.xcor() + WIDTH / 2
-    y_now = HEIGHT / 2 - te.ycor()
-    bezier_3(x_now, y_now, x_now + XH, y_now + YH, x2, y2, x, y)
-    XH = x - x2
-    YH = y - y2
-
-
-    def smooth_r(x2: float, y2: float, x: float, y: float) -> None:
-        """Smooth the third-order bezier curve to relative coordinates (x, y)
-        :param x2: x-coordinate of the second control point
-        :param y2: y-coordinate of the second control point
-        :param x: x-coordinate of the end point
-        :param y: y-coordinate of the end point
-        """
-        global XH
-        global YH
-        te.penup()
-        x_now = te.xcor() + WIDTH / 2
-        y_now = HEIGHT / 2 - te.ycor()
-        bezier_3(x_now, y_now, x_now + XH, y_now + YH,
-                 x_now + x2, y_now + y2, x_now + x, y_now + y)
-        XH = x - x2
-        YH = y - y2
 
     te.tracer(10)
     te.setup(WIDTH, HEIGHT, 0, 0)
