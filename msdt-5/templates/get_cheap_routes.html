@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}get_cheap_routes{% endblock %}
+{% block content %}
+<h1>Полеты ценою меньше {{max_price}} рублей</h1>
+<table border="1" class="table table-striped">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>departure_airport</th>
+        <th>destination_airport</th>
+        <th>ticket_price_rub</th>
+        <th>flight_time_min</th>
+    </tr>
+    </thead>
+    {% for route in cheap_routes %}
+    <tr>
+        <td>{{route.id}}</td>
+        <td>{{route.departure_airport}}</td>
+        <td>{{route.destination_airport}}</td>
+        <td>{{route.ticket_price_rub}}</td>
+        <td>{{route.flight_time_min}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

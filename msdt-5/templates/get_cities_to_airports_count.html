@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}get_cities_to_airport_count{% endblock %}
+{% block content %}
+<h1>Количество аэропортов по городам</h1>
+<table border="1" class="table table-striped">
+    <thead>
+    <tr>
+        <th>name</th>
+        <th>count</th>
+    </tr>
+    </thead>
+    {% for city in cities_to_airports_count %}
+    <tr>
+        <td>{{city.name}}</td>
+        <td>{{city.count}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{{cities_to_airports_count}}
+{% endblock %}
