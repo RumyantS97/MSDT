@@ -1,5 +1,3 @@
-# test_my_functions.py
-
 import pytest
 from unittest.mock import patch
 from my_functions import add, subtract, multiply, divide, square, greet, fetch_data
@@ -28,9 +26,9 @@ def test_greet():
 def test_fetch_data(mock_get):
     # Настраиваем мок для возврата определенного значения
     mock_get.return_value.json.return_value = {"key": "value"}
-    
+
     result = fetch_data("http://fakeapi.com/data")
-    
+
     assert result == {"key": "value"}
     mock_get.assert_called_once_with("http://fakeapi.com/data")
 
@@ -38,8 +36,8 @@ def test_fetch_data(mock_get):
 def test_fetch_data_error(mock_get):
     # Настраиваем мок для имитации ошибки
     mock_get.side_effect = Exception("Network error")
-    
+
     with pytest.raises(Exception) as e:
         fetch_data("http://fakeapi.com/data")
-    
+
     assert str(e.value) == "Network error"
