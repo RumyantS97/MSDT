@@ -102,24 +102,19 @@ def read_and_validate_csv(file_path, variant_number):
     df = pd.read_csv(file_path, sep=";", encoding="utf-16")
     validation_results = []
     error_rows = []
-
     for index, row in df.iterrows():
-        data = {
-            'telephone': row.get('telephone'),
-            'height': row.get('height'),
-            'snils': row.get('snils'),
-            'identifier': row.get('identifier'),
-            'occupation': row.get('occupation'),
-            'longitude': row.get('longitude'),
-            'blood_type': row.get('blood_type'),
-            'issn': row.get('issn'),
-            'locale_code': row.get('locale_code'),
-            'date': row.get('date'),
-        }
-
+        data = {'telephone': row.get('telephone'),
+                'height': row.get('height'),
+                'snils': row.get('snils'),
+                'identifier': row.get('identifier'),
+                'occupation': row.get('occupation'),
+                'longitude': row.get('longitude'),
+                'blood_type': row.get('blood_type'),
+                'issn': row.get('issn'),
+                'locale_code': row.get('locale_code'),
+                'date': row.get('date')}
         result = validate_data(data)
         validation_results.append(result)
-
         if any(not valid for valid in result.values()):
             error_rows.append(index)
 
