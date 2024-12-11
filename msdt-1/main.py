@@ -84,7 +84,7 @@ def calculate_velocity_vector(
     vx = (x2 - x1) / time_elapsed
     vy = (y2 - y1) / time_elapsed
     vz = (z2 - z1) / time_elapsed
-    return (vx, vy, vz)
+    return vx, vy, vz
 
 
 def predict_coordinates(
@@ -129,7 +129,7 @@ def predict_coordinates(
     predicted_x = x + vx * time
     predicted_y = y + vy * time
     predicted_z = z + vz * time
-    return (predicted_x, predicted_y, predicted_z)
+    return predicted_x, predicted_y, predicted_z
 
 
 def calculate_distance(coord1, coord2):
