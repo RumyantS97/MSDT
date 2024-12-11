@@ -51,7 +51,6 @@ def test_main_not_two_args(capsys):
 def test_main_parametrize_valid_input(capsys, args, expected):
     main(args)
     captured = capsys.readouterr()
-
     assert expected in captured.out
 
 
@@ -61,5 +60,4 @@ def test_main_with_mock_argv(capsys):
     with patch('sys.argv', ['gcd', '12', '15']):
         main(['12', '15'])
         captured = capsys.readouterr()
-
         assert "НОД чисел 12 и 15 равен 3" in captured.out
