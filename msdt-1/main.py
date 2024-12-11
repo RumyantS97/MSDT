@@ -7,6 +7,10 @@
 from math import sqrt
 from random import uniform
 
+INITIAL_COORDINATES = 3
+AIRSPACE_SIZE = (1000, 1000, 1000)
+TIMESTEP = 1
+
 def calculate_initial_coordinates(num_planes,max_x,max_y,max_z):
     """Generates initial coordinates for a specified number of
      planes within a defined airspace.
@@ -57,8 +61,8 @@ def calculate_velocity_vector(
     if not (
             isinstance(initial_coordinates, tuple)
             and isinstance(final_coordinates,tuple)
-            and 3 == len(initial_coordinates)
-            and len(final_coordinates) == 3
+            and len(initial_coordinates) == INITIAL_COORDINATES
+            and len(final_coordinates) == INITIAL_COORDINATES
             and isinstance(time_elapsed,(int,float))
             and time_elapsed > 0
     ):
@@ -90,8 +94,8 @@ def predict_coordinates(initial_coordinates, velocity_vector, time):
     if not (
             not (not isinstance(initial_coordinates, tuple) or not isinstance(
                 velocity_vector, tuple))
-            and len(initial_coordinates) == 3
-            and len(velocity_vector) == 3
+            and len(initial_coordinates) == INITIAL_COORDINATES
+            and len(velocity_vector) == INITIAL_COORDINATES
             and isinstance(time, (int, float))
             and time >= 0
     ):
@@ -109,15 +113,15 @@ def calculate_distance(coord1, coord2):
     """Calculates the distance between two 3D coordinates."""
     x1, y1, z1 = coord1
     x2, y2, z2 = coord2
-    distance = sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
+    distance = sqrt( (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
     return distance
 
 
 def simulate_flight(
         num_planes,
         duration,
-        airspace_size=(1000, 1000, 1000),
-        timestep=1
+        airspace_size=AIRSPACE_SIZE,
+        timestep=TIMESTEP
     ):
     """Simulates the flight of multiple planes over a given duration.
     Args:
@@ -134,7 +138,7 @@ def simulate_flight(
                [num_planes, duration, timestep]):
         return None
     if not isinstance(airspace_size, tuple) or len(
-            airspace_size) != 3 or not all(
+            airspace_size) != INITIAL_COORDINATES or not all(
             isinstance(i, int) and i > 0 for i in airspace_size):
         return None
 
