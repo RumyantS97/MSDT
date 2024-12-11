@@ -81,10 +81,11 @@ def calculate_velocity_vector(
 
     x1, y1, z1 = initial_coordinates
     x2, y2, z2 = final_coordinates
-    vx = (x2 - x1) / time_elapsed
-    vy = (y2 - y1) / time_elapsed
-    vz = (z2 - z1) / time_elapsed
-    return vx, vy, vz
+    difference_in_x = (x2 - x1) / time_elapsed
+    difference_in_y = (y2 - y1) / time_elapsed
+    difference_in_z = (z2 - z1) / time_elapsed
+    
+    return difference_in_x, difference_in_y, difference_in_z
 
 
 def predict_coordinates(
@@ -125,10 +126,10 @@ def predict_coordinates(
         return None
 
     x, y, z = initial_coordinates
-    vx, vy, vz = velocity_vector
-    predicted_x = x + vx * time
-    predicted_y = y + vy * time
-    predicted_z = z + vz * time
+    difference_in_x, difference_in_y, difference_in_z = velocity_vector
+    predicted_x = x + difference_in_x * time
+    predicted_y = y + difference_in_y * time
+    predicted_z = z + difference_in_z * time
     return predicted_x, predicted_y, predicted_z
 
 
