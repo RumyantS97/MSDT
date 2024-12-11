@@ -31,7 +31,7 @@ def calculate_initial_coordinates(
         coordinates of a plane.  Returns None if input is invalid.
     """
     if not all(
-            isinstance(i, int) and i > 0 for i in [
+            isinstance(race, int) and i > 0 for race in [
                 num_planes,
                 max_x,
                 max_y,
@@ -161,9 +161,9 @@ def simulate_flight(
 
     if not all(
             isinstance(
-                i,
+                race,
                 (int, float)
-            ) and i > 0 for i in [
+            ) and race > 0 for race in [
                 num_planes,
                 duration,
                 timestep
@@ -177,8 +177,8 @@ def simulate_flight(
         )
     or len(airspace_size) != INITIAL_COORDINATES
     or not all(
-                isinstance(i, int)
-                and i > 0 for i in airspace_size
+                isinstance(race, int)
+                and race > 0 for race in airspace_size
             )
     ):
         return None
@@ -198,9 +198,7 @@ def simulate_flight(
         current_coords = initial_coords[plane_index]
         flight_paths[plane_index].append(current_coords)
 
-        for t in range(
-                timestep,
-                int(duration + 1),
+        for _ in range(
                 timestep
         ):
             final_coords = (
