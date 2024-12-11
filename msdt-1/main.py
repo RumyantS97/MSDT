@@ -84,7 +84,7 @@ def calculate_velocity_vector(
     difference_in_x = (x2 - x1) / time_elapsed
     difference_in_y = (y2 - y1) / time_elapsed
     difference_in_z = (z2 - z1) / time_elapsed
-    
+
     return difference_in_x, difference_in_y, difference_in_z
 
 
@@ -108,15 +108,13 @@ def predict_coordinates(
          Returns None if input is invalid.
         """
     if not (
-            not (
-                not isinstance(
-                    initial_coordinates,
-                    tuple
-                )
-                or not isinstance(
-                    velocity_vector,
-                    tuple
-                )
+            isinstance(
+                initial_coordinates,
+                tuple
+            )
+            or isinstance(
+                velocity_vector,
+                tuple
             )
             and len(initial_coordinates) == INITIAL_COORDINATES
             and len(velocity_vector) == INITIAL_COORDINATES
