@@ -1,5 +1,7 @@
-import math
-import random
+# we need some comments, and it is not good idea to import
+# all package. Instead, import only what you need
+from math import sqrt
+from random import uniform
 
 def calculate_initial_coordinates(num_planes,max_x,max_y,max_z):
     """Generates initial coordinates for a specified number of planes within a defined airspace.
@@ -18,9 +20,9 @@ def calculate_initial_coordinates(num_planes,max_x,max_y,max_z):
 
     coordinates = []
     for _ in range(num_planes):
-        x = random.uniform(0, max_x)
-        y = random.uniform(0, max_y)
-        z = random.uniform(0, max_z)
+        x = uniform(0, max_x)
+        y = uniform(0, max_y)
+        z = uniform(0, max_z)
         coordinates.append((x, y, z))
     return coordinates
 
@@ -76,7 +78,7 @@ def calculate_distance(coord1, coord2):
     """Calculates the distance between two 3D coordinates."""
     x1, y1, z1 = coord1
     x2, y2, z2 = coord2
-    distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
+    distance = sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
     return distance
 
 
@@ -112,8 +114,8 @@ def simulate_flight(num_planes, duration, airspace_size=(1000, 1000, 1000),
         flight_paths[plane_index].append(current_coords)
 
         for t in range(timestep, int(duration + 1), timestep):
-            final_coords = (random.uniform(0, max_x), random.uniform(0, max_y),
-                            random.uniform(0, max_z))
+            final_coords = (uniform(0, max_x), uniform(0, max_y),
+                            uniform(0, max_z))
             velocity = calculate_velocity_vector(current_coords, final_coords,
                                                  timestep)
             if velocity is None: return None
