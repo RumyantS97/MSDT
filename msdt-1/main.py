@@ -1,3 +1,7 @@
+"""
+    This project do...
+"""
+
 # we need some comments, and it is not good idea to import
 # all package. Instead, import only what you need
 from math import sqrt
