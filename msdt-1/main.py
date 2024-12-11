@@ -11,7 +11,12 @@ INITIAL_COORDINATES = 3
 AIRSPACE_SIZE = (1000, 1000, 1000)
 TIMESTEP = 1
 
-def calculate_initial_coordinates(num_planes,max_x,max_y,max_z):
+def calculate_initial_coordinates(
+        num_planes,
+        max_x,
+        max_y,
+        max_z
+    ):
     """Generates initial coordinates for a specified number of
      planes within a defined airspace.
 
@@ -25,8 +30,14 @@ def calculate_initial_coordinates(num_planes,max_x,max_y,max_z):
         A list of tuples, where each tuple represents the (x, y, z)
         coordinates of a plane.  Returns None if input is invalid.
     """
-    if not all(isinstance(i,int) and i > 0
-               for i in [num_planes,max_x,max_y,max_z]):
+    if not all(
+            isinstance(i, int) and i > 0 for i in [
+                num_planes,
+                max_x,
+                max_y,
+                max_z
+            ]
+    ):
         return None
 
     coordinates = []
@@ -76,7 +87,11 @@ def calculate_velocity_vector(
     return (vx, vy, vz)
 
 
-def predict_coordinates(initial_coordinates, velocity_vector, time):
+def predict_coordinates(
+        initial_coordinates,
+        velocity_vector,
+        time
+    ):
     """Predicts the coordinates of a plane at a given time based
      on its initial coordinates and velocity vector.
 
@@ -92,8 +107,16 @@ def predict_coordinates(initial_coordinates, velocity_vector, time):
          Returns None if input is invalid.
         """
     if not (
-            not (not isinstance(initial_coordinates, tuple) or not isinstance(
-                velocity_vector, tuple))
+            not (
+                not isinstance(
+                    initial_coordinates,
+                    tuple
+                )
+                or not isinstance(
+                    velocity_vector,
+                    tuple
+                )
+            )
             and len(initial_coordinates) == INITIAL_COORDINATES
             and len(velocity_vector) == INITIAL_COORDINATES
             and isinstance(time, (int, float))
@@ -113,7 +136,9 @@ def calculate_distance(coord1, coord2):
     """Calculates the distance between two 3D coordinates."""
     x1, y1, z1 = coord1
     x2, y2, z2 = coord2
-    distance = sqrt( (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2)
+    distance = sqrt(
+        (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2
+    )
     return distance
 
 
@@ -134,12 +159,28 @@ def simulate_flight(
         of a plane at each timestep.  Returns None if input is invalid.
     """
 
-    if not all(isinstance(i, (int, float)) and i > 0 for i in
-               [num_planes, duration, timestep]):
+    if not all(
+            isinstance(
+                i,
+                (int, float)
+            ) and i > 0 for i in [
+                num_planes,
+                duration,
+                timestep
+            ]
+    ):
         return None
-    if not isinstance(airspace_size, tuple) or len(
-            airspace_size) != INITIAL_COORDINATES or not all(
-            isinstance(i, int) and i > 0 for i in airspace_size):
+    if (
+            not isinstance(
+            airspace_size,
+            tuple
+        )
+    or len(airspace_size) != INITIAL_COORDINATES
+    or not all(
+                isinstance(i, int)
+                and i > 0 for i in airspace_size
+            )
+    ):
         return None
 
     max_x, max_y, max_z = airspace_size
@@ -149,28 +190,38 @@ def simulate_flight(
         max_y,
         max_z
     )
-    if initial_coords is None: return None
+    if initial_coords is None:
+        return None
 
     flight_paths = [[] for _ in range(num_planes)]
     for plane_index in range(num_planes):
         current_coords = initial_coords[plane_index]
         flight_paths[plane_index].append(current_coords)
 
-        for t in range(timestep, int(duration + 1), timestep):
-            final_coords = (uniform(0, max_x), uniform(0, max_y),
-                            uniform(0, max_z))
+        for t in range(
+                timestep,
+                int(duration + 1),
+                timestep
+        ):
+            final_coords = (
+                uniform(0, max_x),
+                uniform(0, max_y),
+                uniform(0, max_z)
+            )
             velocity = calculate_velocity_vector(
                 current_coords,
                 final_coords,
                 timestep
             )
-            if velocity is None: return None
+            if velocity is None:
+                return None
             next_coords = predict_coordinates(
                 current_coords,
                 velocity,
                 timestep
             )
-            if next_coords is None: return None
+            if next_coords is None:
+                return None
             flight_paths[plane_index].append(next_coords)
             current_coords = next_coords
 
