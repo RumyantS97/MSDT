@@ -75,16 +75,16 @@ def validate_date(date):
 
 def validate_data(data):
     validation_results = {
-        'telephone': validate_telephone(data['telephone']),
-        'height': validate_height(data['height']),
-        'snils': validate_snils(data['snils']),
-        'identifier': validate_identifier(data['identifier']),
-        'occupation': validate_occupation(data['occupation']),
-        'longitude': validate_longitude(data['longitude']),
-        'blood_type': validate_blood_type(data['blood_type']),
-        'issn': validate_issn(data['issn']),
-        'locale_code': validate_locale_code(data['locale_code']),
-        'date': validate_date(data['date']),
+        'telephone'     : validate_telephone(data['telephone']),
+        'height'        : validate_height(data['height']),
+        'snils'         : validate_snils(data['snils']),
+        'identifier'    : validate_identifier(data['identifier']),
+        'occupation'    : validate_occupation(data['occupation']),
+        'longitude'     : validate_longitude(data['longitude']),
+        'blood_type'    : validate_blood_type(data['blood_type']),
+        'issn'          : validate_issn(data['issn']),
+        'locale_code'   : validate_locale_code(data['locale_code']),
+        'date'          : validate_date(data['date']),
     }
     return validation_results
 
@@ -102,19 +102,24 @@ def read_and_validate_csv(file_path, variant_number):
     df = pd.read_csv(file_path, sep=";", encoding="utf-16")
     validation_results = []
     error_rows = []
+
     for index, row in df.iterrows():
-        data = {'telephone': row.get('telephone'),
-                'height': row.get('height'),
-                'snils': row.get('snils'),
-                'identifier': row.get('identifier'),
-                'occupation': row.get('occupation'),
-                'longitude': row.get('longitude'),
-                'blood_type': row.get('blood_type'),
-                'issn': row.get('issn'),
-                'locale_code': row.get('locale_code'),
-                'date': row.get('date')}
+        data = {
+            'telephone'     : row.get('telephone'),
+            'height'        : row.get('height'),
+            'snils'         : row.get('snils'),
+            'identifier'    : row.get('identifier'),
+            'occupation'    : row.get('occupation'),
+            'longitude'     : row.get('longitude'),
+            'blood_type'    : row.get('blood_type'),
+            'issn'          : row.get('issn'),
+            'locale_code'   : row.get('locale_code'),
+            'date'          : row.get('date'),
+        }
+
         result = validate_data(data)
         validation_results.append(result)
+
         if any(not valid for valid in result.values()):
             error_rows.append(index)
 
