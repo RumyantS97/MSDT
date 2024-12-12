@@ -8,12 +8,20 @@ import random
 import time
 
 
-
 class Car:
     """
         This class do...
     """
-    def __init__(self, id, initial_position=(0, 0), initial_speed=0, max_speed=100, acceleration=2.0, braking_force=3.0):
+
+    def __init__(
+            self,
+            id,
+            initial_position=(0, 0),
+            initial_speed=0,
+            max_speed=100,
+            acceleration=2.0,
+            braking_force=3.0
+    ):
         """
         About the constructor
         :param id:
@@ -73,7 +81,8 @@ class Car:
             # Simulate gradual lane change
             lane_change_speed = 10 # km/h
             lane_change_ms = lane_change_speed * (1000/3600)
-            if time.time() - self.lane_change_start_time < 2.0: #Simulate 2-sec lane change
+            # Simulate 2-sec lane change
+            if time.time() - self.lane_change_start_time < 2.0:
                 if self.lane < self.target_lane:
                     self.position[1] += lane_change_ms * dt
                 else:
@@ -113,7 +122,10 @@ class Car:
         """
         # Check for collisions before lane change (very basic check)
         for car in other_cars:
-            if car.id != self.id and abs(car.position[0] - self.position[0]) < 50 and car.lane == target_lane: #Check for cars within 50 meters
+            if (car.id != self.id
+                    # Check for cars within 50 meters
+                    and abs(car.position[0] - self.position[0]) < 50
+                    and car.lane == target_lane):
                 return False
         return True
 
@@ -123,7 +135,13 @@ class Car:
         About get_status
         :return:
         """
-        return f"Car {self.id}: Pos=({self.position[0]:.2f},{self.position[1]:.2f}), Speed={self.speed:.2f} km/h, Lane={self.lane}"
+        return (
+            f"Car {self.id}:"
+            f" Pos=({self.position[0]:.2f}"
+            f",{self.position[1]:.2f}),"
+            f" Speed={self.speed:.2f} km/h,"
+            f" Lane={self.lane}"
+        )
 
 
 
@@ -135,10 +153,21 @@ def simulate_traffic(num_cars, duration, dt=1.0):
     :param dt:
     :return:
     """
-    cars = [Car(i, initial_position=(i * 50, 0), max_speed=random.randint(80,120),acceleration=random.uniform(1.5,2.5),braking_force=random.uniform(2.5,3.5)) for i in range(num_cars)]
+    cars = [
+        Car(
+            i,
+            initial_position=(i * 50, 0),
+            max_speed=random.randint(80,120),
+            acceleration=random.uniform(1.5,2.5),
+            braking_force=random.uniform(2.5,3.5)
+        )
+        for i in range(num_cars)
+    ]
+
     for t in range(int(duration / dt)):
         for i, car in enumerate(cars):
-            car.decide_action(dt, cars[:i] + cars[i+1:]) #avoid self-collision in the decision
+            # avoid self-collision in the decision
+            car.decide_action(dt, cars[:i] + cars[i+1:])
             car.change_lane(dt)
             car.update_position(dt)
             print(car.get_status())
