@@ -1,17 +1,22 @@
+import os
+
+import ebooklib
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, session, jsonify, send_from_directory
 from flask_login import login_required, current_user
-from models import db, Book, UserBook
-import os
-from api_service import fetch_book_details
-import ebooklib
 from ebooklib import epub
 
+from models import db, Book, UserBook
+from api_service import fetch_book_details
+
+
 books_bp = Blueprint('books', __name__)
+
 
 @books_bp.route('/ebook_images/<path:filename>')
 @login_required
 def ebook_images(filename):
     return send_from_directory('ebook_images', filename)
+
 
 @books_bp.route("/books_details", methods=['GET', 'POST'])
 @login_required
@@ -46,6 +51,7 @@ def upload():
         return redirect(url_for('index'))
     
     return render_template("upload.html")
+
 
 @books_bp.route("/read/<int:book_id>")
 @login_required
@@ -83,3 +89,4 @@ def delete_book(book_id):
         flash('Book deleted successfully.', 'success')
         return jsonify({'success': True}), 200
     return jsonify({'success': False, 'message': 'Book not found or unauthorized'}), 404
+    

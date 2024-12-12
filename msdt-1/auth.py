@@ -1,8 +1,12 @@
+import os
+import shutil
+
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.security import check_password_hash, generate_password_hash
 from models import db, User
-import os, shutil
+
 
 auth_bp = Blueprint('auth', __name__)
 

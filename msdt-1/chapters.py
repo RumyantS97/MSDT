@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, session
-from flask_login import login_required, current_user
 import ebooklib
 from ebooklib import epub
 from bs4 import BeautifulSoup
+from flask import Blueprint, jsonify, session
+from flask_login import login_required, current_user
+
 import reader
 from models import Book, UserBook, db
 

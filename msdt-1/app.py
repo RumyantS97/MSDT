@@ -1,12 +1,15 @@
+import os
+
 from flask import Flask, render_template, session, redirect, url_for
 from flask_login import LoginManager
 from dotenv import load_dotenv
+
 from models import db, User
 from blueprints.auth import auth_bp
 from blueprints.books import books_bp
 from blueprints.chapters import chapters_bp
-import os
 from config import Config
+
 
 # Ensure images are loaded from the correct EPUB file
 load_dotenv()
