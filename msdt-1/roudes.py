@@ -165,19 +165,19 @@ def simulate_traffic(num_cars, duration, dt=1.0):
     """
     cars = [
         Car(
-            i,
+            car,
             initial_position=(i * 50, 0),
             max_speed=random.randint(80,120),
             acceleration=random.uniform(1.5,2.5),
             braking_force=random.uniform(2.5,3.5)
         )
-        for i in range(num_cars)
+        for car in range(num_cars)
     ]
 
-    for t in range(int(duration / dt)):
-        for i, car in enumerate(cars):
+    for _ in range(int(duration / dt)):
+        for current_car, car in enumerate(cars):
             # avoid self-collision in the decision
-            car.decide_action(dt, cars[:i] + cars[i+1:])
+            car.decide_action(dt, cars[:current_car] + cars[current_car+1:])
             car.change_lane(dt)
             car.update_position(dt)
             print(car.get_status())
