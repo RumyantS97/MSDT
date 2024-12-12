@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from lab_5.initcode import Employee, Department, Company
+from initcode import Employee, Department, Company
 def test_employee_initialization():
     """Test if an Employee is correctly initialized."""
     employee = Employee("Nikita", "Manager", 60000)
