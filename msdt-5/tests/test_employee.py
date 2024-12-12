@@ -1,7 +1,7 @@
 import math
 
 import pytest
-from src.employee import Employee, Account
+from employee import Employee, Account
 
 # Тесты для класса Employee
 @pytest.fixture

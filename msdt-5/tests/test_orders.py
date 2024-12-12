@@ -1,7 +1,7 @@
 import pytest
 import math
 from unittest.mock import patch
-from src.orders import calculate_total, Item, Order, DynamicallyPricedItem
+from orders import calculate_total, Item, Order, DynamicallyPricedItem
 
 
 # Тесты для функции calculate_total
