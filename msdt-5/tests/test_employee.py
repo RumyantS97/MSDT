@@ -31,12 +31,15 @@ def account():
 def test_balance_display(mocker, account):
     mock_print = mocker.patch("builtins.print")
     account.balance_display()
-    mock_print.assert_called_with(f"Owner {account.owner} has in account with iban:{account.iban} the amount of {account.balance} RON.")
+    mock_print.assert_called_with(
+        f"Owner {account.owner} has in account with iban:{account.iban}"
+        f" the amount of {account.balance} RON."
+    )
 
 def test_debiting(account):
     new_balance = account.debiting(500)
-    assert new_balance == 500  # начальный баланс был 1000, после дебетирования 500, ожидаем 500
+    assert new_balance == 500
 
 def test_deposit(account):
     new_balance = account.deposit(200)
-    assert new_balance == 1200  # начальный баланс был 1000, после депозита 200, ожидаем 1200
+    assert new_balance == 1200
