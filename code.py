@@ -1,104 +1,99 @@
-def print_matrix(matrix):
-    """Output of the matrix in a convenient way."""
-    for row in matrix:
-        print(" ".join(map(str, row)))
-    print()
+import pytest
+from pytest import approx
+
+from main import (
+    add_matrices, subtract_matrices, transpose_matrix,
+    multiply_matrices, is_square_matrix, scalar_multiply_matrix,
+    trace_matrix, determinant_matrix, inverse_matrix, identity_matrix
+)
 
 
-def add_matrices(matrix1, matrix2):
-    """The addition of two matrices."""
-    if len(matrix1) != len(matrix2) or len(matrix1[0]) != len(matrix2[0]):
-        raise ValueError("The matrices must be the same size for addition.")
-    return [
-        [matrix1[i][j] + matrix2[i][j] for j in range(len(matrix1[0]))]
-        for i in range(len(matrix1))
-    ]
+def test_inverse_matrix():
+    matrix = [[2, 0], [0, 2]]
+    expected = [[0.5, 0.0], [0.0, 0.5]]
+    assert inverse_matrix(matrix) == expected
 
 
-def subtract_matrices(matrix1, matrix2):
-    """Subtraction of one matrix from another."""
-    if len(matrix1) != len(matrix2) or len(matrix1[0]) != len(matrix2[0]):
-        raise ValueError("The matrices must be the same size for subtraction.")
-    return [
-        [matrix1[i][j] - matrix2[i][j] for j in range(len(matrix1[0]))]
-        for i in range(len(matrix1))
-    ]
+@pytest.mark.parametrize("matrix1, matrix2, expected", [
+    ([[1, 2], [3, 4]], [[5, 6], [7, 8]], [[6, 8], [10, 12]]),
+    ([[0, 0], [0, 0]], [[1, 1], [1, 1]], [[1, 1], [1, 1]]),
+])
+def test_add_matrices(matrix1, matrix2, expected):
+    assert add_matrices(matrix1, matrix2) == expected
 
 
-def transpose_matrix(matrix):
-    """Matrix transposition."""
-    return [[matrix[j][i] for j in range(len(matrix))] for i in range(len(matrix[0]))]
+@pytest.mark.parametrize("matrix1, matrix2, expected", [
+    ([[1, 2], [3, 4]], [[1, 0], [0, 1]], [[1, 2], [3, 4]]),
+    ([[2, 0], [1, 3]], [[1, 2], [0, 1]], [[2, 4], [1, 5]]),
+])
+def test_multiply_matrices(matrix1, matrix2, expected):
+    assert multiply_matrices(matrix1, matrix2) == expected
 
 
-def multiply_matrices(matrix1, matrix2):
-    """Multiplication of two matrices."""
-    if len(matrix1[0]) != len(matrix2):
-        raise ValueError(
-            "The number of columns of the first matrix must be equal to the number of rows of the second one.")
-    return [
-        [sum(matrix1[i][k] * matrix2[k][j] for k in range(len(matrix2)))
-         for j in range(len(matrix2[0]))]
-        for i in range(len(matrix1))
-    ]
+@pytest.mark.parametrize("matrix1, matrix2, expected", [
+    ([[5, 6], [7, 8]], [[1, 2], [3, 4]], [[4, 4], [4, 4]]),
+    ([[1, 1], [1, 1]], [[0, 0], [0, 0]], [[1, 1], [1, 1]]),
+])
+def test_subtract_matrices(matrix1, matrix2, expected):
+    assert subtract_matrices(matrix1, matrix2) == expected
 
 
-def is_square_matrix(matrix):
-    """Checks whether the matrix is square."""
-    return len(matrix) == len(matrix[0])
+def test_subtract_matrices_invalid():
+    with pytest.raises(ValueError):
+        subtract_matrices([[1, 2]], [[1]])
 
 
-def scalar_multiply_matrix(matrix, scalar):
-    """Multiplication of a matrix by a scalar."""
-    return [[scalar * element for element in row] for row in matrix]
+@pytest.mark.parametrize("matrix, expected", [
+    ([[1, 2], [3, 4]], 5),
+    ([[5, 0], [0, 3]], 8),
+])
+def test_trace_matrix(matrix, expected):
+    assert trace_matrix(matrix) == expected
 
 
-def trace_matrix(matrix):
-    """Calculating the footprint of a square matrix (the sum of the elements on the main diagonal)."""
-    if not is_square_matrix(matrix):
-        raise ValueError(
-            "The trace can only be calculated for a square matrix.")
-    return sum(matrix[i][i] for i in range(len(matrix)))
+def test_trace_matrix_invalid():
+    with pytest.raises(ValueError):
+        trace_matrix([[1, 2, 3], [4, 5, 6]])
 
 
-def determinant_matrix(matrix):
-    """Recursive calculation of the determinant of a square matrix."""
-    if not is_square_matrix(matrix):
-        raise ValueError(
-            "The determinant can only be calculated for a square matrix.")
-    if len(matrix) == 1:
-        return matrix[0][0]
-    if len(matrix) == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-
-    determinant = 0
-    for col in range(len(matrix)):
-        minor = [[row[i] for i in range(len(row)) if i != col]
-                 for row in matrix[1:]]
-        determinant += ((-1) ** col) * \
-            matrix[0][col] * determinant_matrix(minor)
-    return determinant
+def test_is_square_matrix():
+    assert is_square_matrix([[1, 2], [3, 4]]) is True
+    assert is_square_matrix([[1, 2, 3], [4, 5, 6]]) is False
 
 
-def identity_matrix(size):
-    """Creates a single matrix of a given size."""
-    return [[1 if i == j else 0 for j in range(size)] for i in range(size)]
+@pytest.mark.parametrize("matrix, scalar, expected", [
+    ([[1, 2], [3, 4]], 2, [[2, 4], [6, 8]]),
+    ([[0, 0], [0, 0]], 10, [[0, 0], [0, 0]]),
+])
+def test_scalar_multiply_matrix(matrix, scalar, expected):
+    assert scalar_multiply_matrix(matrix, scalar) == expected
 
 
-def inverse_matrix(matrix):
-    """Calculates the inverse matrix (for a non-degenerate square matrix)."""
-    if not is_square_matrix(matrix):
-        raise ValueError("The inverse matrix exists only for a square matrix.")
-    det = determinant_matrix(matrix)
-    if det == 0:
-        raise ValueError("The matrix is degenerate, there is no inverse.")
+def test_determinant_matrix():
+    matrix = [[1, 2], [3, 4]]
+    assert determinant_matrix(matrix) == -2
 
-    size = len(matrix)
-    adjugate = [[0] * size for _ in range(size)]
+    with pytest.raises(ValueError):
+        determinant_matrix([[1, 2, 3], [4, 5, 6]])
 
-    for i in range(size):
-        for j in range(size):
-            minor = [[matrix[x][y] for y in range(size) if y != j]
-                     for x in range(size) if x != i]
-            adjugate[j][i] = ((-1) ** (i + j)) * determinant_matrix(minor)
 
-    return scalar_multiply_matrix(adjugate, 1 / det)
+def test_identity_matrix():
+    assert identity_matrix(2) == [[1, 0], [0, 1]]
+    assert identity_matrix(3) == [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+
+def test_inverse_matrix_real():
+    matrix = [[4, 7], [2, 6]]
+    expected = [[0.6, -0.7], [-0.2, 0.4]]
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            assert inverse_matrix(matrix)[i][j] == approx(
+                expected[i][j], rel=1e-9)
+
+
+@pytest.mark.parametrize("matrix, expected", [
+    ([[1, 2, 3], [4, 5, 6]], [[1, 4], [2, 5], [3, 6]]),
+    ([[1, 2], [3, 4], [5, 6]], [[1, 3, 5], [2, 4, 6]]),
+])
+def test_transpose_matrix(matrix, expected):
+    assert transpose_matrix(matrix) == expected
