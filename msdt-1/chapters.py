@@ -13,7 +13,10 @@ chapters_bp = Blueprint('chapters', __name__)
 
 @chapters_bp.route("/chapter/<int:chapter_id>")
 @login_required
-def chapter(chapter_id):
+def chapter(chapter_id: int) -> jsonify:
+    """
+    load the content of a chapter from an eBook
+    """
     file = session.get("file")
     reader.load_images(file)
     book = epub.read_epub(f"ebooks/{file}")

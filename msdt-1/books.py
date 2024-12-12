@@ -17,13 +17,19 @@ books_bp = Blueprint('books', __name__)
 
 @books_bp.route('/ebook_images/<path:filename>')
 @login_required
-def ebook_images(filename):
+def ebook_images(filename: str) -> send_from_directory:
+    """
+    serve image files for eBooks
+    """
     return send_from_directory('ebook_images', filename)
 
 
 @books_bp.route("/books_details", methods=['GET', 'POST'])
 @login_required
-def book_details():
+def book_details() -> str:
+    """
+    display details of books owned by the current user
+    """
     user_books = Book.query.filter_by(user_id=current_user.id).all()
     book_details = [fetch_book_details(book.title) for book in user_books]
     return render_template("book_details.html",
@@ -33,7 +39,10 @@ def book_details():
 
 @books_bp.route("/upload", methods=['GET', 'POST'])
 @login_required
-def upload():
+def upload() -> str:
+    """
+    handle uploading of a new eBook by the user
+    """
     if request.method == 'POST':
         title = request.form['title']
         author = request.form['author']
@@ -59,7 +68,10 @@ def upload():
 
 @books_bp.route("/read/<int:book_id>")
 @login_required
-def read(book_id):
+def read(book_id: int) -> str:
+    """
+    load and display the content of a specific eBook
+    """
     book = Book.query.get(book_id)
     if book is None:
         flash('Book not found.', 'error')
@@ -86,7 +98,10 @@ def read(book_id):
 
 @books_bp.route('/delete/<int:book_id>', methods=['DELETE'])
 @login_required
-def delete_book(book_id):
+def delete_book(book_id: int) -> jsonify:
+    """
+    delete a book owned by the current user
+    """
     book = Book.query.get(book_id)
     if book and book.user_id == current_user.id:
         db.session.delete(book)

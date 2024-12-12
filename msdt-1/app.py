@@ -23,12 +23,18 @@ login_manager.login_view = 'auth.login'
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id: int) -> User:
+    """
+    load the user from the database by ID
+    """
     return User.query.get(int(user_id))
 
 
 @app.before_request
-def create_tables():
+def create_tables() -> None:
+    """
+    create database tables before handling the request
+    """
     db.create_all()
 
 
@@ -38,7 +44,10 @@ app.register_blueprint(chapters_bp)
 
 
 @app.route("/")
-def index():
+def index() -> str:
+    """
+    render the homepage or redirect to the login page if the user is not authenticated
+    """
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
     else:

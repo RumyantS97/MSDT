@@ -14,7 +14,10 @@ auth_bp = Blueprint('auth', __name__)
 
 
 @auth_bp.route("/login", methods=['GET', 'POST'])
-def login():
+def login() -> str:
+    """
+    handle user login requests
+    """
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -31,7 +34,10 @@ def login():
 
 @auth_bp.route("/logout")
 @login_required
-def logout():
+def logout() -> str:
+    """
+    handle user logout requests
+    """
     images_dir = 'ebook_images'
     if os.path.exists(images_dir):
         shutil.rmtree(images_dir)
@@ -43,7 +49,10 @@ def logout():
 
 
 @auth_bp.route("/register", methods=['GET', 'POST'])
-def register():
+def register() -> str:
+    """
+    handle user registration requests
+    """
     if request.method == 'POST':
         username = request.form['register-username']
         password = request.form['register-password']
