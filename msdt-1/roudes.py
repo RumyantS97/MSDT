@@ -7,6 +7,14 @@ import random
 # Info why we use time
 import time
 
+# 70% chance to accelerate
+CHANCE_TO_ACCELERATE = 0.7
+LANE_CHANGE_TIME = 2.0
+STANDARD_SPEED = 10
+#20% chance to change lanes
+CHANCE_FOR_LINE_CHANGE = 0.2
+CAR_RADIUS = 50
+
 
 class Car:
     """
@@ -79,10 +87,10 @@ class Car:
         """
         if self.lane != self.target_lane:
             # Simulate gradual lane change
-            lane_change_speed = 10 # km/h
+            lane_change_speed = STANDARD_SPEED # km/h
             lane_change_ms = lane_change_speed * (1000/3600)
             # Simulate 2-sec lane change
-            if time.time() - self.lane_change_start_time < 2.0:
+            if time.time() - self.lane_change_start_time < LANE_CHANGE_TIME:
                 if self.lane < self.target_lane:
                     self.position[1] += lane_change_ms * dt
                 else:
@@ -100,13 +108,15 @@ class Car:
         :return:
         """
         # Simple decision-making:  Accelerate, brake, or change lanes
-        if random.random() < 0.7:  # 70% chance to accelerate
+        # chance to accelerate
+        if random.random() < CHANCE_TO_ACCELERATE:
             self.accelerate(dt)
         else:
             self.brake(dt)
 
         #Rudimentary lane changing logic.  Avoids crashing into other cars.
-        if random.random() < 0.2: #20% chance to change lanes
+        # chance to change lanes
+        if random.random() < CHANCE_FOR_LINE_CHANGE:
             target_lane = random.choice([0,1]) # only 2 lanes for simplicity
             if self.is_lane_change_safe(target_lane,other_cars):
                 self.target_lane = target_lane
@@ -123,8 +133,8 @@ class Car:
         # Check for collisions before lane change (very basic check)
         for car in other_cars:
             if (car.id != self.id
-                    # Check for cars within 50 meters
-                    and abs(car.position[0] - self.position[0]) < 50
+                    # Check for cars within car radius (in meters)
+                    and abs(car.position[0] - self.position[0]) < CAR_RADIUS
                     and car.lane == target_lane):
                 return False
         return True
