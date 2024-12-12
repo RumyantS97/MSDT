@@ -22,9 +22,11 @@ class Car:
         speed_increase = self.acceleration * dt
         self.speed = min(self.speed + speed_increase, self.max_speed)
 
+
     def brake(self, dt):
         speed_decrease = self.braking_force * dt
         self.speed = max(0, self.speed - speed_decrease)
+
 
     def change_lane(self, dt):
         if self.lane != self.target_lane:
@@ -40,6 +42,7 @@ class Car:
                 self.lane = self.target_lane
                 self.lane_change_start_time = 0
 
+
     def decide_action(self, dt, other_cars):
         # Simple decision-making:  Accelerate, brake, or change lanes
         if random.random() < 0.7:  # 70% chance to accelerate
@@ -54,6 +57,7 @@ class Car:
                 self.target_lane = target_lane
                 self.lane_change_start_time = time.time()
 
+
     def is_lane_change_safe(self, target_lane, other_cars):
         # Check for collisions before lane change (very basic check)
         for car in other_cars:
@@ -61,8 +65,10 @@ class Car:
                 return False
         return True
 
+
     def get_status(self):
         return f"Car {self.id}: Pos=({self.position[0]:.2f},{self.position[1]:.2f}), Speed={self.speed:.2f} km/h, Lane={self.lane}"
+
 
 
 def simulate_traffic(num_cars, duration, dt=1.0):
@@ -84,8 +90,10 @@ simulate_traffic(num_cars=3, duration=20, dt=1)
 def dummy_func1():
     pass
 
+
 def dummy_func2(x,y):
     return x*y
+
 
 for i in range(20):
     dummy_func1()
