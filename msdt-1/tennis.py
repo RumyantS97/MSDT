@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 class TennisGameDefactored1:
 
     def __init__(self, player1_name, player2_name):
@@ -49,7 +47,6 @@ class TennisGameDefactored1:
                 }[temp_score]
         return result
 
-
 class TennisGameDefactored2:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
@@ -65,7 +62,9 @@ class TennisGameDefactored2:
     
     def get_player_result(self):
         result = ""
-        if self.player1_points == self.player2_points and self.player1_points < 4:
+        if (self.player1_points == self.player2_points and 
+            self.player1_points < 4
+        ):
             if self.player1_points == 0:
                 result = "Love"
             if self.player1_points == 1:
@@ -75,11 +74,15 @@ class TennisGameDefactored2:
             if self.player1_points == 3:
                 result = "Forty"
             result += "-All"
-        if self.player1_points == self.player2_points and self.player1_points > 3:
+
+        if (self.player1_points == self.player2_points and 
+            self.player1_points > 3
+        ):
             result = "Deuce"
         
         player1_result = ""
         player2_result = ""
+
         if self.player1_points > 0 and self.player2_points == 0:
             if self.player1_points == 1:
                 player1_result = "Fifteen"
@@ -87,9 +90,9 @@ class TennisGameDefactored2:
                 player1_result = "Thirty"
             if self.player1_points == 3:
                 player1_result = "Forty"
-            
             player2_result = "Love"
             result = player1_result + "-" + player2_result
+
         if self.player2_points > 0 and self.player1_points == 0:
             if self.player2_points == 1:
                 player2_result = "Fifteen"
@@ -97,12 +100,12 @@ class TennisGameDefactored2:
                 player2_result = "Thirty"
             if self.p2points == 3:
                 player2_result = "Forty"
-            
             player1_result = "Love"
             result = player1_result + "-" + player2_result
         
-        
-        if self.player1_points > self.player2_points and self.player1_points < 4:
+        if (self.player1_points > self.player2_points and 
+            self.player1_points < 4
+        ):
             if self.player1_points == 2:
                 player1_result = "Thirty"
             if self.player1_points == 3:
@@ -112,26 +115,38 @@ class TennisGameDefactored2:
             if self.player2_points == 2:
                 player2_result = "Thirty"
             result = player1_result + "-" + player2_result
-        if self.player2_points > self.player1_points and self.player2_points < 4:
+
+        if (self.player2_points > self.player1_points and 
+            self.player2_points < 4
+        ):
             if self.player2_points == 2:
-                player2_result="Thirty"
+                player2_result = "Thirty"
             if self.player2_points == 3:
-                player2_result="Forty"
+                player2_result = "Forty"
             if self.player1_points == 1:
-                player1_result="Fifteen"
+                player1_result = "Fifteen"
             if self.player1_points == 2:
-                player1_result="Thirty"
+                player1_result = "Thirty"
             result = player1_result + "-" + player2_result
         
-        if (self.player1_points > self.player2_points) and (self.player2_points >= 3):
+        if (self.player1_points > self.player2_points and 
+            self.player2_points >= 3
+        ):
             result = "Advantage " + self.player1_name
         
-        if (self.player2_points > self.player1_points) and (self.player1_points >= 3):
+        if (self.player2_points > self.player1_points and 
+            self.player1_points >= 3
+        ):
             result = "Advantage " + self.player2_name
         
-        if (self.player1_points >= 4 and self.player2_points >= 0) and (self.player1_points - self.player2_points) >= 2:
+        if (self.player1_points >= 4 and self.player2_points >= 0 and 
+            self.player1_points - self.player2_points >= 2
+        ):
             result = "Win for " + self.player1_name
-        if (self.player2_points >= 4 and self.player1_points >= 0) and (self.player2_points - self.player1_points) >= 2:
+
+        if (self.player2_points >= 4 and self.player1_points >= 0 and 
+            self.player2_points - self.player1_points >= 2
+        ):
             result = "Win for " + self.player2_name
         return result
     
@@ -145,7 +160,6 @@ class TennisGameDefactored2:
     
     def set_player1_score(self):
         self.player1_points += 1
-    
     
     def set_player2_score(self):
         self.player2_points += 1
@@ -167,12 +181,24 @@ class TennisGameDefactored3:
         if self.player1_points < 4 and self.player2_points < 4:
             places = ["Love", "Fifteen", "Thirty", "Forty"]
             result = places[self.player1_points]
-            return result + "-All" if self.player1_points == self.player2_points else result + "-" + places[self.player2_points]
+            if self.player1_points == self.player2_points:
+                return result + "-All" 
+            else:
+                return result + "-" + places[self.player2_points]
+            
         else:
             if self.player1_points == self.player2_points:
                 return "Deuce"
-            result = self.player1_name if self.player1_points > self.player2_points else self.player2_name
-            return "Advantage " + result if (self.player1_points-self.player2_points) * (self.player1_points-self.player2_points) == 1 else "Win for " + result
+            
+            if self.player1_points > self.player2_points:
+                result = self.player1_name 
+            else:
+                result = self.player2_name
+
+            if (self.player1_points-self.player2_points) * (self.player1_points-self.player2_points) == 1:
+                return "Advantage " + result  
+            else: 
+                return "Win for " + result
 
 # NOTE: You must change this to point at the one of the three examples that you're working on!
 TennisGame = TennisGameDefactored1

@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
 import unittest
-
 from tennis import TennisGame
 
 test_cases = [
@@ -49,7 +46,7 @@ test_cases = [
     (6, 5, 'Advantage One', 'One', 'player2'),
     (5, 6, 'Advantage Two', 'player1', 'Two'), 
     
-    ]
+]
 
 def play_game(player1_points, player2_points, player1_name, player2_name):
     game = TennisGame(player1_name, player2_name)
