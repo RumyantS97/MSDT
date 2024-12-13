@@ -98,7 +98,7 @@ def max_element(matrix):
     max_val = matrix[0][0]
     for row in matrix:
         for value in row:
-            if value>max_val:
+            if value > max_val:
                 max_val = value
     return max_val
 
@@ -108,7 +108,7 @@ def min_element(matrix):
     min_val = matrix[0][0]
     for row in matrix:
         for value in row:
-            if value<min_val:
+            if value < min_val:
                 min_val = value
     return min_val
 
@@ -158,7 +158,7 @@ def max_in_columns(matrix):
     for j in range(num_cols):
         col_max = float('-inf')
         for i in range(len(matrix)):
-            if matrix[i][j]>col_max:
+            if matrix[i][j] > col_max:
                 col_max = matrix[i][j]
         max_values.append(col_max)
     return max_values
@@ -171,7 +171,7 @@ def min_in_columns(matrix):
     for j in range(num_cols):
         col_min = float('inf')
         for i in range(len(matrix)):
-            if matrix[i][j]< col_min:
+            if matrix[i][j] < col_min:
                 col_min = matrix[i][j]
         min_values.append(col_min)
     return min_values
