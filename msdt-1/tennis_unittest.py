@@ -63,8 +63,8 @@ def play_game(player1_points, player2_points, player1_name, player2_name):
 class TestTennis(unittest.TestCase):
      
     def get_test_score(self):
-        for testcase in test_cases:
-            (player1_points, player2_points, score, player1_name, player2_name) = testcase
+        for test_case in test_cases:
+            (player1_points, player2_points, score, player1_name, player2_name) = test_case
             game = play_game(player1_points, player2_points, player1_name, player2_name)
             self.assertEquals(score, game.score())
  
