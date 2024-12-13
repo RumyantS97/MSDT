@@ -1,5 +1,4 @@
 import heapq
-import random
 
 class HuffmanNode:
     def __init__(self, char, freq):
