@@ -10,9 +10,12 @@ Created on Wed Jul 21 11:09:20 2021
 #If you want, you can activate the comment line and run the code without using matmul.
 """
 
-
 import numpy as np
 import random
+import logging  # Импортируем библиотеку logging
+
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class LogisticRegression:
     def __init__(self, learning_rate, epochs, batch_size):
@@ -51,11 +54,15 @@ class LogisticRegression:
             self.w8[i] = random.uniform(-0.1,0.1)
             self.w9[i] = random.uniform(-0.1,0.1)
         
+        logging.info("Starting training process...")  # Логирование начала обучения
+
         for epoch in range(self.epochs):#Epoch
             num_batch = int(X.shape[0]/self.batch_size)
             batch_loss100 = 0
             random.shuffle(rand_indices)#random value for batch
             
+            logging.info(f"Epoch {epoch+1}/{self.epochs} started.")  # Логирование начала эпохи
+
             for batch in range(num_batch):
                 index = rand_indices[(self.batch_size*batch):(self.batch_size*(batch+1))]
                 x_batch = X[index]
@@ -81,13 +88,18 @@ class LogisticRegression:
                 
                 if batch % 100 == 0:
                     message = 'Epoch %d, Batch %d, Loss %.2f' % (epoch+1, batch, batch_loss)
-                    print(message)
+                    logging.info(message)  # Логирование состояния обучения
                     batch_loss100 = 0
 
-            
+            logging.info(f"Epoch {epoch+1}/{self.epochs} completed.")  # Логирование завершения эпохи
+
+        logging.info("Training process completed.")  # Логирование завершения обучения
+
     def predict(self,X):
           dist = [0]*X.shape[0]#Test size
           
+          logging.info("Starting prediction process...")  # Логирование начала предсказания
+
           for i in range(X.shape[0]):
               dist0 = [0]*10
               
@@ -126,8 +138,7 @@ class LogisticRegression:
                     
               dist[i] = maxindex#finding max value in prob
          
-          print(i/10000*100)
-          print("******************************************************")
+          logging.info(f"Prediction process completed. {i+1}/{X.shape[0]} samples processed.")  # Логирование завершения предсказания
   
           return dist                
     
@@ -157,6 +168,8 @@ class LogisticRegression:
         batch_loss = 0
         batch_size = x_batch.shape[0]
     
+        logging.info(f"Processing mini-batch of size {batch_size}.")  # Логирование обработки мини-батча
+
         for j in range(batch_size):#Minibatch 
        
             w_grad = [0]*10
