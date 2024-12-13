@@ -8,13 +8,13 @@ class TennisGameDefactored1:
         self.player1_points = 0
         self.player2_points = 0
         
-    def won_point(self, player_name):
+    def count_won_point(self, player_name):
         if player_name == self.player1_name:
             self.player1_points += 1
         else:
             self.player2_points += 1
     
-    def score(self):
+    def get_score(self):
         result = ""
         temp_score=0
         if (self.player1_points==self.player2_points):
@@ -57,13 +57,13 @@ class TennisGameDefactored2:
         self.player1_points = 0
         self.player2_points = 0
         
-    def won_point(self, player_name):
+    def get_won_point(self, player_name):
         if player_name == self.player1_name:
-            self.P1Score()
+            self.set_player1_score()
         else:
-            self.P2Score()
+            self.set_player2_score()
     
-    def score(self):
+    def get_player_result(self):
         result = ""
         if (self.player1_points == self.player2_points and self.player1_points < 4):
             if (self.player1_points==0):
@@ -135,19 +135,19 @@ class TennisGameDefactored2:
             result = "Win for " + self.player2_name
         return result
     
-    def SetP1Score(self, number):
+    def set_player1_score(self, number):
         for i in range(number):
-            self.P1Score()
+            self.set_player1_score()
     
-    def SetP2Score(self, number):
+    def set_player2_score(self, number):
         for i in range(number):
-            self.P2Score()
+            self.set_player2_score()
     
-    def P1Score(self):
+    def set_player1_score(self):
         self.player1_points +=1
     
     
-    def P2Score(self):
+    def set_player2_score(self):
         self.player2_points +=1
         
 class TennisGameDefactored3:
@@ -157,13 +157,13 @@ class TennisGameDefactored3:
         self.player1_points = 0
         self.player2_points = 0
         
-    def won_point(self, winner_name):
+    def get_won_point(self, winner_name):
         if winner_name == self.player1_name:
             self.player1_points += 1
         else:
             self.player2_points += 1
     
-    def score(self):
+    def get_player_result(self):
         if (self.player1_points < 4 and self.player2_points < 4):
             places = ["Love", "Fifteen", "Thirty", "Forty"]
             result = places[self.player1_points]
