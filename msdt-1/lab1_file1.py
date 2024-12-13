@@ -102,7 +102,7 @@ def bucket_sort(arr):
 
 def main():
     size = int(input("Введите размер массива: "))
-    array = [ random.randint(0, 100) for _ in range(size)]
+    array = [random.randint(0, 100) for _ in range(size)]
     print("Сгенерированный массив:", array)
     print("\nВыберите алгоритм сортировки:")
     print("1. Пузырьковая сортировка")
