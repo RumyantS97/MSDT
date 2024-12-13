@@ -1,4 +1,4 @@
-def Add(a, b):
+def add(a, b):
     return a + b
 
 def subtract(a, b):
@@ -46,7 +46,7 @@ def manual_calculator():
             num2 = float(input("Введите второе число: "))
 
             if choice == '1':
-                print(f"Результат: {num1} + {num2} = {Add(num1, num2)}")
+                print(f"Результат: {num1} + {num2} = {add(num1, num2)}")
             elif choice == '2':
                 print(f"Результат: {num1} - {num2} = {subtract(num1, num2)}")
             elif choice == '3':
