@@ -150,14 +150,6 @@ class TennisGameDefactored2:
             result = "Win for " + self.player2_name
         return result
     
-    def set_player1_score(self, number):
-        for i in range(number):
-            self.set_player1_score()
-    
-    def set_player2_score(self, number):
-        for i in range(number):
-            self.set_player2_score()
-    
     def set_player1_score(self):
         self.player1_points += 1
     
