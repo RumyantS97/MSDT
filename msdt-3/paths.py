@@ -1,14 +1,14 @@
 RESULT = 'msdt-3/result.json'
 CSV_PATH = 'msdt-3/23.csv'
 REGULAR = {
-    "email": "",
-    "height": "",
-    "inn": "",
-    "passport": "",
-    "occupation": "",
-    "latitude": "",
-    "hex_color": "",
-    "issn": "",
-    "uuid": "",
-    "time": ""
+    "email": "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$",
+    "height": "^[0-2]\\.\\d{2}$",
+    "inn": "^\\d{12}$",
+    "passport": "^\\d{2}\\s\\d{2}\\s\\d{6}$",
+    "occupation": "[a-zA-Zа-яА-ЯёЁ -]+",
+    "latitude": "^[-]?(90\\.0+|[0-8]?[0-9]\\.\\d+)$",
+    "hex_color": "^#([A-Fa-f0-9]{6})$",
+    "issn": "^\\d{4}\\-\\d{4}$",
+    "uuid": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+    "time": "^([01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d.\\d+$"
 }
