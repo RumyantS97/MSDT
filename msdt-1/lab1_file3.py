@@ -62,5 +62,5 @@ def manual_calculator():
         except Exception as e:
             print(f"Неожиданная ошибка: {e}")
 
-# запуск программы
+# Запуск программы
 manual_calculator()
