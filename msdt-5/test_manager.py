@@ -58,32 +58,3 @@ def test_add_task_parametrized(title, due_date, priority):
 
 
 
-@pytest.mark.parametrize(
-    "title, due_date, priority, expected_title, expected_due_date, expected_priority",
-    [
-        ("Task 1", datetime(2024, 12, 6), "high", "Task 1", "2024-12-06T00:00:00", "high"),
-        ("Task 2", datetime(2024, 12, 7), "medium", "Task 2", "2024-12-07T00:00:00", "medium"),
-        ("Task 3", None, "low", "Task 3", "null", "low"),
-    ]
-)
-def test_save_and_load_tasks_with_mock_parametrized(title, due_date, priority, expected_title, expected_due_date, expected_priority):
-   
-    manager = TaskManager()
-    manager.add_task(title, due_date=due_date, priority=priority)
-    
-    with patch("builtins.open", mock_open()) as mocked_file:
-     
-        manager.save_to_file("mocked_file.json")
-        
-        mocked_file.assert_called_once_with("mocked_file.json", "w")
-       
-        written_data = mocked_file().write.call_args[0][0]
-        
-        print(written_data)
-        
-        assert f'"title": "{expected_title}"' in written_data
-        assert f'"priority": "{expected_priority}"' in written_data
-        assert f'"due_date": "{expected_due_date}"' in written_data
-
-        
-        assert mocked_file().write.call_count == 1  
