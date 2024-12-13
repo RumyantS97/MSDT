@@ -1,4 +1,5 @@
-import numpy as np, matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 from scipy.integrate import quad, solve_ivp
 from scipy.optimize import minimize
 from scipy.stats import norm
