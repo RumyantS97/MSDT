@@ -11,7 +11,7 @@ def bubble_sort(arr):
 
 # Сортировка перемешиванием
 def cocktail_shaker_sort(arr):
-    n=len(arr)
+    n = len(arr)
     start = 0
     end = n - 1
     while start <= end:
