@@ -3,8 +3,11 @@ import matplotlib.pyplot as plt
 from scipy.integrate import quad, solve_ivp
 from scipy.optimize import minimize
 from scipy.stats import norm
+
+
 class Polynomial:
-    def __init__(self,coefficients):
+
+    def __init__(self, coefficients):
         """
         Инициализация многочлена.
 
@@ -12,24 +15,24 @@ class Polynomial:
         """
         self.coefficients = np.array(coefficients)
 
-    def __add__(self,other):
+    def __add__(self, other):
         """Сложение двух многочленов."""
-        new_coeffs = np.polyadd(self.coefficients,other.coefficients)
+        new_coeffs = np.polyadd(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def __sub__(self,other):
+    def __sub__(self, other):
         """Вычитание двух многочленов."""
-        new_coeffs = np.polysub(self.coefficients,other.coefficients)
+        new_coeffs = np.polysub(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def __mul__(self,other):
+    def __mul__(self, other):
         """Умножение двух многочленов."""
-        new_coeffs = np.polymul(self.coefficients,other.coefficients)
+        new_coeffs = np.polymul(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def evaluate(self,x):
+    def evaluate(self, x):
         """Вычисляет значение многочлена в точке x."""
-        return np.polyval(self.coefficients,x)
+        return np.polyval(self.coefficients, x)
 
     def derivative(self):
         """Вычисляет производную многочлена."""
@@ -44,6 +47,8 @@ class Polynomial:
     def roots(self):
         """Находит корни многочлена."""
         return np.roots(self.coefficients)
+
+
 class NumericalIntegration:
     @staticmethod
     def integrate(func,a,b):
@@ -58,6 +63,8 @@ class NumericalIntegration:
 
         result, _ = quad(func,a,b)
         return result
+
+
 class DifferentialEquationSolver:
     @staticmethod
     def solve_ode(ode_func,y0,t_span,t_eval=None):
@@ -73,6 +80,8 @@ class DifferentialEquationSolver:
 
         solution = solve_ivp(ode_func,t_span,y0,t_eval=t_eval)
         return solution
+
+
 class Optimizer:
     @staticmethod
     def minimize_function(func,initial_guess):
@@ -86,6 +95,8 @@ class Optimizer:
 
         result = minimize(func,initial_guess)
         return result
+
+
 class MatrixOperations:
     def __init__(self,matrix):
         """
@@ -95,12 +106,18 @@ class MatrixOperations:
         """
 
         self.matrix = np.array(matrix)
+
+
 def transpose(self):
     """Вычисляет транспонированную матрицу."""
     return self.matrix.T
+
+
 def determinant(self):
     """Вычисляет определитель матрицы."""
     return np.linalg.det(self.matrix)
+
+
 def inverse(self):
     """Вычисляет обратную матрицу."""
 
@@ -108,9 +125,13 @@ def inverse(self):
         raise ValueError("Обратная матрица не существует для данной матрицы.")
 
     return np.linalg.inv(self.matrix)
+
+
 def eigenvalues_and_vectors(self):
     """Вычисляет собственные значения и собственные векторы."""
     return np.linalg.eig(self.matrix)
+
+
 class Statistics:
     @staticmethod
     def mean(data):
@@ -138,13 +159,19 @@ class Statistics:
         values, counts = np.unique(data,return_counts=True)
         max_count_index = np.argmax(counts)
         return values[max_count_index]
+
+
 def square_of_sine(x):
     """Функция для вычисления sin^2(x)."""
     return np.sin(x)**2
+
+
 def ode_function(t, y):
     _ = t
     """Функция правой части ODE."""
     return -2 * y + 1
+
+
 def plot_polynomial(poly, x_range = (-10, 10), num_points = 1000):
     """Построить график многочлена."""
     x_vals = np.linspace(x_range[0], x_range[1], num_points)
@@ -160,6 +187,8 @@ def plot_polynomial(poly, x_range = (-10, 10), num_points = 1000):
     plt.grid()
     plt.legend()
     plt.show()
+
+
 def plot_ode_solution(solution):
     """Построить график решения ODE."""
     plt.figure(figsize = (10, 6))
@@ -172,6 +201,8 @@ def plot_ode_solution(solution):
     plt.grid()
     plt.legend()
     plt.show()
+
+
 def plot_statistics(data):
     """Построить гистограмму и график плотности вероятности."""
 
@@ -200,6 +231,8 @@ def plot_statistics(data):
     plt.axvline(0,color = 'black',lw = 0.5)
     plt.grid()
     plt.show()
+
+
 def main():
     # Примеры операций с многочленами
     print("Примеры операций с многочленами:")
