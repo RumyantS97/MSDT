@@ -5,11 +5,14 @@ import random
 def create_random_matrix(rows, cols):
     return [[random.randint(1, 10) for _ in range(cols)] for _ in range(rows)]
 
+
 # Функция для отображения матрицы
 def print_matrix(matrix,name):
     print(f"\nМатрица {name}:")
     for row in matrix:
         print(row)
+
+
 #функция для сложения двух матриц
 def add_matrices(matrix_a,matrix_b):
     rows = len(matrix_a)
@@ -19,6 +22,8 @@ def add_matrices(matrix_a,matrix_b):
         for j in range(cols):
             result_matrix[i][j] = matrix_a[i][j] + matrix_b[i][j]
     return result_matrix
+
+
 #функция для вычитания двух матриц
 def subtract_matrices(matrix_a,matrix_b):
     rows = len(matrix_a)
@@ -28,6 +33,8 @@ def subtract_matrices(matrix_a,matrix_b):
         for j in range(cols):
             result_matrix[i][j] = matrix_a[i][j] - matrix_b[i][j]
     return result_matrix
+
+
 #функция для умножения двух матриц
 def multiply_matrices(matrix_a,matrix_b):
     rows_a = len(matrix_a)
@@ -39,6 +46,8 @@ def multiply_matrices(matrix_a,matrix_b):
             for k in range(cols_a):
                 result_matrix[i][j] += matrix_a[i][k]*matrix_b[k][j]
     return result_matrix
+
+
 #функция для транспонирования матрицы
 def transpose_matrix(matrix):
     rows = len(matrix)
@@ -49,10 +58,12 @@ def transpose_matrix(matrix):
             transposed_matrix[j][i] = matrix[i][j]
     return transposed_matrix
 
+
 #функция для вычисления определителя 2x2 матрицы
 def determinant2x2(matrix):
     return (matrix[0][0] * matrix[1][1] -
             matrix[0][1] * matrix[1][0])
+
 
 #функция для вычисления определителя 3x3 матрицы
 def determinant3x3(matrix):
@@ -60,6 +71,8 @@ def determinant3x3(matrix):
            matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0]) +
            matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]))
     return det
+
+
 #функция для вычисления следа матрицы
 def trace_matrix(matrix):
     trace = 0
@@ -67,6 +80,8 @@ def trace_matrix(matrix):
     for i in range(size):
         trace += matrix[i][i]
     return trace
+
+
 #функция для скалярного умножения матрицы на число
 def scalar_multiply(matrix,scalar):
     rows = len(matrix)
@@ -76,6 +91,8 @@ def scalar_multiply(matrix,scalar):
         for j in range(cols):
             result_matrix[i][j] = matrix[i][j] * scalar
     return result_matrix
+
+
 #функция для нахождения максимального элемента в матрице
 def max_element(matrix):
     max_val = matrix[0][0]
@@ -84,6 +101,8 @@ def max_element(matrix):
             if value>max_val:
                 max_val = value
     return max_val
+
+
 #функция для нахождения минимального элемента в матрице
 def min_element(matrix):
     min_val = matrix[0][0]
@@ -92,6 +111,8 @@ def min_element(matrix):
             if value<min_val:
                 min_val = value
     return min_val
+
+
 #функция для проверки, является ли матрица симметричной
 def is_symmetric(matrix):
     rows = len(matrix)
@@ -100,6 +121,8 @@ def is_symmetric(matrix):
             if matrix[i][j] != matrix[j][i]:
                 return False
     return True
+
+
 #функция для сравнения двух матриц на равенство
 def matrices_equal(matrix_a,matrix_b):
     if len(matrix_a) != len(matrix_b) or len(matrix_a[0]) != len(matrix_b[0]):
@@ -110,12 +133,14 @@ def matrices_equal(matrix_a,matrix_b):
                 return False
     return True
 
+
 #функция для сложения всех элементов матрицы
 def sum_of_elements(matrix):
     total_sum = 0
     for row in matrix:
         total_sum += sum(row)
     return total_sum
+
 
 #функция для создания единичной матрицы заданного размера
 def identity_matrix(size):
@@ -124,6 +149,7 @@ def identity_matrix(size):
                     for i in range(size)]
 
     return identity_mat
+
 
 #функция для нахождения максимального значения в каждом столбце
 def max_in_columns(matrix):
@@ -136,6 +162,8 @@ def max_in_columns(matrix):
                 col_max = matrix[i][j]
         max_values.append(col_max)
     return max_values
+
+
 # Функция для нахождения минимального значения в каждом столбце
 def min_in_columns(matrix):
     num_cols = len(matrix[0])
@@ -148,9 +176,11 @@ def min_in_columns(matrix):
         min_values.append(col_min)
     return min_values
 
+
 #функция для создания нулевой матрицы заданного размера
 def zero_matrix(rows,cols):
     return [[0] * cols for _ in range(rows)]
+
 
 #функция для сложения всех элементов матрицы
 def sum_of_elements(matrix):
@@ -158,6 +188,8 @@ def sum_of_elements(matrix):
     for row in matrix:
         total_sum += sum(row)
     return total_sum
+
+
 #функция для проверки, является ли матрица диагональной
 def is_diagonal(matrix):
     rows = len(matrix)
@@ -166,6 +198,7 @@ def is_diagonal(matrix):
             if i != j and matrix[i][j] != 0:
                 return False
     return True
+
 
 #функция для нахождения подматрицы (удаление заданной строки и столбца)
 def submatrix(matrix,remove_row, remove_col):
@@ -180,6 +213,7 @@ def submatrix(matrix,remove_row, remove_col):
             new_row.append(matrix[i][j])
         sub_mat.append(new_row)
     return sub_mat
+
 
 #ввод размеров матриц от пользователя
 rows = int(input("Введите количество строк: "))
