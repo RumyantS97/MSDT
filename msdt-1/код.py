@@ -51,7 +51,7 @@ class Polynomial:
 
 class NumericalIntegration:
     @staticmethod
-    def integrate(func,a,b):
+    def integrate(func, a, b):
         """
         Численное интегрирование функции func от a до b.
 
@@ -61,13 +61,13 @@ class NumericalIntegration:
         :return: Значение интеграла
         """
 
-        result, _ = quad(func,a,b)
+        result, _ = quad(func, a, b)
         return result
 
 
 class DifferentialEquationSolver:
     @staticmethod
-    def solve_ode(ode_func,y0,t_span,t_eval=None):
+    def solve_ode(ode_func, y0, t_span, t_eval=None):
         """
         Решает обыкновенное дифференциальное уравнение.
 
@@ -78,13 +78,13 @@ class DifferentialEquationSolver:
         :return: Результат решения уравнения
         """
 
-        solution = solve_ivp(ode_func,t_span,y0,t_eval=t_eval)
+        solution = solve_ivp(ode_func, t_span, y0, t_eval=t_eval)
         return solution
 
 
 class Optimizer:
     @staticmethod
-    def minimize_function(func,initial_guess):
+    def minimize_function(func, initial_guess):
         """
         Минимизирует функцию func с начальным приближением initial_guess.
 
@@ -93,12 +93,12 @@ class Optimizer:
         :return: Результат минимизации
         """
 
-        result = minimize(func,initial_guess)
+        result = minimize(func, initial_guess)
         return result
 
 
 class MatrixOperations:
-    def __init__(self,matrix):
+    def __init__(self, matrix):
         """
         Инициализация класса с матрицей.
 
@@ -156,14 +156,14 @@ class Statistics:
     @staticmethod
     def mode(data):
         """Находит моду (значение с максимальной частотой)."""
-        values, counts = np.unique(data,return_counts=True)
+        values, counts = np.unique(data, return_counts=True)
         max_count_index = np.argmax(counts)
         return values[max_count_index]
 
 
 def square_of_sine(x):
     """Функция для вычисления sin^2(x)."""
-    return np.sin(x)**2
+    return np.sin(x) ** 2
 
 
 def ode_function(t, y):
@@ -172,18 +172,18 @@ def ode_function(t, y):
     return -2 * y + 1
 
 
-def plot_polynomial(poly, x_range = (-10, 10), num_points = 1000):
+def plot_polynomial(poly, x_range=(-10, 10), num_points=1000):
     """Построить график многочлена."""
     x_vals = np.linspace(x_range[0], x_range[1], num_points)
     y_vals = poly.evaluate(x_vals)
 
-    plt.figure(figsize = (10, 6))
+    plt.figure(figsize=(10, 6))
     plt.plot(x_vals, y_vals, label='Многочлен')
     plt.title('График многочлена')
     plt.xlabel('x')
     plt.ylabel('P(x)')
-    plt.axhline(0, color = 'black', lw = 0.5)
-    plt.axvline(0, color = 'black', lw = 0.5)
+    plt.axhline(0, color='black', lw=0.5)
+    plt.axvline(0, color='black', lw=0.5)
     plt.grid()
     plt.legend()
     plt.show()
@@ -191,13 +191,13 @@ def plot_polynomial(poly, x_range = (-10, 10), num_points = 1000):
 
 def plot_ode_solution(solution):
     """Построить график решения ODE."""
-    plt.figure(figsize = (10, 6))
-    plt.plot(solution.t,solution.y[0],label = 'y(t)')
+    plt.figure(figsize=(10, 6))
+    plt.plot(solution.t, solution.y[0], label='y(t)')
     plt.title('Решение ODE')
     plt.xlabel('t')
     plt.ylabel('y')
-    plt.axhline(0,color = 'black',lw = 0.5)
-    plt.axvline(0,color = 'black',lw = 0.5)
+    plt.axhline(0, color='black', lw=0.5)
+    plt.axvline(0, color='black', lw=0.5)
     plt.grid()
     plt.legend()
     plt.show()
@@ -207,28 +207,28 @@ def plot_statistics(data):
     """Построить гистограмму и график плотности вероятности."""
 
     # Гистограмма данных
-    plt.figure(figsize = (10, 6))
+    plt.figure(figsize=(10, 6))
     count, bins, ignored = plt.hist(data,
                                     30,
-                                    density = True,
-                                    alpha = 0.5,
-                                    color = 'g',
-                                    edgecolor = 'black')
+                                    density=True,
+                                    alpha=0.5,
+                                    color='g',
+                                    edgecolor='black')
 
     # Плотность вероятности нормального распределения
-    mu=Statistics.mean(data)
-    sigma=Statistics.standard_deviation(data)
-    best_fit_line=norm.pdf(bins, mu, sigma)
+    mu = Statistics.mean(data)
+    sigma = Statistics.standard_deviation(data)
+    best_fit_line = norm.pdf(bins, mu, sigma)
     plt.plot(bins,
              best_fit_line,
              'r--',
-             linewidth = 2)
+             linewidth=2)
 
     plt.title('Гистограмма и плотность вероятности')
     plt.xlabel('Значение')
     plt.ylabel('Частота')
-    plt.axhline(0,color = 'black',lw = 0.5)
-    plt.axvline(0,color = 'black',lw = 0.5)
+    plt.axhline(0, color='black', lw=0.5)
+    plt.axvline(0, color='black', lw=0.5)
     plt.grid()
     plt.show()
 
@@ -314,11 +314,11 @@ def main():
                                 size=1000)
 
         print("\nСтатистические вычисления:")
-        print("Среднее:",Statistics.mean(data))
-        print("Дисперсия:",Statistics.variance(data))
-        print("Стандартное отклонение:",Statistics.standard_deviation(data))
-        print("Медиана:",Statistics.median(data))
-        print("Мода:",Statistics.mode(data))
+        print("Среднее:", Statistics.mean(data))
+        print("Дисперсия:", Statistics.variance(data))
+        print("Стандартное отклонение:", Statistics.standard_deviation(data))
+        print("Медиана:", Statistics.median(data))
+        print("Мода:", Statistics.mode(data))
 
         plot_statistics(data)
 
