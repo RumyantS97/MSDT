@@ -10,21 +10,21 @@ class Polynomial:
 
         :param coefficients: Коэффициенты многочлена (от старшего к младшему)
         """
-        self.coefficients=np.array(coefficients)
+        self.coefficients = np.array(coefficients)
 
     def __add__(self,other):
         """Сложение двух многочленов."""
-        new_coeffs=np.polyadd(self.coefficients,other.coefficients)
+        new_coeffs = np.polyadd(self.coefficients,other.coefficients)
         return Polynomial(new_coeffs)
 
     def __sub__(self,other):
         """Вычитание двух многочленов."""
-        new_coeffs=np.polysub(self.coefficients,other.coefficients)
+        new_coeffs = np.polysub(self.coefficients,other.coefficients)
         return Polynomial(new_coeffs)
 
     def __mul__(self,other):
         """Умножение двух многочленов."""
-        new_coeffs=np.polymul(self.coefficients,other.coefficients)
+        new_coeffs = np.polymul(self.coefficients,other.coefficients)
         return Polynomial(new_coeffs)
 
     def evaluate(self,x):
@@ -33,12 +33,12 @@ class Polynomial:
 
     def derivative(self):
         """Вычисляет производную многочлена."""
-        deriv_coeffs=np.polyder(self.coefficients)
+        deriv_coeffs = np.polyder(self.coefficients)
         return Polynomial(deriv_coeffs)
 
     def integral(self):
         """Вычисляет неопределенный интеграл многочлена."""
-        integral_coeffs=np.polyint(self.coefficients)
+        integral_coeffs = np.polyint(self.coefficients)
         return Polynomial(integral_coeffs)
 
     def roots(self):
@@ -56,7 +56,7 @@ class NumericalIntegration:
         :return: Значение интеграла
         """
 
-        result, _=quad(func,a,b)
+        result, _ = quad(func,a,b)
         return result
 class DifferentialEquationSolver:
     @staticmethod
@@ -71,7 +71,7 @@ class DifferentialEquationSolver:
         :return: Результат решения уравнения
         """
 
-        solution=solve_ivp(ode_func,t_span,y0,t_eval=t_eval)
+        solution = solve_ivp(ode_func,t_span,y0,t_eval=t_eval)
         return solution
 class Optimizer:
     @staticmethod
@@ -84,7 +84,7 @@ class Optimizer:
         :return: Результат минимизации
         """
 
-        result=minimize(func,initial_guess)
+        result = minimize(func,initial_guess)
         return result
 class MatrixOperations:
     def __init__(self,matrix):
@@ -94,7 +94,7 @@ class MatrixOperations:
         :param matrix: Двумерный массив или список списков
         """
 
-        self.matrix=np.array(matrix)
+        self.matrix = np.array(matrix)
 def transpose(self):
     """Вычисляет транспонированную матрицу."""
     return self.matrix.T
@@ -104,7 +104,7 @@ def determinant(self):
 def inverse(self):
     """Вычисляет обратную матрицу."""
 
-    if self.determinant()==0:
+    if self.determinant() == 0:
         raise ValueError("Обратная матрица не существует для данной матрицы.")
 
     return np.linalg.inv(self.matrix)
@@ -135,40 +135,40 @@ class Statistics:
     @staticmethod
     def mode(data):
         """Находит моду (значение с максимальной частотой)."""
-        values, counts=np.unique(data,return_counts=True)
-        max_count_index=np.argmax(counts)
+        values, counts = np.unique(data,return_counts=True)
+        max_count_index = np.argmax(counts)
         return values[max_count_index]
 def square_of_sine(x):
     """Функция для вычисления sin^2(x)."""
     return np.sin(x)**2
 def ode_function(t, y):
-    _=t
+    _ = t
     """Функция правой части ODE."""
-    return -2*y+1
-def plot_polynomial(poly, x_range=(-10, 10), num_points=1000):
+    return -2 * y + 1
+def plot_polynomial(poly, x_range = (-10, 10), num_points = 1000):
     """Построить график многочлена."""
-    x_vals=np.linspace(x_range[0], x_range[1], num_points)
-    y_vals=poly.evaluate(x_vals)
+    x_vals = np.linspace(x_range[0], x_range[1], num_points)
+    y_vals = poly.evaluate(x_vals)
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize = (10, 6))
     plt.plot(x_vals, y_vals, label='Многочлен')
     plt.title('График многочлена')
     plt.xlabel('x')
     plt.ylabel('P(x)')
-    plt.axhline(0, color='black', lw=0.5)
-    plt.axvline(0, color='black', lw=0.5)
+    plt.axhline(0, color = 'black', lw = 0.5)
+    plt.axvline(0, color = 'black', lw = 0.5)
     plt.grid()
     plt.legend()
     plt.show()
 def plot_ode_solution(solution):
     """Построить график решения ODE."""
-    plt.figure(figsize=(10, 6))
-    plt.plot(solution.t,solution.y[0],label='y(t)')
+    plt.figure(figsize = (10, 6))
+    plt.plot(solution.t,solution.y[0],label = 'y(t)')
     plt.title('Решение ODE')
     plt.xlabel('t')
     plt.ylabel('y')
-    plt.axhline(0,color='black',lw=0.5)
-    plt.axvline(0,color='black',lw=0.5)
+    plt.axhline(0,color = 'black',lw = 0.5)
+    plt.axvline(0,color = 'black',lw = 0.5)
     plt.grid()
     plt.legend()
     plt.show()
@@ -176,13 +176,13 @@ def plot_statistics(data):
     """Построить гистограмму и график плотности вероятности."""
 
     # Гистограмма данных
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize = (10, 6))
     count, bins, ignored = plt.hist(data,
                                     30,
-                                    density=True,
-                                    alpha=0.5,
-                                    color='g',
-                                    edgecolor='black')
+                                    density = True,
+                                    alpha = 0.5,
+                                    color = 'g',
+                                    edgecolor = 'black')
 
     # Плотность вероятности нормального распределения
     mu=Statistics.mean(data)
@@ -191,25 +191,25 @@ def plot_statistics(data):
     plt.plot(bins,
              best_fit_line,
              'r--',
-             linewidth=2)
+             linewidth = 2)
 
     plt.title('Гистограмма и плотность вероятности')
     plt.xlabel('Значение')
     plt.ylabel('Частота')
-    plt.axhline(0,color='black',lw=0.5)
-    plt.axvline(0,color='black',lw=0.5)
+    plt.axhline(0,color = 'black',lw = 0.5)
+    plt.axvline(0,color = 'black',lw = 0.5)
     plt.grid()
     plt.show()
 def main():
     # Примеры операций с многочленами
     print("Примеры операций с многочленами:")
 
-    poly1=Polynomial([1, -3, 2])  # x^2 - 3x + 2
-    poly2=Polynomial([1, 1])  # x + 1
+    poly1 = Polynomial([1, -3, 2])  # x^2 - 3x + 2
+    poly2 = Polynomial([1, 1])  # x + 1
 
-    poly_sum=poly1+poly2
-    poly_diff=poly1-poly2
-    poly_prod=poly1*poly2
+    poly_sum = poly1+poly2
+    poly_diff = poly1-poly2
+    poly_prod = poly1*poly2
 
     print("Сумма многочленов:", poly_sum.coefficients)
     print("Разность многочленов:", poly_diff.coefficients)
@@ -222,7 +222,7 @@ def main():
     # Численное интегрирование
     print("\nЧисленное интегрирование:")
 
-    integral_value=NumericalIntegration.integrate(square_of_sine,
+    integral_value = NumericalIntegration.integrate(square_of_sine,
                                                     0,
                                                     np.pi)
 
@@ -249,9 +249,9 @@ def main():
     # Оптимизация функции
     print("\nОптимизация функции:")
 
-    func_to_minimize=lambda x: (x - 3) ** 2 + 1
+    func_to_minimize = lambda x: (x - 3) ** 2 + 1
 
-    initial_guess=[0]
+    initial_guess = [0]
 
     result = Optimizer.minimize_function(func_to_minimize,
                                          initial_guess)
@@ -263,7 +263,7 @@ def main():
 
     matrix_a = [[4, 2], [3, 1]]
 
-    matrix_operations=MatrixOperations(matrix_a)
+    matrix_operations = MatrixOperations(matrix_a)
 
     print("Матрица A:")
     print(matrix_operations.matrix)
