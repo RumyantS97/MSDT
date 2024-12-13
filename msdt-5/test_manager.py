@@ -57,17 +57,31 @@ def test_add_task_parametrized(title, due_date, priority):
     assert (task.due_date is not None) == (due_date is not None)
 
 
+@pytest.mark.parametrize(
+    "title, due_date, priority, expected_title, expected_due_date, expected_priority",
+    [
+        ("Task 1", datetime(2024, 12, 6), "high", "Task 1", "2024-12-06T00:00:00", "high"),
+        ("Task 2", datetime(2024, 12, 7), "medium", "Task 2", "2024-12-07T00:00:00", "medium"),
+        ("Task 3", None, "low", "Task 3", "null", "low"),
+    ]
+)
 def test_save_and_load_tasks_with_mock_parametrized(title, due_date, priority, expected_title, expected_due_date, expected_priority):
+    # Создаем TaskManager и добавляем задачу
     manager = TaskManager()
     manager.add_task(title, due_date=due_date, priority=priority)
     
+    # Мокаем open() и проверяем сохранение задач в файл
     with patch("builtins.open", mock_open()) as mocked_file:
+        # Сохраняем задачи в файл
         manager.save_to_file("mocked_file.json")
         
+        # Проверяем, что файл был открыт в режиме записи
         mocked_file.assert_called_once_with("mocked_file.json", "w")
         
+        # Получаем записанные данные
         written_data = mocked_file().write.call_args[0][0]
         
+        # Проверяем, что данные содержат ожидаемые значения
         assert f'"title": "{expected_title}"' in written_data
         assert f'"priority": "{expected_priority}"' in written_data
         assert f'"due_date": "{expected_due_date}"' in written_data
