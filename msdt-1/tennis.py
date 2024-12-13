@@ -33,7 +33,7 @@ class TennisGameDefactored1:
             elif (minusResult >= 2):
                 result = "Win for " + self.player1_name
             else:
-                result ="Win for " + self.player2_name
+                result = "Win for " + self.player2_name
         else:
             for i in range(1,3):
                 if (i == 1):
@@ -131,7 +131,7 @@ class TennisGameDefactored2:
         
         if (self.player1_points >= 4 and self.player2_points >= 0 and (self.player1_points - self.player2_points) >= 2):
             result = "Win for " + self.player1_name
-        if (self.player2_points >=4 and self.player1_points >= 0 and (self.player2_points - self.player1_points) >= 2):
+        if (self.player2_points >= 4 and self.player1_points >= 0 and (self.player2_points - self.player1_points) >= 2):
             result = "Win for " + self.player2_name
         return result
     
@@ -172,7 +172,7 @@ class TennisGameDefactored3:
             if (self.player1_points == self.player2_points):
                 return "Deuce"
             result = self.player1_name if self.player1_points > self.player2_points else self.player2_name
-            return "Advantage " + result if ((self.player1_points-self.player2_points)*(self.player1_points-self.player2_points) == 1) else "Win for " + result
+            return "Advantage " + result if ((self.player1_points-self.player2_points) * (self.player1_points-self.player2_points) == 1) else "Win for " + result
 
 # NOTE: You must change this to point at the one of the three examples that you're working on!
 TennisGame = TennisGameDefactored1
