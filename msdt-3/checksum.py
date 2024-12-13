@@ -2,6 +2,9 @@ import json
 import hashlib
 from typing import List
 
+from functions import write_to_json_file
+from paths import RESULT
+
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
 """
@@ -34,4 +37,8 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant": 23,
+        "checksum": checksum
+    }
+    write_to_json_file(RESULT, result)
