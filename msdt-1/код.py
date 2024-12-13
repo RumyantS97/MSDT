@@ -2,7 +2,7 @@ import numpy as np, matplotlib.pyplot as plt
 from scipy.integrate import quad, solve_ivp
 from scipy.optimize import minimize
 from scipy.stats import norm
-class polynomial:
+class Polynomial:
     def __init__(self,coefficients):
         """
         Инициализация многочлена.
@@ -14,17 +14,17 @@ class polynomial:
     def __add__(self,other):
         """Сложение двух многочленов."""
         new_coeffs=np.polyadd(self.coefficients,other.coefficients)
-        return polynomial(new_coeffs)
+        return Polynomial(new_coeffs)
 
     def __sub__(self,other):
         """Вычитание двух многочленов."""
         new_coeffs=np.polysub(self.coefficients,other.coefficients)
-        return polynomial(new_coeffs)
+        return Polynomial(new_coeffs)
 
     def __mul__(self,other):
         """Умножение двух многочленов."""
         new_coeffs=np.polymul(self.coefficients,other.coefficients)
-        return polynomial(new_coeffs)
+        return Polynomial(new_coeffs)
 
     def evaluate(self,x):
         """Вычисляет значение многочлена в точке x."""
@@ -33,17 +33,17 @@ class polynomial:
     def derivative(self):
         """Вычисляет производную многочлена."""
         deriv_coeffs=np.polyder(self.coefficients)
-        return polynomial(deriv_coeffs)
+        return Polynomial(deriv_coeffs)
 
     def integral(self):
         """Вычисляет неопределенный интеграл многочлена."""
         integral_coeffs=np.polyint(self.coefficients)
-        return polynomial(integral_coeffs)
+        return Polynomial(integral_coeffs)
 
     def roots(self):
         """Находит корни многочлена."""
         return np.roots(self.coefficients)
-class numericalIntegration:
+class NumericalIntegration:
     @staticmethod
     def integrate(func,a,b):
         """
@@ -57,7 +57,7 @@ class numericalIntegration:
 
         result, _=quad(func,a,b)
         return result
-class differentialEquationSolver:
+class DifferentialEquationSolver:
     @staticmethod
     def solve_ode(ode_func,y0,t_span,t_eval=None):
         """
@@ -72,7 +72,7 @@ class differentialEquationSolver:
 
         solution=solve_ivp(ode_func,t_span,y0,t_eval=t_eval)
         return solution
-class optimizer:
+class Optimizer:
     @staticmethod
     def minimize_function(func,initial_guess):
         """
@@ -85,7 +85,7 @@ class optimizer:
 
         result=minimize(func,initial_guess)
         return result
-class matrixOperations:
+class MatrixOperations:
     def __init__(self,matrix):
         """
         Инициализация класса с матрицей.
@@ -110,7 +110,7 @@ def inverse(self):
 def eigenvalues_and_vectors(self):
     """Вычисляет собственные значения и собственные векторы."""
     return np.linalg.eig(self.matrix)
-class statistics:
+class Statistics:
     @staticmethod
     def mean(data):
         """Вычисляет среднее значение."""
@@ -184,8 +184,8 @@ def plot_statistics(data):
                                     edgecolor='black')
 
     # Плотность вероятности нормального распределения
-    mu=statistics.mean(data)
-    sigma=statistics.standard_deviation(data)
+    mu=Statistics.mean(data)
+    sigma=Statistics.standard_deviation(data)
     best_fit_line=norm.pdf(bins, mu, sigma)
     plt.plot(bins,
              best_fit_line,
@@ -203,8 +203,8 @@ def main():
     # Примеры операций с многочленами
     print("Примеры операций с многочленами:")
 
-    poly1=polynomial([1, -3, 2])  # x^2 - 3x + 2
-    poly2=polynomial([1, 1])  # x + 1
+    poly1=Polynomial([1, -3, 2])  # x^2 - 3x + 2
+    poly2=Polynomial([1, 1])  # x + 1
 
     poly_sum=poly1+poly2
     poly_diff=poly1-poly2
@@ -221,7 +221,7 @@ def main():
     # Численное интегрирование
     print("\nЧисленное интегрирование:")
 
-    integral_value=numericalIntegration.integrate(square_of_sine,
+    integral_value=NumericalIntegration.integrate(square_of_sine,
                                                     0,
                                                     np.pi)
 
@@ -235,7 +235,7 @@ def main():
 
     t_span = (0, 5)
 
-    solution = differentialEquationSolver.solve_ode(
+    solution = DifferentialEquationSolver.solve_ode(
         ode_function,
         y0,
         t_span,
@@ -252,7 +252,7 @@ def main():
 
     initial_guess=[0]
 
-    result = optimizer.minimize_function(func_to_minimize,
+    result = Optimizer.minimize_function(func_to_minimize,
                                          initial_guess)
     print(f"Минимум достигнут в точке {result.x[0]} с значением {result.fun}")
 
@@ -262,7 +262,7 @@ def main():
 
     matrix_a = [[4, 2], [3, 1]]
 
-    matrix_operations=matrixOperations(matrix_a)
+    matrix_operations=MatrixOperations(matrix_a)
 
     print("Матрица A:")
     print(matrix_operations.matrix)
@@ -280,11 +280,11 @@ def main():
                                 size=1000)
 
         print("\nСтатистические вычисления:")
-        print("Среднее:",statistics.mean(data))
-        print("Дисперсия:",statistics.variance(data))
-        print("Стандартное отклонение:",statistics.standard_deviation(data))
-        print("Медиана:",statistics.median(data))
-        print("Мода:",statistics.mode(data))
+        print("Среднее:",Statistics.mean(data))
+        print("Дисперсия:",Statistics.variance(data))
+        print("Стандартное отклонение:",Statistics.standard_deviation(data))
+        print("Медиана:",Statistics.median(data))
+        print("Мода:",Statistics.mode(data))
 
         plot_statistics(data)
 
