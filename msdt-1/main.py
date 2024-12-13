@@ -7,14 +7,14 @@ def create_random_matrix(rows, cols):
 
 
 # Функция для отображения матрицы
-def print_matrix(matrix,name):
+def print_matrix(matrix, name):
     print(f"\nМатрица {name}:")
     for row in matrix:
         print(row)
 
 
 #функция для сложения двух матриц
-def add_matrices(matrix_a,matrix_b):
+def add_matrices(matrix_a, matrix_b):
     rows = len(matrix_a)
     cols = len(matrix_a[0])
     result_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -25,7 +25,7 @@ def add_matrices(matrix_a,matrix_b):
 
 
 #функция для вычитания двух матриц
-def subtract_matrices(matrix_a,matrix_b):
+def subtract_matrices(matrix_a, matrix_b):
     rows = len(matrix_a)
     cols = len(matrix_a[0])
     result_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -36,7 +36,7 @@ def subtract_matrices(matrix_a,matrix_b):
 
 
 #функция для умножения двух матриц
-def multiply_matrices(matrix_a,matrix_b):
+def multiply_matrices(matrix_a, matrix_b):
     rows_a = len(matrix_a)
     cols_a = len(matrix_a[0])
     cols_b = len(matrix_b[0])
@@ -83,7 +83,7 @@ def trace_matrix(matrix):
 
 
 #функция для скалярного умножения матрицы на число
-def scalar_multiply(matrix,scalar):
+def scalar_multiply(matrix, scalar):
     rows = len(matrix)
     cols = len(matrix[0])
     result_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
@@ -124,7 +124,7 @@ def is_symmetric(matrix):
 
 
 #функция для сравнения двух матриц на равенство
-def matrices_equal(matrix_a,matrix_b):
+def matrices_equal(matrix_a, matrix_b):
     if len(matrix_a) != len(matrix_b) or len(matrix_a[0]) != len(matrix_b[0]):
         return False
     for i in range(len(matrix_a)):
@@ -178,7 +178,7 @@ def min_in_columns(matrix):
 
 
 #функция для создания нулевой матрицы заданного размера
-def zero_matrix(rows,cols):
+def zero_matrix(rows, cols):
     return [[0] * cols for _ in range(rows)]
 
 
@@ -201,7 +201,7 @@ def is_diagonal(matrix):
 
 
 #функция для нахождения подматрицы (удаление заданной строки и столбца)
-def submatrix(matrix,remove_row, remove_col):
+def submatrix(matrix, remove_row, remove_col):
     sub_mat = []
     for i in range(len(matrix)):
         if i == remove_row:
