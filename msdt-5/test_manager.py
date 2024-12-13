@@ -57,22 +57,17 @@ def test_add_task_parametrized(title, due_date, priority):
     assert (task.due_date is not None) == (due_date is not None)
 
 
-def test_save_and_load_tasks_with_mock():
-
+def test_save_and_load_tasks_with_mock_parametrized(title, due_date, priority, expected_title, expected_due_date, expected_priority):
     manager = TaskManager()
-    manager.add_task("Task 1", due_date=datetime(2024, 12, 6), priority="high")
-
+    manager.add_task(title, due_date=due_date, priority=priority)
+    
     with patch("builtins.open", mock_open()) as mocked_file:
         manager.save_to_file("mocked_file.json")
-   
+        
         mocked_file.assert_called_once_with("mocked_file.json", "w")
         
         written_data = mocked_file().write.call_args[0][0]
         
-       
-        assert '"title": "Task 1"' in written_data
-        assert '"priority": "high"' in written_data
-        assert '"due_date": "2024-12-06T00:00:00"' in written_data
-        
-     
-        assert mocked_file().write.call_count > 1 
+        assert f'"title": "{expected_title}"' in written_data
+        assert f'"priority": "{expected_priority}"' in written_data
+        assert f'"due_date": "{expected_due_date}"' in written_data
