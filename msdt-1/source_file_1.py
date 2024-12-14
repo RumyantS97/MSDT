@@ -26,7 +26,7 @@ def automatic_list_entry(int_list, n, b, c):
 
 # Функция для поиска минимального элемента, некратного заданному числу, в списке целочисленных элементов
 def finding_min_elem(int_list, x):
-    min_elem = 10**10
+    min_elem = 10 ** 10
     for i in range(len(int_list)):
         if (int_list[i] % x != 0) and (int_list[i] < min_elem):
             min_elem = int_list[i]
@@ -84,7 +84,7 @@ print("")
 # Нахождение минимального элемента, некратного заданному числу x, из целочисленного списка
 x = int(input("Введите число, кратность которому нужно проверить, x = "))
 min_elem = finding_min_elem(int_list, x)
-if min_elem != 10**10:
+if min_elem != 10 ** 10:
     print("Минимальный элемент, некратный заданному числу x = {0}, равен: {1}".format(x, min_elem))
 else:
     print("Минимальный элемент, некратный заданному числу x = {0}, отсутствует!".format(x))

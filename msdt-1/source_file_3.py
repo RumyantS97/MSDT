@@ -14,29 +14,29 @@ def task():
 
 # Функция для рекурсии F(n)
 def recursive_function(n):
-    if (n<2):
+    if (n < 2):
         return 1
-    elif (n%2==0):
-        return (recursive_function(n//2)+1)
+    elif (n % 2 == 0):
+        return (recursive_function(n // 2) + 1)
     else:
-        return (recursive_function(n-3)+3)
+        return (recursive_function(n - 3) + 3)
 
 # Функция для подсчета значений n
 def number_of_values_n(count):
     for i in range(1, 101):
-        if (recursive_function(i)==12):
-            count+=1
+        if (recursive_function(i) == 12):
+            count += 1
     return count
 
 # Функция для подсчета количества четных цифр
 def number_of_even_digits(x):
-    if (x<10):
-        if (x%2==0):
+    if (x < 10):
+        if (x % 2 == 0):
             return 1
         else:
             return 0
     else:
-        return (number_of_even_digits(x//10) + number_of_even_digits(x%10))
+        return (number_of_even_digits(x // 10) + number_of_even_digits(x % 10))
 
 # Функция main
 
@@ -45,8 +45,8 @@ task()
 flagIn = True
 while flagIn:
     print("\nВведите натуральное число:")
-    x=int(input("x = "))
-    if (x>0):
+    x = int(input("x = "))
+    if (x > 0):
         flagIn = False
         print("\nИдёт вычисление...")
         print("\nКоличество значений n на отрезке [1; 100000], для которых F(n) равно 12, равно: ", number_of_values_n(0))
