@@ -13,13 +13,13 @@ from scipy.signal import spectrogram
 from display import read_file
 
 
-def get_data_set(dyrectory):
-    files_name = os.listdir(dyrectory)
+def get_data_set(directory):
+    files_name = os.listdir(directory)
     y = []
     files_names = []
     srs = []
     for file in files_name:
-        path = dyrectory + "/" + file
+        path = directory + "/" + file
         [a, b] = read_file(path)
         y.append(a)
         files_names.append(file)

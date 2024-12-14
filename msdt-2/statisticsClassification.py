@@ -26,7 +26,7 @@ np.seterr(divide="ignore", invalid="ignore")
 data_set, files, srs = get_data_set("dataset")
 
 chi_points = []
-umann_points = []
+unman_points = []
 student_points = []
 labels = []
 middles = []
@@ -46,7 +46,7 @@ for i in range(len(train_split)):
         middle = (a + b + c) / 3
         middles.append(middle)
         chi_points.append(a)
-        umann_points.append(b)
+        unman_points.append(b)
         student_points.append(c)
         vec = [a, b, c]
         all_vec.append(vec)
@@ -54,7 +54,7 @@ for i in range(len(train_split)):
 df = pandas.DataFrame(
     {
         "chi": chi_points,
-        "unamm": umann_points,
+        "unamm": unman_points,
         "stud": student_points,
         "pair": labels,
         "middle": middles,
@@ -72,15 +72,15 @@ outside_points_umann = []
 predicted = []
 
 chi_model = classifier()
-umann_model = classifier()
+unman_model = classifier()
 stud_model = classifier()
 mid_model = classifier()
 all_model = classifier()
 
 chi_points = np.array(chi_points)
 chi_points = chi_points.reshape(-1, 1)
-umann_points = np.array(umann_points)
-umann_points = chi_points.reshape(-1, 1)
+unman_points = np.array(unman_points)
+unman_points = chi_points.reshape(-1, 1)
 student_points = np.array(student_points)
 student_points = chi_points.reshape(-1, 1)
 middles = np.array(middles)
@@ -92,8 +92,8 @@ all_vec = chi_points.reshape(-1, 1)
 chi_x_train, chi_x_test, chi_y_train, chi_y_test = train_test_split(
     chi_points, labels, test_size=0.30
 )
-umann_x_train, umann_x_test, umann_y_train, umann_y_test = train_test_split(
-    umann_points, labels, test_size=0.30
+unman_x_train, unman_x_test, unman_y_train, unman_y_test = train_test_split(
+    unman_points, labels, test_size=0.30
 )
 stud_x_train, stud_x_test, stud_y_train, stud_y_test = train_test_split(
     student_points, labels, test_size=0.30
@@ -106,7 +106,7 @@ all_x_train, all_x_test, all_y_train, all_y_test = train_test_split(
 )
 
 chi_model.fit(chi_x_train, chi_y_train)
-umann_model.fit(umann_x_train, umann_y_train)
+unman_model.fit(unman_x_train, unman_y_train)
 stud_model.fit(stud_x_train, stud_y_train)
 mid_model.fit(mid_x_train, mid_y_train)
 all_model.fit(X=all_x_train, y=all_y_train)
@@ -114,7 +114,7 @@ all_model.fit(X=all_x_train, y=all_y_train)
 
 chi_pred = chi_model.predict(chi_x_test)
 stud_pred = stud_model.predict(stud_x_test)
-umann_pred = umann_model.predict(umann_x_test)
+unman_pred = unman_model.predict(unman_x_test)
 middles_pred = mid_model.predict(mid_x_test)
 all_pred = all_model.predict(all_x_test)
 
@@ -125,10 +125,10 @@ report_chi = [
     recall_score(chi_y_test, chi_pred),
 ]
 report_uman = [
-    accuracy_score(umann_y_test, umann_pred),
-    f1_score(umann_y_test, umann_pred),
-    precision_score(umann_y_test, umann_pred),
-    recall_score(umann_y_test, umann_pred),
+    accuracy_score(unman_y_test, unman_pred),
+    f1_score(unman_y_test, unman_pred),
+    precision_score(unman_y_test, unman_pred),
+    recall_score(unman_y_test, unman_pred),
 ]
 report_stud = [
     accuracy_score(stud_y_test, stud_pred),
