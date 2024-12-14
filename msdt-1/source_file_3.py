@@ -1,4 +1,4 @@
-#Функция вывода информации по лабораторной работе
+# Функция вывода информации по лабораторной работе
 def task():
     print("Лабораторная работа №4")
     print("Вариант №3. Выполнил студент группы 6102-020302D Васильев А.Л.")
@@ -12,7 +12,7 @@ def task():
     print("2. Количество четных цифр результата вычисления F(x), где x - число, заданное пользователем.")
     print("")
 
-#Функция для рекурсии F(n)
+# Функция для рекурсии F(n)
 def recursive_function(n):
     if (n<2):
         return 1
@@ -21,14 +21,14 @@ def recursive_function(n):
     else:
         return (recursive_function(n-3)+3)
 
-#Функция для подсчета значений n
+# Функция для подсчета значений n
 def number_of_values_n(count):
     for i in range(1, 101):
         if (recursive_function(i)==12):
             count+=1
     return count
 
-#Функция для подсчета количества четных цифр
+# Функция для подсчета количества четных цифр
 def number_of_even_digits(x):
     if (x<10):
         if (x%2==0):
@@ -38,7 +38,7 @@ def number_of_even_digits(x):
     else:
         return (number_of_even_digits(x//10) + number_of_even_digits(x%10))
 
-#Функция main
+# Функция main
 
 task()
 

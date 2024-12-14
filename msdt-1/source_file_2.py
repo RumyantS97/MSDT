@@ -1,6 +1,6 @@
 import os
 
-#Функция вывода информации по лабораторной работе
+# Функция вывода информации по лабораторной работе
 def task():
     print("Лабораторная работа №3")
     print("Вариант №3. Выполнил студент группы 6102-020302D Васильев А.Л.")
@@ -17,7 +17,7 @@ def task():
     print("EFGHIJQUZ")
     print("")
 
-#Функция для чтения файлов и записи в них
+# Функция для чтения файлов и записи в них
 def file_processing(fInput, fOutput):
     fI = open(fInput, "r")
     fO = open(fOutput, "w")
@@ -31,7 +31,7 @@ def file_processing(fInput, fOutput):
     fI.close()
     fO.close()
 
-#Функция для обработки строк исходного файла
+# Функция для обработки строк исходного файла
 def string_processing(s):
    res = ""
    for i in range(57, 47, -1):
@@ -41,7 +41,7 @@ def string_processing(s):
        res = "-1"
    return res
 
-#Функция main
+# Функция main
 
 task()
 
