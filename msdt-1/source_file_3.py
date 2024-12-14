@@ -42,12 +42,12 @@ def number_of_even_digits(x):
 
 task()
 
-flagIn = True
-while flagIn:
+flag_in = True
+while flag_in:
     print("\nВведите натуральное число:")
     x = int(input("x = "))
     if (x > 0):
-        flagIn = False
+        flag_in = False
         print("\nИдёт вычисление...")
         print("\nКоличество значений n на отрезке [1; 100000], для которых F(n) равно 12, равно: ", number_of_values_n(0))
         print("\nКоличество четных цифр результата вычисления F(x) = {1}, где x = {0}, составляет: {2}".format(x, recursive_function(x), number_of_even_digits(recursive_function(x))))

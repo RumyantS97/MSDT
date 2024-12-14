@@ -45,19 +45,19 @@ def string_processing(s):
 
 task()
 
-flagIn = True
-while flagIn:
+flag_in = True
+while flag_in:
     print("\nВведите имя исходного текстого файла для его обработки:")
-    fileInput = input("Имя файла: ")
-    if (os.path.exists(fileInput)):
-        flagIn = False
-        flagOut = True
-        while flagOut:
+    file_input = input("Имя файла: ")
+    if (os.path.exists(file_input)):
+        flag_in = False
+        flag_out = True
+        while flag_out:
             print("\nВведите имя результирующего текстого файла для его обработки:")
-            fileOutput = input("Имя файла: ")
-            if (os.path.exists(fileOutput)):
-                flagOut = False
-                file_processing(fileInput, fileOutput)
+            file_output = input("Имя файла: ")
+            if (os.path.exists(file_output)):
+                flag_out = False
+                file_processing(file_input, file_output)
                 print("\nКонец работы программы!")
             else:
                 print("Ошибка ввода! Попробуйте снова!")
