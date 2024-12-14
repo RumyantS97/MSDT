@@ -42,6 +42,8 @@ def get_data_set(directory):
     return y, files_names, srs
 
 # It's good idea to add annotations
+# Why we use this function if we use only 1 method from package?
+# Why we cant use only this method (don't forget about comments)
 def audio_to_mel(y, sr):
     return librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
 
@@ -90,6 +92,12 @@ def define_class(y1, y2):
     return dec
 
 # It's good idea to add annotations.
+# It's not idea to write double code. Why we
+# use this function, if we already have function
+# spectrogram()? And it's not good idea to naming
+# new function as spectogramM. You and other
+# people can be confused, when they or you will
+# be work with that.
 def spectrogramm(x):
     f1, t1, s1 = spectrogram(x)
     return f1, t1, s1
