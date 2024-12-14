@@ -1,3 +1,12 @@
+"""
+This program do alot of things. You should create some
+methods and add comments. Because this code create csv files,
+print reports, calculate some values. Mbe good practic to create
+some class.
+"""
+
+
+
 # Pls add comment about program
 """
 This program...
@@ -37,13 +46,17 @@ train_len = round(len(data_set))
 train_split = data_set[0:]
 
 for i in range(len(train_split)):
-    for j in range(i + 1, len(train_split)):
+    # You don't need to use (len(train_split)) because
+    # j cant be > len(train_split), because j = i + 1 and
+    # i in [0, len(train_split)]
+    for j in range(i + 1):
         # It's not good idea to naming fields like this.
         # The name of field should describe what field does
         # and why it creates.
         [a, b, c] = statistics.use_stat_for_spectr(
             train_split[i], train_split[j]
         )
+        # Pls add comment what this code does.
         label = define_class(files[i], files[j])
         labels.append(label)
         middle = (a + b + c) / 3
@@ -156,6 +169,10 @@ report_all = [
     recall_score(all_y_test, all_pred),
 ]
 
+
+# Create some class and then create
+# entry point to the program to use created methods and
+# give results.
 print("1", report_chi)
 print("2", report_uman)
 print("3", report_stud)
