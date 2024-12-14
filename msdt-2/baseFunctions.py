@@ -13,6 +13,10 @@ from scipy.signal import spectrogram
 from display import read_file
 
 
+# It's good idea to add annotations
+# E.g.
+# get_data_set(directory: str) -> tuple:
+#   ...
 def get_data_set(directory):
     """
     It's good practice to add comments about what
@@ -37,11 +41,11 @@ def get_data_set(directory):
 
     return y, files_names, srs
 
-
+# It's good idea to add annotations
 def audio_to_mel(y, sr):
     return librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128, fmax=8000)
 
-
+# It's good idea to add annotations
 def define_class(y1, y2):
     """
     Pls add some comments what this function does.
@@ -85,7 +89,7 @@ def define_class(y1, y2):
 
     return dec
 
-
+# It's good idea to add annotations.
 def spectrogramm(x):
     f1, t1, s1 = spectrogram(x)
     return f1, t1, s1
