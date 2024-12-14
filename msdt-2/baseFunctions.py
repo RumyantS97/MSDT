@@ -19,6 +19,11 @@ def get_data_set(directory):
     files_names = []
     srs = []
     for file in files_name:
+        # It's good idea to work with situation, when
+        # directory already have /. For example
+        # when we called get_data_set('/etc/')
+        # And what about if we work in Windows system?
+        # In Windows path includes \ instead /.
         path = directory + "/" + file
         [a, b] = read_file(path)
         y.append(a)
