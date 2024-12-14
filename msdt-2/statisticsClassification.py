@@ -1,15 +1,25 @@
+# Pls add comment about program
+"""
+This program...
+"""
+
+# 1. It's good idea to add comment why we use this packages
+# 2. And it's not good idea to import all package.
+#    Import only methods that you have used in your code.
 import statistics
 from baseFunctions import get_data_set, define_class
 import numpy as np
-from sklearn.metrics import (
-    accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-)
+import pandas
+# See, this is good information about imports
+# -> https://peps.python.org/pep-0008/#imports
+# Don't forget add comments why we need this packages.
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
 from sklearn.ensemble import RandomForestClassifier as classifier
 from sklearn.model_selection import train_test_split
-import pandas
+
 
 np.seterr(divide="ignore", invalid="ignore")
 

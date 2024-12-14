@@ -1,5 +1,14 @@
+# Pls add comment about program
+"""
+This program...
+"""
+
+# 1. It's good idea to add comment why we use this packages
+# 2. And it's not good idea to import all package.
+#    Import only methods that you have used in your code.
 import librosa
 import os
+
 from scipy.signal import spectrogram
 from display import read_file
 
