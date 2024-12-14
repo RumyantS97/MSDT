@@ -14,6 +14,11 @@ from display import read_file
 
 
 def get_data_set(directory):
+    """
+    It's good practice to add comments about what
+    your function does. Remember that you work
+    not only with computer, but also with peoples ;)
+    """
     files_name = os.listdir(directory)
     y = []
     files_names = []
@@ -38,7 +43,19 @@ def audio_to_mel(y, sr):
 
 
 def define_class(y1, y2):
+    """
+    Pls add some comments what this function does.
+    """
     dec = 0
+    # 1. You can use syntax for check like
+    # if first_str and second_str in some_list:
+    #      ...
+    # instead: first_str in some_list, second_str in some_list etc...
+    # 2. It's not good idea to hardcode. You should create universal method.
+    # 3. You can use method any() for your function.
+    # https://docs-python.ru/tutorial/vstroennye-funktsii-interpretatora-python/funktsija-any/
+    # 4. Don't forget about operator ELIF. You don't need to check
+    # 2 situations, if one of them already, e.g. TRUE.
     if (("kitchen" in y1) and ("kitchen" in y2)) and (
         ("mi" in y1) and ("mi" in y2)
     ):
