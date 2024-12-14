@@ -83,12 +83,16 @@ all_model = classifier()
 chi_points = np.array(chi_points)
 chi_points = chi_points.reshape(-1, 1)
 unman_points = np.array(unman_points)
+# Unused field. It's good idea to remove this.
 unman_points = chi_points.reshape(-1, 1)
 student_points = np.array(student_points)
+# Unused field. It's good idea to remove this.
 student_points = chi_points.reshape(-1, 1)
 middles = np.array(middles)
+# Unused field. It's good idea to remove this.
 middles = chi_points.reshape(-1, 1)
 all_vec = np.array(all_vec)
+# Unused field. It's good idea to remove this.
 all_vec = chi_points.reshape(-1, 1)
 
 
