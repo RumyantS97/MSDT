@@ -1,22 +1,30 @@
 from collections import Counter
 from collections import deque
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 #1. Алгоритм, который принимает строку и возвращает ее в обратном порядке.
 def reverse_algoritmth(str):
 
     def reverse_str(str):
+        logging.info(f"Начало работы алгоритма обратного преобразования строки:'{str}'")
         res=''
         for i in range(len(str) - 1, - 1, - 1):
             res += str[i]
         return res
 
-    print("Исходная строка " + str)
-    print("Строка в обратном порядке "+reverse_str(str))
+    logging.info(f"Строка в обратном порядке:'{reverse_str(str)}'")
 
 #2. Реализуйте алгоритм поиска всех анаграмм заданного слова в тексте.
 def anagram_search_algorithm(word, text):
 
     def find_anagrams(word, text):
+        logging.debug("Начало работы алгоритма поиска всех анаграмм заданного слова в тексте")
         word = word.lower()
         word_count = Counter(word)
         word_length = len(word)
@@ -27,13 +35,14 @@ def anagram_search_algorithm(word, text):
         return anagrams
 
     anagrams = find_anagrams(word, text)
-    print(f"Анаграммы слова '{word}' в тексте: {anagrams}")
+    logging.info(f"Результаты поиска анаграмм слова '{word}' в тексте '{text}': {anagrams}")
 
 #3. алгоритм сжатия строк с использованием счетчиков повторяющихся символов 
 #и алгоритм для обратного преобразования.
 def string_compression_decompression_algorithms(str):
 
     def compress_str(str):
+        logging.debug("Начало работы алгоритма сжатия строки")
         dictionary={}
         for i in str:
             if i in dictionary.keys():
@@ -47,6 +56,7 @@ def string_compression_decompression_algorithms(str):
         return str
 
     def decompress_str(str):
+        logging.debug("Начало работы алгоритма обратного преобразования строки")
         res=""
         i=0
         while i<len(str):
@@ -59,20 +69,17 @@ def string_compression_decompression_algorithms(str):
             res += char * int(count)
         return res
         
-    print("Исходная строка " + str)
-    print("Результат сжатия строки:")
-    str=compress_str(str)
-    print(str)
-    print("Результат обратного преобразования:")
-    print(decompress_str(str))
+    processed_str=compress_str(str)
+    logging.info(f"Результаты обработки строки-'{str}': сжатие-'{processed_str}', обратное преобразование-'{decompress_str(processed_str)}'")
 
 #4. Алгоритм для обхода графа в ширину (BFS)
 def bfs_algorithm(graph, start):
- 
+
     if not graph or not start:
-        print("Граф пуст, его обход невозможен!") 
+        logging.warning("Граф пуст, его обход невозможен!") 
         return 
     def bfs():
+        logging.debug("Начало обхода графа в ширину.")
         visited = set()
         queue = deque([start])
         visited.add(start)
@@ -84,14 +91,14 @@ def bfs_algorithm(graph, start):
                 if child not in visited:
                     queue.append(child)
                     visited.add(child)
+        logging.debug("Обход графа в ширину завершен.")
 
-    print("Граф:\n")
-    print(graph)
-    print("\nРезультат обхода графа в ширину (BFS):")
-    bfs()
+    logging.info(f"Граф обхода: {graph}")
+    logging.info(f"Результат обхода графа в ширину (BFS):{bfs()}")
 
 #5. Алгоритм рюкзака без повторений
 def knapsack_without_repetition_algorithm(weights, values, capacity):
+    logging.debug("Начала алгоритма рюкзака без повторения")
     n = len(weights)
     dp = [[0] * (capacity + 1) for _ in range(n + 1)]
     for i in range(1, n + 1):
@@ -107,6 +114,8 @@ def knapsack_without_repetition_algorithm(weights, values, capacity):
             selected_items.append(i - 1)
             j -= weights[i - 1]
     selected_items.reverse()
+
+    logging.info(f"Общая ценность: {dp[n][capacity]}, список индексов выбранных ценных предметов: {selected_items}")
     return dp[n][capacity], selected_items
 
 #Проверка работосапособности алгоритмов:
