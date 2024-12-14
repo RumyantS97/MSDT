@@ -24,6 +24,9 @@ def get_data_set(directory):
     not only with computer, but also with peoples ;)
     """
     files_name = os.listdir(directory)
+    # It's not good idea to naming fields like this.
+    # The name of field should describe what field does
+    # and why it creates.
     y = []
     files_names = []
     srs = []

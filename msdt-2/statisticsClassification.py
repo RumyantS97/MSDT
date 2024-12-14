@@ -38,6 +38,9 @@ train_split = data_set[0:]
 
 for i in range(len(train_split)):
     for j in range(i + 1, len(train_split)):
+        # It's not good idea to naming fields like this.
+        # The name of field should describe what field does
+        # and why it creates.
         [a, b, c] = statistics.use_stat_for_spectr(
             train_split[i], train_split[j]
         )
