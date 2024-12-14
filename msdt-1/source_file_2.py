@@ -17,6 +17,7 @@ def task():
     print("EFGHIJQUZ")
     print("")
 
+
 # Функция для чтения файлов и записи в них
 def file_processing(fInput, fOutput):
     fI = open(fInput, "r")
@@ -31,6 +32,7 @@ def file_processing(fInput, fOutput):
     fI.close()
     fO.close()
 
+
 # Функция для обработки строк исходного файла
 def string_processing(s):
    res = ""
@@ -40,6 +42,7 @@ def string_processing(s):
    if res == "":
        res = "-1"
    return res
+
 
 # Функция main
 

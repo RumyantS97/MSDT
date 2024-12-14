@@ -13,16 +13,19 @@ def task():
     print("     по убыванию (сортировка выбором)")
     print("")
 
+
 # Функция для ручного ввода списка в одну строку
 def manual_entry_list(int_list):
     int_list = list(map(int, input().split()))
     return int_list
+
 
 # Функция для автоматического формирования списка из n чисел в диапазоне от b до c
 def automatic_list_entry(int_list, n, b, c):
     for i in range(n):
         int_list.append(randint(b, c))
     return int_list
+
 
 # Функция для поиска минимального элемента, некратного заданному числу, в списке целочисленных элементов
 def finding_min_elem(int_list, x):
@@ -32,12 +35,14 @@ def finding_min_elem(int_list, x):
             min_elem = int_list[i]
     return min_elem
 
+
 # Функция для поиска в списке индекса первого нечетного ненулевого элемента с использованием цикла while
 def index_search(int_list):
     index_elem = 0
     while (index_elem < len(int_list)) and (int_list[index_elem] % 2 == 0):
         index_elem += 1
     return index_elem
+
 
 # Функция для сортировки списка по убыванию, используя сортировку выбором
 def selection_sort(int_list):
@@ -51,6 +56,7 @@ def selection_sort(int_list):
         int_list[ind_max] = int_list[j]         # Меняем фиксированный элемент
         int_list[j] = max_el                    # с наибольшим найденным элементом
     return int_list
+
 
 # Функция main
 
