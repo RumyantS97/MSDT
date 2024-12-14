@@ -49,8 +49,15 @@ while flag_in:
     if (x > 0):
         flag_in = False
         print("\nИдёт вычисление...")
-        print("\nКоличество значений n на отрезке [1; 100000], для которых F(n) равно 12, равно: ", number_of_values_n(0))
-        print("\nКоличество четных цифр результата вычисления F(x) = {1}, где x = {0}, составляет: {2}".format(x, recursive_function(x), number_of_even_digits(recursive_function(x))))
+        print("\nКоличество значений n на отрезке [1; 100000], "
+              + "для которых F(n) равно 12, равно: ", number_of_values_n(0))
+        print("\nКоличество четных цифр результата вычисления F(x) = {1}, "
+              + "где x = {0}, составляет: {2}"
+              .format(x,
+                      recursive_function(x),
+                      number_of_even_digits(recursive_function(x))
+                      )
+              )
         print("\nКонец работы программы!")
     else:
         print("\nОшибка ввода! Попробуйте снова!")
