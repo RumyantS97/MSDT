@@ -120,39 +120,35 @@ def test_total_company_salary():
     total_department_salary = department1.total_department_salary() + department2.total_department_salary()
     assert pytest.approx(total_salary, 0.01) == total_department_salary
 
-
-def test_employee_with_mock():
-    """Test Employee class using a mock for performance_score."""
+def test_mock_employee_bonus():
+    """Test Employee bonus calculation with mock performance score."""
     employee = Employee("Nikita", "Manager", 60000)
-    employee.performance_score = Mock(return_value=1.0)
+    employee.performance_score = Mock(return_value=1.2)
+    employee.performance_score = 1.2  # Override actual value for test
     bonus = employee.calculate_bonus()
-    expected_bonus = employee.base_salary * 0.2 * 1.0
+    expected_bonus = employee.base_salary * 0.2 * 1.2
     assert pytest.approx(bonus, 0.01) == expected_bonus
 
-
-def test_department_performance_with_mock():
+def test_mock_department_performance():
     """Test Department performance calculation with mocked employees."""
     department = Department("HR")
-    mock_employee1 = Mock()
-    mock_employee1.performance_score = 1.2
-    mock_employee2 = Mock()
-    mock_employee2.performance_score = 1.4
-    department.add_employee(mock_employee1)
-    department.add_employee(mock_employee2)
+    mock_employee1 = Mock(spec=Employee)
+    mock_employee2 = Mock(spec=Employee)
+    mock_employee1.performance_score = 1.0
+    mock_employee2.performance_score = 1.5
+    department.employees = [mock_employee1, mock_employee2]
     avg_perf = department.department_performance()
-    expected_avg_perf = (1.2 + 1.4) / 2
+    expected_avg_perf = (1.0 + 1.5) / 2
     assert pytest.approx(avg_perf, 0.01) == expected_avg_perf
 
-
-def test_total_department_salary_with_mock():
-    """Test Department total salary calculation with mocked employees."""
-    department = Department("HR")
-    mock_employee1 = Mock()
-    mock_employee1.total_compensation.return_value = 70000
-    mock_employee2 = Mock()
-    mock_employee2.total_compensation.return_value = 80000
-    department.add_employee(mock_employee1)
-    department.add_employee(mock_employee2)
-    total_salary = department.total_department_salary()
-    expected_total_salary = 70000 + 80000
-    assert pytest.approx(total_salary, 0.01) == expected_total_salary
+def test_mock_company_salary():
+    """Test total company salary with mocked departments."""
+    company = Company("TestCorp")
+    mock_department1 = Mock(spec=Department)
+    mock_department2 = Mock(spec=Department)
+    mock_department1.total_department_salary.return_value = 100000
+    mock_department2.total_department_salary.return_value = 150000
+    company.departments = [mock_department1, mock_department2]
+    total_salary = company.total_company_salary()
+    expected_salary = 100000 + 150000
+    assert pytest.approx(total_salary, 0.01) == expected_salary
