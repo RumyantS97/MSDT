@@ -20,38 +20,38 @@ class Polynomial:
         new_coeffs = np.polyadd(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def __sub__(self, other):
+    def __subtract__(self, other):
         """Вычитание двух многочленов."""
         new_coeffs = np.polysub(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def __mul__(self, other):
+    def __multiply__(self, other):
         """Умножение двух многочленов."""
         new_coeffs = np.polymul(self.coefficients, other.coefficients)
         return Polynomial(new_coeffs)
 
-    def evaluate(self, x):
+    def evaluate_at(self, x):
         """Вычисляет значение многочлена в точке x."""
         return np.polyval(self.coefficients, x)
 
-    def derivative(self):
+    def compute_derivative(self):
         """Вычисляет производную многочлена."""
         deriv_coeffs = np.polyder(self.coefficients)
         return Polynomial(deriv_coeffs)
 
-    def integral(self):
+    def compute_integral(self):
         """Вычисляет неопределенный интеграл многочлена."""
         integral_coeffs = np.polyint(self.coefficients)
         return Polynomial(integral_coeffs)
 
-    def roots(self):
+    def find_roots(self):
         """Находит корни многочлена."""
         return np.roots(self.coefficients)
 
 
 class NumericalIntegration:
     @staticmethod
-    def integrate(func, a, b):
+    def integrate_funtion(func, a, b):
         """
         Численное интегрирование функции func от a до b.
 
@@ -108,17 +108,17 @@ class MatrixOperations:
         self.matrix = np.array(matrix)
 
 
-def transpose(self):
+def transpose_matrix(self):
     """Вычисляет транспонированную матрицу."""
     return self.matrix.T
 
 
-def determinant(self):
+def compute_determinant(self):
     """Вычисляет определитель матрицы."""
     return np.linalg.det(self.matrix)
 
 
-def inverse(self):
+def compute_inverse(self):
     """Вычисляет обратную матрицу."""
 
     if self.determinant() == 0:
@@ -127,41 +127,41 @@ def inverse(self):
     return np.linalg.inv(self.matrix)
 
 
-def eigenvalues_and_vectors(self):
+def compute_eigenvalues_and_vectors(self):
     """Вычисляет собственные значения и собственные векторы."""
     return np.linalg.eig(self.matrix)
 
 
 class Statistics:
     @staticmethod
-    def mean(data):
+    def compute_mean(data):
         """Вычисляет среднее значение."""
         return np.mean(data)
 
     @staticmethod
-    def variance(data):
+    def compute_variance(data):
         """Вычисляет дисперсию."""
         return np.var(data)
 
     @staticmethod
-    def standard_deviation(data):
+    def compute_standard_deviation(data):
         """Вычисляет стандартное отклонение."""
         return np.std(data)
 
     @staticmethod
-    def median(data):
+    def compute_median(data):
         """Вычисляет медиану."""
         return np.median(data)
 
     @staticmethod
-    def mode(data):
+    def compute_mode(data):
         """Находит моду (значение с максимальной частотой)."""
         values, counts = np.unique(data, return_counts=True)
         max_count_index = np.argmax(counts)
         return values[max_count_index]
 
 
-def square_of_sine(x):
+def calculate_square_of_sine(x):
     """Функция для вычисления sin^2(x)."""
     return np.sin(x) ** 2
 
@@ -216,8 +216,8 @@ def plot_statistics(data):
                                     edgecolor='black')
 
     # Плотность вероятности нормального распределения
-    mu = Statistics.mean(data)
-    sigma = Statistics.standard_deviation(data)
+    mu = Statistics.compute_mean(data)
+    sigma = Statistics.compute_standard_deviation(data)
     best_fit_line = norm.pdf(bins, mu, sigma)
     plt.plot(bins,
              best_fit_line,
@@ -255,7 +255,7 @@ def main():
     # Численное интегрирование
     print("\nЧисленное интегрирование:")
 
-    integral_value = NumericalIntegration.integrate(square_of_sine,
+    integral_value = NumericalIntegration.integrate_function(calculate_square_of_sine,
                                                     0,
                                                     np.pi)
 
@@ -302,10 +302,10 @@ def main():
     print(matrix_operations.matrix)
 
     print("Транспонированная матрица A:")
-    print(transpose(matrix_operations))
+    print(transpose_matrix(matrix_operations))
 
     print("Определитель матрицы A:")
-    print(determinant(matrix_operations))
+    print(compute_determinant(matrix_operations))
 
     try:
         # Генерация случайных данных для статистики
@@ -314,11 +314,11 @@ def main():
                                 size=1000)
 
         print("\nСтатистические вычисления:")
-        print("Среднее:", Statistics.mean(data))
-        print("Дисперсия:", Statistics.variance(data))
-        print("Стандартное отклонение:", Statistics.standard_deviation(data))
-        print("Медиана:", Statistics.median(data))
-        print("Мода:", Statistics.mode(data))
+        print("Среднее:", Statistics.compute_mean(data))
+        print("Дисперсия:", Statistics.compute_variance(data))
+        print("Стандартное отклонение:", Statistics.compute_standard_deviation(data))
+        print("Медиана:", Statistics.compute_median(data))
+        print("Мода:", Statistics.compute_mode(data))
 
         plot_statistics(data)
 
