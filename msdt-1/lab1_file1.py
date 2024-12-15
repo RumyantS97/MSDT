@@ -1,4 +1,6 @@
 import random
+import heapq
+from collections import Counter
 
 # Константы для сортировок
 START_INDEX = 0
@@ -7,7 +9,11 @@ FIRST_ELEMENT = 0
 SECOND_ELEMENT = 1
 THIRD_ELEMENT = 2
 
-# Пузырьковая сортировка
+# Общая функция для сортировки
+def sort_array(array, algorithm):
+    return algorithm(array)
+
+# Функции сортировки
 def sort_by_bubble(array_to_sort):
     array_length = len(array_to_sort)
     for i in range(array_length):
@@ -16,7 +22,6 @@ def sort_by_bubble(array_to_sort):
                 array_to_sort[j], array_to_sort[j + 1] = array_to_sort[j + 1], array_to_sort[j]
     return array_to_sort
 
-# Сортировка перемешиванием
 def sort_by_cocktail_shaker(array_to_sort):
     array_length = len(array_to_sort)
     start = START_INDEX
@@ -37,7 +42,6 @@ def sort_by_cocktail_shaker(array_to_sort):
             break
     return array_to_sort
 
-# Сортировка вставками
 def sort_by_insertion(array_to_sort):
     for i in range(1, len(array_to_sort)):
         key = array_to_sort[i]
@@ -48,7 +52,6 @@ def sort_by_insertion(array_to_sort):
         array_to_sort[j + 1] = key
     return array_to_sort
 
-# Быстрая сортировка
 def sort_by_quick(array_to_sort):
     if len(array_to_sort) <= 1:
         return array_to_sort
@@ -58,23 +61,19 @@ def sort_by_quick(array_to_sort):
     right = [x for x in array_to_sort if x > pivot]
     return sort_by_quick(left) + middle + sort_by_quick(right)
 
-# Пирамидальная сортировка (Heap Sort)
-def adjust_heap(array_to_sort, array_length, i):
-    largest = i
-    left = 2 * i + 1
-    right = 2 * i + 2
-
-    if left < array_length and array_to_sort[left] > array_to_sort[largest]:
-        largest = left
-
-    if right < array_length and array_to_sort[right] > array_to_sort[largest]:
-        largest = right
-
-    if largest != i:
-        array_to_sort[i], array_to_sort[largest] = array_to_sort[largest], array_to_sort[i]
-        adjust_heap(array_to_sort, array_length, largest)
-
 def sort_by_heap(array_to_sort):
+    def adjust_heap(array_to_sort, array_length, i):
+        largest = i
+        left = 2 * i + 1
+        right = 2 * i + 2
+        if left < array_length and array_to_sort[left] > array_to_sort[largest]:
+            largest = left
+        if right < array_length and array_to_sort[right] > array_to_sort[largest]:
+            largest = right
+        if largest != i:
+            array_to_sort[i], array_to_sort[largest] = array_to_sort[largest], array_to_sort[i]
+            adjust_heap(array_to_sort, array_length, largest)
+
     array_length = len(array_to_sort)
     for i in range(array_length // 2 - 1, START_INDEX - 1, -1):
         adjust_heap(array_to_sort, array_length, i)
@@ -83,7 +82,6 @@ def sort_by_heap(array_to_sort):
         adjust_heap(array_to_sort, i, 0)
     return array_to_sort
 
-# Блочная сортировка (Bucket Sort)
 def sort_by_buckets(array_to_sort):
     if len(array_to_sort) == 0:
         return array_to_sort
@@ -107,6 +105,19 @@ def sort_by_buckets(array_to_sort):
         sorted_arr.extend(bucket)
     return sorted_arr
 
+# Функция выбора сортировки через словарь
+def choose_sort_algorithm(choice):
+    sorting_algorithms = {
+        '1': sort_by_bubble,
+        '2': sort_by_cocktail_shaker,
+        '3': sort_by_insertion,
+        '4': sort_by_quick,
+        '5': sort_by_heap,
+        '6': sort_by_buckets
+    }
+    return sorting_algorithms.get(choice, None)
+
+# Главная функция
 def main():
     size = int(input("Введите размер массива: "))
     array = [random.randint(0, 100) for _ in range(size)]
@@ -120,28 +131,13 @@ def main():
     print("6. Блочная сортировка")
     choice = input("Ваш выбор: ")
 
-    if choice == '1':
-        print("\nСортируем пузырьковой сортировкой...")
-        sorted_array = sort_by_bubble(array)
-    elif choice == '2':
-        print("\nСортируем сортировкой перемешиванием...")
-        sorted_array = sort_by_cocktail_shaker(array)
-    elif choice == '3':
-        print("\nСортируем сортировкой вставками...")
-        sorted_array = sort_by_insertion(array)
-    elif choice == '4':
-        print("\nСортируем быстрой сортировкой...")
-        sorted_array = sort_by_quick(array)
-    elif choice == '5':
-        print("\nСортируем пирамидальной сортировкой...")
-        sorted_array = sort_by_heap(array)
-    elif choice == '6':
-        print("\nСортируем блочной сортировкой...")
-        sorted_array = sort_by_buckets(array)
+    sort_algorithm = choose_sort_algorithm(choice)
+    if sort_algorithm:
+        print(f"\nСортируем выбранным алгоритмом ({choice})...")
+        sorted_array = sort_array(array, sort_algorithm)
+        print("Отсортированный массив:", sorted_array)
     else:
         print("Неверный выбор! Программа завершена.")
-        return
-    print("Отсортированный массив:", sorted_array)
 
 if __name__ == "__main__":
     main()
