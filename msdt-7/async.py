@@ -20,7 +20,7 @@ async def get_weather(city):
             
             # Получаем ответ
             weather = await response.json()
-            # Вывод: "Город, температура, погода, влажность, скорость_ветра, направление_ветра 
+            # Вывод: "Город, температура, погода, влажность, скорость_ветра, направление_ветра"
             return [city, weather["main"]["temp"] - 273.15, weather["weather"][0]["main"], weather["main"]["humidity"], weather["wind"]["speed"], wind_direction(weather["wind"]["deg"])]
 
 
