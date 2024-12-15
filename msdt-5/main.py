@@ -106,29 +106,26 @@ class matrixOperations:
 
         self.matrix = np.array(matrix)
 
+    def transpose(self):
+        """Вычисляет транспонированную матрицу."""
+        return self.matrix.T
 
-def transpose(self):
-    """Вычисляет транспонированную матрицу."""
-    return self.matrix.T
+    def determinant(self):
+        """Вычисляет определитель матрицы."""
+        return np.linalg.det(self.matrix)
 
+    def inverse(self):
+        """Вычисляет обратную матрицу."""
 
-def determinant(self):
-    """Вычисляет определитель матрицы."""
-    return np.linalg.det(self.matrix)
+        if self.determinant() == 0:
+            raise ValueError(
+                "Обратная матрица не существует для данной матрицы.")
 
+        return np.linalg.inv(self.matrix)
 
-def inverse(self):
-    """Вычисляет обратную матрицу."""
-
-    if self.determinant() == 0:
-        raise ValueError("Обратная матрица не существует для данной матрицы.")
-
-    return np.linalg.inv(self.matrix)
-
-
-def eigenvalues_and_vectors(self):
-    """Вычисляет собственные значения и собственные векторы."""
-    return np.linalg.eig(self.matrix)
+    def eigenvalues_and_vectors(self):
+        """Вычисляет собственные значения и собственные векторы."""
+        return np.linalg.eig(self.matrix)
 
 
 class statistics:
@@ -301,10 +298,10 @@ def main():
     print(matrix_operations.matrix)
 
     print("Транспонированная матрица A:")
-    print(transpose(matrix_operations))
+    print(matrixOperations.transpose(matrix_operations))
 
     print("Определитель матрицы A:")
-    print(determinant(matrix_operations))
+    print(matrixOperations.determinant(matrix_operations))
 
     try:
         # Генерация случайных данных для статистики
