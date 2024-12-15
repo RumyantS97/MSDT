@@ -187,10 +187,13 @@ class Hero(MovableObject):
     def tick(self):
         # TELEPORT
         if self.x < 0:
-            self.x = self._renderer._width
-
-        if self.x > self._renderer._width:
+            self.x = self._renderer._width - self._size
+        if self.x >= self._renderer._width:
             self.x = 0
+        if self.y < 0:
+            self.y = self._renderer._height - self._size
+        if self.y >= self._renderer._height:
+            self.y = 0
 
         self.last_non_colliding_position = self.get_position()
 
