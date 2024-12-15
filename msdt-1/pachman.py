@@ -79,17 +79,21 @@ class GameRenderer:
         self._hero: Hero = None
 
     def tick(self, in_fps: int):
-        black = (0, 0, 0)
-        while not self._done:
-            for game_object in self._game_objects:
-                game_object.tick()
-                game_object.draw()
-
-            pygame.display.flip()
-            self._clock.tick(in_fps)
-            self._screen.fill(black)
+        while not self.is_running:
+            self._update_game_objects()
+            self._refresh_screen(in_fps)
             self._handle_events()
         print("Game over")
+
+    def _update_game_objects(self):
+        for game_object in self._game_objects:
+            game_object.tick()
+            game_object.draw()
+
+    def _refresh_screen(self, in_fps: int):
+        pygame.display.flip()
+        self._clock.tick(in_fps)
+        self._screen.fill(BLACK)
 
     def add_game_object(self, obj: GameObject):
         self._game_objects.append(obj)
