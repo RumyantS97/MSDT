@@ -1,31 +1,45 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import quad, solve_ivp
+import logging
 
+# Настройка конфигурации логирования
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 class Polynomial:
     def __init__(self, coefficients):
         """Инициализация многочлена."""
         self.coefficients = np.array(coefficients)
+        #Логируем инициализацию многочлена
+        logging.debug(f"Создан многочлен с коэффициентами: {self.coefficients}")
 
     def add(self, other):
         """Сложение двух многочленов."""
         new_coeffs = np.polyadd(self.coefficients, other.coefficients)
+        # Логируем сложение двух многочленов
+        logging.info(f"Сложение многочленов: {self.coefficients} + {other.coefficients}")
         return Polynomial(new_coeffs)
 
     def subtract(self, other):
         """Вычитание двух многочленов."""
         new_coeffs = np.polysub(self.coefficients, other.coefficients)
+        # Логируем вычитание двух многочленов
+        logging.info(f"Вычитание многочленов: {self.coefficients} - {other.coefficients}")
         return Polynomial(new_coeffs)
 
     def multiply(self, other):
         """Умножение двух многочленов."""
         new_coeffs = np.polymul(self.coefficients, other.coefficients)
+        # Логируем умножение двух многочленов
+        logging.info(f"Умножение многочленов: {self.coefficients} * {other.coefficients}")
         return Polynomial(new_coeffs)
 
     def evaluate_at(self, x):
         """Вычисляет значение многочлена в точке x."""
         value = np.polyval(self.coefficients, x)
+        #Логируем вычисление значение многочлена в точке x
+        logging.debug(f"Вычисление P({x}) = {value}")
         return value
 
 
@@ -34,6 +48,8 @@ class NumericalIntegration:
     def integrate_function(func, a, b):
         """Численное интегрирование функции func от a до b."""
         result, _ = quad(func, a, b)
+        #Логируем численное интегрирование
+        logging.info(f"Интегрирование функции от {a} до {b}, результат: {result}")
         return result
 
 
@@ -41,7 +57,15 @@ class DifferentialEquationSolver:
     @staticmethod
     def solve_ode(ode_func, y0, t_span):
         """Решает обыкновенное дифференциальное уравнение."""
+        logging.debug(f"Решение ОДУ с начальным условием {y0} на интервале {t_span}")
         solution = solve_ivp(ode_func, t_span, y0)
+
+        if solution.success:
+            #Логируем информацию об успешном решении
+            logging.info("Успешное решение ОДУ.")
+        else:
+            #Логируем ошибку решения
+            logging.error("Не удалось решить ОДУ.")
         return solution
 
 
@@ -69,22 +93,20 @@ def plot_polynomial(poly):
     plt.axvline(0, color='black', lw=0.5)
     plt.grid()
     plt.show()
+    #Логируем информацию о построении графика
+    logging.info("Построен график многочлена.")
 
 
 def main():
+    #Логируем начало программы
+    logging.info("Запуск приложения.")
+
     # Примеры операций с многочленами
     poly1 = Polynomial([1, -3, 2])  # x^2 - 3x + 2
     poly2 = Polynomial([1, 1])  # x + 1
 
-    # Вывод значений многочленов
-    print(f"Многочлен 1 (P1): {poly1.coefficients}")
-    print(f"Многочлен 2 (P2): {poly2.coefficients}")
-
     poly_sum = poly1.add(poly2)
     poly_diff = poly1.subtract(poly2)
-
-    print(f"Сумма (P1 + P2): {poly_sum.coefficients}")
-    print(f"Разность (P1 - P2): {poly_diff.coefficients}")
 
     # График первого многочлена
     plot_polynomial(poly1)
@@ -93,8 +115,6 @@ def main():
     integral_value = NumericalIntegration.integrate_function(add_square_of_sine,0,
                                                              np.pi)
 
-    print(f"Значение интеграла от 0 до π: {integral_value}")
-
     # Решение обыкновенного дифференциального уравнения
     y0 = [0]
     t_span = (0, 5)
@@ -102,9 +122,6 @@ def main():
                                                     y0,
                                                     t_span)
 
-    # Вывод значений решения ОДУ
-    print("Решение ОДУ:")
-    print(f"Решения: {solution.y[0]}")
 
 if __name__ == "__main__":
     main()
