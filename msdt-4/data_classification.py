@@ -2,6 +2,15 @@ import json
 import logging
 from ruwordnet import RuWordNet
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("data_classification.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+
 # === Шаг 1. Расширение словаря с помощью RuWordNet ===
 
 # Базовый словарь
@@ -118,7 +127,7 @@ def expand_keywords_ruwordnet(keywords):
     return list(expanded_keywords)
 
 # Расширение словаря
-
+logging.info("Расширение словарей с помощью RuWordNet")
 for category, subcategories in expressive_status_dict.items():
     for modality, sentiments in subcategories.items():
         if modality == "text":  # Расширяем только текстовые токены
@@ -139,12 +148,13 @@ input_file = "cleared_data.json"
 output_file = "second_expressive_statuses.json"
 
 
+logging.info(f"Загрузка данных из файла {input_file}")
 with open(input_file, "r", encoding="utf-8") as file:
     data = json.load(file)
 
 
 # Функция для классификации статусов
-
+logging.info("Классификация статусов")
 def classify_status(status, dictionary):
     status_lower = status.lower()
 
@@ -188,7 +198,7 @@ with open(output_file, "w", encoding="utf-8") as file:
 # === Шаг 3. Фильтрация стоп-словами ===
 
 # Функция фильтрации
-
+logging.info("Фильтрация статусов")
 def filter_stopwords(status, stopwords):
     status_lower = status.lower()
     for category, subcategories in stopwords.items():
@@ -209,5 +219,13 @@ for user in expressive_statuses:
 # Сохранение очищенных данных
 filtered_output_file = "cleared_second_expressive_statuses.json"
 
+
+logging.info(f"Обработано пользователей: {len(data)}")
+logging.info(f"Экспрессивных статусов найдено: {len(expressive_statuses)}")
+logging.info(f"Экспрессивных статусов после очистки от стоп-слов: {len(filtered_statuses)}")
+
+
+logging.info(f"Сохранение данных в файл {output_file}")
 with open(filtered_output_file, "w", encoding="utf-8") as file:
     json.dump(filtered_statuses, file, ensure_ascii=False, indent=4)
+logging.info("Данные успешно сохранены.")

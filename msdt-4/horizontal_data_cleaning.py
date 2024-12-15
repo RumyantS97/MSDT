@@ -2,6 +2,16 @@ import json
 import logging
 from datetime import datetime
 
+# Настройка логирования
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("horizontal_data_cleaning.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
+
 # Путь к исходному файлу
 input_file = "users.json"
 
@@ -20,6 +30,7 @@ def parse_bdate(bdate):
         return None
 
 # Загрузка данных из файла
+logging.info(f"Загрузка данных из файла {input_file}")
 with open(input_file, "r", encoding="utf-8") as file:
     data = json.load(file)
 
@@ -47,6 +58,10 @@ for user in data:
         "faculty_name": faculty_name
     })
 
+logging.info(f"Обработано записей: {len(cleaned_data)}")
+logging.info(f"Сохранение данных в файл {output_file}")
 # Сохранение очищенных данных в новый файл
 with open(output_file, "w", encoding="utf-8") as file:
     json.dump(cleaned_data, file, ensure_ascii=False, indent=4)
+
+logging.info("Данные успешно сохранены.")
