@@ -1,99 +1,99 @@
 import random
 
 # Пузырьковая сортировка
-def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(0, n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-    return arr
+def sort_by_bubble(array_to_sort):
+    array_length = len(array_to_sort)
+    for i in range(array_length):
+        for j in range(0, array_length - i - 1):
+            if array_to_sort[j] > array_to_sort[j + 1]:
+                array_to_sort[j], array_to_sort[j + 1] = array_to_sort[j + 1], array_to_sort[j]
+    return array_to_sort
 
 # Сортировка перемешиванием
-def cocktail_shaker_sort(arr):
-    n = len(arr)
+def sort_by_cocktail_shaker(array_to_sort):
+    array_length = len(array_to_sort)
     start = 0
-    end = n - 1
+    end = array_length - 1
     while start <= end:
         swapped = False
         for i in range(start, end):
-            if arr[i] > arr[i + 1]:
-                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+            if array_to_sort[i] > array_to_sort[i + 1]:
+                array_to_sort[i], array_to_sort[i + 1] = array_to_sort[i + 1], array_to_sort[i]
                 swapped = True
         end -= 1
         for i in range(end, start, -1):
-            if arr[i] < arr[i - 1]:
-                arr[i], arr[i - 1] = arr[i - 1], arr[i]
+            if array_to_sort[i] < array_to_sort[i - 1]:
+                array_to_sort[i], array_to_sort[i - 1] = array_to_sort[i - 1], array_to_sort[i]
                 swapped = True
         start += 1
         if not swapped:
             break
-    return arr
+    return array_to_sort
 
 # Сортировка вставками
-def insertion_sort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
+def sort_by_insertion(array_to_sort):
+    for i in range(1, len(array_to_sort)):
+        key = array_to_sort[i]
         j = i - 1
-        while j >= 0 and key < arr[j]:
-            arr[j + 1] = arr[j]
+        while j >= 0 and key < array_to_sort[j]:
+            array_to_sort[j + 1] = array_to_sort[j]
             j -= 1
-        arr[j + 1] = key
-    return arr
+        array_to_sort[j + 1] = key
+    return array_to_sort
 
 # Быстрая сортировка
-def quick_sort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[len(arr) // 2]
-    left = [x for x in arr if x < pivot]
-    middle = [x for x in arr if x == pivot]
-    right = [x for x in arr if x > pivot]
-    return quick_sort(left) + middle + quick_sort(right)
+def sort_by_quick(array_to_sort):
+    if len(array_to_sort) <= 1:
+        return array_to_sort
+    pivot = array_to_sort[len(array_to_sort) // 2]
+    left = [x for x in array_to_sort if x < pivot]
+    middle = [x for x in array_to_sort if x == pivot]
+    right = [x for x in array_to_sort if x > pivot]
+    return sort_by_quick(left) + middle + sort_by_quick(right)
 
 # Пирамидальная сортировка (Heap Sort)
-def heapify(arr, n, i):
+def adjust_heap(array_to_sort, array_length, i):
     largest = i
     left = 2 * i + 1
     right = 2 * i + 2
 
-    if left < n and arr[left] > arr[largest]:
+    if left < array_length and array_to_sort[left] > array_to_sort[largest]:
         largest = left
 
-    if right < n and arr[right] > arr[largest]:
+    if right < array_length and array_to_sort[right] > array_to_sort[largest]:
         largest = right
 
     if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]
-        heapify(arr, n, largest)
+        array_to_sort[i], array_to_sort[largest] = array_to_sort[largest], array_to_sort[i]
+        adjust_heap(array_to_sort, array_length, largest)
 
-def heap_sort(arr):
-    n = len(arr)
-    for i in range(n // 2 - 1, -1, -1):
-        heapify(arr, n, i)
-    for i in range(n - 1, 0, -1):
-        arr[i], arr[0] = arr[0], arr[i]
-        heapify(arr, i, 0)
-    return arr
+def sort_by_heap(array_to_sort):
+    array_length = len(array_to_sort)
+    for i in range(array_length // 2 - 1, -1, -1):
+        adjust_heap(array_to_sort, array_length, i)
+    for i in range(array_length - 1, 0, -1):
+        array_to_sort[i], array_to_sort[0] = array_to_sort[0], array_to_sort[i]
+        adjust_heap(array_to_sort, i, 0)
+    return array_to_sort
 
 # Блочная сортировка (Bucket Sort)
-def bucket_sort(arr):
-    if len(arr) == 0:
-        return arr
-    bucket_count = len(arr)
-    max_val = max(arr)
-    min_val = min(arr)
+def sort_by_buckets(array_to_sort):
+    if len(array_to_sort) == 0:
+        return array_to_sort
+    bucket_count = len(array_to_sort)
+    max_val = max(array_to_sort)
+    min_val = min(array_to_sort)
     bucket_size = (max_val - min_val) / bucket_count
     buckets = [[] for _ in range(bucket_count)]
 
-    for num in arr:
+    for num in array_to_sort:
         index = int((num - min_val) / bucket_size)
         if index == bucket_count:
             index -= 1
         buckets[index].append(num)
 
     for bucket in buckets:
-        insertion_sort(bucket)
+        sort_by_insertion(bucket)
 
     sorted_arr = []
     for bucket in buckets:
@@ -115,22 +115,22 @@ def main():
 
     if choice == '1':
         print("\nСортируем пузырьковой сортировкой...")
-        sorted_array = bubble_sort(array)
+        sorted_array = sort_by_bubble(array)
     elif choice == '2':
         print("\nСортируем сортировкой перемешиванием...")
-        sorted_array = cocktail_shaker_sort(array)
+        sorted_array = sort_by_cocktail_shaker(array)
     elif choice == '3':
         print("\nСортируем сортировкой вставками...")
-        sorted_array = insertion_sort(array)
+        sorted_array = sort_by_insertion(array)
     elif choice == '4':
         print("\nСортируем быстрой сортировкой...")
-        sorted_array = quick_sort(array)
+        sorted_array = sort_by_quick(array)
     elif choice == '5':
         print("\nСортируем пирамидальной сортировкой...")
-        sorted_array = heap_sort(array)
+        sorted_array = sort_by_heap(array)
     elif choice == '6':
         print("\nСортируем блочной сортировкой...")
-        sorted_array = bucket_sort(array)
+        sorted_array = sort_by_buckets(array)
     else:
         print("Неверный выбор! Программа завершена.")
         return
