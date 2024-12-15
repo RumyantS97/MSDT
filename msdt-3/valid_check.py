@@ -40,4 +40,4 @@ for idx, row in data.iterrows():
 checksum = calculate_checksum(invalid_rows)
 
 
-serialize_result(33, checksum)
+serialize_result(47, checksum)
