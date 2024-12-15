@@ -1,6 +1,13 @@
 # Import match for matching strings to regex
 from re import match
 
+"""
+Class Validator
+
+This module validate data for some regex pattern
+"""
+
+
 VALID_HTTP_STATUS_REGEX = r"^[1-5]\d{2}\s[A-Za-z]"
 VALID_EMAIL_REGEX = r"^\w+@\w+(\.\w+)+$"
 VALID_INN_REGEX = r"^\d{12}$"
