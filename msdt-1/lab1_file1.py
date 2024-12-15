@@ -1,10 +1,17 @@
 import random
 
+# Константы для сортировок
+START_INDEX = 0
+END_INDEX = -1
+FIRST_ELEMENT = 0
+SECOND_ELEMENT = 1
+THIRD_ELEMENT = 2
+
 # Пузырьковая сортировка
 def sort_by_bubble(array_to_sort):
     array_length = len(array_to_sort)
     for i in range(array_length):
-        for j in range(0, array_length - i - 1):
+        for j in range(START_INDEX, array_length - i - 1):
             if array_to_sort[j] > array_to_sort[j + 1]:
                 array_to_sort[j], array_to_sort[j + 1] = array_to_sort[j + 1], array_to_sort[j]
     return array_to_sort
@@ -12,7 +19,7 @@ def sort_by_bubble(array_to_sort):
 # Сортировка перемешиванием
 def sort_by_cocktail_shaker(array_to_sort):
     array_length = len(array_to_sort)
-    start = 0
+    start = START_INDEX
     end = array_length - 1
     while start <= end:
         swapped = False
@@ -35,7 +42,7 @@ def sort_by_insertion(array_to_sort):
     for i in range(1, len(array_to_sort)):
         key = array_to_sort[i]
         j = i - 1
-        while j >= 0 and key < array_to_sort[j]:
+        while j >= START_INDEX and key < array_to_sort[j]:
             array_to_sort[j + 1] = array_to_sort[j]
             j -= 1
         array_to_sort[j + 1] = key
@@ -69,7 +76,7 @@ def adjust_heap(array_to_sort, array_length, i):
 
 def sort_by_heap(array_to_sort):
     array_length = len(array_to_sort)
-    for i in range(array_length // 2 - 1, -1, -1):
+    for i in range(array_length // 2 - 1, START_INDEX - 1, -1):
         adjust_heap(array_to_sort, array_length, i)
     for i in range(array_length - 1, 0, -1):
         array_to_sort[i], array_to_sort[0] = array_to_sort[0], array_to_sort[i]

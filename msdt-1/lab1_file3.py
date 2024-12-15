@@ -1,3 +1,10 @@
+ADD = '1'
+SUBTRACT = '2'
+MULTIPLY = '3'
+DIVIDE = '4'
+POWER = '5'
+MODULUS = '6'
+
 def add_numbers(a, b):
     return a + b
 
@@ -37,7 +44,7 @@ def run_calculator_program():
             print("Выход из программы. До свидания!")
             break
 
-        if choice not in ['1', '2', '3', '4', '5', '6']:
+        if choice not in [ADD, SUBTRACT, MULTIPLY, DIVIDE, POWER, MODULUS]:
             print("Ошибка: некорректный ввод. Попробуйте снова.")
             continue
 
@@ -45,17 +52,17 @@ def run_calculator_program():
             num1 = float(input("Введите первое число: "))
             num2 = float(input("Введите второе число: "))
 
-            if choice == '1':
+            if choice == ADD:
                 print(f"Результат: {num1} + {num2} = {add_numbers(num1, num2)}")
-            elif choice == '2':
+            elif choice == SUBTRACT:
                 print(f"Результат: {num1} - {num2} = {subtract_numbers(num1, num2)}")
-            elif choice == '3':
+            elif choice == MULTIPLY:
                 print(f"Результат: {num1} * {num2} = {multiply_numbers(num1, num2)}")
-            elif choice == '4':
+            elif choice == DIVIDE:
                 print(f"Результат: {num1} / {num2} = {divide_numbers(num1, num2)}")
-            elif choice == '5':
+            elif choice == POWER:
                 print(f"Результат: {num1} ** {num2} = {raise_to_power(num1, num2)}")
-            elif choice == '6':
+            elif choice == MODULUS:
                 print(f"Результат: {num1} % {num2} = {calculate_modulus(num1, num2)}")
         except ValueError:
             print("Ошибка: введите числовые значения.")
