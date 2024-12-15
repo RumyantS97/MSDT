@@ -160,13 +160,13 @@ class MovableObject(GameObject):
         desired_position = (0, 0)
         if in_direction == Direction.NONE: return False, desired_position
         if in_direction == Direction.UP:
-            desired_position = (self.x, self.y - 1)
+            self.set_position(self.x, self.y - self._size)
         elif in_direction == Direction.DOWN:
-            desired_position = (self.x, self.y + 1)
+            self.set_position(self.x, self.y + self._size)
         elif in_direction == Direction.LEFT:
-            desired_position = (self.x - 1, self.y)
+            self.set_position(self.x - self._size, self.y)
         elif in_direction == Direction.RIGHT:
-            desired_position = (self.x + 1, self.y)
+            self.set_position(self.x + self._size, self.y)
 
         return self.collides_with_wall(desired_position), desired_position
 
@@ -262,13 +262,13 @@ class Ghost(MovableObject):
 
     def automatic_move(self, in_direction: Direction):
         if in_direction == Direction.UP:
-            self.set_position(self.x, self.y - 1)
+            self.set_position(self.x, self.y - self._size)
         elif in_direction == Direction.DOWN:
-            self.set_position(self.x, self.y + 1)
+            self.set_position(self.x, self.y + self._size)
         elif in_direction == Direction.LEFT:
-            self.set_position(self.x - 1, self.y)
+            self.set_position(self.x - self._size, self.y)
         elif in_direction == Direction.RIGHT:
-            self.set_position(self.x + 1, self.y)
+            self.set_position(self.x + self._size, self.y)
 
 
 class Cookie(GameObject):
