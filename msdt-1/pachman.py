@@ -1,8 +1,10 @@
+import random
+from enum import Enum
+
 import pygame
 import numpy as np
 import tcod
-import random
-from enum import Enum
+
 
 
 class Direction(Enum):
