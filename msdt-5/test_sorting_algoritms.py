@@ -79,4 +79,4 @@ def test_main_random_generation(mock_randint):
     with patch("builtins.input", side_effect=["4", "2"]):  # Мокируем ввод пользователя
         with patch("builtins.print") as mock_print:  # Мокируем вывод в консоль
             main()
-            mock_print.assert_any_call("Сгенерированный массив: ", [50, 50, 50, 50]) # Проверяем корректный вывод
+            mock_print.assert_any_call("Сгенерированный массив:", [50, 50, 50, 50]) # Проверяем корректный вывод
