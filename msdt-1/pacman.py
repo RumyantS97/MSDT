@@ -328,10 +328,10 @@ class PacmanGameController:
         self.reachable_spaces = []
         self.ghost_spawns = []
         self.ghost_colors = [
-            (255, 184, 255),
-            (255, 0, 20),
-            (0, 255, 255),
-            (255, 184, 82)
+            (255, 0, 0),  # Красный
+            (0, 255, 0),  # Зеленый
+            (0, 0, 255),  # Синий
+            (255, 255, 0)  # Желтый
         ]
         self.size = (0, 0)
         self.convert_maze_to_numpy()
