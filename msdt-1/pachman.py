@@ -72,7 +72,7 @@ class GameRenderer:
         self._screen = pygame.display.set_mode((in_width, in_height))
         pygame.display.set_caption('Pacman')
         self._clock = pygame.time.Clock()
-        self._done = False
+        self.is_running = False
         self._game_objects = []
         self._walls = []
         self._cookies = []
@@ -343,7 +343,7 @@ class PacmanGameController:
         ]
         self.size = (0, 0)
         self.convert_maze_to_numpy()
-        self.p = Pathfinder(self.numpy_maze)
+        self.pathfinder = Pathfinder(self.numpy_maze)
 
     def request_new_random_path(self, in_ghost: Ghost):
         random_space = random.choice(self.reachable_spaces)
