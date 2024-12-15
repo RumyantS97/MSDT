@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b1148f0f-0208-419a-badc-312e3ea3b85b" name="Changes" comment="Переименование переменной в соответсвии с правилом именования переменных">
+      <change afterPath="$PROJECT_DIR$/msdt-5/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/msdt-5/test_sorting_algoritms.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Unit Test" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="goncharova-lab1" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Yuliamixgo&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Yuliamixgo/MSDT.git&quot;,
+    &quot;accountId&quot;: &quot;b766bc61-f962-45ae-88b2-6436a85e25c1&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2q9NN7ZEnn150bUQYJJtCn9EvAW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.lab1_code.executor&quot;: &quot;Run&quot;,
+    &quot;Python.lab5_code.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_sorting_algorithms.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;goncharova-lab5&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/yulia/PycharmProjects/MSDT&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="MSDT" />
+      <option name="ENV_FILES" value="$PROJECT_DIR$/msdt-5" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.8" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/msdt-5" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\yulia\PycharmProjects\MSDT\msdt-5\main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b1148f0f-0208-419a-badc-312e3ea3b85b" name="Changes" comment="" />
+      <created>1734070787710</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1734070787710</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Удаление пробела перед скобкой аргумента функции">
+      <option name="closed" value="true" />
+      <created>1734082859194</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1734082859194</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Удаление пробела перед скобкой аргумента функции">
+      <option name="closed" value="true" />
+      <created>1734082951115</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734082951115</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Добавление пробелов вокруг оператора присваивания">
+      <option name="closed" value="true" />
+      <created>1734083142144</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1734083142144</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Добавление пробелов после запятых в аргументе функции">
+      <option name="closed" value="true" />
+      <created>1734084785884</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1734084785884</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Удаление неиспользуемого импорта">
+      <option name="closed" value="true" />
+      <created>1734084865708</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1734084865708</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Удаление пробела после квадратной скобки">
+      <option name="closed" value="true" />
+      <created>1734084944415</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1734084944415</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Переименование переменной в соответсвии с правилом именования переменных">
+      <option name="closed" value="true" />
+      <created>1734085247522</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1734085247522</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Удаление пробела перед скобкой аргумента функции" />
+    <MESSAGE value="Добавление пробелов вокруг оператора присваивания" />
+    <MESSAGE value="Добавление пробелов после запятых в аргументе функции" />
+    <MESSAGE value="Удаление неиспользуемого импорта" />
+    <MESSAGE value="Удаление пробела после квадратной скобки" />
+    <MESSAGE value="Переименование переменной в соответсвии с правилом именования переменных" />
+    <option name="LAST_COMMIT_MESSAGE" value="Переименование переменной в соответсвии с правилом именования переменных" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
