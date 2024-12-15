@@ -1,22 +1,91 @@
-import json
+import csv
 import hashlib
-from typing import List
+import json
+import re
+from typing import Any, Dict, List
 
-"""
-В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
-"""
+import chardet
+
+
+patterns: Dict[str, str] = {
+    'telephone': r'^"?\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}"?$',
+    'height': r'^"?[1-2](?:\.\d{2})?"?$',
+    'snils': r'^"?\d{11}"?$',
+    'identifier': r'^"?\d{2}-\d{2}/\d{2}"?$',
+    'occupation': r'^"?[а-яА-ЯёЁa-zA-Z\s-]+"?$',
+    'longitude': r'^"?-?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)"?$',
+    'blood_type': r'^"?(A|B|AB|O)[\+\u2212]"?$',
+    'issn': r'^"?\d{4}-\d{4}"?$',
+    'locale_code': r'^[a-z]{2}-[a-z]{2}$|^[a-z]{2}$',
+    'date': r'^"?(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"?$'
+}
+
+
+def validate_row(row: List[str], row_number: int) -> bool:
+    """
+    Проверяет строку на соответствие заданным паттернам.
+
+    :param row: Список значений строки.
+    :param row_number: Номер строки в CSV-файле.
+    :return: True, если найдена ошибка, иначе False.
+    """
+    for i, value in enumerate(row):
+        field_name = list(patterns.keys())[i]
+        if not re.match(patterns[field_name], value):
+            print(f"Ошибка в строке {row_number}: "
+                  f"Ошибка в поле '{field_name}': "
+                  f"значение '{value}' не соответствует паттерну.")
+            return True
+    return False
+
+
+def read_file_with_encoding(file_path: str) -> str:
+    """
+    Определяет кодировку файла.
+
+    :param file_path: Путь к файлу.
+    :return: Кодировка файла.
+    """
+    try:
+        with open(file_path, 'rb') as f:
+            raw_data = f.read()
+            result = chardet.detect(raw_data)
+            encoding = result['encoding']
+        return encoding
+    except Exception as e:
+        print(f"Ошибка при определении кодировки файла {file_path}: {e}")
+        raise
+
+
+def process_csv(file_path: str) -> List[int]:
+    """
+    Обрабатывает CSV-файл и возвращает номера строк с ошибками.
+
+    :param file_path: Путь к CSV-файлу.
+    :return: Список номеров строк с ошибками.
+    """
+    invalid_rows: List[int] = []
+    try:
+        encoding = read_file_with_encoding(file_path)
+        with open(file_path, newline='', encoding=encoding) as csvfile:
+            reader = csv.reader(csvfile, delimiter=';')
+            next(reader)
+            for row_number, row in enumerate(reader):
+                if validate_row(row, row_number):
+                    invalid_rows.append(row_number)
+    except FileNotFoundError:
+        print(f"Файл не найден: {file_path}")
+    except Exception as e:
+        print(f"Ошибка при чтении файла: {e}")
+    return invalid_rows
 
 
 def calculate_checksum(row_numbers: List[int]) -> str:
     """
-    Вычисляет md5 хеш от списка целочисленных значений.
+    Вычисляет контрольную сумму для списка номеров строк.
 
-    ВНИМАНИЕ, ВАЖНО! Чтобы сумма получилась корректной, считать, что первая строка с данными csv-файла имеет номер 0
-    Другими словами: В исходном csv 1я строка - заголовки столбцов, 2я и остальные - данные.
-    Соответственно, считаем что у 2 строки файла номер 0, у 3й - номер 1 и так далее.
-
-    :param row_numbers: список целочисленных номеров строк csv-файла, на которых были найдены ошибки валидации
-    :return: md5 хеш для проверки через github action
+    :param row_numbers: Список номеров строк с ошибками.
+    :return: Контрольная сумма в виде строки.
     """
     row_numbers.sort()
     return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
@@ -24,14 +93,33 @@ def calculate_checksum(row_numbers: List[int]) -> str:
 
 def serialize_result(variant: int, checksum: str) -> None:
     """
-    Метод для сериализации результатов лабораторной пишите сами.
-    Вам нужно заполнить данными - номером варианта и контрольной суммой - файл, лежащий в папке с лабораторной.
-    Файл называется, очевидно, result.json.
+    Сериализует результат в JSON-файл.
 
-    ВНИМАНИЕ, ВАЖНО! На json натравлен github action, который проверяет корректность выполнения лабораторной.
-    Так что не перемещайте, не переименовывайте и не изменяйте его структуру, если планируете успешно сдать лабу.
-
-    :param variant: номер вашего варианта
-    :param checksum: контрольная сумма, вычисленная через calculate_checksum()
+    :param variant: Номер варианта.
+    :param checksum: Контрольная сумма.
     """
-    pass
+    try:
+        with open('msdt-3/result.json', 'r', encoding='utf-8') as json_file:
+            result_data: Dict[str, Any] = json.load(json_file)
+    except FileNotFoundError:
+        result_data = {"variant": variant, "checksum": checksum}
+
+    result_data['checksum'] = checksum
+    with open('msdt-3/result.json', 'w', encoding='utf-8') as json_file:
+        json.dump(result_data, json_file, ensure_ascii=False, indent=4)
+
+
+if __name__ == "__main__":
+    try:
+        with open("msdt-3/options.json", "r", encoding='utf-8') as options_file:
+            options = json.load(options_file)
+
+        invalid_row_numbers = process_csv(options["csv_file_path"])
+        checksum = calculate_checksum(invalid_row_numbers)
+        variant_number = 52
+        serialize_result(variant_number, checksum)
+
+    except FileNotFoundError:
+        print("Файл options.json не найден.")
+    except Exception as e:
+        print(f"Ошибка: {e}")
