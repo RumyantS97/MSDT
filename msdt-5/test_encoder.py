@@ -22,9 +22,16 @@ def test_text_encryption_error():
 
 # Тесты на проверку чтения файла
 
-def test_read_file_pass():
+@pytest.fixture
+def input_file(tmp_path):
+    file_path = tmp_path / "input.txt"
+    text = "a text message to check the operability of the method"
+    file_path.write_text(text)
+    return file_path
+
+def test_read_file_pass(input_file):
     assert FileManager().Read_File(
-        "input.txt",
+        str(input_file),
         "unittest"
     ) == "u bxqx fyfatzi mi kaxgc num htwkuoqebxq is mai fygphw"
 
