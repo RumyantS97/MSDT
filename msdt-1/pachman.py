@@ -203,7 +203,9 @@ class Hero(MovableObject):
             self.current_direction = self.direction_buffer
 
         if self.collides_with_wall((self.x, self.y)):
-            self.set_position(self.last_non_colliding_position[0], self.last_non_colliding_position[1])
+            self.set_position(
+                self.last_non_colliding_position[0],
+                self.last_non_colliding_position[1])
 
         self.handle_cookie_pickup()
 
@@ -229,7 +231,10 @@ class Hero(MovableObject):
 
     def draw(self):
         half_size = self._size / 2
-        pygame.draw.circle(self._surface, self._color, (self.x + half_size, self.y + half_size), half_size)
+        pygame.draw.circle(
+            self._surface, self._color,
+            (self.x + half_size, self.y + half_size),
+            half_size)
 
 
 class Ghost(MovableObject):
