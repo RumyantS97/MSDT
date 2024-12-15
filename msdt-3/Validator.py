@@ -1,11 +1,11 @@
-# Import match for matching strings to regex
-from re import match
-
 """
 Class Validator
 
 This module validate data for some regex pattern
 """
+
+# Import match for matching strings to regex
+from re import match
 
 
 VALID_HTTP_STATUS_REGEX = r"^[1-5]\d{2}\s[A-Za-z]"
@@ -23,8 +23,8 @@ VALID_UUID_REGEX = (
 VALID_TIME_REGEX = r"^([0-1][0-9]|[2][0-3]):[0-5][0-9]:[0-5][0-9]\.[0-9]{6}$"
 
 
-MIN_LATITUDE = -8.287791
-MAX_LATITUDE = 32.223374
+MIN_LATITUDE = -90
+MAX_LATITUDE = 90
 
 
 class Validator:
