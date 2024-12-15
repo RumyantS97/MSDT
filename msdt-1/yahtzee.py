@@ -12,7 +12,7 @@ class Yahtzee:
 
     @staticmethod
     def yahtzee(dice):
-        counts= [0] * (len(dice) + 1)
+        counts = [0] * (len(dice) + 1)
         for die in dice:
             counts[die - 1] += 1
         for i in range(len(counts)):
@@ -118,8 +118,8 @@ class Yahtzee:
         counts[d3 - 1] += 1
         counts[d4 - 1] += 1
         counts[d5 - 1] += 1
-        n= 0
-        score= 0
+        n = 0
+        score = 0
         for i in range(6):
             if (counts[6 - i - 1] == 2):
                 n = n + 1
@@ -132,7 +132,7 @@ class Yahtzee:
 
     @staticmethod
     def four_of_a_kind(_1, _2, d3, d4, d5):
-        tallies= [0] * 6
+        tallies = [0] * 6
         tallies[_1 - 1] += 1
         tallies[_2 - 1] += 1
         tallies[d3 - 1] += 1
@@ -173,7 +173,7 @@ class Yahtzee:
 
     @staticmethod
     def largeStraight(d1, d2, d3, d4, d5):
-        tallies= [0] * 6
+        tallies = [0] * 6
         tallies[d1 - 1] += 1
         tallies[d2 - 1] += 1
         tallies[d3 - 1] += 1
