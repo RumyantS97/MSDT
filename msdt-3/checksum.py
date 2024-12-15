@@ -1,37 +1,85 @@
+import csv
+import re
 import json
-import hashlib
-from typing import List
+from typing import List, Dict
+from checksum2 import calculate_checksum
 
-"""
-В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
-"""
+# Регулярные выражения для валидации данных
+PATTERNS = {
+    'telephone': r"^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$",
+    'http_status_message': r"^\d{3} .+$",
+    'snils': r'^\d{11}$',
+    'identifier': r"^\d+[-/]\d+[-/]\d+$",
+    'ip_v4': r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){2}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$",
+    'longitude': r'^-?(180(\.0+)?|((1[0-7][0-9])|([1-9]?[0-9]))(\.\d+)?)$',
+    'blood_type': r'^(A|B|AB|O)[+\u2212]$',
+    'isbn': '^\\d+-\\d+-\\d+-\\d+(?:-\\d+)?$',
+    'locale_code': r'^[a-z]{2}(?:-[a-z]{2})?$',
+    'date': r'^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$',
+}
 
-
-def calculate_checksum(row_numbers: List[int]) -> str:
+def is_valid(row: Dict[str, str]) -> bool:
     """
-    Вычисляет md5 хеш от списка целочисленных значений.
+    Проверяет, соответствует ли строка всем заданным паттернам.
 
-    ВНИМАНИЕ, ВАЖНО! Чтобы сумма получилась корректной, считать, что первая строка с данными csv-файла имеет номер 0
-    Другими словами: В исходном csv 1я строка - заголовки столбцов, 2я и остальные - данные.
-    Соответственно, считаем что у 2 строки файла номер 0, у 3й - номер 1 и так далее.
-
-    :param row_numbers: список целочисленных номеров строк csv-файла, на которых были найдены ошибки валидации
-    :return: md5 хеш для проверки через github action
+    :param row: строка из файла, представлена как словарь
+    :return: True, если все поля соответствуют своим шаблонам; иначе False
     """
-    row_numbers.sort()
-    return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
+    for field, pattern in PATTERNS.items():
+        if field in row and not re.match(pattern, row[field]):
+            return False
+    return True
 
+def validate_csv(variant: int) -> List[int]:
+    """
+    Основная функция для проверки валидности данных в CSV файле.
+
+    :param variant: номер варианта для имени файла
+    :return: список номеров некорректных строк
+    """
+    invalid_row_numbers = []
+
+    try:
+        with open(f'{variant}.csv', newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=';')
+            for row_number, row in enumerate(reader, start=2):
+                if not is_valid(row):
+                    invalid_row_numbers.append(row_number)
+
+        print(f"Количество невалидных строк: {len(invalid_row_numbers)}")
+
+    except FileNotFoundError:
+        print(f"Файл {variant}.csv не найден.")
+        return []
+
+    except Exception as e:
+        print(f"Произошла ошибка при обработке файла: {e}")
+        return []
+
+    return invalid_row_numbers
+
+VARIANT_NUMBER = 34
 
 def serialize_result(variant: int, checksum: str) -> None:
     """
-    Метод для сериализации результатов лабораторной пишите сами.
-    Вам нужно заполнить данными - номером варианта и контрольной суммой - файл, лежащий в папке с лабораторной.
-    Файл называется, очевидно, result.json.
-
-    ВНИМАНИЕ, ВАЖНО! На json натравлен github action, который проверяет корректность выполнения лабораторной.
-    Так что не перемещайте, не переименовывайте и не изменяйте его структуру, если планируете успешно сдать лабу.
+    Сериализует результат проверки в JSON файл.
 
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant": variant,
+        "checksum": checksum
+    }
+
+    with open('result.json', 'w', encoding='utf-8') as f:
+        json.dump(result, f, ensure_ascii=False, indent=4)
+
+if __name__ == "__main__":
+    # Получаем номера некорректных строк из validate_csv
+    invalid_row_numbers = validate_csv(VARIANT_NUMBER)
+
+    # Проверяем, есть ли некорректные строки перед вычислением контрольной суммы
+    if invalid_row_numbers:
+        checksum = calculate_checksum(invalid_row_numbers)
+        serialize_result(VARIANT_NUMBER, checksum)
