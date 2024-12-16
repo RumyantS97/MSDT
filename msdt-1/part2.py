@@ -122,7 +122,7 @@ class FileWorking:
             raise e
 
     @staticmethod
-    def serialization_public_key (public_key_path: str, public_key: rsa.RSAPublicKey) -> None:
+    def serialization_public_key(public_key_path: str, public_key: rsa.RSAPublicKey) -> None:
         """
         Serialize the public key to a file.
         Args:
@@ -145,7 +145,7 @@ class FileWorking:
             raise e
 
     @staticmethod       
-    def serialization_private_key (private_key_path: str, private_key: rsa.RSAPrivateKey) -> None:
+    def serialization_private_key(private_key_path: str, private_key: rsa.RSAPrivateKey) -> None:
         """
         Serialize the private key to a file.
         Args:
@@ -169,7 +169,7 @@ class FileWorking:
             raise e
 
     @staticmethod     
-    def deserialization_public_key (public_key_path: str) -> rsa.RSAPublicKey: 
+    def deserialization_public_key(public_key_path: str) -> rsa.RSAPublicKey: 
         """
         Deserialize the public key.
         Args:
@@ -188,7 +188,7 @@ class FileWorking:
             raise e
 
     @staticmethod
-    def deserialization_private_key (private_key_path: str) -> rsa.RSAPrivateKey:
+    def deserialization_private_key(private_key_path: str) -> rsa.RSAPrivateKey:
         """
         Deserialize the private key.
         Args:
