@@ -30,6 +30,7 @@ def main(args):
         segment2 = args[2]
     except:
         print("Неверные параметры ввода")
+        return
     try:
         result = segment_replace(mas, segment1[0], segment1[1], segment2[0], segment2[1])
         print(f"Массив после перестановки сегментов: {result}")

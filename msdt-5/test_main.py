@@ -44,7 +44,7 @@ def test_segment_replace_parametrized(array, a1, b1, a2, b2, expected):
 
 
 def test_main_function_call_with_mock(capsys):
-    with patch("sys.argv", ["sgrpl", "1 2 3 4 5", [1, 2], [4, 5]]):
+    with patch("sys.argv", ["main", "1 2 3 4 5", [1, 2], [4, 5]]):
         main(["1 2 3 4 5", [1, 2], [4, 5]])
         captured = capsys.readouterr()
         assert "Массив после перестановки сегментов: [4, 5, 3, 1, 2]\n" in captured
