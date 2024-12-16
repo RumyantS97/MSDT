@@ -67,3 +67,4 @@ if __name__ == "__main__":
     file_path = "65.csv"  # Замените на ваш путь
     variant = 65  # Ваш номер варианта
     validate_csv(file_path, variant)
+
