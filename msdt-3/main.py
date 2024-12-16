@@ -45,3 +45,4 @@ if __name__ == "__main__":
     invalid_indices = get_invalid_rows(data)
     checksum = calculate_checksum(invalid_indices)
     serialize_result(VARIANT, checksum)
+    print(len(invalid_indices))

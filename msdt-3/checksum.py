@@ -2,6 +2,7 @@ import json
 import hashlib
 from typing import List
 
+from const import RESULT
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
 """
@@ -38,5 +39,5 @@ def serialize_result(variant: int, checksum: str) -> None:
         "variant": str(variant),
         "checksum": checksum
     }
-    with open("result.json", "w") as file:
+    with open(RESULT, "w") as file:
         json.dump(result_data, file, indent=4)
