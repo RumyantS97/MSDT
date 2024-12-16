@@ -205,7 +205,7 @@ if __name__ == "__main__":
 
             partition_value = 5
             linked_list.partition(partition_value)
-            print("Список после разбиения вокруг значения", partition_value)
+            print(f"Список после разбиения вокруг значения {partition_value}")
             linked_list.input_list()
 
         elif number == '2':
@@ -213,7 +213,7 @@ if __name__ == "__main__":
             linked_list = LinkedList()
             n = random.randint(4, 8)
             for _ in range(n):
-                value = random.randint(0, 99)  # Изменено имя переменной на value
+                value = random.randint(0, 99)
                 linked_list.add_element(value)
 
             print("Исходный список: ")
@@ -229,7 +229,7 @@ if __name__ == "__main__":
 
         elif number == '3':
 
-            list1_head = Node(7)  # Переименовано на более понятное имя
+            list1_head = Node(7)
             list1_head.next = Node(8)
             list1_head.next.next = Node(3)
             list1_head.next.next.next = Node(1)
