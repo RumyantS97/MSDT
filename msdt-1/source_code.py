@@ -1,20 +1,26 @@
 def less_than(a, b):
     return a < b
 
+
 def greater_than(a, b):
     return a > b
+
 
 def equal_to(a, b):
     return a == b
 
+
 def not_equal_to(a, b):
     return a != b
+
 
 def less_than_or_equal_to(a, b):
     return a <= b
 
+
 def greater_than_or_equal_to(a, b):
     return a >= b
+
 
 operator_lt = less_than
 operator_gt = greater_than
@@ -22,6 +28,7 @@ operator_eq = equal_to
 operator_ne = not_equal_to
 operator_le = less_than_or_equal_to
 operator_ge = greater_than_or_equal_to
+
 
 def bubble_sort(arr, order):
     operatorRighter = operator_gt if order else operator_le
@@ -40,6 +47,7 @@ def bubble_sort(arr, order):
         # Если не было обменов, массив уже отсортирован
         if not swapped:
             break
+
 
 def cocktail_sort(arr, order):
     operatorLefter = operator_lt if order else operator_ge
@@ -95,6 +103,7 @@ def insertion_sort(arr, order):
         # Вставляем ключ на его правильное место
         arr[j + 1] = key
 
+
 def gnome_sort(arr, order):
     operatorLefter = operator_lt if order else operator_ge
     index = 0
@@ -108,6 +117,7 @@ def gnome_sort(arr, order):
             # Меняем местами элементы
             arr[index], arr[index - 1] = arr[index - 1], arr[index]
             index -= 1
+
 
 def selection_sort(arr, order):
     operatorLefter = operator_lt if order else operator_ge
@@ -147,6 +157,7 @@ def comb_sort(arr, order):
                 arr[i], arr[i + gap] = arr[i + gap], arr[i]
                 # Если произошла замена, массив не отсортирован
                 sorted = False
+
 
 def quicksort(arr, order):
     operatorLefter = operator_lt if order else operator_gt
@@ -202,6 +213,7 @@ def selectTypeSort():
         break
 
     return typeSort, order
+
 
 def display_array(arr):
     """Выводит массив в зависимости от его длины."""
@@ -313,7 +325,6 @@ if __name__ == "__main__":
             start_time = time.time()
             result = quicksort(result, False)
             end_time = time.time()
-
 
     print("Исходный массив:")
     display_array(arr)
