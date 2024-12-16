@@ -4,6 +4,10 @@ import numpy as np
 
 
 class Visualizer:
+    """
+        Класс для визуализации 3D поверхности с возможностью масштабирования,
+        вращения и перемещения с помощью матриц преобразования.
+    """
     def __init__(self, width=800, height=800):
         pygame.init()
         self.width = width

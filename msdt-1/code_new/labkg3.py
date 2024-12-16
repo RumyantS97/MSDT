@@ -47,7 +47,8 @@ def bresenham_circle(xc, yc, r, color):
     x, y, d = 0, r, 3 - 2 * r
     while x <= y:
         for x_sym, y_sym in [
-            (x, y), (y, x), (-x, y), (-y, x), (-x, -y), (-y, -x), (x, -y), (y, -x)
+            (x, y), (y, x), (-x, y), (-y, x),
+            (-x, -y), (-y, -x), (x, -y), (y, -x)
         ]:
             screen.set_at((xc + x_sym, yc + y_sym), color)
         if d < 0:
@@ -115,14 +116,16 @@ def modified_seed_fill(x, y, pattern, boundary_color):
         while x_left >= 0 and screen.get_at((x_left, cy)) != boundary_color:
             screen.set_at((x_left, cy), pattern)  # Закрашиваем
             x_left -= 1  # Переход к следующему пикселю влево
-        while x_right < width and screen.get_at((x_right, cy)) != boundary_color:
+        while (x_right < width and
+               screen.get_at((x_right, cy)) != boundary_color):
             screen.set_at((x_right, cy), pattern)
             x_right += 1
 
         # Обработка пикселей в строках выше и ниже текущей
         for nx in range(x_left + 1, x_right):
             for ny in (cy - 1, cy + 1):
-                if (0 <= ny < height and screen.get_at((nx, ny)) != boundary_color and
+                if (0 <= ny < height and
+                        screen.get_at((nx, ny)) != boundary_color and
                         screen.get_at((nx, ny)) != pattern):
                     stack.append((nx, ny))
 
