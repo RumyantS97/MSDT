@@ -10,6 +10,12 @@ class Node:
 
 class LinkedList:
 
+    PARTITION_VALUE = 5  # Константа для значения для разбиения списка
+    MIN_RANDOM_LIST_SIZE = 4  # Минимальный размер случайного списка
+    MAX_RANDOM_LIST_SIZE = 8  # Максимальный размер случайного списка
+    MIN_RANDOM_VALUE = 0  # Минимальное значение для случайных чисел
+    MAX_RANDOM_VALUE = 99  # Максимальное значение для случайных чисел
+
     def __init__(self):
         self.head = None
         self.tail = None
@@ -30,7 +36,7 @@ class LinkedList:
             current = current.next
         print('null')
 
-    def partition(self, partition_value):
+    def partition(self, partition_value=PARTITION_VALUE):
         smaller_head = smaller_tail = None
         greater_or_equal_head = greater_or_equal_tail = None
 
@@ -113,7 +119,7 @@ class LinkedList:
     @staticmethod
     def print_list_with_random(head):
         while head:
-            print('Значение:', head.value, end='')
+            print('Значение:', head.value, end=' ')
             if head.random:
                 print(', Случайный указатель на:', head.random.value)
             else:
@@ -191,16 +197,15 @@ if __name__ == '__main__':
             print('Исходный список:')
             linked_list.input_list()
 
-            partition_value = 5
-            linked_list.partition(partition_value)
-            print(f'Список после разбиения вокруг значения {partition_value}')
+            linked_list.partition()  # Используется константа PARTITION_VALUE
+            print(f'Список после разбиения вокруг значения {LinkedList.PARTITION_VALUE}')
             linked_list.input_list()
 
         elif number == '2':
             linked_list = LinkedList()
-            n = random.randint(4, 8)
+            n = random.randint(LinkedList.MIN_RANDOM_LIST_SIZE, LinkedList.MAX_RANDOM_LIST_SIZE)
             for _ in range(n):
-                value = random.randint(0, 99)
+                value = random.randint(LinkedList.MIN_RANDOM_VALUE, LinkedList.MAX_RANDOM_VALUE)
                 linked_list.add_element(value)
 
             print('Исходный список: ')
