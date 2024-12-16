@@ -1,3 +1,7 @@
+import random
+import time
+
+
 def less_than(a, b):
     return a < b
 
@@ -224,8 +228,6 @@ def display_array(arr):
         # Если длина больше 40, выводим первые 20 и последние 20 элементов
         print(arr[:20] + ['...'] + arr[-20:])
 
-import random
-import time
 
 if __name__ == "__main__":
     print("Сортировки. Захарова Милана")
