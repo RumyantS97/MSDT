@@ -196,8 +196,8 @@ def select_type_sort():
         try:
             type_sort_ = int(input(f"Введите число от {left} до {right}: "))
             if type_sort_ < left or type_sort_ > right:
-                raise BaseException("Число вне диапазона.")
-        except BaseException:
+                raise ValueError("Число вне диапазона.")
+        except ValueError:
             print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
             continue
 
@@ -208,8 +208,8 @@ def select_type_sort():
         try:
             order_ = int(input(f"Введите число от {left} до {right}: "))
             if order_ < left or order_ > right:
-                raise BaseException("Число вне диапазона.")
-        except BaseException:
+                raise ValueError("Число вне диапазона.")
+        except ValueError:
             print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
             continue
 
