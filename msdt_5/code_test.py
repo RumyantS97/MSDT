@@ -1,5 +1,5 @@
 import unittest
-from code import Product, Order, Shop
+from msdt_5.code import Product, Order, Shop
 
 def test_product_reduce_stock_success():
     product = Product("Laptop", 999.99, 5)
