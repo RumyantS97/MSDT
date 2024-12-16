@@ -14,7 +14,6 @@ class TennisGameDefactored1:
 
     def score(self):
         result = ""
-        temp_score = 0
         if self.p1_points == self.p2_points:
             result = {
                 0: "Love-All",
@@ -126,9 +125,11 @@ class TennisGameDefactored2:
         if self.p2_points > self.p1_points and self.p1_points >= 3:
             result = "Advantage " + self.player2_name
 
-        if self.p1_points >= 4 and self.p2_points >= 0 and (self.p1_points - self.p2_points) >= 2:
+        if self.p1_points >= 4 and self.p2_points >= 0 \
+                and (self.p1_points - self.p2_points) >= 2:
             result = "Win for " + self.player1_name
-        if self.p2_points >= 4 and self.p1_points >= 0 and (self.p2_points - self.p1_points) >= 2:
+        if self.p2_points >= 4 and self.p1_points >= 0 \
+                and (self.p2_points - self.p1_points) >= 2:
             result = "Win for " + self.player2_name
         return result
 
@@ -164,13 +165,18 @@ class TennisGameDefactored3:
         if self.p1 < 4 and self.p2 < 4:
             points = ["Love", "Fifteen", "Thirty", "Forty"]
             score = points[self.p1]
-            return score + "-All" if (self.p1 == self.p2) else score + "-" + points[self.p2]
+            return score + "-All" if (self.p1 == self.p2) else \
+                score + "-" + points[self.p2]
         else:
             if self.p1 == self.p2:
                 return "Deuce"
-            leading_player = self.p1_name if self.p1 > self.p2 else self.p2_name
-            return "Advantage " + leading_player if abs(self.p1 - self.p2) == 1 else "Win for " + leading_player
+            leading_player = self.p1_name if self.p1 > self.p2 \
+                else self.p2_name
+            return "Advantage " + leading_player \
+                if abs(self.p1 - self.p2) == 1 else \
+                "Win for " + leading_player
 
 
-# NOTE: You must change this to point at the one of the three examples that you're working on!
+# NOTE: You must change this to point at the one of the three examples
+# that you're working on!
 TennisGame = TennisGameDefactored1
