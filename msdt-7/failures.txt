@@ -1,0 +1,2 @@
+https://nonexistent.baddomain -> Error: Cannot connect to host nonexistent.baddomain:443 ssl:default [getaddrinfo failed]
+https://fakeurl.try -> Error: Cannot connect to host fakeurl.try:443 ssl:default [getaddrinfo failed]

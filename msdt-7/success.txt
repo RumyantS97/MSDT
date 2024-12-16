@@ -1,0 +1,4 @@
+https://vk.com -> Status: 200
+https://www.youtube.com -> Status: 200
+https://github.com -> Status: 200
+https://python.org -> Status: 200
