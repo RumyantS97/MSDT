@@ -4,9 +4,13 @@ class EventListSerializerTestCase(TestCase):
 
     def test_empty_event(self):
         main_attribute: Attribute = Attribute.objects.create(
-            name='Main attribute'
-            , slug='main-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
+            name='Main attribute',
+            slug='main-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Event type', 
+            slug='event-type'
+            )
         event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
@@ -35,9 +39,18 @@ class EventListSerializerTestCase(TestCase):
         })
 
     def test_online_event(self):
-        main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
-        event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Main attribute', 
+            slug='main-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Event type', 
+            slug='event-type'
+            )
+        event_status: EventStatus = EventStatus.objects.create(
+            name='Confirmed', 
+            code='CFM'
+            )
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
         event: Event = Event.objects.create(
@@ -66,9 +79,18 @@ class EventListSerializerTestCase(TestCase):
         })
 
     def test_event_with_place(self):
-        main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
-        event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Main attribute', 
+            slug='main-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Event type', 
+            slug='event-type'
+            )
+        event_status: EventStatus = EventStatus.objects.create(
+            name='Confirmed', 
+            code='CFM'
+            )
         place: Place = Place.objects.create(name='Test place')
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
@@ -98,21 +120,27 @@ class EventListSerializerTestCase(TestCase):
         })
 
     def test_event_with_photo(self):
-        main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Main attribute',
+            slug='main-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Event type', 
+            slug='event-type'
+            )
         photo: Photo = Photo.objects.create(upload_to='events',
         image=File(open('media/events/404photo.webp', 'rb')))
         event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
         event: Event = Event.objects.create(
-            NAME           = 'Test event',
-            main_attribute = ain_attribute,
-            event_type     = event_type,
-            start_date     = start_date,
-            end_date       = end_date,
-            status         = event_status,
-            photo          = photo,
+            name='Test event',
+            main_attribute=main_attribute,
+            event_type=event_type,
+            start_date=start_date,
+            end_date=end_date,
+            status=event_status,
+            photo=photo,
         )
         serializer_data = EventListSerializer(event).data
         self.assertEqual(serializer_data, {
@@ -140,12 +168,12 @@ class EventRetrieveSerializerTestCase(TestCase):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
         event: Event = Event.objects.create(
-            name            = 'Test event',
-            main_attribute  = main_attribute,
-            event_type      = event_type,
-            start_date      = start_date,
-            end_date        = end_date,
-            status          = event_status,
+            name='Test event',
+            main_attribute=main_attribute,
+            event_type=event_type,
+            start_date=start_date,
+            end_date=end_date,
+            status=event_status,
         )
         serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_archived'], True)
@@ -161,12 +189,12 @@ class EventRetrieveSerializerTestCase(TestCase):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0)
         event: Event = Event.objects.create(
-            name           = 'Test event',
-            main_attribute = main_attribute,
-            event_type     = event_type,
-            start_date     = start_date,
-            end_date       = end_date,
-            status         = event_status,
+            name='Test event',
+            main_attribute=main_attribute,
+            event_type=event_type,
+            start_date=start_date,
+            end_date=end_date,
+            status=event_status,
         )
         serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_confirmed'], False)
@@ -179,12 +207,12 @@ class EventRetrieveSerializerTestCase(TestCase):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0)
         end_date: datetime = datetime(2025, 1, 2, 0, 0, 0)
         event: Event = Event.objects.create(
-            name           =   'Test event',
-            main_attribute = main_attribute,
-            event_type     = event_type,
-            start_date     = start_date,
-            end_date       = end_date,
-            status         = event_status,
+            name='Test event',
+            main_attribute=main_attribute,
+            event_type=event_type,
+            start_date=start_date,
+            end_date=end_date,
+            status=event_status,
         )
         serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_going'], True)
@@ -223,11 +251,35 @@ class EventCreateSerializerTestCase(TestCase):
 
 
     def test_double_attribute_create(self):
-        start_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        end_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
-        additional_attribute: [str] = [main_attribute.slug, Attribute.objects.create(name='Test Attribute 2', slug='test-attribute-2').slug]
-        event_type: Attribute = Attribute.objects.create(name='Test Type', slug='test-type')
+        start_date: datetime = datetime(
+            2021, 
+            1, 
+            1, 
+            0, 
+            0, 
+            0, 
+            tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
+        end_date: datetime = datetime(
+            2021, 
+            1, 
+            2, 
+            0, 
+            0, 
+            0, 
+            tzinfo=zoneinfo.ZoneInfo('Europe/Moscow')
+            )
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Test Attribute', 
+            slug='test-attribute'
+            )
+        additional_attribute: [str] = [main_attribute.slug, Attribute.objects.create(
+            name='Test Attribute 2', 
+            slug='test-attribute-2').slug
+            ]
+        event_type: Attribute = Attribute.objects.create(
+            name='Test Type', 
+            slug='test-type'
+            )
         event_status: EventStatus = EventStatus.objects.create(**constant.EVENT_STATUS_UNCONFIRMED_DEFAULT)
         request_status = RequestStatus.objects.create(**constant.REQUEST_STATUS_UNCONFIRMED_DEFAULT)
 
@@ -251,10 +303,31 @@ class EventCreateSerializerTestCase(TestCase):
 
 
     def test_wrong_date_create(self):
-        start_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        end_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Test Type', slug='test-type')
+        start_date: datetime = datetime(2021, 
+        1, 
+        2, 
+        0, 
+        0, 
+        0, 
+        tzinfo=zoneinfo.ZoneInfo('Europe/Moscow')
+        )
+        end_date: datetime = datetime(
+            2021, 
+            1, 
+            1, 
+            0, 
+            0, 
+            0, 
+            tzinfo=zoneinfo.ZoneInfo('Europe/Moscow')
+            )
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Test Attribute', 
+            slug='test-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Test Type', 
+            slug='test-type'
+            )
         event_status: EventStatus = EventStatus.objects.create(**constant.EVENT_STATUS_UNCONFIRMED_DEFAULT)
         request_status = RequestStatus.objects.create(**constant.REQUEST_STATUS_UNCONFIRMED_DEFAULT)
 
@@ -276,10 +349,32 @@ class EventCreateSerializerTestCase(TestCase):
 
 
     def test_wrong_place_data_create(self):
-        start_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        end_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
-        main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
-        event_type: Attribute = Attribute.objects.create(name='Test Type', slug='test-type')
+        start_date: datetime = datetime(
+            2021, 
+            1, 
+            1, 
+            0, 
+            0, 
+            0, 
+            tzinfo=zoneinfo.ZoneInfo('Europe/Moscow')
+            )
+        end_date: datetime = datetime(
+            2021, 
+            1, 
+            2, 
+            0, 
+            0, 
+            0, 
+            tzinfo=zoneinfo.ZoneInfo('Europe/Moscow')
+            )
+        main_attribute: Attribute = Attribute.objects.create(
+            name='Test Attribute', 
+            slug='test-attribute'
+            )
+        event_type: Attribute = Attribute.objects.create(
+            name='Test Type', 
+            slug='test-type'
+            )
         event_status: EventStatus = EventStatus.objects.create(**constant.EVENT_STATUS_UNCONFIRMED_DEFAULT)
         request_status = RequestStatus.objects.create(**constant.REQUEST_STATUS_UNCONFIRMED_DEFAULT)
 
