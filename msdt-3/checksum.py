@@ -3,6 +3,8 @@ import json
 import hashlib
 import re
 from typing import List
+from io import StringIO
+from charset_normalizer import detect
 
 # Регулярные выражения для проверки данных
 PATTERNS = {
@@ -17,7 +19,6 @@ PATTERNS = {
     "uuid"               : r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
     "time"               : r"^(2[0-3]|[01]?\d):[0-5]?\d:[0-5]?\d(\.\d+)?$"
 }
-
 
 def calculate_checksum(row_numbers: List[int]) -> str:
     """
@@ -38,6 +39,7 @@ def serialize_result(variant: int, checksum: str) -> None:
         "variant": variant,
         "checksum": checksum
     }
+
     with open("result.json", "w", encoding="utf-8") as result_file:
         json.dump(result, result_file, ensure_ascii=False, indent=4)
 
@@ -60,27 +62,53 @@ def validate_csv(file_path: str) -> List[int]:
     :return: Список номеров строк с ошибками
     """
     error_rows = []
-    with open(file_path, newline='', encoding='utf-8') as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=';')
-        for row_num, row in enumerate(reader):
-            adjusted_row_num = row_num  # Учитываем, что первая строка с данными имеет номер 0
-            for field, value in row.items():
-                # Убираем кавычки вокруг ключей (если они есть) и проверяем поля
-                field_name = field.strip('"')
-                if field_name in PATTERNS and not validate_field(field_name, value):
-                    error_rows.append(adjusted_row_num)
-                    break
+
+    # Определяем кодировку файла
+    with open(file_path, 'rb') as f:
+        raw_data = f.read()
+        detected = detect(raw_data)
+        encoding = detected['encoding']
+        if not encoding:
+            raise ValueError("Не удалось определить кодировку файла.")
+
+        # Декодируем содержимое файла
+        content = raw_data.decode(encoding)
+
+    # Убираем BOM, если он присутствует
+    if content[:1] == '\ufeff':
+        content = content[1:]
+
+    # Работаем с декодированным содержимым
+    csvfile = StringIO(content)
+    reader = csv.DictReader(csvfile, delimiter=';')
+
+    for row_num, row in enumerate(reader):
+        adjusted_row_num = row_num  # Учитываем, что первая строка с данными имеет номер 0
+        for field, value in row.items():
+            # Убираем кавычки вокруг ключей (если они есть) и проверяем поля
+            field_name = field.strip('"')
+            if field_name in PATTERNS and not validate_field(field_name, value):
+                error_rows.append(adjusted_row_num)
+                break
     return error_rows
 
 def main():
     csv_file_path = "37.csv"
     variant = 37
-    # Валидация и подсчет контрольной суммы
-    error_rows = validate_csv(csv_file_path)
-    checksum = calculate_checksum(error_rows)
 
-    # Сериализация результатов
-    serialize_result(variant, checksum)
+    try:
+        # Валидация и подсчет контрольной суммы
+        error_rows = validate_csv(csv_file_path)
+        checksum = calculate_checksum(error_rows)
+
+        # Сериализация результатов
+        serialize_result(variant, checksum)
+    except ValueError as e:
+        print(f"Ошибка: {e}")
+    except FileNotFoundError:
+        print(f"Ошибка: Файл {csv_file_path} не найден.")
+    except Exception as e:
+        print(f"Неизвестная ошибка: {e}")
 
 if __name__ == "__main__":
     main()
