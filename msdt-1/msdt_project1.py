@@ -7,7 +7,7 @@ from collections import deque
 # Метод для задания 1
 def roundBrackets(string):
     stack = []
-    for char in string:                                             # Сложность O(N)
+    for char in string:  # Сложность O(N)
         # Открывающиеся скобки заносим в stack
         if char == '(':
             stack.append(char)
@@ -20,7 +20,7 @@ def roundBrackets(string):
         else:
             # Возвращаем false
             return False
-    # Если stack путой, то строка корректна
+    # Если stack пустой, то строка корректна
     return len(stack) == 0
 
 
@@ -28,11 +28,11 @@ def roundBrackets(string):
 def brackets(string):
     stack = []
     # Dictionary = {key = value}
-    # Keys - закрыващиеся скобки
-    # Values - открывающиеся скобки
+    # Keys - закрывающие скобки
+    # Values - открывающие скобки
     dictionary = {')': '(', ']': '[', '}': '{', '>': '<'}
 
-    for char in string:                                       # Сложность O(N)
+    for char in string:  # Сложность O(N)
 
         # Открывающиеся скобки заносим в stack
         if char in dictionary.values():
@@ -45,7 +45,7 @@ def brackets(string):
                 # Возвращаем false
                 return False
 
-    # Если stack путой, то строка корректна
+    # Если stack пустой, то строка корректна
     return len(stack) == 0
 
 
@@ -63,7 +63,7 @@ class Stack:
         self.minstack = []
 
     def min(self):
-        if self.minstack:                                # У всех текущих условных операторов сложность константная
+        if self.minstack:  # У всех текущих условных операторов сложность константная
             # Последний элемент стека - минимальный
             return self.minstack[-1]
 
@@ -101,7 +101,7 @@ print("Минимальный элемент:", stack.min())
 
 # ЗАДАНИЕ 3
 # Метод для задания 3
-def windowMax(arr, k):                      # Сложность - O(N), от k не зависит
+def windowMax(arr, k):  # Сложность - O(N), от k не зависит
     n = len(arr)
 
     # Создаю двухстороннюю очередь deque
@@ -127,7 +127,7 @@ def windowMax(arr, k):                      # Сложность - O(N), от k 
             window.popleft()
 
     # Инициализация окна
-    for i in range(k):    # Обход элементов первого окна
+    for i in range(k):  # Обход элементов первого окна
         windowAdd(i)  # Заносим их в окно
 
     # Обход остальных элементов
@@ -184,7 +184,7 @@ def duplicateFind(arr):
                 # Добавляем число в множество дубликатов
                 duplicate.add(numberAbs)
 
-            # делаем число отрицательным (метка)
+            # Делаем число отрицательным (метка)
             else:
                 arr[numberAbs] = -arr[numberAbs]
     except IndexError:
