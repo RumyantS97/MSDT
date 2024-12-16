@@ -21,6 +21,7 @@ def natural_line(x0, y0, x1, y1, color):
         y = round(y0 + i * dy / steps)
         screen.set_at((x, y), color)
 
+
 # Алгоритм Брезенхама для линии
 def bresenham_line(x0, y0, x1, y1, color):
     dx, dy = abs(x1 - x0), abs(y1 - y0)
@@ -39,6 +40,7 @@ def bresenham_line(x0, y0, x1, y1, color):
             err += dx
             y0 += sy
 
+
 # Алгоритм Брезенхама для окружности
 def bresenham_circle(xc, yc, r, color):
     x, y, d = 0, r, 3 - 2 * r
@@ -54,6 +56,7 @@ def bresenham_circle(xc, yc, r, color):
             y -= 1
         x += 1
 
+
 # Алгоритм закраски "короедом"
 def beetle_fill(x, y, fill_color, boundary_color):
     stack = [(x, y)]
@@ -64,6 +67,7 @@ def beetle_fill(x, y, fill_color, boundary_color):
             screen.set_at((cx, cy), fill_color)
             stack.extend([(cx + dx, cy + dy) for dx, dy in
                           [(-1, 0), (1, 0), (0, -1), (0, 1)]])
+
 
 # Алгоритм закраски с узором
 def fill_pattern(x, y, pattern, boundary_color):
@@ -98,22 +102,23 @@ def fill_pattern(x, y, pattern, boundary_color):
                 # Если пиксель внутри границ, добавляем в стек
                 stack.append((nx, ny))
 
+
 # Модифицированный алгоритм закраски с затравкой
 
 def modified_seed_fill(x, y, pattern, boundary_color):
-    stack = [(x, y)]  
+    stack = [(x, y)]
     while stack:
         cx, cy = stack.pop()  # Извлекаем последний добавленный элемент стека
 
         # Закрашивание стрроки вправо и влево
         x_left, x_right = cx, cx
         while x_left >= 0 and screen.get_at((x_left, cy)) != boundary_color:
-            screen.set_at((x_left, cy), pattern)   # Закрашиваем
+            screen.set_at((x_left, cy), pattern)  # Закрашиваем
             x_left -= 1  # Переход к следующему пикселю влево
         while x_right < width and screen.get_at((x_right, cy)) != boundary_color:
             screen.set_at((x_right, cy), pattern)
             x_right += 1
-            
+
         # Обработка пикселей в строках выше и ниже текущей
         for nx in range(x_left + 1, x_right):
             for ny in (cy - 1, cy + 1):
@@ -121,18 +126,19 @@ def modified_seed_fill(x, y, pattern, boundary_color):
                         screen.get_at((nx, ny)) != pattern):
                     stack.append((nx, ny))
 
+
 # Рисование морды кота
 def draw_cat():
     # Морда (окружность)
     pygame.draw.circle(screen, (210, 180, 140), (400, 300), 100)  # Шерсть
-    pygame.draw.circle(screen, (0, 0, 0), (400, 300), 100, 1)   # Контур
+    pygame.draw.circle(screen, (0, 0, 0), (400, 300), 100, 1)  # Контур
 
     # Уши (треугольники)
     bresenham_line(320, 240, 330, 180, (0, 0, 0))  # Левое ухо
     bresenham_line(330, 180, 360, 210, (0, 0, 0))
     bresenham_line(440, 210, 470, 180, (0, 0, 0))  # Правое ухо
     bresenham_line(470, 180, 480, 240, (0, 0, 0))
- 
+
     # Усы (линии)
     bresenham_line(300, 300, 370, 310, (0, 0, 0))
     bresenham_line(300, 320, 370, 320, (0, 0, 0))
@@ -140,8 +146,7 @@ def draw_cat():
     bresenham_line(430, 310, 500, 300, (0, 0, 0))
     bresenham_line(430, 320, 500, 320, (0, 0, 0))
     bresenham_line(430, 330, 500, 340, (0, 0, 0))
-    
-    
+
     # Глаза (окружности)
     bresenham_circle(360, 270, 15, (0, 0, 0))
     bresenham_circle(440, 270, 15, (0, 0, 0))
@@ -156,11 +161,12 @@ def draw_cat():
     natural_line(410, 300, 400, 320, (0, 0, 0))
 
     # Закраска носа узором
-    
+
     # fill_pattern(400, 310, pattern, (0, 0, 0))
-    
+
     # Закраска носа узором (модифицированный алгоритм)
-    modified_seed_fill(400, 310, (255, 182, 193), (0, 0, 0))  
+    modified_seed_fill(400, 310, (255, 182, 193), (0, 0, 0))
+
 
 # Основной цикл
 running = True
