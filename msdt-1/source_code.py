@@ -35,7 +35,7 @@ operator_ge = greater_than_or_equal_to
 
 
 def bubble_sort(arr, order):
-    operatorRighter = operator_gt if order else operator_le
+    operator_righter = operator_gt if order else operator_le
     n = len(arr)
     # Проходим по всем элементам массива
     for i in range(n):
@@ -44,7 +44,7 @@ def bubble_sort(arr, order):
         # Последние i элементов уже отсортированы
         for j in range(0, n - i - 1):
             # Сравниваем соседние элементы
-            if operatorRighter(arr[j], arr[j+1]):
+            if operator_righter(arr[j], arr[j+1]):
                 # Меняем местами, если они в неправильном порядке
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
@@ -54,8 +54,8 @@ def bubble_sort(arr, order):
 
 
 def cocktail_sort(arr, order):
-    operatorLefter = operator_lt if order else operator_ge
-    operatorRighter = operator_gt if order else operator_le
+    operator_lefter = operator_lt if order else operator_ge
+    operator_righter = operator_gt if order else operator_le
 
     n = len(arr)
     swapped = True
@@ -68,7 +68,7 @@ def cocktail_sort(arr, order):
 
         # Проход слева направо
         for i in range(start, end):
-            if operatorRighter(arr[i], arr[i+1]):
+            if operator_righter(arr[i], arr[i+1]):
                 arr[i], arr[i + 1] = arr[i + 1], arr[i]
                 swapped = True
 
@@ -84,7 +84,7 @@ def cocktail_sort(arr, order):
 
         # Проход справа налево
         for i in range(end, start, -1):
-            if operatorLefter(arr[i], arr[i-1]):
+            if operator_lefter(arr[i], arr[i-1]):
                 arr[i], arr[i - 1] = arr[i - 1], arr[i]
                 swapped = True
 
@@ -93,14 +93,14 @@ def cocktail_sort(arr, order):
 
 
 def insertion_sort(arr, order):
-    operatorRighter = operator_gt if order else operator_le
+    operator_righter = operator_gt if order else operator_le
     # Проходим по всем элементам массива, начиная со второго
     for i in range(1, len(arr)):
         key = arr[i]  # Текущий элемент для вставки
         j = i - 1
 
         # Сдвигаем элементы, которые больше ключа, на одну позицию вправо
-        while j >= 0 and operatorRighter(arr[j], key):
+        while j >= 0 and operator_righter(arr[j], key):
             arr[j + 1] = arr[j]
             j -= 1
 
@@ -109,13 +109,13 @@ def insertion_sort(arr, order):
 
 
 def gnome_sort(arr, order):
-    operatorLefter = operator_lt if order else operator_ge
+    operator_lefter = operator_lt if order else operator_ge
     index = 0
     n = len(arr)
 
     while index < n:
         # Если текущий элемент больше следующего, меняем их местами
-        if index == 0 or operatorLefter(arr[index-1], arr[index]):
+        if index == 0 or operator_lefter(arr[index-1], arr[index]):
             index += 1
         else:
             # Меняем местами элементы
@@ -124,7 +124,7 @@ def gnome_sort(arr, order):
 
 
 def selection_sort(arr, order):
-    operatorLefter = operator_lt if order else operator_ge
+    operator_lefter = operator_lt if order else operator_ge
     n = len(arr)
     # Проходим по всем элементам массива
     for i in range(n):
@@ -132,7 +132,7 @@ def selection_sort(arr, order):
         min_index = i
         # Сравниваем с остальными элементами
         for j in range(i + 1, n):
-            if operatorLefter(arr[j], arr[min_index]):
+            if operator_lefter(arr[j], arr[min_index]):
                 min_index = j
         # Меняем местами найденный минимальный элемент
         # с первым элементом неотсортированной части
@@ -140,7 +140,7 @@ def selection_sort(arr, order):
 
 
 def comb_sort(arr, order):
-    operatorRighter = operator_gt if order else operator_le
+    operator_righter = operator_gt if order else operator_le
     n = len(arr)
     gap = n  # Начальное расстояние
     shrink_factor = 1.3  # Фактор уменьшения расстояния
@@ -156,7 +156,7 @@ def comb_sort(arr, order):
 
         # Сравниваем элементы с текущим расстоянием
         for i in range(n - gap):
-            if operatorRighter(arr[i], arr[i+gap]):
+            if operator_righter(arr[i], arr[i+gap]):
                 # Меняем местами, если они в неправильном порядке
                 arr[i], arr[i + gap] = arr[i + gap], arr[i]
                 # Если произошла замена, массив не отсортирован
@@ -164,25 +164,25 @@ def comb_sort(arr, order):
 
 
 def quicksort(arr, order):
-    operatorLefter = operator_lt if order else operator_gt
-    operatorRighter = operator_gt if order else operator_lt
+    operator_lefter = operator_lt if order else operator_gt
+    operator_righter = operator_gt if order else operator_lt
     if len(arr) <= 1:
         return arr
     else:
         # Выбираем опорный элемент (пивот)
         pivot = arr[len(arr) // 2]
         # Элементы меньше пивота
-        left = [x for x in arr if operatorLefter(x, pivot)]
+        left = [x for x in arr if operator_lefter(x, pivot)]
         # Элементы равные пивоту
         middle = [x for x in arr if x == pivot]
         # Элементы больше пивота
-        right = [x for x in arr if operatorRighter(x, pivot)]
+        right = [x for x in arr if operator_righter(x, pivot)]
         # Рекурсивно сортируем и объединяем
         return quicksort(left, order) + middle + quicksort(right, order)
 
 
-def selectTypeSort():
-    typeSort = order = 1
+def select_type_sort():
+    type_sort = order = 1
     while True:
         # Запрашиваем ввод числа от 1 до 7
         print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
@@ -194,8 +194,8 @@ def selectTypeSort():
               "Чтобы выбрать быструю сортировку - нажмите 7\n")
         left = 1; right = 7
         try:
-            typeSort = int(input(f"Введите число от {left} до {right}: "))
-            if typeSort < left or typeSort > right:
+            type_sort = int(input(f"Введите число от {left} до {right}: "))
+            if type_sort < left or type_sort > right:
                 raise BaseException("Число вне диапазона.")
         except BaseException:
             print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
@@ -216,7 +216,7 @@ def selectTypeSort():
         # Выход из цикла после успешного выполнения
         break
 
-    return typeSort, order
+    return type_sort, order
 
 
 def display_array(arr):
@@ -231,13 +231,13 @@ def display_array(arr):
 
 if __name__ == "__main__":
     print("Сортировки. Захарова Милана")
-    typeSort, order = selectTypeSort()
+    type_sort, order = select_type_sort()
     n = 1000
     arr = [random.randint(0, 100) for _ in range(n)]
     result = arr.copy()
     start_time = end_time = 0
 
-    if typeSort == 1:
+    if type_sort == 1:
         print("Сортировка пузырьком")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -250,7 +250,7 @@ if __name__ == "__main__":
             bubble_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 2:
+    elif type_sort == 2:
         print("Сортировка перемешиванием")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -263,7 +263,7 @@ if __name__ == "__main__":
             cocktail_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 3:
+    elif type_sort == 3:
         print("Сортировка вставками")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -276,7 +276,7 @@ if __name__ == "__main__":
             insertion_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 4:
+    elif type_sort == 4:
         print("Гномья сортировка")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -289,7 +289,7 @@ if __name__ == "__main__":
             gnome_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 5:
+    elif type_sort == 5:
         print("Сортировка выбором")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -302,7 +302,7 @@ if __name__ == "__main__":
             selection_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 6:
+    elif type_sort == 6:
         print("Сортировка расческой")
         if order == 1:
             print("Тип сортировки: по возрастанию")
@@ -315,7 +315,7 @@ if __name__ == "__main__":
             comb_sort(result, False)
             end_time = time.time()
 
-    elif typeSort == 7:
+    elif type_sort == 7:
         print("Быстрая сортировка")
         if order == 1:
             print("Тип сортировки: по возрастанию")
