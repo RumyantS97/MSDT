@@ -56,5 +56,26 @@ def test_add_task_parametrized(title, due_date, priority):
     assert task.priority == priority
     assert (task.due_date is not None) == (due_date is not None)
 
+def test_load_task_from_file_with_data():
+    mock_data = json.dumps([
+        {
+            "title": "Loaded Task",
+            "completed": False,
+            "created_at": "2024-12-15T12:00:00",
+            "due_date": None,
+            "priority": "medium"
+        }
+    ])
+    
+    with patch("builtins.open", mock_open(read_data=mock_data)):
+        manager = TaskManager()
+        manager.load_from_file("mock_file.json")
+
+    assert len(manager.tasks) == 1
+    task = manager.tasks[0]
+    assert task.title == "Loaded Task"
+    assert not task.completed
+    assert task.due_date is None
+    assert task.priority == "medium"
 
 
