@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 class TennisGameDefactored1:
 
     def __init__(self, player1Name, player2Name):
