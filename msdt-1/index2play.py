@@ -6,7 +6,14 @@ import requests
 import googlesheetsdata
 from flask import Flask, Response
 
-from const import GOOGLE_MAPS_API_KEY, LAST_PLATE, API_KEY, API_URL, JSON_DATA2, INTERVAL2
+from const import (GOOGLE_MAPS_API_KEY,
+                   LAST_PLATE,
+                   API_KEY,
+                   API_URL,
+                   JSON_DATA2,
+                   INTERVAL2)
+
+
 gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
 
@@ -18,7 +25,10 @@ license_plates = [entry["suspectVehicle"]["licensePlate"]
                   for entry in JSON_DATA2]
 
 
-def gen_frames():
+def gen_frames() -> bytes:
+    """
+    generate video frames with license plate detection
+    """
     last_time = time.time() - INTERVAL2
     while True:
         success, frame = camera.read()
@@ -53,26 +63,30 @@ def gen_frames():
                     if plate_number in license_plates:
 
                         location = gmaps.geolocate()
-                        lat, lng = location['location']['lat'], location['location']['lng']
+                        lat, lng = location['location'][
+                            'lat'
+                            ], location['location']['lng']
                         print(f"Alert: Match found for plate {
                               plate_number} at location {lat}, {lng}")
                         print("Alert: Sending alert to authorities...")
                         print("____")
                         print("Alert details:")
-                        print("Alert ID:", JSON_DATA2[0]["alertId"])
-                        print("Alert Time:", JSON_DATA2[0]["alertTime"])
-                        print("Alert Location:",
-                              JSON_DATA2[0]["alertLocation"])
-                        print("Alert Type:", JSON_DATA2[0]["alertType"])
-                        print("Missing Person Name:",
-                              JSON_DATA2[0]["missingPerson"]["name"])
-                        print("Missing Person Age:",
-                              JSON_DATA2[0]["missingPerson"]["age"])
+                        print(f"Alert ID: {JSON_DATA2[0]["alertId"]}")
+                        print(f"Alert Time: {JSON_DATA2[0]["alertTime"]}")
+                        print(f"Alert Location:
+                              {JSON_DATA2[0]["alertLocation"]}")
+                        print(f"Alert Type:", JSON_DATA2[0]["alertType"])
+                        print(f"Missing Person Name:
+                              {JSON_DATA2[0]["missingPerson"]["name"]}")
+                        print(f"Missing Person Age:
+                              {JSON_DATA2[0]["missingPerson"]["age"]}")
                         print("Alert: Alert sent!")
 
                         alert_data = next(
-                            (item for item in JSON_DATA2 if item["suspectVehicle"]
-                             ["licensePlate"] == plate_number),
+                            (item for item in JSON_DATA2 if item[
+                                "suspectVehicle"
+                            ]
+                                ["licensePlate"] == plate_number),
                             None)
                         sheet_name = "LicensePlateData"
                         credentials_file = ''
@@ -89,7 +103,10 @@ def gen_frames():
                         googlesheetsdata.append_data_to_sheet(
                             sheet, data_to_append)
 
-            x, y, w, h = LAST_PLATE['x'], LAST_PLATE['y'], LAST_PLATE['w'], LAST_PLATE['h']
+            x = LAST_PLATE['x']
+            y = LAST_PLATE['y']
+            w = LAST_PLATE['w']
+            h = LAST_PLATE['h']
             cv2.rectangle(frame, (x, y), (x + w, y + h),
                           (0, 255, 0), 2)
 
@@ -97,12 +114,17 @@ def gen_frames():
             frame_bytes = buffer.tobytes()
 
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' 
+                   + frame_bytes + b'\r\n')
 
 
 @app.route('/')
-def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+def video_feed() -> Response:
+    """
+    flask route to provide a video stream
+    """
+    return Response(gen_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
