@@ -3,6 +3,7 @@ import json
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
+quantity_of_identation=4
 
 class FileWorking:
     """
@@ -76,7 +77,7 @@ class FileWorking:
                 json.dump(
                     file_content,
                     file,
-                    indent=4,
+                    indent=quantity_of_identation,
                     ensure_ascii=False
                 )
         except FileNotFoundError as e:

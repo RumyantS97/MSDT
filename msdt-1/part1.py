@@ -2,6 +2,7 @@ import os
 
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms
 
+random_size=16
 
 class SymmetricEncryption:
     """
@@ -15,7 +16,7 @@ class SymmetricEncryption:
         Returns:
         - bytes: A randomly generated symmetric key.
         """
-        return os.urandom(32)  
+        return os.urandom(random_size)  
 
     @staticmethod
     def encrypt_text(symmetric_key: bytes, text: bytes) -> bytes:
@@ -27,11 +28,11 @@ class SymmetricEncryption:
         Returns:
         - bytes: Encrypted text, prepended by the 16-byte nonce.
         """
-        nonce = os.urandom(16)
+        nonce = os.urandom(random_size)
         cipher = Cipher(
             algorithms.ChaCha20(
                 symmetric_key,
-                nonce[:16]
+                nonce[:random_size]
             ),
             mode=None
         )
@@ -49,12 +50,12 @@ class SymmetricEncryption:
         Returns:
         - bytes: Decrypted plaintext.
         """
-        nonce = encrypted_text[:16]  
-        ciphertext = encrypted_text[16:]
+        nonce = encrypted_text[:random_size]  
+        ciphertext = encrypted_text[random_size:]
         cipher = Cipher(
             algorithms.ChaCha20(
                 symmetric_key,
-                nonce[:16]
+                nonce[:random_size]
             ),
             mode=None
         ) 
