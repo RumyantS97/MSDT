@@ -23,7 +23,7 @@ class Visualizer:
         self.points = []
         self.lines = []
 
-        self.generateSurface()
+        self.generate_surface()
         self.buttons = self.create_buttons()
 
     def create_buttons(self):
@@ -40,7 +40,7 @@ class Visualizer:
         ]
         return buttons
 
-    def generateSurface(self):
+    def generate_surface(self):
         """Генерация точек и связей для поверхности."""
         self.points.clear()
         self.lines.clear()
@@ -177,9 +177,9 @@ class Transform3D:
         ])
 
         # Применяем проекцию
-        projectedPoint = projection_matrix @ transformed_point
+        projected_point = projection_matrix @ transformed_point
 
-        return projectedPoint[:3]  # Возвращаем только x, y, z
+        return projected_point[:3]  # Возвращаем только x, y, z
 
 
 
