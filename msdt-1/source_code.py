@@ -34,33 +34,33 @@ operator_le = less_than_or_equal_to
 operator_ge = greater_than_or_equal_to
 
 
-def bubble_sort(arr, order):
-    operator_righter = operator_gt if order else operator_le
-    n = len(arr)
+def bubble_sort(arr_, order_):
+    operator_righter = operator_gt if order_ else operator_le
+    n_ = len(arr_)
     # Проходим по всем элементам массива
-    for i in range(n):
+    for i in range(n_):
         # Флаг для проверки, были ли произведены обмены
         swapped = False
         # Последние i элементов уже отсортированы
-        for j in range(0, n - i - 1):
+        for j in range(0, n_ - i - 1):
             # Сравниваем соседние элементы
-            if operator_righter(arr[j], arr[j+1]):
+            if operator_righter(arr_[j], arr_[j + 1]):
                 # Меняем местами, если они в неправильном порядке
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                arr_[j], arr_[j + 1] = arr_[j + 1], arr_[j]
                 swapped = True
         # Если не было обменов, массив уже отсортирован
         if not swapped:
             break
 
 
-def cocktail_sort(arr, order):
-    operator_lefter = operator_lt if order else operator_ge
-    operator_righter = operator_gt if order else operator_le
+def cocktail_sort(arr_, order_):
+    operator_lefter = operator_lt if order_ else operator_ge
+    operator_righter = operator_gt if order_ else operator_le
 
-    n = len(arr)
+    n_ = len(arr_)
     swapped = True
     start = 0
-    end = n - 1
+    end = n_ - 1
 
     while swapped:
         # Сбрасываем флаг swapped для текущего прохода
@@ -68,8 +68,8 @@ def cocktail_sort(arr, order):
 
         # Проход слева направо
         for i in range(start, end):
-            if operator_righter(arr[i], arr[i+1]):
-                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+            if operator_righter(arr_[i], arr_[i + 1]):
+                arr_[i], arr_[i + 1] = arr_[i + 1], arr_[i]
                 swapped = True
 
         # Если ничего не было обменяно, массив уже отсортирован
@@ -84,105 +84,105 @@ def cocktail_sort(arr, order):
 
         # Проход справа налево
         for i in range(end, start, -1):
-            if operator_lefter(arr[i], arr[i-1]):
-                arr[i], arr[i - 1] = arr[i - 1], arr[i]
+            if operator_lefter(arr_[i], arr_[i - 1]):
+                arr_[i], arr_[i - 1] = arr_[i - 1], arr_[i]
                 swapped = True
 
         # Увеличиваем начало, так как первый элемент уже на своем месте
         start += 1
 
 
-def insertion_sort(arr, order):
-    operator_righter = operator_gt if order else operator_le
+def insertion_sort(arr_, order_):
+    operator_righter = operator_gt if order_ else operator_le
     # Проходим по всем элементам массива, начиная со второго
-    for i in range(1, len(arr)):
-        key = arr[i]  # Текущий элемент для вставки
+    for i in range(1, len(arr_)):
+        key = arr_[i]  # Текущий элемент для вставки
         j = i - 1
 
         # Сдвигаем элементы, которые больше ключа, на одну позицию вправо
-        while j >= 0 and operator_righter(arr[j], key):
-            arr[j + 1] = arr[j]
+        while j >= 0 and operator_righter(arr_[j], key):
+            arr_[j + 1] = arr_[j]
             j -= 1
 
         # Вставляем ключ на его правильное место
-        arr[j + 1] = key
+        arr_[j + 1] = key
 
 
-def gnome_sort(arr, order):
-    operator_lefter = operator_lt if order else operator_ge
+def gnome_sort(arr_, order_):
+    operator_lefter = operator_lt if order_ else operator_ge
     index = 0
-    n = len(arr)
+    n_ = len(arr_)
 
-    while index < n:
+    while index < n_:
         # Если текущий элемент больше следующего, меняем их местами
-        if index == 0 or operator_lefter(arr[index-1], arr[index]):
+        if index == 0 or operator_lefter(arr_[index - 1], arr_[index]):
             index += 1
         else:
             # Меняем местами элементы
-            arr[index], arr[index - 1] = arr[index - 1], arr[index]
+            arr_[index], arr_[index - 1] = arr_[index - 1], arr_[index]
             index -= 1
 
 
-def selection_sort(arr, order):
-    operator_lefter = operator_lt if order else operator_ge
-    n = len(arr)
+def selection_sort(arr_, order_):
+    operator_lefter = operator_lt if order_ else operator_ge
+    n_ = len(arr_)
     # Проходим по всем элементам массива
-    for i in range(n):
+    for i in range(n_):
         # Предполагаем, что текущий элемент является минимальным
         min_index = i
         # Сравниваем с остальными элементами
-        for j in range(i + 1, n):
-            if operator_lefter(arr[j], arr[min_index]):
+        for j in range(i + 1, n_):
+            if operator_lefter(arr_[j], arr_[min_index]):
                 min_index = j
         # Меняем местами найденный минимальный элемент
         # с первым элементом неотсортированной части
-        arr[i], arr[min_index] = arr[min_index], arr[i]
+        arr_[i], arr_[min_index] = arr_[min_index], arr_[i]
 
 
-def comb_sort(arr, order):
-    operator_righter = operator_gt if order else operator_le
-    n = len(arr)
-    gap = n  # Начальное расстояние
+def comb_sort(arr_, order_):
+    operator_righter = operator_gt if order_ else operator_le
+    n_ = len(arr_)
+    gap = n_  # Начальное расстояние
     shrink_factor = 1.3  # Фактор уменьшения расстояния
-    sorted = False  # Флаг для отслеживания, отсортирован ли массив
+    sorted_ = False  # Флаг для отслеживания, отсортирован ли массив
 
-    while not sorted:
+    while not sorted_:
         # Уменьшаем расстояние
         gap = int(gap / shrink_factor)
         if gap < 1:
             gap = 1
 
-        sorted = True  # Предполагаем, что массив отсортирован
+        sorted_ = True  # Предполагаем, что массив отсортирован
 
         # Сравниваем элементы с текущим расстоянием
-        for i in range(n - gap):
-            if operator_righter(arr[i], arr[i+gap]):
+        for i in range(n_ - gap):
+            if operator_righter(arr_[i], arr_[i + gap]):
                 # Меняем местами, если они в неправильном порядке
-                arr[i], arr[i + gap] = arr[i + gap], arr[i]
+                arr_[i], arr_[i + gap] = arr_[i + gap], arr_[i]
                 # Если произошла замена, массив не отсортирован
-                sorted = False
+                sorted_ = False
 
 
-def quicksort(arr, order):
-    operator_lefter = operator_lt if order else operator_gt
-    operator_righter = operator_gt if order else operator_lt
-    if len(arr) <= 1:
-        return arr
+def quicksort(arr_, order_):
+    operator_lefter = operator_lt if order_ else operator_gt
+    operator_righter = operator_gt if order_ else operator_lt
+    if len(arr_) <= 1:
+        return arr_
     else:
         # Выбираем опорный элемент (пивот)
-        pivot = arr[len(arr) // 2]
+        pivot = arr_[len(arr_) // 2]
         # Элементы меньше пивота
-        left = [x for x in arr if operator_lefter(x, pivot)]
+        left = [x for x in arr_ if operator_lefter(x, pivot)]
         # Элементы равные пивоту
-        middle = [x for x in arr if x == pivot]
+        middle = [x for x in arr_ if x == pivot]
         # Элементы больше пивота
-        right = [x for x in arr if operator_righter(x, pivot)]
+        right = [x for x in arr_ if operator_righter(x, pivot)]
         # Рекурсивно сортируем и объединяем
-        return quicksort(left, order) + middle + quicksort(right, order)
+        return quicksort(left, order_) + middle + quicksort(right, order_)
 
 
 def select_type_sort():
-    type_sort = order = 1
+    type_sort_ = order_ = 1
     while True:
         # Запрашиваем ввод числа от 1 до 7
         print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
@@ -194,8 +194,8 @@ def select_type_sort():
               "Чтобы выбрать быструю сортировку - нажмите 7\n")
         left = 1; right = 7
         try:
-            type_sort = int(input(f"Введите число от {left} до {right}: "))
-            if type_sort < left or type_sort > right:
+            type_sort_ = int(input(f"Введите число от {left} до {right}: "))
+            if type_sort_ < left or type_sort_ > right:
                 raise BaseException("Число вне диапазона.")
         except BaseException:
             print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
@@ -206,8 +206,8 @@ def select_type_sort():
               "Чтобы сортировать по убыванию нажмите - 2")
         left = 1; right = 2
         try:
-            order = int(input(f"Введите число от {left} до {right}: "))
-            if order < left or order > right:
+            order_ = int(input(f"Введите число от {left} до {right}: "))
+            if order_ < left or order_ > right:
                 raise BaseException("Число вне диапазона.")
         except BaseException:
             print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
@@ -216,17 +216,17 @@ def select_type_sort():
         # Выход из цикла после успешного выполнения
         break
 
-    return type_sort, order
+    return type_sort_, order_
 
 
-def display_array(arr):
+def display_array(arr_):
     """Выводит массив в зависимости от его длины."""
-    if len(arr) < 40:
+    if len(arr_) < 40:
         # Если длина массива меньше 40, выводим весь массив
-        print(arr)
+        print(arr_)
     else:
         # Если длина больше 40, выводим первые 20 и последние 20 элементов
-        print(arr[:20] + ['...'] + arr[-20:])
+        print(arr_[:20] + ['...'] + arr_[-20:])
 
 
 if __name__ == "__main__":
