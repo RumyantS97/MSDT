@@ -59,9 +59,11 @@ def beetle_fill(x, y, fill_color, boundary_color):
     stack = [(x, y)]
     while stack:
         cx, cy = stack.pop()
-        if screen.get_at((cx, cy)) != boundary_color and screen.get_at((cx, cy)) != fill_color:
+        if (screen.get_at((cx, cy)) != boundary_color and
+                screen.get_at((cx, cy)) != fill_color):
             screen.set_at((cx, cy), fill_color)
-            stack.extend([(cx + dx, cy + dy) for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]])
+            stack.extend([(cx + dx, cy + dy) for dx, dy in
+                          [(-1, 0), (1, 0), (0, -1), (0, 1)]])
 
 # Алгоритм закраски с узором
 def fill_pattern(x, y, pattern, boundary_color):
@@ -70,7 +72,8 @@ def fill_pattern(x, y, pattern, boundary_color):
 
     while stack:
         cx, cy = stack.pop()
-        if not (0 <= cx < width and 0 <= cy < height):   # Если точка не внутри границ, пропускаем
+        # Если точка не внутри границ, пропускаем
+        if not (0 <= cx < width and 0 <= cy < height):
             continue
         if (cx, cy) in visited:  # Если пиксель обработан
             continue
@@ -84,12 +87,15 @@ def fill_pattern(x, y, pattern, boundary_color):
         # Применяем паттерн
         pattern_x = (cx // 5) % len(pattern)  # Устанавливаем шаг повтора 5
         pattern_y = (cy // 5) % len(pattern[0])
-        screen.set_at((cx, cy), pattern[pattern_x][pattern_y])  # Закрашиваем текущий пиксель цветом из узора
+        # Закрашиваем текущий пиксель цветом из узора
+        screen.set_at((cx, cy), pattern[pattern_x][pattern_y])
 
         # Добавляем соседние пиксели
         for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             nx, ny = cx + dx, cy + dy  # Координаты соседнего пикселя
-            if screen.get_at((nx, ny)) != boundary_color and 0 <= nx < width and 0 <= ny < height:   # Если пиксель внутри границ, добавляем в стек
+            if (screen.get_at((nx, ny)) != boundary_color and
+                    0 <= nx < width and 0 <= ny < height):
+                # Если пиксель внутри границ, добавляем в стек
                 stack.append((nx, ny))
 
 # Модифицированный алгоритм закраски с затравкой
@@ -111,7 +117,8 @@ def modified_seed_fill(x, y, pattern, boundary_color):
         # Обработка пикселей в строках выше и ниже текущей
         for nx in range(x_left + 1, x_right):
             for ny in (cy - 1, cy + 1):
-                if 0 <= ny < height and screen.get_at((nx, ny)) != boundary_color and screen.get_at((nx, ny)) != pattern:
+                if (0 <= ny < height and screen.get_at((nx, ny)) != boundary_color and
+                        screen.get_at((nx, ny)) != pattern):
                     stack.append((nx, ny))
 
 # Рисование морды кота

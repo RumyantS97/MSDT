@@ -28,15 +28,24 @@ class Visualizer:
 
     def create_buttons(self):
         buttons = [
-            {"text": "Влево", "action": lambda: self.transformer.translate(-50, 0, 0), "rect": pygame.Rect(10, 60, 60, 30)},
-            {"text": "Вправо", "action": lambda: self.transformer.translate(50, 0, 0), "rect": pygame.Rect(10, 100, 60, 30)},
-            {"text": "Вверх", "action": lambda: self.transformer.translate(0, -50, 0), "rect": pygame.Rect(10, 140, 60, 30)},
-            {"text": "Вниз", "action": lambda: self.transformer.translate(0, 50, 0), "rect": pygame.Rect(10, 180, 60, 30)},
-            {"text": "Масштаб +", "action": lambda: self.transformer.rescale(1.1), "rect": pygame.Rect(10, 220, 90, 30)},
-            {"text": "Масштаб -", "action": lambda: self.transformer.rescale(0.9), "rect": pygame.Rect(10, 260, 90, 30)},
-            {"text": "Вращение X", "action": lambda: self.transformer.rotate(10, 0, 0), "rect": pygame.Rect(10, 300, 90, 30)},
-            {"text": "Вращение Y", "action": lambda: self.transformer.rotate(0, 10, 0), "rect": pygame.Rect(10, 340, 90, 30)},
-            {"text": "Вращение Z", "action": lambda: self.transformer.rotate(0, 0, 10), "rect": pygame.Rect(10, 380, 90, 30)},
+            {"text": "Влево", "action": lambda: self.transformer.translate(-50, 0, 0),
+             "rect": pygame.Rect(10, 60, 60, 30)},
+            {"text": "Вправо", "action": lambda: self.transformer.translate(50, 0, 0),
+             "rect": pygame.Rect(10, 100, 60, 30)},
+            {"text": "Вверх", "action": lambda: self.transformer.translate(0, -50, 0),
+             "rect": pygame.Rect(10, 140, 60, 30)},
+            {"text": "Вниз", "action": lambda: self.transformer.translate(0, 50, 0),
+             "rect": pygame.Rect(10, 180, 60, 30)},
+            {"text": "Масштаб +", "action": lambda: self.transformer.rescale(1.1),
+             "rect": pygame.Rect(10, 220, 90, 30)},
+            {"text": "Масштаб -", "action": lambda: self.transformer.rescale(0.9),
+             "rect": pygame.Rect(10, 260, 90, 30)},
+            {"text": "Вращение X", "action": lambda: self.transformer.rotate(10, 0, 0),
+             "rect": pygame.Rect(10, 300, 90, 30)},
+            {"text": "Вращение Y", "action": lambda: self.transformer.rotate(0, 10, 0),
+             "rect": pygame.Rect(10, 340, 90, 30)},
+            {"text": "Вращение Z", "action": lambda: self.transformer.rotate(0, 0, 10),
+             "rect": pygame.Rect(10, 380, 90, 30)},
         ]
         return buttons
 
@@ -81,7 +90,8 @@ class Visualizer:
 
         # Рисуем кнопки 
         for button in self.buttons:
-            pygame.draw.rect(self.screen, (200, 200, 200), button["rect"])   # Цвет для кнопок
+            pygame.draw.rect(self.screen, (200, 200, 200),
+                             button["rect"])   # Цвет для кнопок
             font = pygame.font.SysFont('Verdana', 14)   # Шрифт кнопок
             text_surface = font.render(button["text"], True, (0, 0, 0))   # Цвет текста
             self.screen.blit(text_surface, (button["rect"].x + 5, button["rect"].y + 5))
