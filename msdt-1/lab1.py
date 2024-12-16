@@ -26,9 +26,9 @@ class LinkedList:
     def input_list(self):
         current = self.head
         while current:
-            print(current.value, "->", end=" ")
+            print(current.value, '->', end=' ')
             current = current.next
-        print("null")
+        print('null')
 
     def partition(self, partition_value):
         smaller_head = smaller_tail = None
@@ -66,13 +66,13 @@ class LinkedList:
     @staticmethod
     def find_kth_from_end(head, k):
         if not head or k <= 0:
-            raise ValueError("Недопустимые аргументы")
+            raise ValueError('Недопустимые аргументы')
 
         fast_pointer = slow_pointer = head
 
         for _ in range(k):
             if not fast_pointer:
-                raise ValueError(f"Список короче {k} элементов")
+                raise ValueError(f'Список короче {k} элементов')
             fast_pointer = fast_pointer.next
 
         while fast_pointer:
@@ -113,11 +113,11 @@ class LinkedList:
     @staticmethod
     def print_list_with_random(head):
         while head:
-            print("Значение:", head.value, end="")
+            print('Значение:', head.value, end='')
             if head.random:
-                print(", Случайный указатель на:", head.random.value)
+                print(', Случайный указатель на:', head.random.value)
             else:
-                print(", Случайный указатель на: None")
+                print(', Случайный указатель на: None')
             head = head.next
 
     def remove_duplicates(self):
@@ -165,18 +165,18 @@ class LinkedList:
         return dummy.next
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     while True:
-        print("Лабораторная работа 1. Списки. 2 вариант")
-        print("1 - задание ")
-        print("2 - задание ")
-        print("3 - задание ")
-        print("4 - завершить работу ")
-        print("5 - удалить дубликаты ")
-        print("6 - реверсировать список ")
-        print("7 - объединить два отсортированных списка ")
-        number = input("Введите номер задания: ")
-        print("")
+        print('Лабораторная работа 1. Списки. 2 вариант')
+        print('1 - задание ')
+        print('2 - задание ')
+        print('3 - задание ')
+        print('4 - завершить работу ')
+        print('5 - удалить дубликаты ')
+        print('6 - реверсировать список ')
+        print('7 - объединить два отсортированных списка ')
+        number = input('Введите номер задания: ')
+        print('')
 
         if number == '1':
             linked_list = LinkedList()
@@ -188,12 +188,12 @@ if __name__ == "__main__":
             linked_list.add_element(2)
             linked_list.add_element(1)
 
-            print("Исходный список:")
+            print('Исходный список:')
             linked_list.input_list()
 
             partition_value = 5
             linked_list.partition(partition_value)
-            print(f"Список после разбиения вокруг значения {partition_value}")
+            print(f'Список после разбиения вокруг значения {partition_value}')
             linked_list.input_list()
 
         elif number == '2':
@@ -203,14 +203,14 @@ if __name__ == "__main__":
                 value = random.randint(0, 99)
                 linked_list.add_element(value)
 
-            print("Исходный список: ")
+            print('Исходный список: ')
             linked_list.input_list()
 
-            k = int(input("Введите значение k: "))
+            k = int(input('Введите значение k: '))
             head = linked_list.head
             try:
                 result = LinkedList.find_kth_from_end(head, k)
-                print(f"{k}-ый с конца элемент: {result}")
+                print(f'{k}-ый с конца элемент: {result}')
             except ValueError as e:
                 print(e)
 
@@ -227,11 +227,11 @@ if __name__ == "__main__":
             list1_head.next.next.next.random = list1_head.next
             list1_head.next.next.next.next.random = None
 
-            print("Исходный связный список: ")
+            print('Исходный связный список: ')
             LinkedList.print_list_with_random(list1_head)
 
             new_head = LinkedList.copy_random_list(list1_head)
-            print("Изменённый связный список: ")
+            print('Изменённый связный список: ')
             LinkedList.print_list_with_random(new_head)
 
         elif number == '4':
@@ -245,11 +245,11 @@ if __name__ == "__main__":
             linked_list.add_element(2)
             linked_list.add_element(1)
             linked_list.add_element(4)
-            print("Исходный список с дубликатами:")
+            print('Исходный список с дубликатами:')
             linked_list.input_list()
 
             linked_list.remove_duplicates()
-            print("Список после удаления дубликатов:")
+            print('Список после удаления дубликатов:')
             linked_list.input_list()
 
         elif number == '6':
@@ -258,11 +258,11 @@ if __name__ == "__main__":
             linked_list.add_element(2)
             linked_list.add_element(3)
             linked_list.add_element(4)
-            print("Исходный список:")
+            print('Исходный список:')
             linked_list.input_list()
 
             linked_list.reverse()
-            print("Список после реверсирования:")
+            print('Список после реверсирования:')
             linked_list.input_list()
 
         elif number == '7':
@@ -276,16 +276,16 @@ if __name__ == "__main__":
             linked_list2.add_element(4)
             linked_list2.add_element(6)
 
-            print("Первый отсортированный список:")
+            print('Первый отсортированный список:')
             linked_list1.input_list()
 
-            print("Второй отсортированный список:")
+            print('Второй отсортированный список:')
             linked_list2.input_list()
 
             merged_head = LinkedList.merge_sorted_lists(linked_list1.head, linked_list2.head)
-            print("Объединённый отсортированный список:")
+            print('Объединённый отсортированный список:')
             current = merged_head
             while current:
-                print(current.value, "->", end=" ")
+                print(current.value, '->', end=' ')
                 current = current.next
-            print("null")
+            print('null')
