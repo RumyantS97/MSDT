@@ -105,7 +105,6 @@ def fill_pattern(x, y, pattern, boundary_color):
 
 
 # Модифицированный алгоритм закраски с затравкой
-
 def modified_seed_fill(x, y, pattern, boundary_color):
     stack = [(x, y)]
     while stack:
@@ -162,7 +161,6 @@ def draw_cat():
     natural_line(410, 300, 400, 320, (0, 0, 0))
 
     # Закраска носа узором
-
     # fill_pattern(400, 310, pattern, (0, 0, 0))
 
     # Закраска носа узором (модифицированный алгоритм)

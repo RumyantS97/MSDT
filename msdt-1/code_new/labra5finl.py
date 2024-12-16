@@ -22,7 +22,6 @@ class Visualizer:
 
         self.points = []
         self.lines = []
-
         self.generate_surface()
         self.buttons = self.create_buttons()
 
@@ -63,7 +62,6 @@ class Visualizer:
                 y = 1 - np.cos(τ)
                 z = -(1 + τ - np.sin(τ)) * np.sin(θ)
                 self.points.append([x, y, z, 1])  # Добавляем w=1 для работы с матрицей
-
                 if j > 0:
                     self.lines.append(((i * len(θ_values)) + j - 1, (i * len(θ_values)) + j))
                 if i > 0:
@@ -73,19 +71,16 @@ class Visualizer:
         # Применяем трансформации (перемещение, масштабирование, вращение)
         transformed_point = self.transformer.transform_point(point)
         x, y, z = transformed_point
-
         # Отображаем по центру экрана
         x, y = x * self.scale + self.offset_x, y * self.scale + self.offset_y
         return x, y
 
     def render(self):
         self.screen.fill((255, 255, 255))  # Очищаем экран (фон белый)
-
         # Рисуем линии (синим цветом)
         for line in self.lines:
             p1 = self.transform(self.points[line[0]])
             p2 = self.transform(self.points[line[1]])
-
             pygame.draw.line(self.screen, (0, 0, 255), p1, p2)  # Синий цвет для линий
 
         # Рисуем кнопки 
@@ -188,7 +183,6 @@ class Transform3D:
 
         # Применяем проекцию
         projected_point = projection_matrix @ transformed_point
-
         return projected_point[:3]  # Возвращаем только x, y, z
 
 
