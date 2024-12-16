@@ -133,11 +133,11 @@ class TennisGameDefactored2:
         return result
 
     def set_p1_score(self, number):
-        for i in range(number):
+        for _ in range(number):
             self.p1_score()
 
     def set_p2_score(self, number):
-        for i in range(number):
+        for _ in range(number):
             self.p2_score()
 
     def p1_score(self):
@@ -149,27 +149,27 @@ class TennisGameDefactored2:
 
 class TennisGameDefactored3:
     def __init__(self, player1_name, player2_name):
-        self.p1_n = player1_name
-        self.p2_n = player2_name
+        self.p1_name = player1_name
+        self.p2_name = player2_name
         self.p1 = 0
         self.p2 = 0
 
     def won_point(self, n):
-        if n == self.p1_n:
+        if n == self.p1_name:
             self.p1 += 1
         else:
             self.p2 += 1
 
     def score(self):
         if self.p1 < 4 and self.p2 < 4:
-            p = ["Love", "Fifteen", "Thirty", "Forty"]
-            s = p[self.p1]
-            return s + "-All" if (self.p1 == self.p2) else s + "-" + p[self.p2]
+            points = ["Love", "Fifteen", "Thirty", "Forty"]
+            score = points[self.p1]
+            return score + "-All" if (self.p1 == self.p2) else score + "-" + points[self.p2]
         else:
             if self.p1 == self.p2:
                 return "Deuce"
-            s = self.p1_n if self.p1 > self.p2 else self.p2_n
-            return "Advantage " + s if ((self.p1 - self.p2) * (self.p1 - self.p2) == 1) else "Win for " + s
+            leading_player = self.p1_name if self.p1 > self.p2 else self.p2_name
+            return "Advantage " + leading_player if abs(self.p1 - self.p2) == 1 else "Win for " + leading_player
 
 
 # NOTE: You must change this to point at the one of the three examples that you're working on!
