@@ -27,11 +27,17 @@ class SymmetricEncryption:
         Returns:
         - bytes: Encrypted text, prepended by the 16-byte nonce.
         """
-        nonce = os.urandom(16)  
-        cipher = Cipher(algorithms.ChaCha20(symmetric_key, nonce[:16]), mode=None) 
+        nonce = os.urandom(16)
+        cipher = Cipher(
+            algorithms.ChaCha20(
+                symmetric_key,
+                nonce[:16]
+            ),
+            mode=None
+        )
         encryptor = cipher.encryptor()
         encrypted_text = encryptor.update(text)
-        return nonce + encrypted_text  
+        return nonce + encrypted_text
 
     @staticmethod
     def decrypt_text(symmetric_key: bytes, encrypted_text: bytes) -> bytes:
@@ -45,6 +51,12 @@ class SymmetricEncryption:
         """
         nonce = encrypted_text[:16]  
         ciphertext = encrypted_text[16:]
-        cipher = Cipher(algorithms.ChaCha20(symmetric_key, nonce[:16]), mode=None) 
+        cipher = Cipher(
+            algorithms.ChaCha20(
+                symmetric_key,
+                nonce[:16]
+            ),
+            mode=None
+        ) 
         decryptor = cipher.decryptor()
         return decryptor.update(ciphertext)
