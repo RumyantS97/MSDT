@@ -1,8 +1,8 @@
 import zoneinfo
 
-class event_list_serializer_test_case(TestCase):
+class EventListSerializerTestCase(TestCase):
 
-    def testEmptyEvent(self):
+    def test_empty_event(self):
         main_attribute: Attribute = Attribute.objects.create(
             name='Main attribute'
             , slug='main-attribute')
@@ -18,7 +18,7 @@ class event_list_serializer_test_case(TestCase):
             end_date=end_date,
             status=event_status,
         )
-        serializer_data = event_list_serializer(event).data
+        serializer_data = EventListSerializer(event).data
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
@@ -34,7 +34,7 @@ class event_list_serializer_test_case(TestCase):
             'week_day': 'РџСЏС‚РЅРёС†Р°',
         })
 
-    def testOnlineEvent(self):
+    def test_online_event(self):
         main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
         event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
         event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
@@ -49,7 +49,7 @@ class event_list_serializer_test_case(TestCase):
             status=event_status,
             is_online is True,
         )
-        serializer_data = event_list_serializer(event).data
+        serializer_data = EventListSerializer(event).data
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
@@ -65,7 +65,7 @@ class event_list_serializer_test_case(TestCase):
             'week_day': 'РџСЏС‚РЅРёС†Р°',
         })
 
-    def testEventWithPlace(self):
+    def test_event_with_place(self):
         main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
         event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
         event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
@@ -81,7 +81,7 @@ class event_list_serializer_test_case(TestCase):
             status=event_status,
             place=place,
         )
-        serializer_data = event_list_serializer(event).data
+        serializer_data = EventListSerializer(event).data
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
@@ -97,7 +97,7 @@ class event_list_serializer_test_case(TestCase):
             'week_day': 'РџСЏС‚РЅРёС†Р°',
         })
 
-    def testEventWithPhoto(self):
+    def test_event_with_photo(self):
         main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
         event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
         photo: Photo = Photo.objects.create(upload_to='events',
@@ -114,7 +114,7 @@ class event_list_serializer_test_case(TestCase):
             status         = event_status,
             photo          = photo,
         )
-        serializer_data = event_list_serializer(event).data
+        serializer_data = EventListSerializer(event).data
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
@@ -131,7 +131,7 @@ class event_list_serializer_test_case(TestCase):
         })
 
 
-class event_retrieve_serializer_test_case(TestCase):     
+class EventRetrieveSerializerTestCase(TestCase):     
 
     def test_archived_event(self):
         main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
@@ -147,11 +147,11 @@ class event_retrieve_serializer_test_case(TestCase):
             end_date        = end_date,
             status          = event_status,
         )
-        serializer_data = event_retrieve_serializer(event).data
+        serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_archived'], True)
 
 
-    def testUncomfirmedEvent(self):
+    def test_uncomfirmed_event(self):
         main_attribute: Attribute = Attribute.objects.create(
             name = 'Main attribute', 
             slug = 'main-attribute'
@@ -168,11 +168,11 @@ class event_retrieve_serializer_test_case(TestCase):
             end_date       = end_date,
             status         = event_status,
         )
-        serializer_data = event_retrieve_serializer(event).data
+        serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_confirmed'], False)
 
 
-    def testGoingEvent(self):
+    def test_going_event(self):
         main_attribute: Attribute = Attribute.objects.create(name='Main attribute', slug='main-attribute')
         event_type: Attribute = Attribute.objects.create(name='Event type', slug='event-type')
         event_status: EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
@@ -186,13 +186,13 @@ class event_retrieve_serializer_test_case(TestCase):
             end_date       = end_date,
             status         = event_status,
         )
-        serializer_data = event_retrieve_serializer(event).data
+        serializer_data = EventRetrieveSerializer(event).data
         self.assertEqual(serializer_data['is_going'], True)
 
 
-class event_create_serializer_test_case(TestCase):
+class EventCreateSerializerTestCase(TestCase):
 
-    def testMinimalCreate(self):
+    def test_minimal_create(self):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
@@ -209,7 +209,7 @@ class event_create_serializer_test_case(TestCase):
             'event_type': event_type.slug
         }
 
-        serializer = event_create_serializer(data=data)
+        serializer = EventCreateSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         event = serializer.save()
 
@@ -222,7 +222,7 @@ class event_create_serializer_test_case(TestCase):
         self.assertEqual(event.status.code, 'UCF')
 
 
-    def testDoubleAttributeCreate(self):
+    def test_double_attribute_create(self):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
@@ -241,7 +241,7 @@ class event_create_serializer_test_case(TestCase):
             'event_type': event_type.slug
         }
 
-        serializer = event_create_serializer(data=data)
+        serializer = EventCreateSerializer(data=data)
 
 
 
@@ -250,7 +250,7 @@ class event_create_serializer_test_case(TestCase):
             event = serializer.save()
 
 
-    def testWrongDateCreate(self):
+    def test_wrong_date_create(self):
         start_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         end_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
@@ -268,14 +268,14 @@ class event_create_serializer_test_case(TestCase):
             'status': event_status.code
         }
 
-        serializer = event_create_serializer(data=data)
+        serializer = EventCreateSerializer(data=data)
 
         with self.assertRaises(ValidationError):
             serializer.is_valid(raise_exception=True)
             event = serializer.save()
 
 
-    def testWrongPlaceDataCreate(self):
+    def test_wrong_place_data_create(self):
         start_date: datetime = datetime(2021, 1, 1, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         end_date: datetime = datetime(2021, 1, 2, 0, 0, 0, tzinfo=zoneinfo.ZoneInfo('Europe/Moscow'))
         main_attribute: Attribute = Attribute.objects.create(name='Test Attribute', slug='test-attribute')
@@ -295,7 +295,7 @@ class event_create_serializer_test_case(TestCase):
             'place_uri'     : 'https://test-place.com',
         }
 
-        serializer = event_create_serializer(data=data)
+        serializer = EventCreateSerializer(data=data)
 
         with self.assertRaises(ValidationError):
             serializer.is_valid(raise_exception=True)
