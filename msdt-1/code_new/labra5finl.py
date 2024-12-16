@@ -70,20 +70,20 @@ class Visualizer:
         return x, y
 
     def render(self):
-        self.screen.fill((255, 255, 255))  # Очищаем экран (фон белый)
+        self.screen.fill((255, 255, 255))   # Очищаем экран (фон белый)
 
         # Рисуем линии (синим цветом)
         for line in self.lines:
             p1 = self.transform(self.points[line[0]])
             p2 = self.transform(self.points[line[1]])
 
-            pygame.draw.line(self.screen, (0, 0, 255), p1, p2)  # Синий цвет для линий
+            pygame.draw.line(self.screen, (0, 0, 255), p1, p2)   # Синий цвет для линий
 
         # Рисуем кнопки 
         for button in self.buttons:
-            pygame.draw.rect(self.screen, (200, 200, 200), button["rect"])  #цвет для кнопок
-            font = pygame.font.SysFont('Verdana', 14)  # шрифт кнопок
-            text_surface = font.render(button["text"], True, (0, 0, 0))  #  цвет текста
+            pygame.draw.rect(self.screen, (200, 200, 200), button["rect"])   # Цвет для кнопок
+            font = pygame.font.SysFont('Verdana', 14)   # Шрифт кнопок
+            text_surface = font.render(button["text"], True, (0, 0, 0))   # Цвет текста
             self.screen.blit(text_surface, (button["rect"].x + 5, button["rect"].y + 5))
 
         pygame.display.flip()

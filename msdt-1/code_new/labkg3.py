@@ -70,9 +70,9 @@ def fill_pattern(x, y, pattern, boundary_color):
 
     while stack:
         cx, cy = stack.pop()
-        if not (0 <= cx < width and 0 <= cy < height):  #если не внутри границ ,то пропускаем
+        if not (0 <= cx < width and 0 <= cy < height):   # Если точка не внутри границ, пропускаем
             continue
-        if (cx, cy) in visited:  #если px обработан
+        if (cx, cy) in visited:  # Если пиксель обработан
             continue
         visited.add((cx, cy))
 
@@ -82,35 +82,35 @@ def fill_pattern(x, y, pattern, boundary_color):
             continue
 
         # Применяем паттерн
-        pattern_x = (cx // 5) % len(pattern) #шаг повтора 5
+        pattern_x = (cx // 5) % len(pattern)  # Устанавливаем шаг повтора 5
         pattern_y = (cy // 5) % len(pattern[0])
-        screen.set_at((cx, cy), pattern[pattern_x][pattern_y])  #закрашиваем тек.px цветом из узора
+        screen.set_at((cx, cy), pattern[pattern_x][pattern_y])  # Закрашиваем текущий пиксель цветом из узора
 
         # Добавляем соседние пиксели
         for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            nx, ny = cx + dx, cy + dy #коорд.соседнего
-            if screen.get_at((nx, ny)) != boundary_color and 0 <= nx < width and 0 <= ny < height:   #если внутри границ,то в стек
+            nx, ny = cx + dx, cy + dy  # Координаты соседнего пикселя
+            if screen.get_at((nx, ny)) != boundary_color and 0 <= nx < width and 0 <= ny < height:   # Если пиксель внутри границ, добавляем в стек
                 stack.append((nx, ny))
 
-#Модифицированная алгоритм с затравкой  
+# Модифицированный алгоритм закраски с затравкой
 
 def modified_seed_fill(x, y, pattern, boundary_color):
     stack = [(x, y)]  
     while stack:
-        cx, cy = stack.pop()  #извлек.послед.добавленная(тек)
+        cx, cy = stack.pop()  # Извлекаем последний добавленный элемент стека
 
         # Закрашивание стрроки вправо и влево
         x_left, x_right = cx, cx
         while x_left >= 0 and screen.get_at((x_left, cy)) != boundary_color:
-            screen.set_at((x_left, cy), pattern)#акр.цветом
-            x_left -= 1  #переход к следующему px влево 
+            screen.set_at((x_left, cy), pattern)   # Закрашиваем
+            x_left -= 1  # Переход к следующему пикселю влево
         while x_right < width and screen.get_at((x_right, cy)) != boundary_color:
             screen.set_at((x_right, cy), pattern)
             x_right += 1
             
-        # Обработка строк выше и ниже
-        for nx in range(x_left + 1, x_right):   #тек
-            for ny in (cy - 1, cy + 1):   #ниже/выше
+        # Обработка пикселей в строках выше и ниже текущей
+        for nx in range(x_left + 1, x_right):
+            for ny in (cy - 1, cy + 1):
                 if 0 <= ny < height and screen.get_at((nx, ny)) != boundary_color and screen.get_at((nx, ny)) != pattern:
                     stack.append((nx, ny))
 
@@ -118,7 +118,7 @@ def modified_seed_fill(x, y, pattern, boundary_color):
 def draw_cat():
     # Морда (окружность)
     pygame.draw.circle(screen, (210, 180, 140), (400, 300), 100)  # Шерсть
-    pygame.draw.circle(screen, (0, 0, 0), (400, 300), 100, 1) #контур
+    pygame.draw.circle(screen, (0, 0, 0), (400, 300), 100, 1)   # Контур
 
     # Уши (треугольники)
     bresenham_line(320, 240, 330, 180, (0, 0, 0))  # Левое ухо
@@ -150,9 +150,9 @@ def draw_cat():
 
     # Закраска носа узором
     
-    #fill_pattern(400, 310, pattern, (0, 0, 0))
+    # fill_pattern(400, 310, pattern, (0, 0, 0))
     
-    # закраска носа узором (модиф. алгоритм)
+    # Закраска носа узором (модифицированный алгоритм)
     modified_seed_fill(400, 310, (255, 182, 193), (0, 0, 0))  
 
 # Основной цикл
