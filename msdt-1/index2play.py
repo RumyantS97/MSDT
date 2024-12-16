@@ -1,36 +1,32 @@
-import cv2
-import requests
 import time
-from flask import Flask, Response
-import googlesheetsdata
 
+import cv2
 import googlemaps
+import requests
+import googlesheetsdata
+from flask import Flask, Response
 
-from const import GOOGLE_MAPS_API_KEY, LAST_PLATE, API_KEY, API_URL, JSON_DATA2
+from const import GOOGLE_MAPS_API_KEY, LAST_PLATE, API_KEY, API_URL, JSON_DATA2, INTERVAL2
 gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
 
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)  # Use 0 for the default camera
-
-INTERVAL = 5
+camera = cv2.VideoCapture(0)
 
 
-# Extract license plates from JSON data
 license_plates = [entry["suspectVehicle"]["licensePlate"]
                   for entry in JSON_DATA2]
 
 
 def gen_frames():
-    # Set initial last_time to current time minus INTERVAL
-    last_time = time.time() - INTERVAL
+    last_time = time.time() - INTERVAL2
     while True:
         success, frame = camera.read()
         if not success:
             break
         else:
             current_time = time.time()
-            if current_time - last_time > INTERVAL:
+            if current_time - last_time > INTERVAL2:
                 last_time = current_time
 
                 ret, buffer = cv2.imencode('.jpg', frame)
@@ -41,11 +37,9 @@ def gen_frames():
                     files=dict(upload=frame_bytes),
                     headers={'Authorization': f'Token {API_KEY}'}
                 )
-                plates = response.json()  # Parse response
+                plates = response.json()
 
-                # Check if any plates are detected and process
                 for result in plates.get('results', []):
-                    # Update LAST_PLATE coordinates
                     LAST_PLATE['x'] = result['box']['xmin']
                     LAST_PLATE['y'] = result['box']['ymin']
                     LAST_PLATE['w'] = result['box']['xmax'] - \
@@ -53,15 +47,12 @@ def gen_frames():
                     LAST_PLATE['h'] = result['box']['ymax'] - \
                         result['box']['ymin']
 
-                    # Print only the license plate number in uppercase
                     plate_number = result.get('plate', 'N/A').upper()
                     print("Detected Plate:", plate_number)
 
-                    # Check if detected plate is in the list from JSON data
                     if plate_number in license_plates:
 
                         location = gmaps.geolocate()
-                        # print(f"Alert: Match found for plate {plate_number}")
                         lat, lng = location['location']['lat'], location['location']['lng']
                         print(f"Alert: Match found for plate {
                               plate_number} at location {lat}, {lng}")
@@ -98,12 +89,10 @@ def gen_frames():
                         googlesheetsdata.append_data_to_sheet(
                             sheet, data_to_append)
 
-            # Draw rectangle around the last detected license plate
             x, y, w, h = LAST_PLATE['x'], LAST_PLATE['y'], LAST_PLATE['w'], LAST_PLATE['h']
             cv2.rectangle(frame, (x, y), (x + w, y + h),
-                          (0, 255, 0), 2)  # Green color
+                          (0, 255, 0), 2)
 
-            # Convert frame to bytes for streaming
             ret, buffer = cv2.imencode('.jpg', frame)
             frame_bytes = buffer.tobytes()
 

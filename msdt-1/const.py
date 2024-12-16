@@ -273,3 +273,4 @@ JSON_DATA2 = [
     }
 
 ]
+INTERVAL2 = 5

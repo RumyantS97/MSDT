@@ -1,11 +1,13 @@
+import time
+
 import cv2
 import requests
-import time
+import googlemaps
 from flask import Flask, Response
 
-import googlemaps
-
 from const import GOOGLE_MAPS_API_KEY, INTERVAL, API_KEY, API_URL, JSON_DATA, LAST_PLATE
+
+
 gmaps = googlemaps.Client(key=GOOGLE_MAPS_API_KEY)
 
 
@@ -18,7 +20,6 @@ license_plates = [entry["suspectVehicle"]["licensePlate"]
 
 
 def gen_frames():
-    # Set initial last_time to current time minus INTERVAL
     last_time = time.time() - INTERVAL
     while True:
         success, frame = camera.read()
@@ -31,18 +32,13 @@ def gen_frames():
 
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame_bytes = buffer.tobytes()
-
-                # Send frame to Plate Recognizer API
                 response = requests.post(
                     API_URL,
                     files=dict(upload=frame_bytes),
                     headers={'Authorization': f'Token {API_KEY}'}
                 )
-                plates = response.json()  # Parse response
-
-                # Check if any plates are detected and process
+                plates = response.json()
                 for result in plates.get('results', []):
-                    # Update LAST_PLATE coordinates
                     LAST_PLATE['x'] = result['box']['xmin']
                     LAST_PLATE['y'] = result['box']['ymin']
                     LAST_PLATE['w'] = result['box']['xmax'] - \
@@ -50,14 +46,11 @@ def gen_frames():
                     LAST_PLATE['h'] = result['box']['ymax'] - \
                         result['box']['ymin']
 
-                    # Print only the license plate number in uppercase
                     plate_number = result.get('plate', 'N/A').upper()
                     print("Detected Plate:", plate_number)
 
-                    # Check if detected plate is in the list from JSON data
                     if plate_number in license_plates:
                         location = gmaps.geolocate()
-                        # print(f"Alert: Match found for plate {plate_number}")
                         lat, lng = location['location']['lat'], location['location']['lng']
                         print(f"Alert: Match found for plate {
                               plate_number} at location {lat}, {lng}")
@@ -74,12 +67,10 @@ def gen_frames():
                               JSON_DATA[0]["missingPerson"]["age"])
                         print("Alert: Alert sent!")
 
-            # Draw rectangle around the last detected license plate
             x, y, w, h = LAST_PLATE['x'], LAST_PLATE['y'], LAST_PLATE['w'], LAST_PLATE['h']
             cv2.rectangle(frame, (x, y), (x + w, y + h),
-                          (0, 255, 0), 2)  # Green color
+                          (0, 255, 0), 2)
 
-            # Convert frame to bytes for streaming
             ret, buffer = cv2.imencode('.jpg', frame)
             frame_bytes = buffer.tobytes()
 
