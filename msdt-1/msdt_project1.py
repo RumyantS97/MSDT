@@ -13,7 +13,7 @@ def round_brackets(string):
             stack.append(char)
 
         # Если встретилась закрывающаяся скобка и stack не пустой:
-        elif char == ')' and len(stack) != 0:
+        elif char == ')' and stack:
             # Извлекаем крайний элемент
             stack.pop()
         # Если встретился любой другой символ кроме круглых скобок:
@@ -33,13 +33,12 @@ def check_brackets(string):
     bracket_dict = {')': '(', ']': '[', '}': '{', '>': '<'}
 
     for char in string:  # Сложность O(N)
-
         # Открывающиеся скобки заносим в stack
         if char in bracket_dict.values():
             stack.append(char)
 
         # Если встретилась закрывающаяся скобка:
-        elif char in bracket_dict.keys():
+        elif char in bracket_dict:
             # Если stack пустой или value для скобки (лежит в stack) != текущему символу
             if not stack or bracket_dict[char] != stack.pop():
                 # Возвращаем false
