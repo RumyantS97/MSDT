@@ -53,19 +53,19 @@ class Visualizer:
         self.points.clear()
         self.lines.clear()
 
-        τ_values = np.linspace(0, 1.4 * math.pi, 50)
-        θ_values = np.linspace(0, 1.5 * math.pi, 50)
+        t_values = np.linspace(0, 1.4 * math.pi, 50)
+        o_values = np.linspace(0, 1.5 * math.pi, 50)
 
-        for i, τ in enumerate(τ_values):
-            for j, θ in enumerate(θ_values):
-                x = (1 + τ - np.sin(τ)) * np.cos(θ)
-                y = 1 - np.cos(τ)
-                z = -(1 + τ - np.sin(τ)) * np.sin(θ)
+        for i, t in enumerate(t_values):
+            for j, o in enumerate(o_values):
+                x = (1 + t - np.sin(t)) * np.cos(o)
+                y = 1 - np.cos(t)
+                z = -(1 + t - np.sin(t)) * np.sin(o)
                 self.points.append([x, y, z, 1])  # Добавляем w=1 для работы с матрицей
                 if j > 0:
-                    self.lines.append(((i * len(θ_values)) + j - 1, (i * len(θ_values)) + j))
+                    self.lines.append(((i * len(o_values)) + j - 1, (i * len(o_values)) + j))
                 if i > 0:
-                    self.lines.append((((i - 1) * len(θ_values)) + j, (i * len(θ_values)) + j))
+                    self.lines.append((((i - 1) * len(o_values)) + j, (i * len(o_values)) + j))
 
     def transform(self, point):
         # Применяем трансформации (перемещение, масштабирование, вращение)
