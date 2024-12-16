@@ -120,7 +120,8 @@ def selection_sort(arr, order):
         for j in range(i + 1, n):
             if operatorLefter(arr[j],arr[min_index]):
                 min_index = j
-        # Меняем местами найденный минимальный элемент с первым элементом неотсортированной части
+        # Меняем местами найденный минимальный элемент
+        # с первым элементом неотсортированной части
         arr[i], arr[min_index] = arr[min_index], arr[i]
 
 
@@ -144,7 +145,8 @@ def comb_sort(arr, order):
             if operatorRighter(arr[i],arr[i+gap]):
                 # Меняем местами, если они в неправильном порядке
                 arr[i], arr[i + gap] = arr[i + gap], arr[i]
-                sorted = False  # Если произошла замена, массив не отсортирован
+                # Если произошла замена, массив не отсортирован
+                sorted = False
 
 def quicksort(arr, order):
     operatorLefter = operator_lt if order else operator_gt
@@ -152,19 +154,28 @@ def quicksort(arr, order):
     if len(arr) <= 1:
         return arr
     else:
-        pivot = arr[len(arr) // 2]  # Выбираем опорный элемент (пивот)
-        left = [x for x in arr if operatorLefter(x,pivot)]  # Элементы меньше пивота
-        middle = [x for x in arr if x == pivot]  # Элементы равные пивоту
-        right = [x for x in arr if operatorRighter(x,pivot)]  # Элементы больше пивота
-        return quicksort(left, order) + middle + quicksort(right, order)  # Рекурсивно сортируем и объединяем
+        # Выбираем опорный элемент (пивот)
+        pivot = arr[len(arr) // 2]
+        # Элементы меньше пивота
+        left = [x for x in arr if operatorLefter(x,pivot)]
+        # Элементы равные пивоту
+        middle = [x for x in arr if x == pivot]
+        # Элементы больше пивота
+        right = [x for x in arr if operatorRighter(x,pivot)]
+        # Рекурсивно сортируем и объединяем
+        return quicksort(left, order) + middle + quicksort(right, order)
 
 
 def selectTypeSort():
     typeSort = order = 1
     while True:
         # Запрашиваем ввод числа от 1 до 7
-        print("Чтобы выбрать сортировку пузырьком - нажмите 1\nЧтобы выбрать сортировку перемешиванием - нажмите 2\nЧтобы выбрать сортировку вставками - нажмите 3\n"
-              "Чтобы выбрать гномью сортировку - нажмите 4\nЧтобы выбрать сортировку выбором - нажмите 5\nЧтобы выбрать сортировку расческой - нажмите 6\n"
+        print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
+              "Чтобы выбрать сортировку перемешиванием - нажмите 2\n"
+              "Чтобы выбрать сортировку вставками - нажмите 3\n"
+              "Чтобы выбрать гномью сортировку - нажмите 4\n"
+              "Чтобы выбрать сортировку выбором - нажмите 5\n"
+              "Чтобы выбрать сортировку расческой - нажмите 6\n"
               "Чтобы выбрать быструю сортировку - нажмите 7\n")
         left = 1; right = 7
         try:
@@ -176,7 +187,8 @@ def selectTypeSort():
             continue
 
         # Запрашиваем ввод числа 1 или 2
-        print("Чтобы сортировать по возрастанию - нажмите 1\nЧтобы сортировать по убыванию нажмите - 2")
+        print("Чтобы сортировать по возрастанию - нажмите 1\n"
+              "Чтобы сортировать по убыванию нажмите - 2")
         left = 1; right = 2
         try:
             order = int(input(f"Введите число от {left} до {right}: "))
