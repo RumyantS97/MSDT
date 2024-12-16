@@ -15,7 +15,6 @@ class LinkedList:
         self.tail = None
 
     def add_element(self, value):
-
         new_node = Node(value)
         if not self.head:
             self.head = new_node
@@ -25,7 +24,6 @@ class LinkedList:
             self.tail = new_node
 
     def input_list(self):
-
         current = self.head
         while current:
             print(current.value, "->", end=" ")
@@ -33,7 +31,6 @@ class LinkedList:
         print("null")
 
     def partition(self, partition_value):
-
         smaller_head = smaller_tail = None
         greater_or_equal_head = greater_or_equal_tail = None
 
@@ -68,7 +65,6 @@ class LinkedList:
 
     @staticmethod
     def find_kth_from_end(head, k):
-
         if not head or k <= 0:
             raise ValueError("Недопустимые аргументы")
 
@@ -87,7 +83,6 @@ class LinkedList:
 
     @staticmethod
     def copy_random_list(head):
-
         if not head:
             return None
 
@@ -117,7 +112,6 @@ class LinkedList:
 
     @staticmethod
     def print_list_with_random(head):
-
         while head:
             print("Значение:", head.value, end="")
             if head.random:
@@ -127,7 +121,6 @@ class LinkedList:
             head = head.next
 
     def remove_duplicates(self):
-
         current = self.head
         seen = set()
         prev = None
@@ -141,7 +134,6 @@ class LinkedList:
             current = current.next
 
     def reverse(self):
-
         prev = None
         current = self.head
         while current:
@@ -153,12 +145,10 @@ class LinkedList:
 
     @staticmethod
     def merge_sorted_lists(head1, head2):
-
         dummy = Node(0)
         tail = dummy
 
         while head1 and head2:
-
             if head1.value < head2.value:
                 tail.next = head1
                 head1 = head1.next
@@ -177,7 +167,6 @@ class LinkedList:
 
 if __name__ == "__main__":
     while True:
-
         print("Лабораторная работа 1. Списки. 2 вариант")
         print("1 - задание ")
         print("2 - задание ")
@@ -190,7 +179,6 @@ if __name__ == "__main__":
         print("")
 
         if number == '1':
-
             linked_list = LinkedList()
             linked_list.add_element(3)
             linked_list.add_element(5)
@@ -209,7 +197,6 @@ if __name__ == "__main__":
             linked_list.input_list()
 
         elif number == '2':
-
             linked_list = LinkedList()
             n = random.randint(4, 8)
             for _ in range(n):
@@ -228,7 +215,6 @@ if __name__ == "__main__":
                 print(e)
 
         elif number == '3':
-
             list1_head = Node(7)
             list1_head.next = Node(8)
             list1_head.next.next = Node(3)
@@ -249,11 +235,9 @@ if __name__ == "__main__":
             LinkedList.print_list_with_random(new_head)
 
         elif number == '4':
-
             break
 
         elif number == '5':
-
             linked_list = LinkedList()
             linked_list.add_element(1)
             linked_list.add_element(3)
@@ -269,7 +253,6 @@ if __name__ == "__main__":
             linked_list.input_list()
 
         elif number == '6':
-
             linked_list = LinkedList()
             linked_list.add_element(1)
             linked_list.add_element(2)
@@ -283,7 +266,6 @@ if __name__ == "__main__":
             linked_list.input_list()
 
         elif number == '7':
-
             linked_list1 = LinkedList()
             linked_list1.add_element(1)
             linked_list1.add_element(3)
