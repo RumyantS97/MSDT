@@ -192,7 +192,8 @@ def select_type_sort():
               "Чтобы выбрать сортировку выбором - нажмите 5\n"
               "Чтобы выбрать сортировку расческой - нажмите 6\n"
               "Чтобы выбрать быструю сортировку - нажмите 7\n")
-        left = 1; right = 7
+        left = 1
+        right = 7
         try:
             type_sort_ = int(input(f"Введите число от {left} до {right}: "))
             if type_sort_ < left or type_sort_ > right:
@@ -204,7 +205,8 @@ def select_type_sort():
         # Запрашиваем ввод числа 1 или 2
         print("Чтобы сортировать по возрастанию - нажмите 1\n"
               "Чтобы сортировать по убыванию нажмите - 2")
-        left = 1; right = 2
+        left = 1
+        right = 2
         try:
             order_ = int(input(f"Введите число от {left} до {right}: "))
             if order_ < left or order_ > right:
