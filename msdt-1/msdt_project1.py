@@ -49,10 +49,10 @@ def check_brackets(string):
 
 
 # Выполнение задания 1
-print("ЗАДАНИЕ 1")
-input_string = input("Введите строку: ")
-print("\nПроверка круглых скобок: " + str(round_brackets(input_string)))
-print("Проверка всех скобок: " + str(check_brackets(input_string)))
+print('ЗАДАНИЕ 1')
+input_string = input('Введите строку: ')
+print('\nПроверка круглых скобок: ' + str(round_brackets(input_string)))
+print('Проверка всех скобок: ' + str(check_brackets(input_string)))
 
 
 # ЗАДАНИЕ 2
@@ -83,19 +83,19 @@ class Stack:
             return popped_value
 
 
-print("ЗАДАНИЕ 2")
+print('ЗАДАНИЕ 2')
 stack_instance = Stack()
-num_elements = int(input("Укажите, сколько элементов добавить в stack: "))
+num_elements = int(input('Укажите, сколько элементов добавить в stack: '))
 for i in range(num_elements):
-    value = int(input(f"Укажите значение элемента №{i}: "))
+    value = int(input(f'Укажите значение элемента №{i}: '))
     stack_instance.push(value)
-print("Stack: ", stack_instance.stack)
-print("Минимальный элемент:", stack_instance.get_min())
-num_remove = int(input("Укажите, сколько элементов удалить: "))
+print('Stack: ', stack_instance.stack)
+print('Минимальный элемент:', stack_instance.get_min())
+num_remove = int(input('Укажите, сколько элементов удалить: '))
 for i in range(num_remove):
     stack_instance.pop()
-print("Stack:", stack_instance.stack)
-print("Минимальный элемент:", stack_instance.get_min())
+print('Stack:', stack_instance.stack)
+print('Минимальный элемент:', stack_instance.get_min())
 
 
 # ЗАДАНИЕ 3
@@ -146,20 +146,20 @@ def window_max(arr, k):  # Сложность - O(N), от k не зависит
 
 
 # Выполнение задания 3
-print("\nЗАДАНИЕ 3")
+print('\nЗАДАНИЕ 3')
 arr3 = []
-arr_size = int(input("Укажите размер массива (n): "))
+arr_size = int(input('Укажите размер массива (n): '))
 for i in range(arr_size):
-    arr3.append(int(input(f"Укажите значение элемента массива №{i}:")))
+    arr3.append(int(input(f'Укажите значение элемента массива №{i}:')))
 
-k_value = int(input("Укажите значение k: "))
+k_value = int(input('Укажите значение k: '))
 while k_value > arr_size or k_value < 1:
-    print("[!] Некорректный ввод")
-    k_value = int(input("Повторите ввод: "))
+    print('[!] Некорректный ввод')
+    k_value = int(input('Повторите ввод: '))
 
-print("Массив: ", arr3)
-print("Размер окна: ", k_value)
-print("Максимумы: ")
+print('Массив: ', arr3)
+print('Размер окна: ', k_value)
+print('Максимумы: ')
 window_max(arr3, k_value)
 
 
@@ -167,7 +167,7 @@ window_max(arr3, k_value)
 # Метод для задания 4
 def find_duplicates(arr):
     if not arr:
-        print("[!] Входной массив пустой.")
+        print('[!] Входной массив пустой.')
         return set()
 
     # Множество для повторяющихся элементов
@@ -189,31 +189,31 @@ def find_duplicates(arr):
             else:
                 arr[number_abs] = -arr[number_abs]
     except IndexError:
-        print("[!] Ошибка: значение элемента массива выходит за пределы индекса.")
+        print('[!] Ошибка: значение элемента массива выходит за пределы индекса.')
     return duplicates
 
 
 # Выполнение задания 4
-print("\nЗАДАНИЕ 4")
+print('\nЗАДАНИЕ 4')
 arr4 = []
-n = int(input("Укажите n: "))
+n = int(input('Укажите n: '))
 for i in range(n + 1):
-    k = int(input(f"Укажите значение элемента массива {i}: "))
+    k = int(input(f'Укажите значение элемента массива {i}: '))
     while k <= 0 or k > n:
-        print("[!] Некорректный ввод. Значение должно быть от 1 до n.")
-        k = int(input("Повторите ввод: "))
+        print('[!] Некорректный ввод. Значение должно быть от 1 до n.')
+        k = int(input('Повторите ввод: '))
     arr4.append(k)
 
-print("Исходный массив:")
+print('Исходный массив:')
 print(arr4)
-print("Повторяющиеся элементы:", find_duplicates(arr4))
+print('Повторяющиеся элементы:', find_duplicates(arr4))
 
 
 # ЗАДАНИЕ 5
 # Метод для задания 5
 def reset_to_zero(matrix, rows, cols):
     if not matrix:
-        print("[!] Матрица пуста.")
+        print('[!] Матрица пуста.')
         return
 
     # Обнуление строк
@@ -227,32 +227,32 @@ def reset_to_zero(matrix, rows, cols):
             matrix[i][j] = 0
 
 
-print("\nЗАДАНИЕ 5")
-num_rows = int(input("Укажите количество строк: "))
-num_cols = int(input("Укажите количество столбцов: "))
+print('\nЗАДАНИЕ 5')
+num_rows = int(input('Укажите количество строк: '))
+num_cols = int(input('Укажите количество столбцов: '))
 
 matrix = []
 rows = set()
 cols = set()
-print("Заполнение матрицы:")
+print('Заполнение матрицы:')
 
 for i in range(num_rows):
     row = []
     for j in range(num_cols):
-        value = int(input(f"Введите значение для элемента ({i}, {j}): "))
+        value = int(input(f'Введите значение для элемента ({i}, {j}): '))
         row.append(value)
         if value == 0:
             rows.add(i)
             cols.add(j)
     matrix.append(row)
 
-print("Исходная матрица:")
+print('Исходная матрица:')
 for row in matrix:
     print(row)
 
 reset_to_zero(matrix, rows, cols)
 
-print("Результирующая матрица:")
+print('Результирующая матрица:')
 for row in matrix:
     print(row)
 
@@ -282,20 +282,20 @@ def is_anagram(s1, s2):
 
 
 # Выполнение задания 6
-print("\nЗАДАНИЕ 6")
-string1 = input("Введите первую строку: ")
-string2 = input("Введите вторую строку: ")
+print('\nЗАДАНИЕ 6')
+string1 = input('Введите первую строку: ')
+string2 = input('Введите вторую строку: ')
 if is_anagram(string1.strip(), string2.strip()):
-    print("Строки являются анаграммами.")
+    print('Строки являются анаграммами.')
 else:
-    print("Строки не являются анаграммами.")
+    print('Строки не являются анаграммами.')
 
 
 # ЗАДАНИЕ 7
 # Метод для задания 7
 def majority_element(arr):
     if not arr:
-        print("[!] Входной массив пустой.")
+        print('[!] Входной массив пустой.')
         return None
 
     # Алгоритм Boyer-Moore для нахождения кандидата
@@ -319,14 +319,14 @@ def majority_element(arr):
 
 
 # Выполнение задания 7
-print("\nЗАДАНИЕ 7")
-arr_size = int(input("Введите размер массива: "))
+print('\nЗАДАНИЕ 7')
+arr_size = int(input('Введите размер массива: '))
 arr7 = []
 for i in range(arr_size):
-    arr7.append(int(input(f"Введите значение элемента массива №{i}: ")))
+    arr7.append(int(input(f'Введите значение элемента массива №{i}: ')))
 
 result = majority_element(arr7)
 if result is not None:
-    print(f"Элемент {result} встречается более чем в половине случаев.")
+    print(f'Элемент {result} встречается более чем в половине случаев.')
 else:
-    print("Нет элемента, который встречается более чем в половине случаев.")
+    print('Нет элемента, который встречается более чем в половине случаев.')
