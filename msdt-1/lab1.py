@@ -213,8 +213,8 @@ if __name__ == "__main__":
             linked_list = LinkedList()
             n = random.randint(4, 8)
             for _ in range(n):
-                b = random.randint(0, 99)
-                linked_list.add_element(b)
+                value = random.randint(0, 99)  # Изменено имя переменной на value
+                linked_list.add_element(value)
 
             print("Исходный список: ")
             linked_list.input_list()
@@ -229,22 +229,22 @@ if __name__ == "__main__":
 
         elif number == '3':
 
-            head1 = Node(7)
-            head1.next = Node(8)
-            head1.next.next = Node(3)
-            head1.next.next.next = Node(1)
-            head1.next.next.next.next = Node(2)
+            list1_head = Node(7)  # Переименовано на более понятное имя
+            list1_head.next = Node(8)
+            list1_head.next.next = Node(3)
+            list1_head.next.next.next = Node(1)
+            list1_head.next.next.next.next = Node(2)
 
-            head1.random = head1.next.next
-            head1.next.random = head1.next.next.next.next
-            head1.next.next.random = head1
-            head1.next.next.next.random = head1.next
-            head1.next.next.next.next.random = None
+            list1_head.random = list1_head.next.next
+            list1_head.next.random = list1_head.next.next.next.next
+            list1_head.next.next.random = list1_head
+            list1_head.next.next.next.random = list1_head.next
+            list1_head.next.next.next.next.random = None
 
             print("Исходный связный список: ")
-            LinkedList.print_list_with_random(head1)
+            LinkedList.print_list_with_random(list1_head)
 
-            new_head = LinkedList.copy_random_list(head1)
+            new_head = LinkedList.copy_random_list(list1_head)
             print("Изменённый связный список: ")
             LinkedList.print_list_with_random(new_head)
 
