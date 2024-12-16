@@ -44,7 +44,7 @@ def bubble_sort(arr, order):
         # Последние i элементов уже отсортированы
         for j in range(0, n - i - 1):
             # Сравниваем соседние элементы
-            if operatorRighter(arr[j],arr[j+1]):
+            if operatorRighter(arr[j], arr[j+1]):
                 # Меняем местами, если они в неправильном порядке
                 arr[j], arr[j + 1] = arr[j + 1], arr[j]
                 swapped = True
@@ -68,7 +68,7 @@ def cocktail_sort(arr, order):
 
         # Проход слева направо
         for i in range(start, end):
-            if operatorRighter(arr[i],arr[i+1]):
+            if operatorRighter(arr[i], arr[i+1]):
                 arr[i], arr[i + 1] = arr[i + 1], arr[i]
                 swapped = True
 
@@ -84,7 +84,7 @@ def cocktail_sort(arr, order):
 
         # Проход справа налево
         for i in range(end, start, -1):
-            if operatorLefter(arr[i],arr[i-1]):
+            if operatorLefter(arr[i], arr[i-1]):
                 arr[i], arr[i - 1] = arr[i - 1], arr[i]
                 swapped = True
 
@@ -100,7 +100,7 @@ def insertion_sort(arr, order):
         j = i - 1
 
         # Сдвигаем элементы, которые больше ключа, на одну позицию вправо
-        while j >= 0 and operatorRighter(arr[j],key):
+        while j >= 0 and operatorRighter(arr[j], key):
             arr[j + 1] = arr[j]
             j -= 1
 
@@ -115,7 +115,7 @@ def gnome_sort(arr, order):
 
     while index < n:
         # Если текущий элемент больше следующего, меняем их местами
-        if index == 0 or operatorLefter(arr[index-1],arr[index]):
+        if index == 0 or operatorLefter(arr[index-1], arr[index]):
             index += 1
         else:
             # Меняем местами элементы
@@ -132,7 +132,7 @@ def selection_sort(arr, order):
         min_index = i
         # Сравниваем с остальными элементами
         for j in range(i + 1, n):
-            if operatorLefter(arr[j],arr[min_index]):
+            if operatorLefter(arr[j], arr[min_index]):
                 min_index = j
         # Меняем местами найденный минимальный элемент
         # с первым элементом неотсортированной части
@@ -156,7 +156,7 @@ def comb_sort(arr, order):
 
         # Сравниваем элементы с текущим расстоянием
         for i in range(n - gap):
-            if operatorRighter(arr[i],arr[i+gap]):
+            if operatorRighter(arr[i], arr[i+gap]):
                 # Меняем местами, если они в неправильном порядке
                 arr[i], arr[i + gap] = arr[i + gap], arr[i]
                 # Если произошла замена, массив не отсортирован
@@ -172,11 +172,11 @@ def quicksort(arr, order):
         # Выбираем опорный элемент (пивот)
         pivot = arr[len(arr) // 2]
         # Элементы меньше пивота
-        left = [x for x in arr if operatorLefter(x,pivot)]
+        left = [x for x in arr if operatorLefter(x, pivot)]
         # Элементы равные пивоту
         middle = [x for x in arr if x == pivot]
         # Элементы больше пивота
-        right = [x for x in arr if operatorRighter(x,pivot)]
+        right = [x for x in arr if operatorRighter(x, pivot)]
         # Рекурсивно сортируем и объединяем
         return quicksort(left, order) + middle + quicksort(right, order)
 
