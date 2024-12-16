@@ -38,6 +38,5 @@ def check_csv_file(filename):
 
 invalid_row_nums = check_csv_file('68.csv')
 checksum = calculate_checksum(invalid_row_nums)
-
 variant = 68
 serialize_result(variant, checksum)
