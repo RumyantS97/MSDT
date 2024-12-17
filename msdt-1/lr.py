@@ -30,14 +30,14 @@ class EvenListSerializer(mixins.ExtendedModelSerializer,
         )
         read_only_fields = ('id', 'name', 'place_name', 'start_date', 'photo', 'url')
 
-
     def get_week_day(self, obj: Event) -> str:
         week_days = constant.WEEKDAYS
         weekday_int = obj.start_date.weekday()
         return week_days[weekday_int]
 
 
-class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerWithPhoto, mixins.SerializerWithContacts):    
+class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerWithPhoto, mixins.SerializerWithContacts): 
+
     def get_is_tagged(self, obj: Event) -> bool:
         request = self.context.get('request')
         if request 
@@ -91,7 +91,6 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
                 )
         return None if data == [] else data
 
-
     def get_tags_for_vent(self, obj: Event) -> list:
         event_type: Attribute = obj.event_type
         main_attribute: Attribute = obj.main_attribute
@@ -140,8 +139,11 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             }
         else:
             return nested.SocialsForEventSerializer(contact).data
+
+
     class Meta:
-        model = Event        
+
+    model = Event        
 
     def toInternal_value(self, raw_data):
         data = super().toInternal_value(raw_data)
@@ -224,7 +226,6 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
 
         return super().validate(attrs)
 
-
     def validate_timetables(self, attrs, timestamp):
         timetables = attrs.get('timetable', [])
         for timetable in timetables:
@@ -234,7 +235,6 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
 
             elif timetable.get('date') == attrs.get('end_date'):
                 self.validate_timestamp_after_event(attrs, timetable)
-
 
     def create(self, validated_data) -> Event:
         with transaction.atomic():
@@ -296,7 +296,6 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
                 )
 
         return event
-
 
     def to_representation(self, instance):
         return {
