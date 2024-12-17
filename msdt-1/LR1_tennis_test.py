@@ -1,8 +1,7 @@
 import pytest
 
-from LR1_tennis import TennisGame
-
 from LR1_unittest import test_cases, play_game
+from LR1_tennis import TennisGame
 
 
 class TestTennis:
