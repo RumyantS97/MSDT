@@ -109,12 +109,12 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
         return nested.OrganizerForEventSerializer(organizers, many=True).data
 
     def get_contacts(self, obj: Event) -> dict:
-        if obj.contacts
-                        and not obj.contacts.contacts_empty():
+        if obj.contacts and not
+            obj.contacts.contacts_empty(): 
             return nested.ContactForEventSerializer(obj.contacts).data
-        elif obj.director 
-                        and obj.director.contacts and not
-                         obj.director.contacts.contacts_empty():
+        elif obj.director and
+              obj.director.contacts and not
+               obj.director.contacts.contacts_empty():
             return nested.ContactForEventSerializer(obj.director.contacts).data
         else:
             return {
@@ -150,9 +150,8 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
 
         self.check_place_name_uri_city(data)
 
-        if 'max_price'
-                    not in data
-                    and 'min_price' in data:
+        if 'max_price' not in data
+             and 'min_price' in data:              
             data['max_price'] = data['min_price']
 
         if 'timetable' in raw_data:
@@ -176,9 +175,10 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
 
         for i in obj:
             organizer = Organizer.objects.filter(user__custom_id=i).first()
-            if organizer and not (hasattr(user, 'to_organizer') and user.to_organizer == organizer):
-                validated_organizer.append(organizer.user.id)
-
+            if organizer and not
+                (hasattr(user, 'to_organizer') and
+                 user.to_organizer == organizer):
+                  validated_organizer.append(organizer.user.id)
         return validated_organizer        
 
     def validate_additional_attribute(self, obj: list[str]) -> list[int]:
@@ -209,17 +209,20 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
     def validate(self, attrs):
 
         user: User = crum.get_current_user()
-        if hasattr(user, 'to_organizer') and user.to_organizer:
+        if hasattr(user, 'to_organizer') and
+            user.to_organizer:
             attrs['director'] = user.to_organizer
             
-        if 'start_date' in attrs and 'end_date' in attrs:
+        if 'start_date' in attrs and
+            'end_date' in attrs:
             self.validate_date(attrs)
         timetables: list[dict] = self.sort_timestamp(attrs.get('timetable', []))
         if timetables:
             self.validate_timetables(attrs, timetables)
             attrs['timetable'] = timetables
 
-        if 'min_price' in attrs and 'max_price' in attrs:
+        if 'min_price' in attrs and
+            'max_price' in attrs:
             self.validate_price(attrs)
 
         self.main_attribute_in_additionals(attrs)
@@ -269,9 +272,9 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             place_data = {'name': validated_data.pop('place_name', None),
                           'place_url': validated_data.pop('place_uri', None),
                           'city': validated_data.pop('place_city', None)}
-            if place_data['name'] 
-                                and place_data['place_url']
-                                and place_data['city']:
+            if place_data['name'] and
+                place_data['place_url'] and
+                 place_data['city']:
                 place, _ = Place.objects.get_or_create(**place_data)
                 validated_data['place'] = place
 
