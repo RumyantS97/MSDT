@@ -1,6 +1,8 @@
 import random
 import time
 from logging_config import logger
+from sortings import bubble_sort, cocktail_sort, insertion_sort, \
+    gnome_sort, selection_sort, comb_sort, quicksort
 
 
 def select_type_sort():
@@ -81,10 +83,9 @@ def main():
     logger.debug('Произошел вызов функции "main"')
     type_sort, order = select_type_sort()
     n = 10
-    arr = [random.randint(0, 100) for _ in range(n)]
+    source_arr = [random.randint(0, 100) for _ in range(n)]
     logger.info(f'Пользователь выбрал тип сортировки: {type_sort}, '
                 f'направление сортировки: {order}')
-    result = arr.copy()
     start_time = end_time = 0
 
     if type_sort == 1:
@@ -92,12 +93,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            bubble_sort(result, True)
+            result = bubble_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            bubble_sort(result, False)
+            result = bubble_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 2:
@@ -105,12 +106,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            cocktail_sort(result, True)
+            result = cocktail_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            cocktail_sort(result, False)
+            result = cocktail_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 3:
@@ -118,12 +119,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            insertion_sort(result, True)
+            result = insertion_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            insertion_sort(result, False)
+            result = insertion_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 4:
@@ -131,12 +132,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            gnome_sort(result, True)
+            result = gnome_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            gnome_sort(result, False)
+            result = gnome_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 5:
@@ -144,12 +145,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            selection_sort(result, True)
+            result = selection_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            selection_sort(result, False)
+            result = selection_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 6:
@@ -157,12 +158,12 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            comb_sort(result, True)
+            result = comb_sort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            comb_sort(result, False)
+            result = comb_sort(source_arr, False)
             end_time = time.time()
 
     elif type_sort == 7:
@@ -170,16 +171,16 @@ def main():
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            result = quicksort_exec(result, True)
+            result = quicksort(source_arr, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            result = quicksort_exec(result, False)
+            result = quicksort(source_arr, False)
             end_time = time.time()
 
     print("Исходный массив:")
-    display_array(arr)
+    display_array(source_arr)
     print("Результат:")
     display_array(result)
     time_sort = end_time - start_time

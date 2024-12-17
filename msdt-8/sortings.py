@@ -3,8 +3,9 @@ from custom_operators import operator_gt, operator_le, operator_lt, \
     operator_ge
 
 
-def bubble_sort(arr_, order_):
+def bubble_sort(arr, order_):
     logger.debug('Произошел вызов функции "bubble_sort"')
+    arr_ = arr.copy()
     operator_righter = operator_gt if order_ else operator_le
     n_ = len(arr_)
     # Проходим по всем элементам массива
@@ -21,10 +22,12 @@ def bubble_sort(arr_, order_):
         # Если не было обменов, массив уже отсортирован
         if not swapped:
             break
+    return arr_
 
 
-def cocktail_sort(arr_, order_):
+def cocktail_sort(arr, order_):
     logger.debug('Произошел вызов функции "cocktail_sort"')
+    arr_ = arr.copy()
     operator_lefter = operator_lt if order_ else operator_ge
     operator_righter = operator_gt if order_ else operator_le
 
@@ -61,10 +64,12 @@ def cocktail_sort(arr_, order_):
 
         # Увеличиваем начало, так как первый элемент уже на своем месте
         start += 1
+    return arr_
 
 
-def insertion_sort(arr_, order_):
+def insertion_sort(arr, order_):
     logger.debug('Произошел вызов функции "insertion_sort"')
+    arr_ = arr.copy()
     operator_righter = operator_gt if order_ else operator_le
     # Проходим по всем элементам массива, начиная со второго
     for i in range(1, len(arr_)):
@@ -78,10 +83,12 @@ def insertion_sort(arr_, order_):
 
         # Вставляем ключ на его правильное место
         arr_[j + 1] = key
+    return arr_
 
 
-def gnome_sort(arr_, order_):
+def gnome_sort(arr, order_):
     logger.debug('Произошел вызов функции "gnome_sort"')
+    arr_ = arr.copy()
     operator_lefter = operator_lt if order_ else operator_ge
     index = 0
     n_ = len(arr_)
@@ -94,10 +101,12 @@ def gnome_sort(arr_, order_):
             # Меняем местами элементы
             arr_[index], arr_[index - 1] = arr_[index - 1], arr_[index]
             index -= 1
+    return arr_
 
 
-def selection_sort(arr_, order_):
+def selection_sort(arr, order_):
     logger.debug('Произошел вызов функции "selection_sort"')
+    arr_ = arr.copy()
     operator_lefter = operator_lt if order_ else operator_ge
     n_ = len(arr_)
     # Проходим по всем элементам массива
@@ -111,10 +120,12 @@ def selection_sort(arr_, order_):
         # Меняем местами найденный минимальный элемент
         # с первым элементом неотсортированной части
         arr_[i], arr_[min_index] = arr_[min_index], arr_[i]
+    return arr_
 
 
-def comb_sort(arr_, order_):
+def comb_sort(arr, order_):
     logger.debug('Произошел вызов функции "comb_sort"')
+    arr_ = arr.copy()
     operator_righter = operator_gt if order_ else operator_le
     n_ = len(arr_)
     gap = n_  # Начальное расстояние
@@ -136,29 +147,30 @@ def comb_sort(arr_, order_):
                 arr_[i], arr_[i + gap] = arr_[i + gap], arr_[i]
                 # Если произошла замена, массив не отсортирован
                 sorted_ = False
+    return arr_
 
 
 # Функция вызова quick_sort. Используется чтобы debug log не учитывал рекурсию
-def quicksort_exec(arr_, order_):
-    logger.debug('Произошел вызов функции "quicksort_exec"')
-    return quicksort(arr_, order_)
+def quicksort(arr, order):
+    logger.debug('Произошел вызов функции "quicksort"')
 
+    def quicksort_inner(arr_, order_):
+        logger.log(DEBUG_EX, 'Произошел вызов функции "quicksort_inner"')
+        operator_lefter = operator_lt if order_ else operator_gt
+        operator_righter = operator_gt if order_ else operator_lt
+        if len(arr_) <= 1:
+            return arr_
+        else:
+            # Выбираем опорный элемент (пивот)
+            pivot = arr_[len(arr_) // 2]
+            # Элементы меньше пивота
+            left = [x for x in arr_ if operator_lefter(x, pivot)]
+            # Элементы равные пивоту
+            middle = [x for x in arr_ if x == pivot]
+            # Элементы больше пивота
+            right = [x for x in arr_ if operator_righter(x, pivot)]
+            # Рекурсивно сортируем и объединяем
+            return quicksort_inner(left, order_) \
+                + middle + quicksort_inner(right, order_)
 
-def quicksort(arr_, order_):
-    logger.log(DEBUG_EX, 'Произошел вызов функции "quicksort"')
-    operator_lefter = operator_lt if order_ else operator_gt
-    operator_righter = operator_gt if order_ else operator_lt
-    if len(arr_) <= 1:
-        return arr_
-    else:
-        # Выбираем опорный элемент (пивот)
-        pivot = arr_[len(arr_) // 2]
-        # Элементы меньше пивота
-        left = [x for x in arr_ if operator_lefter(x, pivot)]
-        # Элементы равные пивоту
-        middle = [x for x in arr_ if x == pivot]
-        # Элементы больше пивота
-        right = [x for x in arr_ if operator_righter(x, pivot)]
-        # Рекурсивно сортируем и объединяем
-        return quicksort(left, order_) + middle + quicksort(right, order_)
-
+    return quicksort_inner(arr, order).copy()
