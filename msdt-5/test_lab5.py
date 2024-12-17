@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import patch
 from Lab5 import SearchElement
 from Lab5 import main
 
@@ -48,9 +49,9 @@ def test_find_with_parametrize(array, target, expected):
     result = search.find(array, target)
     assert result == expected, f"Для массива {array} и числа {target} ожидалось {expected}"
 
-def test_main_with_mocking(mocker):
-    mocker.patch('builtins.input', side_effect=["1, 2, 3", "2"])
-    mock_print = mocker.patch('builtins.print')
-    main()
-    mock_print.assert_any_call("Элемент найден на позиции: 1")
+def test_main_with_mocking(capsys):
+    with patch('builtins.input', side_effect=["1, 2, 3", "2"]):
+        main()
+        captured = capsys.readouterr()
+        assert "Элемент найден на позиции: 1" in captured.out
     
