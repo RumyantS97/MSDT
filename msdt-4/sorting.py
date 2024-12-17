@@ -1,28 +1,48 @@
 import random
 import time
+from datetime import datetime
+import logging
+
+# Новый уровень, т.к. логи о вызовах методов операторов засоряют лог
+logging.addLevelName(5, 'DEBUG_EX')
+logging.basicConfig(
+    filename=f'Log_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.txt',
+    level=logging.ERROR,
+    format='[%(asctime)s] [%(levelname)s] => %(message)s',
+    encoding='utf-8',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+logger = logging.getLogger()
+logger.info(f'Выбран уровень логирования: {logging.getLevelName(logger.level)}')
 
 
 def less_than(a, b):
+    logger.log(5, 'Произошел вызов функции "less_than"')
     return a < b
 
 
 def greater_than(a, b):
+    logger.log(5, 'Произошел вызов функции "greater_than"')
     return a > b
 
 
 def equal_to(a, b):
+    logger.log(5, 'Произошел вызов функции "equal_to"')
     return a == b
 
 
 def not_equal_to(a, b):
+    logger.log(5, 'Произошел вызов функции "not_equal_to"')
     return a != b
 
 
 def less_than_or_equal_to(a, b):
+    logger.log(5, 'Произошел вызов функции "less_than_or_equal_to"')
     return a <= b
 
 
 def greater_than_or_equal_to(a, b):
+    logger.log(5, 'Произошел вызов функции "greater_than_or_equal_to"')
     return a >= b
 
 
@@ -35,6 +55,7 @@ operator_ge = greater_than_or_equal_to
 
 
 def bubble_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "bubble_sort"')
     operator_righter = operator_gt if order_ else operator_le
     n_ = len(arr_)
     # Проходим по всем элементам массива
@@ -54,6 +75,7 @@ def bubble_sort(arr_, order_):
 
 
 def cocktail_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "cocktail_sort"')
     operator_lefter = operator_lt if order_ else operator_ge
     operator_righter = operator_gt if order_ else operator_le
 
@@ -93,6 +115,7 @@ def cocktail_sort(arr_, order_):
 
 
 def insertion_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "insertion_sort"')
     operator_righter = operator_gt if order_ else operator_le
     # Проходим по всем элементам массива, начиная со второго
     for i in range(1, len(arr_)):
@@ -109,6 +132,7 @@ def insertion_sort(arr_, order_):
 
 
 def gnome_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "gnome_sort"')
     operator_lefter = operator_lt if order_ else operator_ge
     index = 0
     n_ = len(arr_)
@@ -124,6 +148,7 @@ def gnome_sort(arr_, order_):
 
 
 def selection_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "selection_sort"')
     operator_lefter = operator_lt if order_ else operator_ge
     n_ = len(arr_)
     # Проходим по всем элементам массива
@@ -140,6 +165,7 @@ def selection_sort(arr_, order_):
 
 
 def comb_sort(arr_, order_):
+    logger.debug('Произошел вызов функции "comb_sort"')
     operator_righter = operator_gt if order_ else operator_le
     n_ = len(arr_)
     gap = n_  # Начальное расстояние
@@ -163,7 +189,14 @@ def comb_sort(arr_, order_):
                 sorted_ = False
 
 
+# Функция вызова quick_sort. Используется чтобы debug log не учитывал рекурсию
+def quicksort_exec(arr_, order_):
+    logger.debug('Произошел вызов функции "quicksort"')
+    return quicksort(arr_, order_)
+
+
 def quicksort(arr_, order_):
+    logger.log(5, 'Произошел вызов функции "quicksort"')
     operator_lefter = operator_lt if order_ else operator_gt
     operator_righter = operator_gt if order_ else operator_lt
     if len(arr_) <= 1:
@@ -182,38 +215,61 @@ def quicksort(arr_, order_):
 
 
 def select_type_sort():
-    type_sort_ = order_ = 1
+    logger.debug('Произошел вызов функции "select_type_sort"')
+    type_sort_ = order_ = 0
+    type_selected = order_selected = False
     while True:
-        # Запрашиваем ввод числа от 1 до 7
-        print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
-              "Чтобы выбрать сортировку перемешиванием - нажмите 2\n"
-              "Чтобы выбрать сортировку вставками - нажмите 3\n"
-              "Чтобы выбрать гномью сортировку - нажмите 4\n"
-              "Чтобы выбрать сортировку выбором - нажмите 5\n"
-              "Чтобы выбрать сортировку расческой - нажмите 6\n"
-              "Чтобы выбрать быструю сортировку - нажмите 7\n")
-        left = 1
-        right = 7
-        try:
-            type_sort_ = int(input(f"Введите число от {left} до {right}: "))
-            if type_sort_ < left or type_sort_ > right:
-                raise ValueError("Число вне диапазона.")
-        except ValueError:
-            print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
-            continue
+        if not type_selected:
+            # Запрашиваем ввод числа от 1 до 7
+            print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
+                  "Чтобы выбрать сортировку перемешиванием - нажмите 2\n"
+                  "Чтобы выбрать сортировку вставками - нажмите 3\n"
+                  "Чтобы выбрать гномью сортировку - нажмите 4\n"
+                  "Чтобы выбрать сортировку выбором - нажмите 5\n"
+                  "Чтобы выбрать сортировку расческой - нажмите 6\n"
+                  "Чтобы выбрать быструю сортировку - нажмите 7\n")
+            left = 1
+            right = 7
+            type_sort_temp = 0
+            try:
+                type_sort_temp = int(input(f"Введите число от "
+                                           f"{left} до {right}: "))
+                if type_sort_temp < left or type_sort_temp > right:
+                    logger.warning(f'Пользователь ввел "{type_sort_temp}", '
+                                   f'ожидалось число от {left} до {right}')
+                    raise ValueError("Число вне диапазона.")
+            except ValueError:
+                if type_sort_temp == 0:
+                    logger.warning('Пользователь ввел не число, '
+                                   f'ожидалось число от {left} до {right}')
+                print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
+                continue
+            type_selected = True
+            type_sort_ = type_sort_temp
+            logger.debug(f'Пользователь выбрал тип сортировки {type_sort_}')
 
-        # Запрашиваем ввод числа 1 или 2
-        print("Чтобы сортировать по возрастанию - нажмите 1\n"
-              "Чтобы сортировать по убыванию нажмите - 2")
-        left = 1
-        right = 2
-        try:
-            order_ = int(input(f"Введите число от {left} до {right}: "))
-            if order_ < left or order_ > right:
-                raise ValueError("Число вне диапазона.")
-        except ValueError:
-            print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
-            continue
+        if not order_selected:
+            # Запрашиваем ввод числа 1 или 2
+            print("Чтобы сортировать по возрастанию - нажмите 1\n"
+                  "Чтобы сортировать по убыванию нажмите - 2")
+            left = 1
+            right = 2
+            order_temp = 0
+            try:
+                order_temp = int(input(f"Введите число от "
+                                       f"{left} до {right}: "))
+                if order_temp < left or order_temp > right:
+                    logger.warning(f'Пользователь ввел "{order_temp}", '
+                                   f'ожидалось число от {left} до {right}')
+                    raise ValueError("Число вне диапазона.")
+            except ValueError:
+                if order_temp == 0:
+                    logger.warning('Пользователь ввел не число, '
+                                   f'ожидалось число от {left} до {right}')
+                print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
+                continue
+            order_ = order_temp
+            logger.debug(f'Пользователь выбрал направление {order_}')
 
         # Выход из цикла после успешного выполнения
         break
@@ -222,6 +278,7 @@ def select_type_sort():
 
 
 def display_array(arr_):
+    logger.debug('Произошел вызов функции "display_array"')
     """Выводит массив в зависимости от его длины."""
     if len(arr_) < 40:
         # Если длина массива меньше 40, выводим весь массив
@@ -231,11 +288,13 @@ def display_array(arr_):
         print(arr_[:20] + ['...'] + arr_[-20:])
 
 
-if __name__ == "__main__":
-    print("Сортировки. Захарова Милана")
+def main():
+    logger.debug('Произошел вызов функции "main"')
     type_sort, order = select_type_sort()
-    n = 1000
+    n = 10
     arr = [random.randint(0, 100) for _ in range(n)]
+    logger.info(f'Пользователь выбрал тип сортировки: {type_sort}, '
+                f'направление сортировки: {order}')
     result = arr.copy()
     start_time = end_time = 0
 
@@ -322,16 +381,31 @@ if __name__ == "__main__":
         if order == 1:
             print("Тип сортировки: по возрастанию")
             start_time = time.time()
-            result = quicksort(result, True)
+            result = quicksort_exec(result, True)
             end_time = time.time()
         else:
             print("Тип сортировки: по убыванию")
             start_time = time.time()
-            result = quicksort(result, False)
+            result = quicksort_exec(result, False)
             end_time = time.time()
 
     print("Исходный массив:")
     display_array(arr)
     print("Результат:")
     display_array(result)
-    print(f"Время выполнения: {(end_time-start_time):.8f} секунд")
+    time_sort = end_time - start_time
+    print(f"Время выполнения: {time_sort:.8f} секунд")
+    logger.info(f'При выборе сортировки {type_sort} с направлением {order}, '
+                f'сортировка {n} элементов заняла {time_sort:.8f} секунд')
+
+
+if __name__ == "__main__":
+    logger.info('Начало выполнения программы')
+    print("Сортировки. Захарова Милана")
+    main()
+    try:
+        # Поломка для демонстрации логирования исключений
+        t = 10/0
+    except ZeroDivisionError:
+        logger.exception('Ошибка деления на 0!!!')
+    logger.info('Программа завершена')
