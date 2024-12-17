@@ -31,14 +31,14 @@ class EvenListSerializer(mixins.ExtendedModelSerializer,
         read_only_fields = ('id', 'name', 'place_name', 'start_date', 'photo', 'url')
 
 
-    def GetWeekDay(self, obj: Event) -> str:
+    def get_week_day(self, obj: Event) -> str:
         week_days = constant.WEEKDAYS
         weekday_int = obj.start_date.weekday()
         return week_days[weekday_int]
 
 
 class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerWithPhoto, mixins.SerializerWithContacts):    
-    def GetIsTagged(self, obj: Event) -> bool:
+    def get_is_tagged(self, obj: Event) -> bool:
         request = self.context.get('request')
         if request 
             and request.user:
@@ -51,7 +51,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             return obj.to_visitors.is_tagged(user)
         return False
 
-    def GetIsOrganizer(self, obj: Event) -> bool:
+    def get_is_organizer(self, obj: Event) -> bool:
         user = crum.get_current_user()
         if not user:
             return False
@@ -59,7 +59,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             return obj.organizer.filter(user=user).exists()
         return False
 
-    def GetIsDirector(self, obj: Event) -> bool:
+    def get_is_director(self, obj: Event) -> bool:
         user = crum.get_current_user()
         if not user:
             return False
@@ -67,7 +67,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             return obj.director == user.to_organizer
         return False
 
-    def GetOrganizerStr(self, obj: Event) -> list | None:
+    def get_organizer_str(self, obj: Event) -> list | None:
         data = []
         for organizer in obj.organizer_str.split(','):
             organizer = organizer.strip()
@@ -79,7 +79,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
                 )
         return None if data == [] else data
 
-    def GetSponsoredBy(self, obj: Event) -> list | None:
+    def get_sponsored_by(self, obj: Event) -> list | None:
         data = []
         for sponsor in obj.sponsored_by.split(','):
             sponsor = sponsor.strip()
@@ -92,7 +92,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
         return None if data == [] else data
 
 
-    def GetTagsForEvent(self, obj: Event) -> list:
+    def get_tags_for_vent(self, obj: Event) -> list:
         event_type: Attribute = obj.event_type
         main_attribute: Attribute = obj.main_attribute
         additional_attribute: QuerySet[Attribute] = obj.additional_attribute.all()
@@ -101,7 +101,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
         data = [event_type, main_attribute, *additional_attribute, *tags]
         return data
 
-    def GetOrganizer(self, obj: Event) -> dict | None:
+    def get_organizer(self, obj: Event) -> dict | None:
         organizer: QuerySet[Organizer] = obj.organizer.all()
         if obj.director:
             organizers: list[Organizer] = [obj.director, *organizer]
@@ -109,7 +109,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             organizers: QuerySet[organizer] = organizer
         return nested.OrganizerForEventSerializer(organizers, many=True).data
 
-    def GetContacts(self, obj: Event) -> dict:
+    def get_contacts(self, obj: Event) -> dict:
         if obj.contacts
                         and not obj.contacts.contacts_empty():
             return nested.ContactForEventSerializer(obj.contacts).data
@@ -125,7 +125,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
                 'site': None
             }
 
-    def GetSocials(self, obj: Event) -> dict:
+    def get_socials(self, obj: Event) -> dict:
         contact: Contact = obj.contacts
         if not contact or contact.socials_empty():
             return {
@@ -143,8 +143,8 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
     class Meta:
         model = Event        
 
-    def ToInternalValue(self, raw_data):
-        data = super().ToInternalValue(raw_data)
+    def toInternal_value(self, raw_data):
+        data = super().toInternal_value(raw_data)
 
         self.check_place_name_uri_city(data)
 
@@ -158,7 +158,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             timetable_data_1 = json.loads(timetable_data)
 
             try:
-                data['timetable'] = self.fields['timetable'].ToInternalValue(timetable_data_1)
+                data['timetable'] = self.fields['timetable'].toInternal_value(timetable_data_1)
             except serializers.ValidationError as e:
                 raise serializers.ValidationError(
                     {
@@ -168,115 +168,115 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
 
         return data
 
-    def ValidateOrganizer(self, obj: list[str]) -> list[str]:
+    def validate_organizer(self, obj: list[str]) -> list[str]:
         user: User = self.context['request'].user
-        Validated_organizer: list[str] = []
+        validated_organizer: list[str] = []
 
         for i in obj:
             organizer = Organizer.objects.filter(user__custom_id=i).first()
             if organizer and not (hasattr(user, 'to_organizer') and user.to_organizer == organizer):
-                Validated_organizer.append(organizer.user.id)
+                validated_organizer.append(organizer.user.id)
 
-        return Validated_organizer        
+        return validated_organizer        
 
-    def ValidateAdditionalAttribute(self, obj: list[str]) -> list[int]:
-        Validated_additional_attribute: list[int] = []
+    def validate_additional_attribute(self, obj: list[str]) -> list[int]:
+        validated_additional_attribute: list[int] = []
         for i in obj:
             i = i.strip()
             attribute = Attribute.objects.filter(slug__iexact=i).first()
             if attribute:
-                Validated_additional_attribute.append(attribute.id)
-        return Validated_additional_attribute    
+                validated_additional_attribute.append(attribute.id)
+        return validated_additional_attribute    
 
-    def ValidateTags(self, obj: list[str]) -> list[id]:
-        Validated_tags: list[id] = []
+    def validate_tags(self, obj: list[str]) -> list[id]:
+        validated_tags: list[id] = []
         for i in obj:
             i = i.strip()
             tag = Tag.objects.filter(name__iexact=i).first()
             if tag:
-                Validated_tags.append(tag.id)
-        return Validated_tags
+                validated_tags.append(tag.id)
+        return validated_tags
 
-    def SortTimestamp(self, obj: list[dict]) -> list[dict]:
+    def sort_timestamp(self, obj: list[dict]) -> list[dict]:
 
         timetables_sorted: list[dict] = sorted(obj, key=itemgetter('date'))
         for timetable in timetables_sorted:
             timetable['timestamps'] = sorted(timetable['timestamps'], key=itemgetter('start_time'))
         return timetables_sorted
 
-    def Validate(self, attrs):
+    def validate(self, attrs):
 
         user: User = crum.get_current_user()
         if hasattr(user, 'to_organizer') and user.to_organizer:
             attrs['director'] = user.to_organizer
             
         if 'start_date' in attrs and 'end_date' in attrs:
-            self.Validate_date(attrs)
-        timetables: list[dict] = self.SortTimestamp(attrs.get('timetable', []))
+            self.validate_date(attrs)
+        timetables: list[dict] = self.sort_timestamp(attrs.get('timetable', []))
         if timetables:
-            self.ValidateTimetables(attrs, timetables)
+            self.validate_timetables(attrs, timetables)
             attrs['timetable'] = timetables
 
         if 'min_price' in attrs and 'max_price' in attrs:
-            self.Validate_price(attrs)
+            self.validate_price(attrs)
 
         self.main_attribute_in_additionals(attrs)
 
-        return super().Validate(attrs)
+        return super().validate(attrs)
 
 
-    def ValidateTimetables(self, attrs, timestamp):
+    def validate_timetables(self, attrs, timestamp):
         timetables = attrs.get('timetable', [])
         for timetable in timetables:
-            self.Validate_timetable_date(attrs, timetable)
+            self.validate_timetable_date(attrs, timetable)
             if timetable.get('date') == attrs.get('start_date'):
-                self.Validate_timestamp_before_event(attrs, timetable)
+                self.validate_timestamp_before_event(attrs, timetable)
 
             elif timetable.get('date') == attrs.get('end_date'):
-                self.Validate_timestamp_after_event(attrs, timetable)
+                self.validate_timestamp_after_event(attrs, timetable)
 
 
-    def Create(self, Validated_data) -> Event:
+    def create(self, validated_data) -> Event:
         with transaction.atomic():
-            contacts = Validated_data.pop('contacts', None)
+            contacts = validated_data.pop('contacts', None)
             event_contact = None
             if contacts:
                 event_contact, _ = Contact.objects.get_or_create(**contacts)
-            Validated_data['contacts'] = event_contact
+            validated_data['contacts'] = event_contact
 
 
-            timetables = Validated_data.pop('timetable', [])
+            timetables = validated_data.pop('timetable', [])
 
             photo = None
-            photo_data = Validated_data.pop('photo', None)
+            photo_data = validated_data.pop('photo', None)
             if photo_data:
                 photo_data.update({'upload_to': Photo.UploadRoots.EVENT})
-                photo_data.update({'name': Validated_data.get('name', None)})
+                photo_data.update({'name': validated_data.get('name', None)})
                 photo: Photo = Photo.objects.create_or_update(instance=None, **photo_data)
 
-                main_color = Validated_data.get('main_color', None)
+                main_color = validated_data.get('main_color', None)
                 if main_color:
-                    Validated_data['main_color'] = main_color
-            Validated_data['photo'] = photo
+                    validated_data['main_color'] = main_color
+            validated_data['photo'] = photo
 
-            event_organizer = Validated_data.pop('organizer', [])
-            additional_attribute = Validated_data.pop('additional_attribute', [])
-            tags = Validated_data.pop('tags', [])
+            event_organizer = validated_data.pop('organizer', [])
+            additional_attribute = validated_data.pop('additional_attribute', [])
+            tags = validated_data.pop('tags', [])
 
-            is_approved = Validated_data.pop('is_approved', False)
-            Validated_data['status'] = self.CreateEventStatus(is_approved)
+            is_approved = validated_data.pop('is_approved', False)
+            validated_data['status'] = self.create_event_status(is_approved)
 
-            place_data = {'name': Validated_data.pop('place_name', None),
-                          'place_url': Validated_data.pop('place_uri', None),
-                          'city': Validated_data.pop('place_city', None)}
+            place_data = {'name': validated_data.pop('place_name', None),
+                          'place_url': validated_data.pop('place_uri', None),
+                          'city': validated_data.pop('place_city', None)}
             if place_data['name'] 
                                 and place_data['place_url']
                                 and place_data['city']:
                 place, _ = Place.objects.get_or_create(**place_data)
-                Validated_data['place'] = place
+                validated_data['place'] = place
 
             event: Event = Event.objects.create(
-                **Validated_data,
+                **validated_data,
             )
 
             event.organizer.add(*event_organizer)
@@ -298,12 +298,12 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
         return event
 
 
-    def ToRepresentation(self, instance):
+    def to_representation(self, instance):
         return {
             'success': True,
         }
 
-    def CreateEventStatus(self, is_approved):
+    def create_event_status(self, is_approved):
         if is_approved:
             return EventStatus.objects.filter(code=constant.EVENT_STATUS_CONFIRMED_CODE).first()
         return EventStatus.objects.filter(code=constant.EVENT_STATUS_UNCONFIRMED_CODE).first()
