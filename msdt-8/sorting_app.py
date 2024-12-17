@@ -46,6 +46,7 @@ def input_value_in_bounds(left, right, message):
 
 
 def build_input_message(dict_, predict_message):
+    logger.debug('Произошел вызов функции "build_input_message"')
     message = predict_message + "\n\n"
     for i in dict_.keys():
         message += f'Чтобы выбрать "{dict_.get(i)[0]}" - нажмите {i}\n'
