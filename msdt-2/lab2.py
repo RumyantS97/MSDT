@@ -1,6 +1,7 @@
 from enum import Enum
-from parrot import Parrot, ParrotType
 
+# Проблема: Лишние импорты Parrot и ParrotType, так как они уже определены в этом файле.
+# Решение: Удалил импорт ненужных классов.
 
 class ParrotType(Enum):
     EUROPEAN = 1
@@ -16,8 +17,11 @@ class Parrot:
         self._voltage = voltage
         self._nailed = nailed
 
+    # Проблема: Нарушение принципа SRP (Single Responsibility Principle) - метод содержит разную логику в зависимости от типа попугая.
+    # Решение: Логику можно вынести в отдельные подклассы для каждого типа попугая.
     def speed(self):
-        match self._type:
+        match self._type:  # Проблема: Использование match требует Python 3.10+, что снижает совместимость.
+            # Решение: Можно заменить на if-elif для более широкой поддержки.
             case ParrotType.EUROPEAN:
                 return self._base_speed()
             case ParrotType.AFRICAN:
@@ -25,6 +29,8 @@ class Parrot:
             case ParrotType.NORWEGIAN_BLUE:
                 return 0 if self._nailed else self._compute_base_speed_for_voltage(self._voltage)
 
+    # Проблема: Нарушение DRY - метод cry также содержит дублирующуюся логику для типов попугаев.
+    # Решение: Использовать паттерн 'Стратегия' или создать подклассы для каждого типа.
     def cry(self):
         match self._type:
             case ParrotType.EUROPEAN:
@@ -35,15 +41,15 @@ class Parrot:
                 return "Bzzzzzz" if self._voltage > 0 else "..."
 
     def _compute_base_speed_for_voltage(self, voltage):
-        return min([24.0, voltage * self._base_speed()])
+        # Проблема: Лишний список в функции min.
+        # Решение: Убрал список и передал аргументы напрямую.
+        return min(24.0, voltage * self._base_speed())
 
     def _load_factor(self):
         return 9.0
 
     def _base_speed(self):
         return 12.0
-
-
 
 
 def test_speed_of_european_parrot():
