@@ -118,24 +118,24 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             return nested.ContactForEventSerializer(obj.director.contacts).data
         else:
             return {
-                'contact': None,
-                'phone': None,
-                'email': None,
-                'site': None
+                'contact'   : None,
+                'phone'     : None,
+                'email'     : None,
+                'site'      : None
             }
 
     def get_socials(self, obj: Event) -> dict:
         contact: Contact = obj.contacts
         if not contact or contact.socials_empty():
             return {
-                'vk': None,
-                'x_site': None,
-                'instagram': None,
-                'telegram': None,
-                'zen': None,
-                'youtube': None,
-                'rutube': None,
-                'facebook': None
+                'vk'        : None,
+                'x_site'    : None,
+                'instagram' : None,
+                'telegram'  : None,
+                'zen'       : None,
+                'youtube'   : None,
+                'rutube'    : None,
+                'facebook'  : None
             }
         else:
             return nested.SocialsForEventSerializer(contact).data
