@@ -29,7 +29,8 @@ logger.setLevel(logging.INFO)
 
 def lambda_handler(event: Dict[str, Any], context: Any) -> None:
     """
-    Handles incoming events and extracts Textract job information from the SNS message.
+    Handles incoming events and extracts 
+    Textract job information from the SNS message.
     """
 
     print("Received event: " + json.dumps(event))
@@ -171,7 +172,11 @@ def get_text(result: Dict, blocks_map: Dict[str, Dict]) -> str:
     return text
 
 
-def find_key_value_in_range(response: Dict, top: float, bottom: float, this_page: int) -> Dict[str, str]:
+def find_key_value_in_range(
+        response: Dict,
+        top: float,
+        bottom: float,
+        this_page: int) -> Dict[str, str]:
     """
     Find key-value pairs within a specified vertical range on a page.
     """
@@ -183,7 +188,9 @@ def find_key_value_in_range(response: Dict, top: float, bottom: float, this_page
         if block['Page'] == this_page:
             block_id = block['id']
             block_map[block_id] = block
-            if block['BlockType'] == "KEY_VALUE_SET" or block['BlockType'] == 'KEY' or block['BlockType'] == 'VALUE':
+            if block['BlockType'] == "KEY_VALUE_SET" or block[
+                'BlockType'
+            ] == 'KEY' or block['BlockType'] == 'VALUE':
                 if 'KEY' in block['EntityTypes']:
                     key_map[block_id] = block
                 else:
@@ -195,12 +202,16 @@ def find_key_value_in_range(response: Dict, top: float, bottom: float, this_page
         key = get_text(key_block, block_map)
         val = get_text(value_block, block_map)
         if (value_block['Geometry']['BoundingBox']['Top'] >= top and
-                value_block['Geometry']['BoundingBox']['Top']+value_block['Geometry']['BoundingBox']['Height'] <= bottom):
+                value_block['Geometry']['BoundingBox'][
+                    'Top'
+        ]+value_block['Geometry']['BoundingBox']['Height'] <= bottom):
             kv_pair[key] = val
     return kv_pair
 
 
-def get_rows_columns_map(table_result: Dict, blocks_map: Dict[str, Dict]) -> Dict[int, Dict[int, str]]:
+def get_rows_columns_map(
+        table_result: Dict,
+        blocks_map: Dict[str, Dict]) -> Dict[int, Dict[int, str]]:
     """
     Map rows and columns of a table to their respective text content.
     """
@@ -218,7 +229,11 @@ def get_rows_columns_map(table_result: Dict, blocks_map: Dict[str, Dict]) -> Dic
     return rows
 
 
-def get_tables_from_json_in_range(response: Dict, top: float, bottom: float, this_page: int) -> Optional[List[List[str]]]:
+def get_tables_from_json_in_range(
+        response: Dict,
+        top: float,
+        bottom: float,
+        this_page: int) -> Optional[List[List[str]]]:
     """
     Retrieve tables from a JSON response within a specified range.
     """
@@ -250,7 +265,11 @@ def get_tables_from_json_in_range(response: Dict, top: float, bottom: float, thi
     return all_tables
 
 
-def get_tables_coord_inrange(response: Dict, top: float, bottom: float, this_page: int) -> Optional[List[Dict]]:
+def get_tables_coord_inrange(
+        response: Dict,
+        top: float,
+        bottom: float,
+        this_page: int) -> Optional[List[Dict]]:
     """
     Retrieve coordinates of tables within a specified range.
     """
@@ -280,15 +299,24 @@ def box_with_in_box(box1: Dict, box2: Dict) -> bool:
     """
     Check if one bounding box is completely within another.
     """
-    if box1['Top'] >= box2['Top'] and box1['Left'] >= box2['Left'] and box1['Top']+box1['Height'] <= box2['Top']+box2['Height'] and box1['Left']+box1['Width'] <= box2['Left']+box2['Width']:
+    if box1['Top'] >= box2['Top'] and box1['Left'] >= box2[
+        'Left'
+    ] and box1['Top']+box1['Height'] <= box2['Top']+box2[
+        'Height'
+    ] and box1['Left']+box1['Width'] <= box2['Left']+box2['Width']:
         return True
     else:
         return False
 
 
-def find_key_value_in_range_not_in_table(response: Dict, top: float, bottom: float, this_page: int) -> Dict[str, str]:
+def find_key_value_in_range_not_in_table(
+        response: Dict,
+        top: float,
+        bottom: float,
+        this_page: int) -> Dict[str, str]:
     """
-    Find key-value pairs in a specified vertical range that are not part of a table.
+    Find key-value pairs in a specified vertical
+    range that are not part of a table.
     """
     blocks = response['Blocks']
     key_map = {}
@@ -298,7 +326,9 @@ def find_key_value_in_range_not_in_table(response: Dict, top: float, bottom: flo
         if block['Page'] == this_page:
             block_id = block['id']
             block_map[block_id] = block
-            if block['BlockType'] == "KEY_VALUE_SET" or block['BlockType'] == 'KEY' or block['BlockType'] == 'VALUE':
+            if block['BlockType'] == "KEY_VALUE_SET" or block[
+                'BlockType'
+            ] == 'KEY' or block['BlockType'] == 'VALUE':
                 if 'KEY' in block['EntityTypes']:
                     key_map[block_id] = block
                 else:
@@ -313,7 +343,9 @@ def find_key_value_in_range_not_in_table(response: Dict, top: float, bottom: flo
         key = get_text(key_block, block_map)
         val = get_text(value_block, block_map)
         if (value_block['Geometry']['BoundingBox']['Top'] >= top and
-                value_block['Geometry']['BoundingBox']['Top']+value_block['Geometry']['BoundingBox']['Height'] <= bottom):
+                value_block['Geometry']['BoundingBox'][
+                    'Top'
+        ]+value_block['Geometry']['BoundingBox']['Height'] <= bottom):
 
             kv_overlap_table_list = []
             if all_tables_coord is not None:
@@ -327,16 +359,22 @@ def find_key_value_in_range_not_in_table(response: Dict, top: float, bottom: flo
     return kv_pair
 
 
-def parse_json_in_order_per_page(response: Dict[str, Any], this_page: int) -> List[Dict[str, Any]]:
+def parse_json_in_order_per_page(
+        response: Dict[str, Any],
+        this_page: int) -> List[Dict[str, Any]]:
     """
-    Parses the Textract response for a specific page and returns the text in order.
+    Parses the Textract response for 
+    a specific page and returns the text in order.
     """
     text_list = []
     id_list_kv_table = []
     for block in response['Blocks']:
         if block['Page'] == this_page:
-            if block['BlockType'] == 'TABLE' or block['BlockType'] == 'CELL' or \
-               block['BlockType'] == 'KEY_VALUE_SET' or block['BlockType'] == 'KEY' or block['BlockType'] == 'VALUE' or  \
+            if block['BlockType'] == 'TABLE' or\
+               block['BlockType'] == 'CELL' or \
+               block['BlockType'] == 'KEY_VALUE_SET' or\
+               block['BlockType'] == 'KEY' or \
+               block['BlockType'] == 'VALUE' or  \
                block['BlockType'] == 'SELECTION_ELEMENT':
 
                 kv_id = block['id']
@@ -372,10 +410,18 @@ def parse_json_in_order_per_page(response: Dict[str, Any], this_page: int) -> Li
                 set_all_kv_table_id = set(id_list_kv_table)
                 if len(set_line_id.intersection(set_all_kv_table_id)) == 0:
                     thisDict = {'Line': block['Text'],
-                                'Left': block['Geometry']['BoundingBox']['Left'],
-                                'Top': block['Geometry']['BoundingBox']['Top'],
-                                'Width': block['Geometry']['BoundingBox']['Width'],
-                                'Height': block['Geometry']['BoundingBox']['Height']}
+                                'Left': block['Geometry'][
+                                    'BoundingBox'
+                    ]['Left'],
+                        'Top': block['Geometry'][
+                            'BoundingBox'
+                    ]['Top'],
+                        'Width': block['Geometry'][
+                            'BoundingBox'
+                    ]['Width'],
+                        'Height': block['Geometry'][
+                            'BoundingBox'
+                    ]['Height']}
                     text_list.append(thisDict)
 
     final_JSON = []
@@ -388,7 +434,8 @@ def parse_json_in_order_per_page(response: Dict[str, Any], this_page: int) -> Li
         this_text_table = get_tables_from_json_in_range(
             response, this_top, this_bottom, this_page)
         final_JSON.append(
-            {this_text: {'KeyValue': this_text_KV, 'Tables': this_text_table}})
+            {this_text: {'KeyValue': this_text_KV,
+                         'Tables': this_text_table}})
 
     if (len(text_list) > 0):
         last_text = text_list[len(text_list)-1]['Line']
@@ -399,7 +446,8 @@ def parse_json_in_order_per_page(response: Dict[str, Any], this_page: int) -> Li
         this_text_table = get_tables_from_json_in_range(
             response, last_top, last_bottom, this_page)
         final_JSON.append(
-            {last_text: {'KeyValue': this_text_KV, 'Tables': this_text_table}})
+            {last_text: {'KeyValue': this_text_KV,
+                         'Tables': this_text_table}})
 
     return final_JSON
 
@@ -454,8 +502,12 @@ def write_to_dynamo_db(
             print("Table successfully created. Item count is: " +
                   str(table.item_count))
     except ClientError as e:
-        if e.response['Error']['Code'] in ["ThrottlingException", "ProvisionedThroughputExceededException"]:
-            msg = f"DynamoDB ] Write Failed from DynamoDB, Throttling Exception [{
+        if e.response['Error']['Code'] in [
+            "ThrottlingException",
+            "ProvisionedThroughputExceededException"
+        ]:
+            msg = f"DynamoDB ] Write Failed from DynamoDB,"
+            f"Throttling Exception [{
                 e}] [{traceback.format_exc()}]"
             logging.warning(msg)
             raise e
@@ -483,8 +535,12 @@ def write_to_dynamo_db(
         }
         )
     except ClientError as e:
-        if e.response['Error']['Code'] in ["ThrottlingException", "ProvisionedThroughputExceededException"]:
-            msg = f"DynamoDB ] Write Failed from DynamoDB, Throttling Exception [{
+        if e.response['Error']['Code'] in [
+            "ThrottlingException",
+            "ProvisionedThroughputExceededException"
+        ]:
+            msg = f"DynamoDB ] Write Failed from DynamoDB,"
+            f"Throttling Exception [{
                 e}] [{traceback.format_exc()}]"
             logging.warning(msg)
             raise e
@@ -504,7 +560,8 @@ def write_to_dynamo_db(
 
 def dict_to_item(raw: Union[Dict, str, int]) -> Union[Dict, List[Dict]]:
     """
-    Convert a Python dictionary or primitive types into a DynamoDB-compatible format.
+    Convert a Python dictionary or primitive types
+    into a DynamoDB-compatible format.
     """
     if type(raw) is dict:
         resp = {}
@@ -552,7 +609,10 @@ def get_client(name: str, aws_region: Optional[str] = None) -> boto3.client:
         return boto3.client(name, config=config)
 
 
-def get_resource(name: str, aws_region: Optional[str] = None) -> boto3.resources.base.ServiceResource:
+def get_resource(
+        name: str,
+        aws_region: Optional[str] = None
+) -> boto3.resources.base.ServiceResource:
     """
     Get a Boto3 resource with optional region configuration.
     """
