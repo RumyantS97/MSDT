@@ -1,33 +1,33 @@
-from logging_config import logger
+from logging_config import logger, DEBUG_EX
 
 
 def less_than(a, b):
-    logger.log(5, 'Произошел вызов функции "less_than"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "less_than"')
     return a < b
 
 
 def greater_than(a, b):
-    logger.log(5, 'Произошел вызов функции "greater_than"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "greater_than"')
     return a > b
 
 
 def equal_to(a, b):
-    logger.log(5, 'Произошел вызов функции "equal_to"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "equal_to"')
     return a == b
 
 
 def not_equal_to(a, b):
-    logger.log(5, 'Произошел вызов функции "not_equal_to"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "not_equal_to"')
     return a != b
 
 
 def less_than_or_equal_to(a, b):
-    logger.log(5, 'Произошел вызов функции "less_than_or_equal_to"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "less_than_or_equal_to"')
     return a <= b
 
 
 def greater_than_or_equal_to(a, b):
-    logger.log(5, 'Произошел вызов функции "greater_than_or_equal_to"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "greater_than_or_equal_to"')
     return a >= b
 
 

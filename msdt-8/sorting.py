@@ -1,6 +1,6 @@
 import random
 import time
-from logging_config import logger
+from logging_config import logger, DEBUG_EX
 from custom_operators import operator_gt, operator_le, operator_lt, \
     operator_ge
 
@@ -142,12 +142,12 @@ def comb_sort(arr_, order_):
 
 # Функция вызова quick_sort. Используется чтобы debug log не учитывал рекурсию
 def quicksort_exec(arr_, order_):
-    logger.debug('Произошел вызов функции "quicksort"')
+    logger.debug('Произошел вызов функции "quicksort_exec"')
     return quicksort(arr_, order_)
 
 
 def quicksort(arr_, order_):
-    logger.log(5, 'Произошел вызов функции "quicksort"')
+    logger.log(DEBUG_EX, 'Произошел вызов функции "quicksort"')
     operator_lefter = operator_lt if order_ else operator_gt
     operator_righter = operator_gt if order_ else operator_lt
     if len(arr_) <= 1:

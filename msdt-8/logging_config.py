@@ -3,6 +3,7 @@ from datetime import datetime
 
 # Новый уровень, т.к. логи о вызовах методов операторов засоряют лог
 logging.addLevelName(5, 'DEBUG_EX')
+DEBUG_EX = 5
 logging.basicConfig(
     filename=f'Log_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log',
     level=logging.DEBUG,
