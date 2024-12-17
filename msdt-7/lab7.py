@@ -77,7 +77,6 @@ async def main():
         generate_server_report(SERVERS),
         monitor_logs_on_servers(servers),
     )
-
     print("\nМониторинг завершен!")
 
 
