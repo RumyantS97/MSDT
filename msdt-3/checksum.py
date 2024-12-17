@@ -1,6 +1,10 @@
 import json
 import hashlib
+import csv
+import re
 from typing import List
+
+import constants
 
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
@@ -34,4 +38,38 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant": 18,
+        "checksum": checksum
+    }
+    with open(constants.RESULT, 'w', encoding='utf-8') as data:
+        json.dump(result, data)
+
+
+def csv_read(path: str) -> list[list[str]]:
+    """
+    Чтение csv файла
+    """
+    with open(path, 'r', encoding='utf-16') as data:
+        return [row for row in csv.reader(data, delimiter=";")][1:]
+    
+
+def is_valid(regex: dict, row: list[str]) -> bool:
+    """
+    Проверяет, проходит ли строка регулярные выражения
+    """
+    return all(re.match(regex[i], data) for i, data in zip(regex.keys(), row))
+
+
+def invalid_rows(regex: dict, data: list[list[str]]) -> list[int]:
+    """
+    Находит индексы невалидных строк
+    """
+    return [i for i, row in enumerate(data) if not is_valid(regex, row)]
+
+
+if __name__ == "__main__":
+    data = csv_read(constants.CSV)
+    rows = invalid_rows(constants.REGEX, data)
+    checksum = calculate_checksum(rows)
+    serialize_result(18, checksum)
