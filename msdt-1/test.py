@@ -16,14 +16,9 @@ import datetime
 import json
 import logging
 import os
-import time
 import traceback
-import urllib.parse
-from urllib.parse import unquote
 
 import boto3
-import pandas as pd
-import numpy as np
 from botocore.client import Config
 from botocore.exceptions import ClientError
 
@@ -41,24 +36,24 @@ def lambda_handler(event, context):
 
         request = {}
     
-        request["jobId"] = message['JobId']
+        request["job_id"] = message['job_id']
         request["jobTag"] = message['JobTag']
         request["jobStatus"] = message['Status']
-        request["jobAPI"] = message['API']
-        request["bucketName"] = message['DocumentLocation']['S3Bucket']
-        request["objectName"] = message['DocumentLocation']['S3ObjectName']
-        request["outputBucketName"] = os.environ['OUTPUT_BUCKET']
+        request["job_API"] = message['API']
+        request["bucket_name"] = message['DocumentLocation']['S3Bucket']
+        request["object_name"] = message['DocumentLocation']['S3object_name']
+        request["output_bucket_name"] = os.environ['OUTPUT_BUCKET']
         
-        print("Full path of input file is {}/{}".format(request["bucketName"], request["objectName"]))
+        print("Full path of input file is {}/{}".format(request["bucket_name"], request["object_name"]))
     
-        processRequest(request)
+        process_request(request)
         
-def getJobResults(api, jobId):
-    texttract_client = getClient('textract', 'us-east-1')
+def get_job_results(api, job_id):
+    texttract_client = get_client('textract', 'us-east-1')
     blocks = []
     analysis = {}
     response = texttract_client.get_document_analysis(
-        JobId=jobId
+        job_id=job_id
     )
     analysis = copy.deepcopy(response)
     while True:
@@ -68,41 +63,41 @@ def getJobResults(api, jobId):
             break
         next_token = response["NextToken"]
         response = texttract_client.get_document_analysis(
-            JobId=jobId,
+            job_id=job_id,
             NextToken=next_token
         )
     analysis.pop("NextToken", None)
     analysis["Blocks"] = blocks
     
-    Total_Pages=response['DocumentMetadata']['Pages']
-    finalJSON_allpage=[]
-    print(Total_Pages)
-    for i in range(Total_Pages):
-        thisPage=i+1
-        thisPage_json=parsejson_inorder_perpage(analysis,thisPage)
-        finalJSON_allpage.append({'Page':thisPage,'Content':thisPage_json})
-        print(f"Page {thisPage} parsed")
-    return finalJSON_allpage
+    total_pages=response['DocumentMetadata']['Pages']
+    final_JSON_allpage=[]
+    print(total_pages)
+    for i in range(total_pages):
+        this_page=i+1
+        this_page_json=parse_json_in_order_per_page(analysis,this_page)
+        final_JSON_allpage.append({'Page':this_page,'Content':this_page_json})
+        print(f"Page {this_page} parsed")
+    return final_JSON_allpage
     
     
-def processRequest(request):
+def process_request(request):
     
-    s3_client = getClient('s3', 'us-east-1')
+    s3_client = get_client('s3', 'us-east-1')
     
     output = ""
 
     print("Request : {}".format(request))
 
-    jobId = request['jobId']
-    documentId = request['jobTag']
+    job_id = request['job_id']
+    documentid = request['jobTag']
     jobStatus = request['jobStatus']
-    jobAPI = request['jobAPI']
-    bucketName = request['bucketName']
-    outputBucketName = request['outputBucketName']
-    objectName = request['objectName']
+    job_API = request['job_API']
+    bucket_name = request['bucket_name']
+    output_bucket_name = request['output_bucket_name']
+    object_name = request['object_name']
     
     
-    directory = objectName.split('/')
+    directory = object_name.split('/')
 
     upload_path = ''
     for subdirectory in directory:
@@ -115,28 +110,28 @@ def processRequest(request):
     
     upload_path = upload_path + file_name_no_ext + '/textract/'
     
-    finalJSON_allpage = getJobResults(jobAPI, jobId)
+    final_JSON_allpage = get_job_results(job_API, job_id)
     
-    analyses_bucket_name = outputBucketName
-    analyses_bucket_key = "{}".format(objectName.replace('.PDF', '.json'))
+    analyses_bucket_name = output_bucket_name
+    analyses_bucket_key = "{}".format(object_name.replace('.PDF', '.json'))
     s3_client.put_object(
         Bucket=analyses_bucket_name,  
         Key=upload_path + analyses_bucket_key,
-        Body=json.dumps(finalJSON_allpage).encode('utf-8')
+        Body=json.dumps(final_JSON_allpage).encode('utf-8')
     )
     
-    _writeToDynamoDB("pdf-to-json", objectName, bucketName + '/' + objectName, finalJSON_allpage)
+    write_to_dynamo_db("pdf-to-json", object_name, bucket_name + '/' + object_name, final_JSON_allpage)
     
     return {
         'statusCode': 200,
-        'body': json.dumps(finalJSON_allpage)
+        'body': json.dumps(final_JSON_allpage)
     }
 
 
 def find_value_block(key_block, value_map):
     for relationship in key_block['Relationships']:
         if relationship['Type'] == 'VALUE':
-            for value_id in relationship['Ids']:
+            for value_id in relationship['ids']:
                 value_block = value_map[value_id]
     return value_block
 
@@ -145,7 +140,7 @@ def get_text(result, blocks_map):
     if 'Relationships' in result:
         for relationship in result['Relationships']:
             if relationship['Type'] == 'CHILD':
-                for child_id in relationship['Ids']:
+                for child_id in relationship['ids']:
                     word = blocks_map[child_id]
                     if word['BlockType'] == 'WORD':
                         text += word['Text'] + ' '
@@ -155,15 +150,15 @@ def get_text(result, blocks_map):
                                 
     return text
 
-def find_Key_value_inrange(response,top,bottom,thisPage) :
+def find_key_value_in_range(response,top,bottom,this_page) :
     
     blocks=response['Blocks']
     key_map = {}
     value_map = {}
     block_map = {}
     for block in blocks:
-        if block['Page'] == thisPage:  
-            block_id = block['Id']
+        if block['Page'] == this_page:  
+            block_id = block['id']
             block_map[block_id] = block
             if block['BlockType'] == "KEY_VALUE_SET" or block['BlockType']=='KEY' or block['BlockType']=='VALUE':
                 if 'KEY' in block['EntityTypes']:
@@ -186,7 +181,7 @@ def get_rows_columns_map(table_result, blocks_map):
     rows = {}
     for relationship in table_result['Relationships']:
         if relationship['Type'] == 'CHILD':
-            for child_id in relationship['Ids']:
+            for child_id in relationship['ids']:
                 cell = blocks_map[child_id]
                 if cell['BlockType'] == 'CELL':
                     row_index = cell['RowIndex']
@@ -196,13 +191,13 @@ def get_rows_columns_map(table_result, blocks_map):
                     rows[row_index][col_index] = get_text(cell, blocks_map)
     return rows
 
-def get_tables_fromJSON_inrange(response,top,bottom,thisPage):  
+def get_tables_from_json_in_range(response,top,bottom,this_page):  
     blocks=response['Blocks']
     blocks_map = {}
     table_blocks = []
     for block in blocks:
-        if block['Page'] == thisPage:
-            blocks_map[block['Id']] = block
+        if block['Page'] == this_page:
+            blocks_map[block['id']] = block
             if block['BlockType'] == "TABLE":
                 if ( block['Geometry']['BoundingBox']['Top']>=top and   
                        block['Geometry']['BoundingBox']['Top']+
@@ -212,25 +207,25 @@ def get_tables_fromJSON_inrange(response,top,bottom,thisPage):
     if len(table_blocks) <= 0:
         return 
     
-    AllTables=[]
+    all_tables=[]
     for table_result in table_blocks:
-        tableMatrix=[]
+        table_matrix=[]
         rows=get_rows_columns_map(table_result, blocks_map)
         for row_index, cols in rows.items():
             thisRow=[]
             for col_index, text in cols.items():
                 thisRow.append(text)
-            tableMatrix.append(thisRow)
-        AllTables.append(tableMatrix)
-    return AllTables
+            table_matrix.append(thisRow)
+        all_tables.append(table_matrix)
+    return all_tables
     
-def get_tables_coord_inrange(response,top,bottom,thisPage):  
+def get_tables_coord_inrange(response,top,bottom,this_page):  
     blocks=response['Blocks']
     blocks_map = {}
     table_blocks = []
     for block in blocks:
-        if block['Page'] == thisPage:
-            blocks_map[block['Id']] = block
+        if block['Page'] == this_page:
+            blocks_map[block['id']] = block
             if block['BlockType'] == "TABLE":
                 if ( block['Geometry']['BoundingBox']['Top']>=top and   
                        block['Geometry']['BoundingBox']['Top']+
@@ -240,26 +235,26 @@ def get_tables_coord_inrange(response,top,bottom,thisPage):
     if len(table_blocks) <= 0:
         return 
     
-    AllTables_coord=[]
+    all_tables_coord=[]
     for table_result in table_blocks:
         
-        AllTables_coord.append(table_result['Geometry']['BoundingBox'])
-    return AllTables_coord
+        all_tables_coord.append(table_result['Geometry']['BoundingBox'])
+    return all_tables_coord
     
-def box_within_box(box1,box2):
+def box_with_in_box(box1,box2):
     if box1['Top']>= box2['Top'] and box1['Left']>=box2['Left'] and box1['Top']+box1['Height']<=box2['Top']+box2['Height'] and box1['Left']+box1['Width']<=box2['Left']+box2['Width'] : 
         return True 
     else:
         return False 
     
-def find_Key_value_inrange_notInTable(response,top,bottom,thisPage) :
+def find_key_value_in_range_not_in_table(response,top,bottom,this_page) :
     blocks=response['Blocks']
     key_map = {}
     value_map = {}
     block_map = {}
     for block in blocks:
-        if block['Page'] == thisPage:
-            block_id = block['Id']
+        if block['Page'] == this_page:
+            block_id = block['id']
             block_map[block_id] = block
             if block['BlockType'] == "KEY_VALUE_SET" or block['BlockType']=='KEY' or block['BlockType']=='VALUE':
                 if 'KEY' in block['EntityTypes']:
@@ -267,7 +262,7 @@ def find_Key_value_inrange_notInTable(response,top,bottom,thisPage) :
                 else:
                     value_map[block_id] = block
      
-    AllTables_coord=get_tables_coord_inrange(response,top,bottom,thisPage)
+    all_tables_coord=get_tables_coord_inrange(response,top,bottom,this_page)
              
     kv_pair={}
     for block_id, key_block in key_map.items():
@@ -278,84 +273,84 @@ def find_Key_value_inrange_notInTable(response,top,bottom,thisPage) :
              value_block['Geometry']['BoundingBox']['Top']+value_block['Geometry']['BoundingBox']['Height']<=bottom ) :
             
             kv_overlap_table_list=[]
-            if AllTables_coord is not None: 
-                for table_coord in AllTables_coord:
-                    kv_overlap_table_list.append(box_within_box(value_block['Geometry']['BoundingBox'],table_coord))
+            if all_tables_coord is not None: 
+                for table_coord in all_tables_coord:
+                    kv_overlap_table_list.append(box_with_in_box(value_block['Geometry']['BoundingBox'],table_coord))
                 if sum(kv_overlap_table_list) ==0:
                     kv_pair[key]=val
             else: 
                 kv_pair[key]=val
     return kv_pair
     
-def parsejson_inorder_perpage(response,thisPage):
-        TextList=[]
-        ID_list_KV_Table=[]
+def parse_json_in_order_per_page(response,this_page):
+        text_list=[]
+        id_list_kv_table=[]
         for block in response['Blocks']:
-            if block['Page'] == thisPage:
+            if block['Page'] == this_page:
                 if block['BlockType']=='TABLE' or block['BlockType']=='CELL' or \
                    block['BlockType']=='KEY_VALUE_SET' or block['BlockType']=='KEY' or block['BlockType']=='VALUE' or  \
                    block['BlockType']=='SELECTION_ELEMENT' :
 
-                    kv_id=block['Id']
-                    if kv_id not in ID_list_KV_Table:
-                        ID_list_KV_Table.append(kv_id)
+                    kv_id=block['id']
+                    if kv_id not in id_list_kv_table:
+                        id_list_kv_table.append(kv_id)
 
                     child_idlist=[]
                     if 'Relationships' in block.keys():
                         for child in block['Relationships']:
-                            child_idlist.append(child['Ids'])
+                            child_idlist.append(child['ids'])
                         flat_child_idlist = [item for sublist in child_idlist for item in sublist]
                         for childid in flat_child_idlist:
-                            if childid not in ID_list_KV_Table:
-                                ID_list_KV_Table.append(childid)
-        TextList=[]
+                            if childid not in id_list_kv_table:
+                                id_list_kv_table.append(childid)
+        text_list=[]
         for block in response['Blocks']:
-            if block['Page'] == thisPage:
+            if block['Page'] == this_page:
                 if block['BlockType'] == 'LINE':
 
                     thisline_idlist=[]
-                    thisline_idlist.append(block['Id'])
+                    thisline_idlist.append(block['id'])
                     child_idlist=[]
                     if 'Relationships' in block.keys():
                         for child in block['Relationships']:
-                            child_idlist.append(child['Ids'])
+                            child_idlist.append(child['ids'])
                         flat_child_idlist = [item for sublist in child_idlist for item in sublist]
                         for childid in flat_child_idlist:
                             thisline_idlist.append(childid)
 
-                    setLineID=set(thisline_idlist)
-                    setAllKVTableID=set(ID_list_KV_Table)
-                    if len(setLineID.intersection(setAllKVTableID)) == 0:
+                    set_line_id=set(thisline_idlist)
+                    set_all_kv_table_id=set(id_list_kv_table)
+                    if len(set_line_id.intersection(set_all_kv_table_id)) == 0:
                         thisDict={'Line':block['Text'],
                                   'Left':block['Geometry']['BoundingBox']['Left'],
                                   'Top':block['Geometry']['BoundingBox']['Top'],
                                   'Width':block['Geometry']['BoundingBox']['Width'],
                                   'Height':block['Geometry']['BoundingBox']['Height']}
-                        TextList.append(thisDict)
+                        text_list.append(thisDict)
 
-        finalJSON=[]
-        for i in range(len(TextList)-1):
-            thisText=TextList[i]['Line']
-            thisTop=TextList[i]['Top']
-            thisBottom=TextList[i+1]['Top']+TextList[i+1]['Height']
-            thisText_KV=find_Key_value_inrange(response,thisTop,thisBottom,thisPage)
-            thisText_Table=get_tables_fromJSON_inrange(response,thisTop,thisBottom,thisPage)
-            finalJSON.append({thisText:{'KeyValue':thisText_KV,'Tables':thisText_Table}})
+        final_JSON=[]
+        for i in range(len(text_list)-1):
+            this_text=text_list[i]['Line']
+            this_top=text_list[i]['Top']
+            this_bottom=text_list[i+1]['Top']+text_list[i+1]['Height']
+            this_text_KV=find_key_value_in_range(response,this_top,this_bottom,this_page)
+            this_text_table=get_tables_from_json_in_range(response,this_top,this_bottom,this_page)
+            final_JSON.append({this_text:{'KeyValue':this_text_KV,'Tables':this_text_table}})
 
-        if (len(TextList) > 0):
-            lastText=TextList[len(TextList)-1]['Line']
-            lastTop=TextList[len(TextList)-1]['Top']
-            lastBottom=1
-            thisText_KV=find_Key_value_inrange(response,lastTop,lastBottom,thisPage)
-            thisText_Table=get_tables_fromJSON_inrange(response,lastTop,lastBottom,thisPage)
-            finalJSON.append({lastText:{'KeyValue':thisText_KV,'Tables':thisText_Table}})
+        if (len(text_list) > 0):
+            last_text=text_list[len(text_list)-1]['Line']
+            last_top=text_list[len(text_list)-1]['Top']
+            last_bottom=1
+            this_text_KV=find_key_value_in_range(response,last_top,last_bottom,this_page)
+            this_text_table=get_tables_from_json_in_range(response,last_top,last_bottom,this_page)
+            final_JSON.append({last_text:{'KeyValue':this_text_KV,'Tables':this_text_table}})
 
-        return finalJSON
+        return final_JSON
 
 
-def _writeToDynamoDB(dd_table_name, Id, fullFilePath, fullPdfJson):
-    dynamodb = getResource('dynamodb')
-    dynamodb_client = getClient('dynamodb')
+def write_to_dynamo_db(dd_table_name, id, full_file_path, full_pdf_json):
+    dynamodb = get_resource('dynamodb')
+    dynamodb_client = get_client('dynamodb')
     
     dd_table_name = dd_table_name \
                     .replace(" ", "-") \
@@ -378,22 +373,22 @@ def _writeToDynamoDB(dd_table_name, Id, fullFilePath, fullPdfJson):
 
         if dd_table_name not in existing_tables:
             table = dynamodb.create_table(
-                TableName=dd_table_name,
-                KeySchema=[
+                table_name=dd_table_name,
+                key_schema=[
                     {
-                        'AttributeName': 'Id',
+                        'AttributeName': 'id',
                         'KeyType': 'HASH'
                     }
                 ],
-                AttributeDefinitions=[
+                attribute_definitions=[
                     {
-                        'AttributeName': 'Id',
+                        'AttributeName': 'id',
                         'AttributeType': 'S'
                     },
                 ],
-                BillingMode='PAY_PER_REQUEST',
+                billing_mode='PAY_PER_REQUEST',
             )
-            table.meta.client.get_waiter('table_exists').wait(TableName=dd_table_name)
+            table.meta.client.get_waiter('table_exists').wait(table_name=dd_table_name)
             print("Table successfully created. Item count is: " + str(table.item_count))
     except ClientError as e:
         if e.response['Error']['Code'] in ["ThrottlingException", "ProvisionedThroughputExceededException"]:
@@ -415,10 +410,10 @@ def _writeToDynamoDB(dd_table_name, Id, fullFilePath, fullPdfJson):
     try :
         table.put_item(Item=
             {
-                'Id': Id, 
-                'FilePath': fullFilePath, 
-                'PdfJsonRegularFormat': str(fullPdfJson),
-                'PdfJsonDynamoFormat': fullPdfJson,
+                'id': id, 
+                'FilePath': full_file_path, 
+                'PdfJsonRegularFormat': str(full_pdf_json),
+                'PdfJsonDynamoFormat': full_pdf_json,
                 'DateTime': datetime.datetime.utcnow().isoformat(),
             }
         )
@@ -470,25 +465,25 @@ def dict_to_item(raw):
         }
 
            
-def getClient(name, awsRegion=None):
+def get_client(name, aws_region=None):
     config = Config(
         retries = dict(
             max_attempts = 30
         )
     )
-    if(awsRegion):
-        return boto3.client(name, region_name=awsRegion, config=config)
+    if(aws_region):
+        return boto3.client(name, region_name=aws_region, config=config)
     else:
         return boto3.client(name, config=config) 
             
-def getResource(name, awsRegion=None):
+def get_resource(name, aws_region=None):
     config = Config(
         retries = dict(
             max_attempts = 30
         )
     )
 
-    if(awsRegion):
-        return boto3.resource(name, region_name=awsRegion, config=config)
+    if(aws_region):
+        return boto3.resource(name, region_name=aws_region, config=config)
     else:
         return boto3.resource(name, config=config)
