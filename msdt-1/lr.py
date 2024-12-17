@@ -5,7 +5,7 @@ from operator import itemgetter
 
 User = get_user_model()
 
-class even_list_serializer(mixins.ExtendedModelSerializer,
+class EvenListSerializer(mixins.ExtendedModelSerializer,
                           mixins.SerializerWithPhoto):       
     photo_url = 'events'
     is_source = False
@@ -17,7 +17,7 @@ class even_list_serializer(mixins.ExtendedModelSerializer,
     week_day = serializers.SerializerMethodField()
     photo_url = 'events'
 
-    class meta:
+    class Meta:
         model = Event
         fields = (
             'id',
@@ -140,7 +140,7 @@ class EventRetrieveSerializer(mixins.ExtendedModelSerializer, mixins.SerializerW
             }
         else:
             return nested.SocialsForEventSerializer(contact).data
-    class meta:
+    class Meta:
         model = Event        
 
     def ToInternalValue(self, raw_data):
