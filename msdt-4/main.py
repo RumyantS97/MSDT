@@ -1,11 +1,24 @@
 import pygame
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] [%(funcName)s] %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('msdt-4/Logging.txt', encoding='utf-8')
+    ]
+)
 
 
 pygame.init()
 
+
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Лабораторная работа 3')
+
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -14,14 +27,18 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 GRAY = (200, 200, 200)
 
+
 center_x, center_y = width // 2, height // 2
 
+
 scale_factor = 20
+
 
 running = True
 
 
 def draw_axes():
+    logging.info("Drawing axes")
     pygame.draw.line(screen, BLACK, (0, center_y), (width, center_y), 2)
     pygame.draw.line(screen, BLACK, (center_x, 0), (center_x, height), 2)
     for x in range(center_x, width, 50):
@@ -35,6 +52,7 @@ def draw_axes():
 
 
 def get_input_text(prompt):
+    logging.info(f"Requesting input: {prompt}")
     input_text = ""
     font = pygame.font.Font(None, 36)
     clock = pygame.time.Clock()
@@ -42,6 +60,7 @@ def get_input_text(prompt):
     while input_active:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                logging.warning("Application quit during input")
                 pygame.quit()
                 exit()
             elif event.type == pygame.KEYDOWN:
@@ -59,10 +78,12 @@ def get_input_text(prompt):
         pygame.display.flip()
         clock.tick(30)
 
+    logging.info(f"Input received: {input_text}")
     return int(input_text) if input_text.isdigit() else 0
 
 
 def draw_line(x1, y1, x2, y2, color=BLACK):
+    logging.info(f"Drawing line from ({x1}, {y1}) to ({x2}, {y2})")
     x1 += center_x
     y1 = center_y - y1
     x2 += center_x
@@ -83,9 +104,11 @@ def draw_line(x1, y1, x2, y2, color=BLACK):
         if e2 < dx:
             err += dx
             y1 += sy
+    logging.info("Line drawn successfully")
 
 
 def draw_circle(xc, yc, r, color=BLACK):
+    logging.info(f"Drawing circle at ({xc}, {yc}) with radius {r}")
     xc += center_x
     yc = center_y - yc
     r *= scale_factor
@@ -111,9 +134,11 @@ def draw_circle(xc, yc, r, color=BLACK):
             d = d + 4 * (x - y) + 10
             y -= 1
         x += 1
+    logging.info("Circle drawn successfully")
 
 
 def draw_bezier(p1, p2, p3, p4, color=BLACK):
+    logging.info(f"Drawing Bezier curve with points {p1}, {p2}, {p3}, {p4}")
     points = []
     for t in range(1001):
         t /= 1000.0
@@ -124,9 +149,11 @@ def draw_bezier(p1, p2, p3, p4, color=BLACK):
         points.append((center_x + int(x * scale_factor),
                       center_y - int(y * scale_factor)))
     pygame.draw.lines(screen, color, False, points, 2)
+    logging.info("Bezier curve drawn successfully")
 
 
 def scanline_fill(points, color):
+    logging.info(f"Filling polygon with points {points} and color {color}")
     points = [(center_x + x, center_y - y) for x, y in points]
     min_y = min(p[1] for p in points)
     max_y = max(p[1] for p in points)
@@ -144,9 +171,12 @@ def scanline_fill(points, color):
         for i in range(0, len(intersections) - 1, 2):
             pygame.draw.line(
                 screen, color, (intersections[i], y), (intersections[i + 1], y), 1)
+    logging.info("Polygon filled successfully")
 
 
 def pattern_fill(x, y, color1, color2):
+    logging.info(f"Pattern fill starting at ({x}, {
+                 y}) with colors {color1} and {color2}")
     x, y = center_x + x, center_y - y
     target_color = screen.get_at((x, y))
     stack = [(x, y)]
@@ -157,19 +187,23 @@ def pattern_fill(x, y, color1, color2):
             screen.set_at((cx, cy), fill_color)
             stack.extend([(cx + 1, cy), (cx - 1, cy),
                          (cx, cy + 1), (cx, cy - 1)])
+    logging.info("Pattern fill completed successfully")
 
 
 def main():
     global running
+    logging.info("Application started")
     while running:
         screen.fill(WHITE)
         draw_axes()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                logging.info("Application quit event received")
                 running = False
 
         print("1. Draw a line\n2. Draw a circle\n3. Draw a Bezier curve\n4. Polygon fill\n5. Pattern fill\n0. Exit")
         choice = input("Enter your choice (1-5, 0 to exit): ").strip()
+        logging.info(f"User choice: {choice}")
 
         if choice == "1":
             x1, y1 = get_input_text("x1:"), get_input_text("y1:")
@@ -205,7 +239,10 @@ def main():
                 "G2:"), get_input_text("B2:"))
             pattern_fill(x, y, color1, color2)
         elif choice == "0":
+            logging.info("Exiting application")
             running = False
+        else:
+            logging.warning(f"Invalid choice: {choice}")
 
         pygame.display.flip()
 
@@ -213,3 +250,4 @@ def main():
 if __name__ == "__main__":
     main()
     pygame.quit()
+    logging.info("Application closed")
