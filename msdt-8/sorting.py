@@ -4,68 +4,68 @@ from logging_config import logger
 from sortings import bubble_sort, cocktail_sort, insertion_sort, \
     gnome_sort, selection_sort, comb_sort, quicksort
 
+dict_sorting = {
+    1: ["Сортировка пузырьком", bubble_sort],
+    2: ["Сортировка перемешиванием", cocktail_sort],
+    3: ["Сортировка вставками", insertion_sort],
+    4: ["Гномья сортировка", gnome_sort],
+    5: ["Сортировка выбором", selection_sort],
+    6: ["Сортировка расческой", comb_sort],
+    7: ["Быстрая сортировка ", quicksort]
+}
+
+dict_order = {
+    1: ["По возрастанию", True],
+    2: ["По убыванию", False]
+}
+
+
+def input_value_in_bounds(left, right, message):
+    logger.debug('Произошел вызов функции "input_value_in_bounds"')
+    is_selected = False
+    temp = 0
+    while not is_selected:
+        # Запрашиваем ввод числа от 1 до 7
+        print(message)
+        temp = 0
+        try:
+            temp = int(input(f"Введите число от "
+                             f"{left} до {right}: "))
+            if temp < left or temp > right:
+                logger.warning(f'Пользователь ввел "{temp}", '
+                               f'ожидалось число от {left} до {right}')
+                raise ValueError("Некорректный ввод.")
+        except ValueError:
+            if temp == 0:
+                logger.warning('Пользователь ввел не число, '
+                               f'ожидалось число от {left} до {right}')
+            print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
+            continue
+        is_selected = True
+    return temp
+
+
+def build_input_message(dict_, predict_message):
+    message = predict_message + "\n\n"
+    for i in dict_.keys():
+        message += f'Чтобы выбрать "{dict_.get(i)[0]}" - нажмите {i}\n'
+    return message
+
 
 def select_type_sort():
     logger.debug('Произошел вызов функции "select_type_sort"')
-    type_sort_ = order_ = 0
-    type_selected = order_selected = False
-    while True:
-        if not type_selected:
-            # Запрашиваем ввод числа от 1 до 7
-            print("Чтобы выбрать сортировку пузырьком - нажмите 1\n"
-                  "Чтобы выбрать сортировку перемешиванием - нажмите 2\n"
-                  "Чтобы выбрать сортировку вставками - нажмите 3\n"
-                  "Чтобы выбрать гномью сортировку - нажмите 4\n"
-                  "Чтобы выбрать сортировку выбором - нажмите 5\n"
-                  "Чтобы выбрать сортировку расческой - нажмите 6\n"
-                  "Чтобы выбрать быструю сортировку - нажмите 7\n")
-            left = 1
-            right = 7
-            type_sort_temp = 0
-            try:
-                type_sort_temp = int(input(f"Введите число от "
-                                           f"{left} до {right}: "))
-                if type_sort_temp < left or type_sort_temp > right:
-                    logger.warning(f'Пользователь ввел "{type_sort_temp}", '
-                                   f'ожидалось число от {left} до {right}')
-                    raise ValueError("Число вне диапазона.")
-            except ValueError:
-                if type_sort_temp == 0:
-                    logger.warning('Пользователь ввел не число, '
-                                   f'ожидалось число от {left} до {right}')
-                print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
-                continue
-            type_selected = True
-            type_sort_ = type_sort_temp
-            logger.debug(f'Пользователь выбрал тип сортировки {type_sort_}')
 
-        if not order_selected:
-            # Запрашиваем ввод числа 1 или 2
-            print("Чтобы сортировать по возрастанию - нажмите 1\n"
-                  "Чтобы сортировать по убыванию нажмите - 2")
-            left = 1
-            right = 2
-            order_temp = 0
-            try:
-                order_temp = int(input(f"Введите число от "
-                                       f"{left} до {right}: "))
-                if order_temp < left or order_temp > right:
-                    logger.warning(f'Пользователь ввел "{order_temp}", '
-                                   f'ожидалось число от {left} до {right}')
-                    raise ValueError("Число вне диапазона.")
-            except ValueError:
-                if order_temp == 0:
-                    logger.warning('Пользователь ввел не число, '
-                                   f'ожидалось число от {left} до {right}')
-                print("Некорректный ввод. Пожалуйста, попробуйте снова.\n")
-                continue
-            order_ = order_temp
-            logger.debug(f'Пользователь выбрал направление {order_}')
+    type_message = build_input_message(dict_sorting, "Выберите сортировку:")
+    order_message = build_input_message(dict_order,
+                                        "Выберите направление сортировки:")
 
-        # Выход из цикла после успешного выполнения
-        break
-
-    return type_sort_, order_
+    type_sort_digit = input_value_in_bounds(1, 7, type_message)
+    logger.debug(f'Пользователь выбрал тип сортировки '
+                 f'{dict_sorting.get(type_sort_digit)[0]}')
+    order_digit = input_value_in_bounds(1, 2, order_message)
+    logger.debug(f'Пользователь выбрал направление сортировки '
+                 f'{dict_order.get(order_digit)[0]}')
+    return dict_sorting.get(type_sort_digit), dict_order.get(order_digit)
 
 
 def display_array(arr_):
@@ -82,110 +82,26 @@ def display_array(arr_):
 def main():
     logger.debug('Произошел вызов функции "main"')
     type_sort, order = select_type_sort()
-    n = 10
-    source_arr = [random.randint(0, 100) for _ in range(n)]
     logger.info(f'Пользователь выбрал тип сортировки: {type_sort}, '
                 f'направление сортировки: {order}')
-    start_time = end_time = 0
+    n = 10
+    source_arr = [random.randint(0, 100) for _ in range(n)]
 
-    if type_sort == 1:
-        print("Сортировка пузырьком")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = bubble_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = bubble_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 2:
-        print("Сортировка перемешиванием")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = cocktail_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = cocktail_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 3:
-        print("Сортировка вставками")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = insertion_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = insertion_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 4:
-        print("Гномья сортировка")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = gnome_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = gnome_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 5:
-        print("Сортировка выбором")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = selection_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = selection_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 6:
-        print("Сортировка расческой")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = comb_sort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = comb_sort(source_arr, False)
-            end_time = time.time()
-
-    elif type_sort == 7:
-        print("Быстрая сортировка")
-        if order == 1:
-            print("Тип сортировки: по возрастанию")
-            start_time = time.time()
-            result = quicksort(source_arr, True)
-            end_time = time.time()
-        else:
-            print("Тип сортировки: по убыванию")
-            start_time = time.time()
-            result = quicksort(source_arr, False)
-            end_time = time.time()
+    print(f'Тип: "{type_sort[0]}". Направление: "{order[0]}"')
+    start_time = time.time()
+    result_arr = type_sort[1](source_arr, order[1])
+    end_time = time.time()
 
     print("Исходный массив:")
     display_array(source_arr)
+
     print("Результат:")
-    display_array(result)
+    display_array(result_arr)
+
     time_sort = end_time - start_time
     print(f"Время выполнения: {time_sort:.8f} секунд")
-    logger.info(f'При выборе сортировки {type_sort} с направлением {order}, '
+    logger.info(f'При выборе сортировки "{type_sort[0]}" '
+                f'с направлением "{order[0]}", '
                 f'сортировка {n} элементов заняла {time_sort:.8f} секунд')
 
 
@@ -193,9 +109,4 @@ if __name__ == "__main__":
     logger.info('Начало выполнения программы')
     print("Сортировки. Захарова Милана")
     main()
-    try:
-        # Поломка для демонстрации логирования исключений
-        t = 10/0
-    except ZeroDivisionError:
-        logger.exception('Ошибка деления на 0!!!')
     logger.info('Программа завершена')
