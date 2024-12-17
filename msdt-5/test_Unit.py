@@ -1,6 +1,6 @@
 import pytest
 from math import isclose
-from LR import (
+from lab5 import (
     AdvancedMath
 )
 from unittest.mock import Mock
