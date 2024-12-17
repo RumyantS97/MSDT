@@ -57,8 +57,10 @@ class BinMatrix:
         if matrix is None:
             matrix = [[1]]
         self.matrix = matrix
-        self.row_count = len(self.matrix)  # row number
-        self.col_count = len(self.matrix[0])  # column number
+        self.row_count = len(self.matrix)
+        self.col_count = len(self.matrix[0])
+        self.__is_matrix()
+        self.__is_binary()
 
     def __convert_matrix_to_int(self):
         """
@@ -74,33 +76,21 @@ class BinMatrix:
         Append a unit matrix to matrix_int.
         """
         matrix_int = self.__convert_matrix_to_int()
-        return [
-            (1 << (self.row_count + self.col_count - 1 - i)) ^ matrix_int[i]
-            for i in range(self.row_count)
-        ]
+        for i in range(self.row_count):
+            matrix_int[i] <<= self.row_count
+            matrix_int[i] |= (1 << (self.row_count - 1 - i))
+        return matrix_int
 
-    def __choose_element(self, row, col, matrix_int):
+    def __choose_pivot_row(self, col, matrix_int, start_row):
         """
-        Choose a non-zero row started from position [row][col].
+        Choose the row with a non-zero pivot in the given column.
         """
-        assert row <= col, (
-            "The row index cannot exceed the column index "
-            "in row-reduced echelon matrix."
-        )
+        for row in range(start_row, self.row_count):
+            if matrix_int[row] & (1 << (self.col_count - 1 - col)):
+                return row
+        return None
 
-        if col == self.col_count:
-            return None
-        else:
-            mask = (1 << (self.col_count - 1 - col))
-            temp = [(matrix_int[i] & mask) for i in range(row,
-                                                          self.row_count)]
-            if mask not in temp:
-                return self.__choose_element(row, col + 1, matrix_int)
-            else:
-                return (temp.index(mask) + row, col)
-
-    @staticmethod
-    def __switch_rows(row1, row2, matrix_int):
+    def __switch_rows(self, row1, row2, matrix_int):
         """
         Switch row1-th and row2-th rows of matrix_int.
         """
@@ -108,15 +98,15 @@ class BinMatrix:
             row2
         ], matrix_int[row1]
 
-    def __add_rows(self, row, col, matrix_int):
+    def __eliminate_rows(self, pivot_row, col, matrix_int):
         """
-        Add the row-th row to all the other rows if the col-th element of
-        the corresponding rows are nonzero.
+        Eliminate the given column in all rows except the pivot row.
         """
-        mask = (1 << (self.col_count - 1 - col))
-        for i in range(self.row_count):
-            if i != row and matrix_int[i] & mask != 0:
-                matrix_int[i] ^= matrix_int[row]
+        for row in range(self.row_count):
+            if row != pivot_row and matrix_int[
+                row
+            ] & (1 << (self.col_count - 1 - col)):
+                matrix_int[row] ^= matrix_int[pivot_row]
 
     def __is_matrix(self):
         """
@@ -131,9 +121,7 @@ class BinMatrix:
         """
         Check whether the input is a square matrix.
         """
-        if [len(row) for row in self.matrix].count(
-            self.row_count
-        ) != self.row_count:
+        if self.row_count != self.col_count:
             raise FormatError("NOT a Square matrix!")
 
     def __is_binary(self):
@@ -147,57 +135,47 @@ class BinMatrix:
 
     def rank(self):
         """
-        Calculate the Rank of the matrix.
+        Calculate the rank of the matrix.
         """
-        self.__is_matrix()
-        self.__is_binary()
         matrix_int = self.__convert_matrix_to_int()
-        row = 0
-        col = 0
-        for _ in range(self.row_count):
-            arg = self.__choose_element(row, col, matrix_int)
-            if arg is not None:
-                row_temp, col = arg
-                self.__switch_rows(row, row_temp, matrix_int)
-                self.__add_rows(row, col, matrix_int)
-                row += 1
-                col += 1
-            else:
-                return row
-        return self.row_count
+        rank = 0
+        for col in range(self.col_count):
+            pivot_row = self.__choose_pivot_row(col, matrix_int, rank)
+            if pivot_row is not None:
+                self.__switch_rows(rank, pivot_row, matrix_int)
+                self.__eliminate_rows(rank, col, matrix_int)
+                rank += 1
+        return rank
 
     def det(self):
         """
         Calculate the determinant of the matrix.
         """
         self.__is_square_matrix()
-        self.__is_binary()
-        if self.rank() == self.row_count:
-            return 1
-        else:
-            return 0
+        return 1 if self.rank() == self.row_count else 0
 
     def inv(self):
         """
-        Calculate the inverse of the matrix.
+        Calculate the inverse of the binary square
+        matrix using Gaussian elimination modulo 2.
         """
         self.__is_square_matrix()
-        self.__is_binary()
+        if self.rank() < self.row_count:
+            raise RankError(self.rank())
+
         matrix_adj = self.__append_unit_matrix()
-        row = 0
-        col = 0
-        for _ in range(self.row_count):
-            arg = self.__choose_element(row, col, matrix_adj)
-            if arg is not None:
-                row_temp, col = arg
-                self.__switch_rows(row, row_temp, matrix_adj)
-                self.__add_rows(row, col, matrix_adj)
-                row += 1
-                col += 1
-            else:
-                raise RankError(row)
-        return [
-            [int(bit) for bit in format((matrix_adj[i] >> self.col_count),
-                                        "0" + str(self.row_count) + "b")]
-            for i in range(self.row_count)
-        ]
+        for col in range(self.col_count):
+            pivot_row = self.__choose_pivot_row(col, matrix_adj, col)
+            if pivot_row is None:
+                raise RankError(col)
+
+            self.__switch_rows(col, pivot_row, matrix_adj)
+            self.__eliminate_rows(col, col, matrix_adj)
+
+        inverse = []
+        for row in range(self.row_count):
+            row_bits = matrix_adj[row] >> self.row_count
+            inverse.append([
+                int(bit) for bit in format(row_bits, f"0{self.row_count}b")
+            ])
+        return inverse
