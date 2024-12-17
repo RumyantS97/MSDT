@@ -1,0 +1,5 @@
+[2024-12-17 12:42:15] [ERROR] => Ошибка деления на 0!!!
+Traceback (most recent call last):
+  File "D:\Work\Proj\milisha\MSDT\msdt-4\sorting.py", line 408, in <module>
+    t = 10/0
+ZeroDivisionError: division by zero
