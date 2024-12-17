@@ -143,7 +143,7 @@ def comb_sort(arr_, order_):
     operator_righter = operator_gt if order_ else operator_le
     n_ = len(arr_)
     gap = n_  # Начальное расстояние
-    shrink_factor = 1.3  # Фактор уменьшения расстояния
+    shrink_factor = 2  # Фактор уменьшения расстояния
     sorted_ = False  # Флаг для отслеживания, отсортирован ли массив
 
     while not sorted_:
