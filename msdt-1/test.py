@@ -11,21 +11,21 @@
  #  and limitations under the License.                                                                                #
  #####################################################################################################################
  
-import boto3
-import json
-import os
 import copy
-import pandas as pd
-import numpy as np
+import datetime
+import json
+import logging
+import os
+import time
+import traceback
 import urllib.parse
 from urllib.parse import unquote
+
+import boto3
+import pandas as pd
+import numpy as np
 from botocore.client import Config
-import time
-import logging
-import datetime
-import traceback
 from botocore.exceptions import ClientError
-from botocore.client import Config
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
