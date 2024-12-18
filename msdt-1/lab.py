@@ -79,22 +79,22 @@ class EventListSerializerTestCase(TestCase):
         })
 
     def test_event_with_place(self):
-        main_attribute: Attribute = Attribute.objects.create(
+        main_attribute  : Attribute = Attribute.objects.create(
             name='Main attribute', 
             slug='main-attribute'
             )
-        event_type: Attribute = Attribute.objects.create(
+        event_type      : Attribute = Attribute.objects.create(
             name='Event type', 
             slug='event-type'
             )
-        event_status: EventStatus = EventStatus.objects.create(
+        event_status    : EventStatus = EventStatus.objects.create(
             name='Confirmed', 
             code='CFM'
             )
         place: Place = Place.objects.create(name='Test place')
-        start_date : datetime = datetime(2021, 1, 1, 0, 0, 0)
-        end_date   : datetime = datetime(2021, 1, 2, 0, 0, 0)
-        event      : Event = Event.objects.create(
+        start_date      : datetime = datetime(2021, 1, 1, 0, 0, 0)
+        end_date        : datetime = datetime(2021, 1, 2, 0, 0, 0)
+        event           : Event = Event.objects.create(
             name='Test event',
             main_attribute=main_attribute,
             event_type=event_type,
