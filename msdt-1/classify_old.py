@@ -14,6 +14,7 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.feature_selection import RFE
 
 import helper
+import setup
 import smote as st
 
 np.set_printoptions(
@@ -271,7 +272,7 @@ def parse_kick_success_new(
 
 
 def parse(
-    file_name: str = "combined.txt",
+    file_name: str = setup.COMBINED,
     use_cache: bool = False,
     n_features: int = 20,
     ez_kick_success: bool = False,
@@ -284,10 +285,12 @@ def parse(
     Parse and preprocess the dataset for training and testing.
     """
 
-    features_file = f"cache/{file_name[:-4]}{n_features}_{
-        ez_kick_success}_{kick_type}_features.npy"
-    labels_file = f"cache/{file_name[:-4]
-                           }{n_features}_{ez_kick_success}_{kick_type}_labels.npy"
+    features_file = f"cache/{file_name[:-4]}{
+        n_features
+    }_{ez_kick_success}_{kick_type}_features.npy"
+    labels_file = f"cache/{file_name[:-4]}{
+        n_features
+    }_{ez_kick_success}_{kick_type}_labels.npy"
 
     if (
         use_cache
@@ -364,24 +367,13 @@ def visualize(use_features: list = [0, 8], frac: float = 0.005) -> None:
         x=features2[:, 0], y=features2[:, 1], s=60, c=labels2, cmap=cm
     )
     plt.draw()
-    plt.savefig("scatter.png", bbox_inches="tight")
+    plt.savefig(setup.SCATTER, bbox_inches="tight")
     plt.clf()
 
 
 def batch_eval_accuracy(
-    file_names=[
-        "type0_apollo3d.txt",
-        "type0_fc.txt",
-        "type1_apollo3d.txt",
-        "type1_fc.txt",
-        "type2_apollo3d.txt",
-        "type2_fc.txt",
-        "type3_apollo3d.txt",
-        "type3_fc.txt",
-        "type4_apollo3d.txt",
-        "type4_fc.txt",
-    ],
-    use_features=[
+    file_names: list=setup.FILE_NAMES,
+    use_features: list=[
         4,
         6,
         8,
@@ -390,7 +382,7 @@ def batch_eval_accuracy(
         15,
         17,
     ],
-    kick_type=[10],
+    kick_type: list=[10],
 ) -> None:
     """
     Evaluate model accuracy in batch.
@@ -450,7 +442,7 @@ def smote(new_features: np.ndarray, labels: np.ndarray) -> tuple:
 
 
 def classify(
-    file_name: str = "4_14_type4_apollo3d.txt",
+    file_name: str = setup.APOLL3D,
     useFrac: float = 1.0,
     train_fraction: float = 0.5,
     equal_class_size: bool = True,
@@ -507,7 +499,10 @@ def classify(
     if not equal_class_size:
         testing_set, test_labels = balance_classes(testing_set, test_labels)
         clf = LogisticRegression(
-            C=C, class_weight="auto", intercept_scaling=B, penalty="l2"
+            C=C,
+            class_weight="auto",
+            intercept_scaling=B,
+            penalty="l2"
         )
     else:
         clf = LogisticRegression(C=C, intercept_scaling=B, penalty="l2")
@@ -537,10 +532,12 @@ def classify(
 
     if draw and return_prob:
         area = draw_precision_recall_curve(
-            file_name[:-4] + suffix, test_labels, prob_array
+            file_name[:-4] + suffix,
+            test_labels, prob_array
         )
         roc_auc = draw_roc_curve(
-            file_name[:-4] + suffix, test_labels, prob_array
+            file_name[:-4] + suffix,
+            test_labels, prob_array
         )
 
     false_neg = false_pos = true_neg = true_pos = 0
@@ -627,7 +624,8 @@ def draw_roc_curve(
 
 
 def visualize_dribble_data(
-    dribble: str = "type4_dribble.txt", kick: str = "type4_rc.txt"
+    dribble: str = setup.DRIBBLE,
+    kick: str = setup.TYPE4
 ) -> None:
     """Visualize dribble data."""
 
