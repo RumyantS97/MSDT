@@ -37,16 +37,16 @@ def preprocess_game_state(game_state, remove_fallen_opp=False):
         opp_array = []
     else:
         opp_array = [[float(x) for x in temp.split()]
-                    for temp in opp.split(';')[:-1]]
+                     for temp in opp.split(';')[:-1]]
     if remove_fallen_opp:
         opp_array = helper.remove_fallen_opponents(opp_array)
     return init_time, opp_array, me, ball, kick_target, agent_type, direct_features
 
 
-
 def is_opponent_2far(game_state, threshold=2.5, remove_fallen_opp=False):
     opp_array, me, ball, kick_target, agent_type, direct_features = game_state
-    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(opp_array, ball)
+    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(
+        opp_array, ball)
     return closest_opp_dist > threshold
 
 
@@ -59,19 +59,23 @@ def parse_game_state(game_state, n_features, skip_no_opp=True, kick_type=[7], re
     if use_direct_features:
         return np.abs(np.array(direct_features)), True
 
-    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(opp_array, ball)
+    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(
+        opp_array, ball)
     opp_dist_2kick_line = helper.get_dist_2kick_line(
         kick_target, ball, opp_array[closest_opp_index])
     angle_between_opp_and_kick_dir = helper.ang_between3_pts(
         ball, kick_target, opp_array[closest_opp_index])
-    num_opp_closer_than_dist = helper.opp_closer_than_dist(opp_array, ball, dist=2.0)
-    ang_between_opp_and_ball = helper.ang_between3_pts(me, ball, opp_array[closest_opp_index])
+    num_opp_closer_than_dist = helper.opp_closer_than_dist(
+        opp_array, ball, dist=2.0)
+    ang_between_opp_and_ball = helper.ang_between3_pts(
+        me, ball, opp_array[closest_opp_index])
     ang2_turn_opp = helper.angle2_turn(
         ball, (-15.0, 0.0), math.radians(opp_array[closest_opp_index][2]))
     angle2_turn_me = helper.angle2_turn(ball, kick_target, math.radians(me[2]))
     opp_ball_angle, opp_ball_dist = helper.find_target_angleand_dist(
         opp_array[closest_opp_index], ball)
-    angle_between_me_and_ball = helper.ang_between3_pts(opp_array[closest_opp_index], me, ball)
+    angle_between_me_and_ball = helper.ang_between3_pts(
+        opp_array[closest_opp_index], me, ball)
     opp_fallen = opp_array[closest_opp_index][3]
     num_opp_within_kick_dir = helper.opp_within_kick_dir(
         opp_array, kick_target, ball, angle_thres=30)
@@ -79,7 +83,8 @@ def parse_game_state(game_state, n_features, skip_no_opp=True, kick_type=[7], re
         me, opp_array[closest_opp_index])
     dist_to_kick_pos_opp = helper.dist_to_kick_position(
         ball, (-15.0, 0.0), opp_array[closest_opp_index])
-    oppdist, indices, n = helper.find_n_closest_opponent_to_ball(opp_array, ball)
+    oppdist, indices, n = helper.find_n_closest_opponent_to_ball(
+        opp_array, ball)
     mean_opp_dist = np.mean(oppdist)
     max_opp_dist = np.max(oppdist)
     ball_angle, ball_dist = helper.find_target_angleand_dist(me, ball)
@@ -141,7 +146,8 @@ def parse_kick_success_new(game_state, ball_movement, ez_kick_success=False):
     ball_before = (immed_after_kick[0], immed_after_kick[1])
     ball_after = (after_kick[0], after_kick[1])
 
-    travel_dist = helper.get_dist_to(ball_before, target) - helper.get_dist_to(ball_after, target)
+    travel_dist = helper.get_dist_to(
+        ball_before, target) - helper.get_dist_to(ball_after, target)
 
     if travel_dist > get_dribble_dist(time_elapsed):
         return 1
@@ -159,7 +165,7 @@ def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_succ
         str(ez_kick_success) + "_" + str(kick_type) + "_labels.npy"
 
     if use_cache and os.path.exists(features_file) and os.path.exists(labels_file):
-        print "cached files exists, using cache!"
+        print("cached files exists, using cache!")
         features = np.load(features_file)
         labels = np.load(labels_file)
         return features, labels
@@ -171,14 +177,14 @@ def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_succ
     success_index = []
     for index, line in enumerate(lines):
         if index % 1000 == 0:
-            print "parsed " + str(index) + " samples"
+            print("parsed " + str(index) + " samples")
         rawgame_state, ball_movement = line.rstrip().split("#")
 
         try:
             game_state = preprocess_game_state(
                 rawgame_state, remove_fallen_opp=remove_fallen_opp)
             feature_array, success = parse_game_state(game_state, n_features, kick_type=kick_type,
-                                                   remove_fallen_opp=remove_fallen_opp, use_direct_features=use_direct_features)
+                                                      remove_fallen_opp=remove_fallen_opp, use_direct_features=use_direct_features)
         except:
             success = False
 
@@ -194,10 +200,10 @@ def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_succ
         else:
             pass
 
-    print "ignored " + str(len(lines) - len(success_index)) + " lines."
+    print("ignored " + str(len(lines) - len(success_index)) + " lines.")
     features = features[success_index, :]
     labels = labels[success_index]
-    print "saving processed features and labels to file..."
+    print("saving processed features and labels to file...")
     np.save(features_file, features)
     np.save(labels_file, labels)
     return features, labels
@@ -221,8 +227,8 @@ def visualize(use_features=[0, 8], frac=0.005):
 
 
 def batch_evalAccuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
-                                  'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
-                                  'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
+                                   'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
+                                   'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
                        use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]):
     accuracys = []
     for i, file_name in enumerate(file_names):
@@ -234,7 +240,7 @@ def batch_evalAccuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_
             accuracys.append(0.0)
 
     for i, file_name in enumerate(file_names):
-        print file_name[:-4] + ":", accuracys[i]
+        print(file_name[:-4] + ":", accuracys[i])
 
 
 def balance_classes(new_features, labels):
@@ -270,13 +276,13 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
                              kick_type=kick_type, ignore_self_failure=False, use_direct_features=True,
                              n_features=8)
     num2_use = int(useFrac*len(features))
-    features = features[:num2Use]
-    labels = labels[:num2Use]
+    features = features[:num2_use]
+    labels = labels[:num2_use]
     if scale:
         features = StandardScaler().fit_transform(features)
-    print "features mean:", features.mean(axis=0)
-    print "features std:", features.std(axis=0)
-    if not useAll:
+    print("features mean:", features.mean(axis=0))
+    print("features std:", features.std(axis=0))
+    if not use_all:
         new_features = features[:, use_features]
     else:
         new_features = features
@@ -284,10 +290,11 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
     if equal_class_size:
         newFeatures, labels = balance_classes(newFeatures, labels)
 
-    print "we have " + str(newFeatures.shape[0]) + " samples."
-    print "we have " + str(np.sum(labels == 1)) + " positive labels"
-    print "ratio: " + str(float(np.sum(labels == -1))/np.sum(labels == 1))
-    print "using approximately " + str(train_fraction*100) + "% as training examples"
+    print("we have " + str(newFeatures.shape[0]) + " samples.")
+    print("we have " + str(np.sum(labels == 1)) + " positive labels")
+    print("ratio: " + str(float(np.sum(labels == -1))/np.sum(labels == 1)))
+    print("using approximately " +
+          str(train_fraction*100) + "% as training examples")
 
     r = np.random.random(new_features.shape[0]) < train_fraction
     r2 = np.invert(r)
@@ -307,8 +314,8 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
         rfecv = RFE(estimator=clf, step=1,  n_features_to_select=8)
         rfecv.fit(newFeatures, labels)
         print("Optimal number of features : %d" % rfecv.n_features_)
-        print rfecv.ranking_
-        print np.arange(20)[rfecv.support_]
+        print(rfecv.ranking_)
+        print(np.arange(20)[rfecv.support_])
         return
 
     clf.fit(training_set, train_labels)
@@ -329,10 +336,11 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
     if draw and return_prob:
         area = draw_precision_recall_curve(
             file_name[:-4] + suffix, test_labels, prob_array)
-        roc_auc = draw_roc_curve(file_name[:-4] + suffix, test_labels, prob_array)
+        roc_auc = draw_roc_curve(
+            file_name[:-4] + suffix, test_labels, prob_array)
 
     false_neg = false_pos = true_neg = true_pos = 0
-    for i in xrange(len(predict_labels)):
+    for i in range(len(predict_labels)):
         if predict_labels[i] == test_labels[i] == -1:
             true_neg += 1
         elif predict_labels[i] == test_labels[i] == 1:
@@ -342,16 +350,20 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
         else:
             false_pos += 1
     good = true_neg + true_pos
-    print "accuracy rate: ", good/float(len(predict_labels)), good
-    print "true negative rate: ", true_neg/float(len(predict_labels)), true_neg
-    print "true positive rate: ", true_pos/float(len(predict_labels)), true_pos
-    print "false negative rate: ", false_neg/float(len(predict_labels)), false_neg
-    print "false positive rate: ", false_pos/float(len(predict_labels)), false_pos
+    print("accuracy rate: ", good/float(len(predict_labels)), good)
+    print("true negative rate: ", true_neg /
+          float(len(predict_labels)), true_neg)
+    print("true positive rate: ", true_pos /
+          float(len(predict_labels)), true_pos)
+    print("false negative rate: ", false_neg /
+          float(len(predict_labels)), false_neg)
+    print("false positive rate: ", false_pos /
+          float(len(predict_labels)), false_pos)
     precision = true_pos/float(true_pos + false_pos)
     recall = true_pos/float(true_pos + false_neg)
-    print "precision: ", precision
-    print "recall: ", recall
-    print "f1 score: ", 2*(precision*recall)/(precision + recall)
+    print("precision: ", precision)
+    print("recall: ", recall)
+    print("f1 score: ", 2*(precision*recall)/(precision + recall))
     return good/float(len(predict_labels))
 
 
@@ -396,7 +408,7 @@ def visualize_dribble_data(dribble="type4_dribble.txt", kick="type4_rc.txt"):
         my_list = []
         for index, line in enumerate(lines):
             if index % 1000 == 0:
-                print "parsed " + str(index) + " samples"
+                print("parsed " + str(index) + " samples")
             game_state, ball_movement = line.rstrip().split("#")
             x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(
                 ":")
