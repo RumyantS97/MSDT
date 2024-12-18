@@ -1,3 +1,4 @@
+import asyncio
 import random
 
 
@@ -17,6 +18,12 @@ async def process_data(data):
     return result
 
 
+async def save_results(result):
+    print(f"Saving {result} to database...")
+    await asyncio.sleep(random.uniform(0.5, 1.5))
+    print(f"Saved {result} to database")
+
+
 async def main():
     sources = ["Source A", "Source B", "Source C"]
 
@@ -24,9 +31,10 @@ async def main():
     fetch_tasks = [fetch_data(source) for source in sources]
     raw_data = await asyncio.gather(*fetch_tasks)
 
-    # Process data sequentially
+    # Process and save data sequentially
     for data in raw_data:
-        await process_data(data)
+        processed_data = await process_data(data)
+        await save_results(processed_data)
 
 
 if __name__ == "__main__":
