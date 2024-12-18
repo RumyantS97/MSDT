@@ -22,7 +22,10 @@ should_have_failed = 0
 success = 0
 
 
-def preprocess_game_state(game_state, remove_fallen_opp=False):
+def preprocess_game_state(game_state: str, remove_fallen_opp: bool = False) -> tuple:
+    """
+    Parse and preprocess the game state string into structured data.
+    """
     x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(
         ":")
     init_time = float(init_time)
@@ -43,14 +46,31 @@ def preprocess_game_state(game_state, remove_fallen_opp=False):
     return init_time, opp_array, me, ball, kick_target, agent_type, direct_features
 
 
-def is_opponent_2far(game_state, threshold=2.5, remove_fallen_opp=False):
+def is_opponent_2far(
+    game_state: tuple,
+    threshold: float = 2.5,
+    remove_fallen_opp: bool = False
+) -> bool:
+    """
+    Check if the closest opponent to the ball is farther than a threshold.
+    """
     opp_array, me, ball, kick_target, agent_type, direct_features = game_state
     closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(
         opp_array, ball)
     return closest_opp_dist > threshold
 
 
-def parse_game_state(game_state, n_features, skip_no_opp=True, kick_type=[7], remove_fallen_opp=False, use_direct_features=True):
+def parse_game_state(
+    game_state: tuple,
+    n_features: int,
+    skip_no_opp: bool = True,
+    kick_type: list = [7],
+    remove_fallen_opp: bool = False,
+    use_direct_features: bool = True,
+) -> tuple:
+    """
+    Parse the game state to extract features for classification.
+    """
     init_time, opp_array, me, ball, kick_target, agent_type, direct_features = game_state
 
     if (len(opp_array) == 0 or kick_target[2] not in kick_type) and skip_no_opp:
@@ -97,7 +117,15 @@ def parse_game_state(game_state, n_features, skip_no_opp=True, kick_type=[7], re
     return feature_array, True
 
 
-def parse_kick_success(game_state, ball_movement, ez_kick_success=False, ball_travel_dist=2):
+def parse_kick_success(
+    game_state: tuple,
+    ball_movement: str,
+    ez_kick_success: bool = False,
+    ball_travel_dist: float = 2.0,
+) -> int:
+    """
+    Evaluate whether a kick was successful based on ball movement.
+    """
     init_time, opp_array, me, ball, kick_target, agent_type, direct_features = game_state
     x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(":")
     kick_mode = int(kick_info.split()[0])
@@ -122,8 +150,8 @@ def parse_kick_success(game_state, ball_movement, ez_kick_success=False, ball_tr
         return -1
 
 
-def parse_kick_success_new(game_state, ball_movement, ez_kick_success=False):
-    def get_dribble_dist(time_elapsed):
+def parse_kick_success_new(game_state: tuple, ball_movement, ez_kick_success: bool=False) -> int:
+    def get_dribble_dist(time_elapsed: float) -> float:
         if time_elapsed < 1.5:
             dist = 0.0
         else:
@@ -155,8 +183,19 @@ def parse_kick_success_new(game_state, ball_movement, ez_kick_success=False):
         return -1
 
 
-def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_success=False,
-          kick_type=[10], remove_fallen_opp=False, ignore_self_failure=False, use_direct_features=True):
+def parse(
+    file_name: str = "combined.txt",
+    use_cache: bool = False,
+    n_features: int = 20,
+    ez_kick_success: bool = False,
+    kick_type: list = [10],
+    remove_fallen_opp: bool = False,
+    ignore_self_failure: bool = False,
+    use_direct_features: bool = True,
+) -> tuple:
+    """
+    Parse and preprocess the dataset for training and testing.
+    """
 
     features_file = "cache/" + file_name[:-4] + str(n_features) + "_" + \
         str(ez_kick_success) + "_" + str(kick_type) + "_features.npy"
@@ -209,7 +248,10 @@ def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_succ
     return features, labels
 
 
-def visualize(use_features=[0, 8], frac=0.005):
+def visualize(use_features: list=[0, 8], frac: float=0.005) -> None:
+    """
+    Visualize data distribution using a scatter plot.
+    """
     features, labels = parse(useCache=False)
     features = features[:, use_features]
     r = np.random.random(features.shape[0]) < frac
@@ -226,15 +268,19 @@ def visualize(use_features=[0, 8], frac=0.005):
     plt.clf()
 
 
-def batch_evalAccuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
+def batch_eval_accuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
                                    'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
                                    'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
-                       use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]):
+                       use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]) -> None:
+    """
+    Evaluate model accuracy in batch.
+    """
+
     accuracys = []
     for i, file_name in enumerate(file_names):
         try:
             accuracyRate = classify(file_name=file_name, use_features=use_features, equal_class_size=False,
-                                    useAll=False, batch=True, useCache=True, kick_type=kick_type, draw=False)
+                                    use_all=False, batch=True, useCache=True, kick_type=kick_type, draw=False)
             accuracys.append(round(accuracyRate, 3))
         except:
             accuracys.append(0.0)
@@ -243,7 +289,10 @@ def batch_evalAccuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_
         print(file_name[:-4] + ":", accuracys[i])
 
 
-def balance_classes(new_features, labels):
+def balance_classes(new_features: np.ndarray, labels: np.ndarray) -> tuple:
+    """
+    Balance classes in the dataset using oversampling.
+    """
     pos = new_features[labels == 1]
     pos_labels = labels[labels == 1]
     neg = new_features[labels == -1]
@@ -256,7 +305,10 @@ def balance_classes(new_features, labels):
     return new_features, labels
 
 
-def smote(new_features, labels):
+def smote(new_features: np.ndarray, labels: np.ndarray) -> tuple:
+    """
+    Apply SMOTE to generate synthetic data points.
+    """
     percentage = 100*(float(len(labels) - np.sum(labels))/np.sum(labels))
     percentage = int(round(percentage, -2))
     safe, synthetic, danger = sm.borderline_smote(
@@ -268,10 +320,10 @@ def smote(new_features, labels):
     return new_features, labels
 
 
-def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.5, equal_class_size=True,
-             thres=0.5, use_features=[0], use_all=True, batch=False, use_cache=True,
-             feature_select=False, kick_type=[11], draw=False, scale=False, C=1.0, B=1.0, return_prob=False):
-
+def classify(file_name: str='4_14_type4_apollo3d.txt', useFrac: float=1.0, train_fraction: float=0.5, equal_class_size: bool=True,
+             thres: float=0.5, use_features: list=[0], use_all: bool=True, batch: bool=False, use_cache: bool=True,
+             feature_select: bool=False, kick_type: list=[11], draw: bool=False, scale: bool=False, C: float=1.0, B: float=1.0, return_prob: bool=False) -> float:
+    """Main function to classify data using different models."""
     features, labels = parse(file_name=file_name, use_cache=use_cache, ez_kick_success=False,
                              kick_type=kick_type, ignore_self_failure=False, use_direct_features=True,
                              n_features=8)
@@ -367,7 +419,8 @@ def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.
     return good/float(len(predict_labels))
 
 
-def draw_precision_recall_curve(file_name, test_labels, prob_array):
+def draw_precision_recall_curve(file_name: str, test_labels: np.ndarray, prob_array: np.ndarray) -> None:
+    """Draw the Precision-Recall curve."""
     precision, recall, thresholds = precision_recall_curve(
         test_labels, prob_array)
     area = auc(recall, precision)
@@ -381,10 +434,10 @@ def draw_precision_recall_curve(file_name, test_labels, prob_array):
     plt.title('Precision-Recall: AUC=%0.2f' % area)
     plt.legend(loc="lower left")
     plt.savefig(file_name+"_precRecallCurve")
-    return area
 
 
-def draw_roc_curve(file_name, test_labels, prob_array):
+def draw_roc_curve(file_name: str, test_labels: np.ndarray, prob_array: np.ndarray) -> None:
+    """Draw the ROC curve."""
     fpr, tpr, thresholds = roc_curve(test_labels, prob_array)
     roc_auc = auc(fpr, tpr)
     plt.clf()
@@ -398,11 +451,11 @@ def draw_roc_curve(file_name, test_labels, prob_array):
     plt.title('Receiver operating characteristic')
     plt.legend(loc="lower right")
     plt.savefig(file_name+"_ROC")
-    return roc_auc
 
 
-def visualize_dribble_data(dribble="type4_dribble.txt", kick="type4_rc.txt"):
-    def parse_kick_data(kick):
+def visualize_dribble_data(dribble: str="type4_dribble.txt", kick: str="type4_rc.txt") -> None:
+    """Visualize dribble data."""
+    def parse_kick_data(kick: str) -> np.array:
         w = open(kick)
         lines = w.readlines()
         my_list = []
