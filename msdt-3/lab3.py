@@ -11,6 +11,7 @@ def find_all_values(string, regex):
 
 
 if __name__ == "__main__":
-    with open("page", 'r', encoding='utf-8') as file:
+    with open("dns.html", 'r', encoding='utf-8') as file:
         page = file.read()
 
+    cards = find_all_values(page, r'data-id="product"(.*?)</span></div>')
