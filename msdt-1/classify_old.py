@@ -1,9 +1,3 @@
-#!/usr/bin/python
-'''
-Created on Feb 26, 2014
-
-@author: jason
-'''
 import math
 import os
 import sys
@@ -48,31 +42,6 @@ def preprocessGameState(gameState, removeFallenOpp=False):
         oppArray = helper.removeFallenOpponents(oppArray)
     return initTime, oppArray, me, ball, kickTarget, agentType, directFeatures
 
-# def parseGameState2(gameState, nFeatures, skipNoOpp=True):
-#   initTime, oppArray, me, ball, kickTarget, agentType, directFeatures = preprocessGameState(gameState)
-#   if len(oppArray) == 0 and skipNoOpp:
-#     return np.zeros(nFeatures), False
-#
-#   features = np.zeros(nFeatures)
-#   oppDists, oppIndices, n = findNClosestOpponentToBall(oppArray, ball, n=2)
-#
-#   t=5
-#   for i in xrange(n):
-#     oppI = oppIndices[i]
-#     oppDist = oppDists[i]
-#     opp = oppArray[oppI]
-#     oppAngle, dist = findTargetAngleandDist(opp, ball)
-#     angBetweenOppAndBall = angBetween3Pts(me, ball, opp)
-#     oppAngleFromMe, oppDistFromMe = findTargetAngleandDist(me, opp)
-#     a = isOpponentCloserThanMe(me, opp, ball)
-#     b = isOpponentWithinKickDir(opp, kickTarget, ball)
-#     c = isOpponentBehindBall(me, opp, ball)
-#     features[t*i:t*(i+1)] = np.array([oppDist, oppAngle, a, b, c])
-#
-#   ballAngle, ballDist = findTargetAngleandDist(me, ball)
-#   angleofKick = angBetween3Pts(me, ball, kickTarget)
-#   features[-3:] = np.array([ballAngle, ballDist, angleofKick])
-#   return features, True
 
 
 def isOpponent2Far(gameState, threshold=2.5, removeFallenOpp=False):
@@ -133,16 +102,11 @@ def parseKickSuccess(gameState, ballMovement, ezKickSuccess=False, ballTravelDis
         return 1
     afterKick = [float(x) for x in afterKick.split()]
     immedAfterKick = [float(x) for x in immedAfterKick.split()]
-#   print afterKick, immedAfterKick
 
     timeElapsed = afterKick[2] - immedAfterKick[4]
     target = (immedAfterKick[2], immedAfterKick[3])
     ballBefore = (immedAfterKick[0], immedAfterKick[1])
     ballAfter = (afterKick[0], afterKick[1])
-
-#   ballTravelDist = getDistTo(ballBefore, ballAfter)
-#   ballVel = ballTravelDist/timeElapsed
-#   angBetweenBallAndTarget = angBetween3Pts(ballBefore, ballAfter, target)
 
     ballBeforeDist = helper.getDistTo(ballBefore, target)
     ballAfterDist = helper.getDistTo(ballAfter, target)
@@ -171,10 +135,8 @@ def parseKickSuccess_new(gameState, ballMovement, ezKickSuccess=False):
         return 1
     afterKick = [float(x) for x in afterKick.split()]
     immedAfterKick = [float(x) for x in immedAfterKick.split()]
-#   print afterKick, immedAfterKick
 
     timeElapsed = afterKick[2] - initTime
-#   target = (immedAfterKick[2],immedAfterKick[3])
     target = (kickTarget[0], kickTarget[1])
     ballBefore = (immedAfterKick[0], immedAfterKick[1])
     ballAfter = (afterKick[0], afterKick[1])
@@ -231,13 +193,10 @@ def parse(filename="combined.txt", useCache=False, nfeatures=20, ezKickSuccess=F
                 successIndex.append(index)
         else:
             pass
-#       print "failed: " + line.rstrip()
 
     print "ignored " + str(len(lines) - len(successIndex)) + " lines."
     features = features[successIndex, :]
     labels = labels[successIndex]
-#   features = features[labels != -2,:]
-#   labels = labels[labels != -2]
     print "saving processed features and labels to file..."
     np.save(featuresFile, features)
     np.save(labelsFile, labels)
@@ -302,12 +261,6 @@ def smote(newFeatures, labels):
     labels = np.concatenate((labels, np.ones(numNewFeatures)))
     return newFeatures, labels
 
-# 0:closestOppDist,1:oppDist2KickLine,2:angleBetweenOppandKickDir,3:numOppCloserThanDist
-# 4:angBetweenOppAndBall,5:ang2TurnOpp,6:angle2TurnMe,7:oppBallAngle
-# 8:oppFallen,9:numOppWithinKickDir,10:closestOppAngleFromMe,11:closestOppDistFromMe
-# 12:distToKickPosOpp,13:meanOppDist,14:maxOppDist,15:ballAngle
-# 16:ballDist,17:angleOfKick,18:ballVelocity,19:angleBetweenMeAndBall
-
 
 def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5, equalClassSize=True,
              thres=0.5, useFeatures=[0], useAll=True, batch=False, useCache=True,
@@ -324,10 +277,7 @@ def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5,
     print "features mean:", features.mean(axis=0)
     print "features std:", features.std(axis=0)
     if not useAll:
-        #     labels = np.random.random(features.shape[0]) < 0.5
         newFeatures = features[:, useFeatures]
-#     print newFeatures[:100,:]
-#     newFeatures = np.random.random((features.shape[0], 9))
     else:
         newFeatures = features
 
@@ -350,21 +300,11 @@ def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5,
         testingSet, testLabels = balanceClasses(testingSet, testLabels)
         clf = LogisticRegression(
             C=C, class_weight='auto', intercept_scaling=B, penalty='l2')
-#     clf = svm.SVC(C=C, kernel='rbf', class_weight='auto', probability=returnProb)
     else:
         clf = LogisticRegression(C=C, intercept_scaling=B, penalty='l2')
-#     clf = svm.SVC(C=C, kernel='rbf', class_weight='auto', probability=returnProb)
-#     clf = RandomForestClassifier()
-#     clf = KNeighborsClassifier(n_neighbors=15)
-#   print np.arange(20)[clf2.get_support()]
-#     clf = AdaBoostClassifier()
-#   clf = GradientBoostingClassifier(init=LogisticRegression)
-#     clf = GaussianNB()
-#   clf = DecisionTreeClassifier()
 
     if featureSelect:
         rfecv = RFE(estimator=clf, step=1,  n_features_to_select=8)
-#     rfecv = RFECV(estimator=clf, step=1, cv=10)
         rfecv.fit(newFeatures, labels)
         print("Optimal number of features : %d" % rfecv.n_features_)
         print rfecv.ranking_
@@ -379,19 +319,10 @@ def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5,
         predictLabels = 2*predictLabels - 1
         return predictLabels, probArray
 
-#   d = np.reshape(np.linspace(0, 10, num=1000), (-1, 1))
-# #   print d.shape
-#   results = clf.predict(d)
-#   for i in xrange(1000):
-#     if results[i] == 1:
-#       print "dist:", i*0.01
-#       break
-
     if returnProb:
         predictLabels, probArray = myPredict(clf, testingSet, thres=thres)
     else:
         predictLabels = clf.predict(testingSet)
-#     print "accuracy rate from classifier: " + str(clf.score(testingSet, testLabels))
 
     suffix = "" if useAll else str(features)
 
@@ -492,11 +423,7 @@ def visualizeDribbleData(dribble="type4_dribble.txt", kick="type4_rc.txt"):
 
     plt.figure(figsize=(16, 12))
     mat = np.loadtxt(dribble)
-#   mat2 = parseKickData(kick)
-#   print np.sum(mat2[:,1] <  0)
-#   print np.sum(mat2[:,1] >  0)
     plt.scatter(mat[:, 0], mat[:, 1], alpha=0.3, c='g', label="dibble")
-#   plt.scatter(mat2[:,0], mat2[:,1], alpha=0.3, label="kick")
     plt.legend()
     plt.xlabel("time elapsed in seconds")
     plt.ylabel("distance ball traveled in meters")
@@ -506,8 +433,6 @@ def visualizeDribbleData(dribble="type4_dribble.txt", kick="type4_rc.txt"):
     ax.xaxis.set_ticks(np.arange(start, end, 0.5))
 
     r = make_pipeline(PolynomialFeatures(9), Ridge(alpha=0.0001))
-#   from sklearn.svm import SVR
-#   r = SVR()
 
     r.fit(np.reshape(mat[:, 0], (-1, 1)), mat[:, 1])
     x = np.linspace(0, 12, 100)
