@@ -12,9 +12,9 @@ class EventListSerializerTestCase(TestCase):
             slug='event-type'
         )
         event_status  : EventStatus = EventStatus.objects.create(name='Confirmed', code='CFM')
-        start_date    :   datetime = datetime(2021, 1, 1, 0, 0, 0)
-        end_date      :     datetime = datetime(2021, 1, 2, 0, 0, 0)
-        event         :        Event = Event.objects.create(
+        start_date    : datetime = datetime(2021, 1, 1, 0, 0, 0)
+        end_date      : datetime = datetime(2021, 1, 2, 0, 0, 0)
+        event         : Event = Event.objects.create(
             name='Test event',
             main_attribute=main_attribute,
             event_type=event_type,
