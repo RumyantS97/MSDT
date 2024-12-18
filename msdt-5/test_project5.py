@@ -101,7 +101,7 @@ class TestTrimSpaces(unittest.TestCase):
         self.assertEqual(expected_output, result)
         mock_file.assert_called_once_with("mock_file.txt", 'r', encoding='utf-8')
 
-    # Тест 6: Проверка строки с табуляциями и пробелами
+    # Тест 7: Проверка строки с табуляциями и пробелами
     def test_trim_tabs_and_spaces_only(self):
         input_text = "\t  \t   "
         expected_output = ""
