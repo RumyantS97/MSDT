@@ -153,11 +153,11 @@ def comb_sort(arr, order_):
 # Функция вызова quick_sort. Используется чтобы debug log не учитывал рекурсию
 def quicksort(arr, order):
     logger.debug('Произошел вызов функции "quicksort"')
+    operator_lefter = operator_lt if order else operator_gt
+    operator_righter = operator_gt if order else operator_lt
 
-    def quicksort_inner(arr_, order_):
+    def quicksort_inner(arr_):
         logger.log(DEBUG_EX, 'Произошел вызов функции "quicksort_inner"')
-        operator_lefter = operator_lt if order_ else operator_gt
-        operator_righter = operator_gt if order_ else operator_lt
         if len(arr_) <= 1:
             return arr_
         else:
@@ -170,7 +170,6 @@ def quicksort(arr, order):
             # Элементы больше пивота
             right = [x for x in arr_ if operator_righter(x, pivot)]
             # Рекурсивно сортируем и объединяем
-            return quicksort_inner(left, order_) \
-                + middle + quicksort_inner(right, order_)
+            return quicksort_inner(left) + middle + quicksort_inner(right)
 
-    return quicksort_inner(arr, order).copy()
+    return quicksort_inner(arr).copy()

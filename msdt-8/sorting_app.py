@@ -25,7 +25,6 @@ def input_value_in_bounds(left, right, message):
     is_selected = False
     temp = 0
     while not is_selected:
-        # Запрашиваем ввод числа от 1 до 7
         print(message)
         temp = 0
         try:
