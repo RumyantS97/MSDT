@@ -18,194 +18,194 @@ import smote as st
 
 np.set_printoptions(suppress=True, formatter={
                     'all': lambda x: str(x) + ','}, linewidth=9999)
-shouldhavefailed = 0
+should_have_failed = 0
 success = 0
 
 
-def preprocessGameState(gameState, removeFallenOpp=False):
-    x, initTime, x, agentInfo, x, opp, x, me, x, ball, x, kickTarget, x, directFeatures = gameState.split(
+def preprocess_game_state(game_state, remove_fallen_opp=False):
+    x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(
         ":")
-    initTime = float(initTime)
-    agentType = int(agentInfo.split()[1])
+    init_time = float(init_time)
+    agent_type = int(agent_info.split()[1])
     ball = [float(x) for x in ball.split()]
     me = [float(x) for x in me.split()]
-    kickTarget = [float(x) for x in kickTarget.split()]
-    directFeatures = directFeatures.split()
-    directFeatures = [float(x) for x in directFeatures]
+    kick_target = [float(x) for x in kick_target.split()]
+    direct_features = direct_features.split()
+    direct_features = [float(x) for x in direct_features]
 
     if len(opp) == 0:
-        oppArray = []
+        opp_array = []
     else:
-        oppArray = [[float(x) for x in temp.split()]
+        opp_array = [[float(x) for x in temp.split()]
                     for temp in opp.split(';')[:-1]]
-    if removeFallenOpp:
-        oppArray = helper.removeFallenOpponents(oppArray)
-    return initTime, oppArray, me, ball, kickTarget, agentType, directFeatures
+    if remove_fallen_opp:
+        opp_array = helper.remove_fallen_opponents(opp_array)
+    return init_time, opp_array, me, ball, kick_target, agent_type, direct_features
 
 
 
-def isOpponent2Far(gameState, threshold=2.5, removeFallenOpp=False):
-    oppArray, me, ball, kickTarget, agentType, directFeatures = gameState
-    closestOppDist, closestOppIndex = helper.findClosestOpponentToBall(oppArray, ball)
-    return closestOppDist > threshold
+def is_opponent_2far(game_state, threshold=2.5, remove_fallen_opp=False):
+    opp_array, me, ball, kick_target, agent_type, direct_features = game_state
+    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(opp_array, ball)
+    return closest_opp_dist > threshold
 
 
-def parseGameState(gameState, nFeatures, skipNoOpp=True, kickType=[7], removeFallenOpp=False, useDirectFeatures=True):
-    initTime, oppArray, me, ball, kickTarget, agentType, directFeatures = gameState
+def parse_game_state(game_state, n_features, skip_no_opp=True, kick_type=[7], remove_fallen_opp=False, use_direct_features=True):
+    init_time, opp_array, me, ball, kick_target, agent_type, direct_features = game_state
 
-    if (len(oppArray) == 0 or kickTarget[2] not in kickType) and skipNoOpp:
-        return np.zeros(nFeatures), False
+    if (len(opp_array) == 0 or kick_target[2] not in kick_type) and skip_no_opp:
+        return np.zeros(n_features), False
 
-    if useDirectFeatures:
-        return np.abs(np.array(directFeatures)), True
+    if use_direct_features:
+        return np.abs(np.array(direct_features)), True
 
-    closestOppDist, closestOppIndex = helper.findClosestOpponentToBall(oppArray, ball)
-    oppDist2KickLine = helper.getDist2KickLine(
-        kickTarget, ball, oppArray[closestOppIndex])
-    angleBetweenOppandKickDir = helper.angBetween3Pts(
-        ball, kickTarget, oppArray[closestOppIndex])
-    numOppCloserThanDist = helper.oppCloserThanDist(oppArray, ball, dist=2.0)
-    angBetweenOppAndBall = helper.angBetween3Pts(me, ball, oppArray[closestOppIndex])
-    ang2TurnOpp = helper.angle2Turn(
-        ball, (-15.0, 0.0), math.radians(oppArray[closestOppIndex][2]))
-    angle2TurnMe = helper.angle2Turn(ball, kickTarget, math.radians(me[2]))
-    oppBallAngle, oppBallDist = helper.findTargetAngleandDist(
-        oppArray[closestOppIndex], ball)
-    angleBetweenMeAndBall = helper.angBetween3Pts(oppArray[closestOppIndex], me, ball)
-    oppFallen = oppArray[closestOppIndex][3]
-    numOppWithinKickDir = helper.oppWithinKickDir(
-        oppArray, kickTarget, ball, angleThres=30)
-    closestOppAngleFromMe, closestOppDistFromMe = helper.findTargetAngleandDist(
-        me, oppArray[closestOppIndex])
-    distToKickPosOpp = helper.distToKickPosition(
-        ball, (-15.0, 0.0), oppArray[closestOppIndex])
-    oppdist, indices, n = helper.findNClosestOpponentToBall(oppArray, ball)
-    meanOppDist = np.mean(oppdist)
-    maxOppDist = np.max(oppdist)
-    ballAngle, ballDist = helper.findTargetAngleandDist(me, ball)
-    angleOfKick = helper.angBetween3Pts(me, ball, kickTarget)
-    ballVelocity = helper.norm(ball[2], ball[3])
+    closest_opp_dist, closest_opp_index = helper.find_closest_opponent_to_ball(opp_array, ball)
+    opp_dist_2kick_line = helper.get_dist_2kick_line(
+        kick_target, ball, opp_array[closest_opp_index])
+    angle_between_opp_and_kick_dir = helper.ang_between3_pts(
+        ball, kick_target, opp_array[closest_opp_index])
+    num_opp_closer_than_dist = helper.opp_closer_than_dist(opp_array, ball, dist=2.0)
+    ang_between_opp_and_ball = helper.ang_between3_pts(me, ball, opp_array[closest_opp_index])
+    ang2_turn_opp = helper.angle2_turn(
+        ball, (-15.0, 0.0), math.radians(opp_array[closest_opp_index][2]))
+    angle2_turn_me = helper.angle2_turn(ball, kick_target, math.radians(me[2]))
+    opp_ball_angle, opp_ball_dist = helper.find_target_angleand_dist(
+        opp_array[closest_opp_index], ball)
+    angle_between_me_and_ball = helper.ang_between3_pts(opp_array[closest_opp_index], me, ball)
+    opp_fallen = opp_array[closest_opp_index][3]
+    num_opp_within_kick_dir = helper.opp_within_kick_dir(
+        opp_array, kick_target, ball, angle_thres=30)
+    closest_opp_angle_from_me, closest_opp_dist_from_me = helper.find_target_angleand_dist(
+        me, opp_array[closest_opp_index])
+    dist_to_kick_pos_opp = helper.dist_to_kick_position(
+        ball, (-15.0, 0.0), opp_array[closest_opp_index])
+    oppdist, indices, n = helper.find_n_closest_opponent_to_ball(opp_array, ball)
+    mean_opp_dist = np.mean(oppdist)
+    max_opp_dist = np.max(oppdist)
+    ball_angle, ball_dist = helper.find_target_angleand_dist(me, ball)
+    angle_of_kick = helper.ang_between3_pts(me, ball, kick_target)
+    ball_velocity = helper.norm(ball[2], ball[3])
 
-    featureArray = np.array([closestOppDist, oppDist2KickLine, angleBetweenOppandKickDir, numOppCloserThanDist, angBetweenOppAndBall, ang2TurnOpp,
-                             angle2TurnMe, oppBallAngle, oppFallen, numOppWithinKickDir, closestOppAngleFromMe, closestOppDistFromMe,
-                             distToKickPosOpp, meanOppDist, maxOppDist, ballAngle, ballDist, angleOfKick, ballVelocity, angleBetweenMeAndBall])
-    return featureArray, True
+    feature_array = np.array([closest_opp_dist, opp_dist_2kick_line, angle_between_opp_and_kick_dir, num_opp_closer_than_dist, ang_between_opp_and_ball, ang2_turn_opp,
+                             angle2_turn_me, opp_ball_angle, opp_fallen, num_opp_within_kick_dir, closest_opp_angle_from_me, closest_opp_dist_from_me,
+                             dist_to_kick_pos_opp, mean_opp_dist, max_opp_dist, ball_angle, ball_dist, angle_of_kick, ball_velocity, angle_between_me_and_ball])
+    return feature_array, True
 
 
-def parseKickSuccess(gameState, ballMovement, ezKickSuccess=False, ballTravelDist=2):
-    initTime, oppArray, me, ball, kickTarget, agentType, directFeatures = gameState
-    x, immedAfterKick, x, afterKick, x, kickInfo = ballMovement.split(":")
-    kickMode = int(kickInfo.split()[0])
-    if (kickMode != 2):
+def parse_kick_success(game_state, ball_movement, ez_kick_success=False, ball_travel_dist=2):
+    init_time, opp_array, me, ball, kick_target, agent_type, direct_features = game_state
+    x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(":")
+    kick_mode = int(kick_info.split()[0])
+    if (kick_mode != 2):
         return -1
-    if ezKickSuccess:
+    if ez_kick_success:
         return 1
-    afterKick = [float(x) for x in afterKick.split()]
-    immedAfterKick = [float(x) for x in immedAfterKick.split()]
+    after_kick = [float(x) for x in after_kick.split()]
+    immed_after_kick = [float(x) for x in immed_after_kick.split()]
 
-    timeElapsed = afterKick[2] - immedAfterKick[4]
-    target = (immedAfterKick[2], immedAfterKick[3])
-    ballBefore = (immedAfterKick[0], immedAfterKick[1])
-    ballAfter = (afterKick[0], afterKick[1])
+    timeElapsed = after_kick[2] - immed_after_kick[4]
+    target = (immed_after_kick[2], immed_after_kick[3])
+    ball_before = (immed_after_kick[0], immed_after_kick[1])
+    ball_after = (after_kick[0], after_kick[1])
 
-    ballBeforeDist = helper.getDistTo(ballBefore, target)
-    ballAfterDist = helper.getDistTo(ballAfter, target)
+    ball_before_dist = helper.get_dist_to(ball_before, target)
+    ball_after_dist = helper.get_dist_to(ball_after, target)
 
-    if ballBeforeDist - ballAfterDist > ballTravelDist:
+    if ball_before_dist - ball_after_dist > ball_travel_dist:
         return 1
     else:
         return -1
 
 
-def parseKickSuccess_new(gameState, ballMovement, ezKickSuccess=False):
-    def getDribbleDist(timeElapsed):
-        if timeElapsed < 1.5:
+def parse_kick_success_new(game_state, ball_movement, ez_kick_success=False):
+    def get_dribble_dist(time_elapsed):
+        if time_elapsed < 1.5:
             dist = 0.0
         else:
-            dist = 4.0/6.5 * (timeElapsed - 1.5)
+            dist = 4.0/6.5 * (time_elapsed - 1.5)
 
         return dist
 
-    initTime, oppArray, me, ball, kickTarget, agentType, directFeatures = gameState
-    x, immedAfterKick, x, afterKick, x, kickInfo = ballMovement.split(":")
-    kickMode = int(kickInfo.split()[0])
-    if (kickMode != 2):
+    init_time, opp_array, me, ball, kick_target, agent_type, direct_features = game_state
+    x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(":")
+    kick_mode = int(kick_info.split()[0])
+    if (kick_mode != 2):
         return -1
-    if ezKickSuccess:
+    if ez_kick_success:
         return 1
-    afterKick = [float(x) for x in afterKick.split()]
-    immedAfterKick = [float(x) for x in immedAfterKick.split()]
+    after_kick = [float(x) for x in after_kick.split()]
+    immed_after_kick = [float(x) for x in immed_after_kick.split()]
 
-    timeElapsed = afterKick[2] - initTime
-    target = (kickTarget[0], kickTarget[1])
-    ballBefore = (immedAfterKick[0], immedAfterKick[1])
-    ballAfter = (afterKick[0], afterKick[1])
+    time_elapsed = after_kick[2] - init_time
+    target = (kick_target[0], kick_target[1])
+    ball_before = (immed_after_kick[0], immed_after_kick[1])
+    ball_after = (after_kick[0], after_kick[1])
 
-    travelDist = helper.getDistTo(ballBefore, target) - helper.getDistTo(ballAfter, target)
+    travel_dist = helper.get_dist_to(ball_before, target) - helper.get_dist_to(ball_after, target)
 
-    if travelDist > getDribbleDist(timeElapsed):
+    if travel_dist > get_dribble_dist(time_elapsed):
         return 1
     else:
         return -1
 
 
-def parse(filename="combined.txt", useCache=False, nfeatures=20, ezKickSuccess=False,
-          kickType=[10], removeFallenOpp=False, ignoreSelfFailure=False, useDirectFeatures=True):
+def parse(file_name="combined.txt", use_cache=False, n_features=20, ez_kick_success=False,
+          kick_type=[10], remove_fallen_opp=False, ignore_self_failure=False, use_direct_features=True):
 
-    featuresFile = "cache/" + filename[:-4] + str(nfeatures) + "_" + \
-        str(ezKickSuccess) + "_" + str(kickType) + "_features.npy"
+    features_file = "cache/" + file_name[:-4] + str(n_features) + "_" + \
+        str(ez_kick_success) + "_" + str(kick_type) + "_features.npy"
 
-    labelsFile = "cache/" + filename[:-4] + str(nfeatures) + "_" + \
-        str(ezKickSuccess) + "_" + str(kickType) + "_labels.npy"
+    labels_file = "cache/" + file_name[:-4] + str(n_features) + "_" + \
+        str(ez_kick_success) + "_" + str(kick_type) + "_labels.npy"
 
-    if useCache and os.path.exists(featuresFile) and os.path.exists(labelsFile):
+    if use_cache and os.path.exists(features_file) and os.path.exists(labels_file):
         print "cached files exists, using cache!"
-        features = np.load(featuresFile)
-        labels = np.load(labelsFile)
+        features = np.load(features_file)
+        labels = np.load(labels_file)
         return features, labels
 
-    w = open(filename)
+    w = open(file_name)
     lines = w.readlines()
-    features = np.empty((len(lines), nfeatures))
+    features = np.empty((len(lines), n_features))
     labels = np.empty(len(lines), dtype=np.int)
-    successIndex = []
+    success_index = []
     for index, line in enumerate(lines):
         if index % 1000 == 0:
             print "parsed " + str(index) + " samples"
-        rawGameState, ballMovement = line.rstrip().split("#")
+        rawgame_state, ball_movement = line.rstrip().split("#")
 
         try:
-            gameState = preprocessGameState(
-                rawGameState, removeFallenOpp=removeFallenOpp)
-            featureArray, success = parseGameState(gameState, nfeatures, kickType=kickType,
-                                                   removeFallenOpp=removeFallenOpp, useDirectFeatures=useDirectFeatures)
+            game_state = preprocess_game_state(
+                rawgame_state, remove_fallen_opp=remove_fallen_opp)
+            feature_array, success = parse_game_state(game_state, n_features, kick_type=kick_type,
+                                                   remove_fallen_opp=remove_fallen_opp, use_direct_features=use_direct_features)
         except:
             success = False
 
         if success:
-            features[index, :] = featureArray
-            labels[index] = parseKickSuccess_new(
-                gameState, ballMovement, ezKickSuccess=ezKickSuccess)
-            if ignoreSelfFailure:
-                if labels[index] == 1 or not isOpponent2Far(gameState, removeFallenOpp=removeFallenOpp):
-                    successIndex.append(index)
+            features[index, :] = feature_array
+            labels[index] = parse_kick_success_new(
+                game_state, ball_movement, ez_kick_success=ez_kick_success)
+            if ignore_self_failure:
+                if labels[index] == 1 or not is_opponent_2far(game_state, remove_fallen_opp=remove_fallen_opp):
+                    success_index.append(index)
             else:
-                successIndex.append(index)
+                success_index.append(index)
         else:
             pass
 
-    print "ignored " + str(len(lines) - len(successIndex)) + " lines."
-    features = features[successIndex, :]
-    labels = labels[successIndex]
+    print "ignored " + str(len(lines) - len(success_index)) + " lines."
+    features = features[success_index, :]
+    labels = labels[success_index]
     print "saving processed features and labels to file..."
-    np.save(featuresFile, features)
-    np.save(labelsFile, labels)
+    np.save(features_file, features)
+    np.save(labels_file, labels)
     return features, labels
 
 
-def visualize(useFeatures=[0, 8], frac=0.005):
+def visualize(use_features=[0, 8], frac=0.005):
     features, labels = parse(useCache=False)
-    features = features[:, useFeatures]
+    features = features[:, use_features]
     r = np.random.random(features.shape[0]) < frac
     features2 = features[r, :]
     labels2 = labels[r]
@@ -220,56 +220,56 @@ def visualize(useFeatures=[0, 8], frac=0.005):
     plt.clf()
 
 
-def batch_evalAccuracy(filenames=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
+def batch_evalAccuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
                                   'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
                                   'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
-                       useFeatures=[4, 6, 8, 11, 0, 15, 17,], kickType=[10]):
+                       use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]):
     accuracys = []
-    for i, filename in enumerate(filenames):
+    for i, file_name in enumerate(file_names):
         try:
-            accuracyRate = classify(filename=filename, useFeatures=useFeatures, equalClassSize=False,
-                                    useAll=False, batch=True, useCache=True, kickType=kickType, draw=False)
+            accuracyRate = classify(file_name=file_name, use_features=use_features, equal_class_size=False,
+                                    useAll=False, batch=True, useCache=True, kick_type=kick_type, draw=False)
             accuracys.append(round(accuracyRate, 3))
         except:
             accuracys.append(0.0)
 
-    for i, filename in enumerate(filenames):
-        print filename[:-4] + ":", accuracys[i]
+    for i, file_name in enumerate(file_names):
+        print file_name[:-4] + ":", accuracys[i]
 
 
-def balanceClasses(newFeatures, labels):
-    pos = newFeatures[labels == 1]
+def balance_classes(new_features, labels):
+    pos = new_features[labels == 1]
     pos_labels = labels[labels == 1]
-    neg = newFeatures[labels == -1]
+    neg = new_features[labels == -1]
     neg_labels = labels[labels == -1]
     r = np.random.random(neg.shape[0]) < float(pos.shape[0])/neg.shape[0]
     neg = neg[r, :]
     neg_labels = neg_labels[r]
-    newFeatures = np.concatenate((neg, pos))
+    new_features = np.concatenate((neg, pos))
     labels = np.concatenate((neg_labels, pos_labels))
-    return newFeatures, labels
+    return new_features, labels
 
 
-def smote(newFeatures, labels):
+def smote(new_features, labels):
     percentage = 100*(float(len(labels) - np.sum(labels))/np.sum(labels))
     percentage = int(round(percentage, -2))
-    safe, synthetic, danger = sm.borderlineSMOTE(
-        newFeatures, labels, 1, percentage, 5)
-    numNewFeatures = synthetic.shape[0]
+    safe, synthetic, danger = sm.borderline_smote(
+        new_features, labels, 1, percentage, 5)
+    num_new_features = synthetic.shape[0]
 
-    newFeatures = np.concatenate((newFeatures, synthetic))
-    labels = np.concatenate((labels, np.ones(numNewFeatures)))
-    return newFeatures, labels
+    new_features = np.concatenate((new_features, synthetic))
+    labels = np.concatenate((labels, np.ones(num_new_features)))
+    return new_features, labels
 
 
-def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5, equalClassSize=True,
-             thres=0.5, useFeatures=[0], useAll=True, batch=False, useCache=True,
-             featureSelect=False, kickType=[11], draw=False, scale=False, C=1.0, B=1.0, returnProb=False):
+def classify(file_name='4_14_type4_apollo3d.txt', useFrac=1.0, train_fraction=0.5, equal_class_size=True,
+             thres=0.5, use_features=[0], use_all=True, batch=False, use_cache=True,
+             feature_select=False, kick_type=[11], draw=False, scale=False, C=1.0, B=1.0, return_prob=False):
 
-    features, labels = parse(filename=filename, useCache=useCache, ezKickSuccess=False,
-                             kickType=kickType, ignoreSelfFailure=False, useDirectFeatures=True,
-                             nfeatures=8)
-    num2Use = int(useFrac*len(features))
+    features, labels = parse(file_name=file_name, use_cache=use_cache, ez_kick_success=False,
+                             kick_type=kick_type, ignore_self_failure=False, use_direct_features=True,
+                             n_features=8)
+    num2_use = int(useFrac*len(features))
     features = features[:num2Use]
     labels = labels[:num2Use]
     if scale:
@@ -277,33 +277,33 @@ def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5,
     print "features mean:", features.mean(axis=0)
     print "features std:", features.std(axis=0)
     if not useAll:
-        newFeatures = features[:, useFeatures]
+        new_features = features[:, use_features]
     else:
-        newFeatures = features
+        new_features = features
 
-    if equalClassSize:
-        newFeatures, labels = balanceClasses(newFeatures, labels)
+    if equal_class_size:
+        newFeatures, labels = balance_classes(newFeatures, labels)
 
     print "we have " + str(newFeatures.shape[0]) + " samples."
     print "we have " + str(np.sum(labels == 1)) + " positive labels"
     print "ratio: " + str(float(np.sum(labels == -1))/np.sum(labels == 1))
-    print "using approximately " + str(trainFraction*100) + "% as training examples"
+    print "using approximately " + str(train_fraction*100) + "% as training examples"
 
-    r = np.random.random(newFeatures.shape[0]) < trainFraction
+    r = np.random.random(new_features.shape[0]) < train_fraction
     r2 = np.invert(r)
-    trainingSet = newFeatures[r, :]
-    trainLabels = labels[r]
-    testingSet = newFeatures[r2, :]
-    testLabels = labels[r2]
+    training_set = new_features[r, :]
+    train_labels = labels[r]
+    testing_set = new_features[r2, :]
+    test_labels = labels[r2]
 
-    if not equalClassSize:
-        testingSet, testLabels = balanceClasses(testingSet, testLabels)
+    if not equal_class_size:
+        testing_set, test_labels = balance_classes(testing_set, test_labels)
         clf = LogisticRegression(
             C=C, class_weight='auto', intercept_scaling=B, penalty='l2')
     else:
         clf = LogisticRegression(C=C, intercept_scaling=B, penalty='l2')
 
-    if featureSelect:
+    if feature_select:
         rfecv = RFE(estimator=clf, step=1,  n_features_to_select=8)
         rfecv.fit(newFeatures, labels)
         print("Optimal number of features : %d" % rfecv.n_features_)
@@ -311,53 +311,53 @@ def classify(filename='4_14_type4_apollo3d.txt', useFrac=1.0, trainFraction=0.5,
         print np.arange(20)[rfecv.support_]
         return
 
-    clf.fit(trainingSet, trainLabels)
+    clf.fit(training_set, train_labels)
 
-    def myPredict(clf, x, thres=0.5):
-        probArray = clf.predict_proba(x)[:, 1]
-        predictLabels = 1*(probArray > thres)
-        predictLabels = 2*predictLabels - 1
-        return predictLabels, probArray
+    def my_predict(clf, x, thres=0.5):
+        prob_array = clf.predict_proba(x)[:, 1]
+        predict_labels = 1*(prob_array > thres)
+        predict_labels = 2*predict_labels - 1
+        return predict_labels, prob_array
 
-    if returnProb:
-        predictLabels, probArray = myPredict(clf, testingSet, thres=thres)
+    if return_prob:
+        predict_labels, prob_array = my_predict(clf, testing_set, thres=thres)
     else:
-        predictLabels = clf.predict(testingSet)
+        predict_labels = clf.predict(testing_set)
 
-    suffix = "" if useAll else str(features)
+    suffix = "" if use_all else str(features)
 
-    if draw and returnProb:
-        area = drawPrecisionRecallCurve(
-            filename[:-4] + suffix, testLabels, probArray)
-        roc_auc = drawROCCurve(filename[:-4] + suffix, testLabels, probArray)
+    if draw and return_prob:
+        area = draw_precision_recall_curve(
+            file_name[:-4] + suffix, test_labels, prob_array)
+        roc_auc = draw_roc_curve(file_name[:-4] + suffix, test_labels, prob_array)
 
     false_neg = false_pos = true_neg = true_pos = 0
-    for i in xrange(len(predictLabels)):
-        if predictLabels[i] == testLabels[i] == -1:
+    for i in xrange(len(predict_labels)):
+        if predict_labels[i] == test_labels[i] == -1:
             true_neg += 1
-        elif predictLabels[i] == testLabels[i] == 1:
+        elif predict_labels[i] == test_labels[i] == 1:
             true_pos += 1
-        elif predictLabels[i] == -1 and testLabels[i] == 1:
+        elif predict_labels[i] == -1 and test_labels[i] == 1:
             false_neg += 1
         else:
             false_pos += 1
     good = true_neg + true_pos
-    print "accuracy rate: ", good/float(len(predictLabels)), good
-    print "true negative rate: ", true_neg/float(len(predictLabels)), true_neg
-    print "true positive rate: ", true_pos/float(len(predictLabels)), true_pos
-    print "false negative rate: ", false_neg/float(len(predictLabels)), false_neg
-    print "false positive rate: ", false_pos/float(len(predictLabels)), false_pos
+    print "accuracy rate: ", good/float(len(predict_labels)), good
+    print "true negative rate: ", true_neg/float(len(predict_labels)), true_neg
+    print "true positive rate: ", true_pos/float(len(predict_labels)), true_pos
+    print "false negative rate: ", false_neg/float(len(predict_labels)), false_neg
+    print "false positive rate: ", false_pos/float(len(predict_labels)), false_pos
     precision = true_pos/float(true_pos + false_pos)
     recall = true_pos/float(true_pos + false_neg)
     print "precision: ", precision
     print "recall: ", recall
     print "f1 score: ", 2*(precision*recall)/(precision + recall)
-    return good/float(len(predictLabels))
+    return good/float(len(predict_labels))
 
 
-def drawPrecisionRecallCurve(filename, testLabels, probArray):
+def draw_precision_recall_curve(file_name, test_labels, prob_array):
     precision, recall, thresholds = precision_recall_curve(
-        testLabels, probArray)
+        test_labels, prob_array)
     area = auc(recall, precision)
     plt.clf()
     plt.plot(recall, precision, label='Precision-Recall curve')
@@ -368,12 +368,12 @@ def drawPrecisionRecallCurve(filename, testLabels, probArray):
     plt.grid()
     plt.title('Precision-Recall: AUC=%0.2f' % area)
     plt.legend(loc="lower left")
-    plt.savefig(filename+"_precRecallCurve")
+    plt.savefig(file_name+"_precRecallCurve")
     return area
 
 
-def drawROCCurve(filename, testLabels, probArray):
-    fpr, tpr, thresholds = roc_curve(testLabels, probArray)
+def draw_roc_curve(file_name, test_labels, prob_array):
+    fpr, tpr, thresholds = roc_curve(test_labels, prob_array)
     roc_auc = auc(fpr, tpr)
     plt.clf()
     plt.plot(fpr, tpr, label='ROC curve (area = %0.2f)' % roc_auc)
@@ -385,41 +385,41 @@ def drawROCCurve(filename, testLabels, probArray):
     plt.grid()
     plt.title('Receiver operating characteristic')
     plt.legend(loc="lower right")
-    plt.savefig(filename+"_ROC")
+    plt.savefig(file_name+"_ROC")
     return roc_auc
 
 
-def visualizeDribbleData(dribble="type4_dribble.txt", kick="type4_rc.txt"):
-    def parseKickData(kick):
+def visualize_dribble_data(dribble="type4_dribble.txt", kick="type4_rc.txt"):
+    def parse_kick_data(kick):
         w = open(kick)
         lines = w.readlines()
-        myList = []
+        my_list = []
         for index, line in enumerate(lines):
             if index % 1000 == 0:
                 print "parsed " + str(index) + " samples"
-            gameState, ballMovement = line.rstrip().split("#")
-            x, initTime, x, agentInfo, x, opp, x, me, x, ball, x, kickTarget, x, directFeatures = gameState.split(
+            game_state, ball_movement = line.rstrip().split("#")
+            x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(
                 ":")
-            initTime = float(initTime)
-            x, immedAfterKick, x, afterKick, x, kickInfo = ballMovement.split(
+            init_time = float(init_time)
+            x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(
                 ":")
-            kickMode = int(kickInfo.split()[0])
-            if (kickMode != 2):
+            kick_mode = int(kick_info.split()[0])
+            if (kick_mode != 2):
                 continue
-            afterKick = [float(x) for x in afterKick.split()]
-            immedAfterKick = [float(x) for x in immedAfterKick.split()]
+            after_kick = [float(x) for x in after_kick.split()]
+            immed_after_kick = [float(x) for x in immed_after_kick.split()]
 
-            finalTime = afterKick[2]
-            target = (immedAfterKick[2], immedAfterKick[3])
-            ballBefore = (immedAfterKick[0], immedAfterKick[1])
-            ballAfter = (afterKick[0], afterKick[1])
-            ballBeforeDist = helper.getDistTo(ballBefore, target)
-            ballAfterDist = helper.getDistTo(ballAfter, target)
+            final_time = after_kick[2]
+            target = (immed_after_kick[2], immed_after_kick[3])
+            ball_before = (immed_after_kick[0], immed_after_kick[1])
+            ball_after = (after_kick[0], after_kick[1])
+            ball_before_dist = helper.get_dist_to(ball_before, target)
+            ball_after_dist = helper.get_dist_to(ball_after, target)
 
-            distTraveled = ballBeforeDist - ballAfterDist
-            timeElapsed = finalTime - initTime
-            myList.append([timeElapsed, distTraveled])
-        return np.array(myList)
+            dist_traveled = ball_before_dist - ball_after_dist
+            time_elapsed = final_time - init_time
+            my_list.append([time_elapsed, dist_traveled])
+        return np.array(my_list)
 
     plt.figure(figsize=(16, 12))
     mat = np.loadtxt(dribble)
