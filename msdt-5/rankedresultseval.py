@@ -76,23 +76,15 @@ def discounted_cumulative_gain(serp: List[Tuple[int, int]]) -> float:
     """
     Calculate the discounted cumulative gain (DCG) for the SERP.
     """
-    return sum([g / log(i + 2) for (i, g) in enumerate([
-            rank[1] for rank in serp
-        ])])
+    return sum(rank[1] / log(i + 2, 2) for i, rank in enumerate(serp))
 
 
 def ideal_discounted_cumulative_gain(serp: List[Tuple[int, int]]) -> float:
     """
-    Calculate the ideal discounted cumulative gain (IDCG).
+    Calculate the ideal discounted cumulative gain (IDCG) for the SERP.
     """
-    return sum(
-        [
-            g / log(i + 2)
-            for (i, g) in enumerate(sorted([
-                rank[1] for rank in serp
-            ], reverse=True))
-        ]
-    )
+    sorted_serp = sorted(serp, key=lambda x: x[1], reverse=True)
+    return sum(rank[1] / log(i + 2, 2) for i, rank in enumerate(sorted_serp))
 
 
 def normalized_discounted_cumulative_gain(
@@ -102,7 +94,8 @@ def normalized_discounted_cumulative_gain(
     Calculate the normalized discounted cumulative gain (nDCG).
     """
     idcg = ideal_discounted_cumulative_gain(serp)
-    return discounted_cumulative_gain(serp) / idcg if idcg != 0 else 0
+    dcg = discounted_cumulative_gain(serp)
+    return dcg / idcg if idcg != 0 else 0.0
 
 
 def show_ranked_results_evaluation(serp: List[Tuple[int, int]]) -> None:
