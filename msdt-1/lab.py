@@ -26,7 +26,7 @@ class EventListSerializerTestCase(TestCase):
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
-            'place_name': 'РњРµСЃС‚Рѕ РЅРµ СѓРєР°Р·Р°РЅРѕ',
+            'place_name': 'Место не указано',
             'start_date': '01.01.2021 / 00:00',
             'photo': {
                 'image': {
@@ -35,7 +35,7 @@ class EventListSerializerTestCase(TestCase):
                 }
             },
             'url': f'/main-attribute/{event.id}/',
-            'week_day': 'РџСЏС‚РЅРёС†Р°',
+            'week_day': 'Пятница',
         })
 
     def test_online_event(self):
@@ -66,7 +66,7 @@ class EventListSerializerTestCase(TestCase):
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
-            'place_name': 'РћРЅР»Р°Р№РЅ РјРµСЂРѕРїСЂРёСЏС‚РёРµ',
+            'place_name': 'Онлайн мероприятия',
             'start_date': '01.01.2021 / 00:00',
             'photo': {
                 'image': {
@@ -75,7 +75,7 @@ class EventListSerializerTestCase(TestCase):
                 }
             },
             'url': f'/main-attribute/{event.id}/',
-            'week_day': 'РџСЏС‚РЅРёС†Р°',
+            'week_day': 'Пятница',
         })
 
     def test_event_with_place(self):
@@ -116,7 +116,7 @@ class EventListSerializerTestCase(TestCase):
                 }
             },
             'url': f'/main-attribute/{event.id}/',
-            'week_day': 'РџСЏС‚РЅРёС†Р°',
+            'week_day': 'Пятница',
         })
 
     def test_event_with_photo(self):
@@ -154,7 +154,7 @@ class EventListSerializerTestCase(TestCase):
         self.assertEqual(serializer_data, {
             'id': event.id,
             'name': 'Test event',
-            'place_name': 'РњРµСЃС‚Рѕ РЅРµ СѓРєР°Р·Р°РЅРѕ',
+            'place_name': 'Место не указано',
             'start_date': '01.01.2021 / 00:00',
             'photo': {
                 'image': {
@@ -163,7 +163,7 @@ class EventListSerializerTestCase(TestCase):
                 }
             },
             'url': f'/main-attribute/{event.id}/',
-            'week_day': 'РџСЏС‚РЅРёС†Р°',
+            'week_day': 'Пятница',
         })
 
 
