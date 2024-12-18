@@ -16,8 +16,11 @@ from sklearn.feature_selection import RFE
 import helper
 import smote as st
 
-np.set_printoptions(suppress=True, formatter={
-                    'all': lambda x: str(x) + ','}, linewidth=9999)
+np.set_printoptions(suppress=True,
+                    formatter={
+                        'all': lambda x: str(x) + ','
+                    },
+                    linewidth=9999)
 should_have_failed = 0
 success = 0
 
@@ -150,7 +153,7 @@ def parse_kick_success(
         return -1
 
 
-def parse_kick_success_new(game_state: tuple, ball_movement, ez_kick_success: bool=False) -> int:
+def parse_kick_success_new(game_state: tuple, ball_movement, ez_kick_success: bool = False) -> int:
     def get_dribble_dist(time_elapsed: float) -> float:
         if time_elapsed < 1.5:
             dist = 0.0
@@ -197,11 +200,10 @@ def parse(
     Parse and preprocess the dataset for training and testing.
     """
 
-    features_file = "cache/" + file_name[:-4] + str(n_features) + "_" + \
-        str(ez_kick_success) + "_" + str(kick_type) + "_features.npy"
-
-    labels_file = "cache/" + file_name[:-4] + str(n_features) + "_" + \
-        str(ez_kick_success) + "_" + str(kick_type) + "_labels.npy"
+    features_file = f"cache/{file_name[:-4]}{n_features}_{
+        ez_kick_success}_{kick_type}_features.npy"
+    labels_file = f"cache/{file_name[:-4]
+                           }{n_features}_{ez_kick_success}_{kick_type}_labels.npy"
 
     if use_cache and os.path.exists(features_file) and os.path.exists(labels_file):
         print("cached files exists, using cache!")
@@ -216,7 +218,7 @@ def parse(
     success_index = []
     for index, line in enumerate(lines):
         if index % 1000 == 0:
-            print("parsed " + str(index) + " samples")
+            print(f"parsed {index} samples")
         rawgame_state, ball_movement = line.rstrip().split("#")
 
         try:
@@ -239,7 +241,7 @@ def parse(
         else:
             pass
 
-    print("ignored " + str(len(lines) - len(success_index)) + " lines.")
+    print(f"ignored {len(lines) - len(success_index)} lines.")
     features = features[success_index, :]
     labels = labels[success_index]
     print("saving processed features and labels to file...")
@@ -248,7 +250,7 @@ def parse(
     return features, labels
 
 
-def visualize(use_features: list=[0, 8], frac: float=0.005) -> None:
+def visualize(use_features: list = [0, 8], frac: float = 0.005) -> None:
     """
     Visualize data distribution using a scatter plot.
     """
@@ -262,16 +264,19 @@ def visualize(use_features: list=[0, 8], frac: float=0.005) -> None:
     plt.ylabel("feature #2")
     cm = plt.cm.get_cmap('cool')
     sc = plt.scatter(x=features2[:, 0],
-                     y=features2[:, 1], s=60, c=labels2, cmap=cm)
+                     y=features2[:, 1],
+                     s=60, c=labels2,
+                     cmap=cm
+                     )
     plt.draw()
     plt.savefig('scatter.png', bbox_inches='tight')
     plt.clf()
 
 
 def batch_eval_accuracy(file_names=['type0_apollo3d.txt', 'type0_fc.txt', 'type1_apollo3d.txt',
-                                   'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
-                                   'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
-                       use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]) -> None:
+                                    'type1_fc.txt', 'type2_apollo3d.txt', 'type2_fc.txt',
+                                    'type3_apollo3d.txt', 'type3_fc.txt', 'type4_apollo3d.txt', 'type4_fc.txt'],
+                        use_features=[4, 6, 8, 11, 0, 15, 17,], kick_type=[10]) -> None:
     """
     Evaluate model accuracy in batch.
     """
@@ -320,9 +325,9 @@ def smote(new_features: np.ndarray, labels: np.ndarray) -> tuple:
     return new_features, labels
 
 
-def classify(file_name: str='4_14_type4_apollo3d.txt', useFrac: float=1.0, train_fraction: float=0.5, equal_class_size: bool=True,
-             thres: float=0.5, use_features: list=[0], use_all: bool=True, batch: bool=False, use_cache: bool=True,
-             feature_select: bool=False, kick_type: list=[11], draw: bool=False, scale: bool=False, C: float=1.0, B: float=1.0, return_prob: bool=False) -> float:
+def classify(file_name: str = '4_14_type4_apollo3d.txt', useFrac: float = 1.0, train_fraction: float = 0.5, equal_class_size: bool = True,
+             thres: float = 0.5, use_features: list = [0], use_all: bool = True, batch: bool = False, use_cache: bool = True,
+             feature_select: bool = False, kick_type: list = [11], draw: bool = False, scale: bool = False, C: float = 1.0, B: float = 1.0, return_prob: bool = False) -> float:
     """Main function to classify data using different models."""
     features, labels = parse(file_name=file_name, use_cache=use_cache, ez_kick_success=False,
                              kick_type=kick_type, ignore_self_failure=False, use_direct_features=True,
@@ -332,21 +337,20 @@ def classify(file_name: str='4_14_type4_apollo3d.txt', useFrac: float=1.0, train
     labels = labels[:num2_use]
     if scale:
         features = StandardScaler().fit_transform(features)
-    print("features mean:", features.mean(axis=0))
-    print("features std:", features.std(axis=0))
+    print(f"features mean: {features.mean(axis=0)}")
+    print(f"features std: {features.std(axis=0)}")
     if not use_all:
         new_features = features[:, use_features]
     else:
         new_features = features
 
     if equal_class_size:
-        newFeatures, labels = balance_classes(newFeatures, labels)
+        new_features, labels = balance_classes(new_features, labels)
 
-    print("we have " + str(newFeatures.shape[0]) + " samples.")
-    print("we have " + str(np.sum(labels == 1)) + " positive labels")
-    print("ratio: " + str(float(np.sum(labels == -1))/np.sum(labels == 1)))
-    print("using approximately " +
-          str(train_fraction*100) + "% as training examples")
+    print(f"we have {new_features.shape[0]} samples.")
+    print(f"we have {np.sum(labels == 1)} positive labels")
+    print(f"ratio: {float(np.sum(labels == -1)) / np.sum(labels == 1)}")
+    print(f"using approximately {train_fraction * 100}% as training examples")
 
     r = np.random.random(new_features.shape[0]) < train_fraction
     r2 = np.invert(r)
@@ -364,8 +368,8 @@ def classify(file_name: str='4_14_type4_apollo3d.txt', useFrac: float=1.0, train
 
     if feature_select:
         rfecv = RFE(estimator=clf, step=1,  n_features_to_select=8)
-        rfecv.fit(newFeatures, labels)
-        print("Optimal number of features : %d" % rfecv.n_features_)
+        rfecv.fit(new_features, labels)
+        print(f"Optimal number of features: {rfecv.n_features_}")
         print(rfecv.ranking_)
         print(np.arange(20)[rfecv.support_])
         return
@@ -402,20 +406,16 @@ def classify(file_name: str='4_14_type4_apollo3d.txt', useFrac: float=1.0, train
         else:
             false_pos += 1
     good = true_neg + true_pos
-    print("accuracy rate: ", good/float(len(predict_labels)), good)
-    print("true negative rate: ", true_neg /
-          float(len(predict_labels)), true_neg)
-    print("true positive rate: ", true_pos /
-          float(len(predict_labels)), true_pos)
-    print("false negative rate: ", false_neg /
-          float(len(predict_labels)), false_neg)
-    print("false positive rate: ", false_pos /
-          float(len(predict_labels)), false_pos)
+    print(f"accuracy rate: {good / float(len(predict_labels))}, {good}")
+    print(f"true negative rate: {true_neg / float(len(predict_labels))}, {true_neg}")
+    print(f"true positive rate: {true_pos / float(len(predict_labels))}, {true_pos}")
+    print(f"false negative rate: {false_neg / float(len(predict_labels))}, {false_neg}")
+    print(f"false positive rate: {false_pos / float(len(predict_labels))}, {false_pos}")
     precision = true_pos/float(true_pos + false_pos)
     recall = true_pos/float(true_pos + false_neg)
-    print("precision: ", precision)
-    print("recall: ", recall)
-    print("f1 score: ", 2*(precision*recall)/(precision + recall))
+    print(f"precision: {precision}")
+    print(f"recall: {recall}")
+    print(f"f1 score: {2 * (precision * recall) / (precision + recall)}")
     return good/float(len(predict_labels))
 
 
@@ -433,7 +433,7 @@ def draw_precision_recall_curve(file_name: str, test_labels: np.ndarray, prob_ar
     plt.grid()
     plt.title('Precision-Recall: AUC=%0.2f' % area)
     plt.legend(loc="lower left")
-    plt.savefig(file_name+"_precRecallCurve")
+    plt.savefig(f"{file_name}_precRecallCurve")
 
 
 def draw_roc_curve(file_name: str, test_labels: np.ndarray, prob_array: np.ndarray) -> None:
@@ -450,10 +450,10 @@ def draw_roc_curve(file_name: str, test_labels: np.ndarray, prob_array: np.ndarr
     plt.grid()
     plt.title('Receiver operating characteristic')
     plt.legend(loc="lower right")
-    plt.savefig(file_name+"_ROC")
+    plt.savefig(f"{file_name}_ROC")
 
 
-def visualize_dribble_data(dribble: str="type4_dribble.txt", kick: str="type4_rc.txt") -> None:
+def visualize_dribble_data(dribble: str = "type4_dribble.txt", kick: str = "type4_rc.txt") -> None:
     """Visualize dribble data."""
     def parse_kick_data(kick: str) -> np.array:
         w = open(kick)
@@ -461,13 +461,11 @@ def visualize_dribble_data(dribble: str="type4_dribble.txt", kick: str="type4_rc
         my_list = []
         for index, line in enumerate(lines):
             if index % 1000 == 0:
-                print("parsed " + str(index) + " samples")
+                print(f"parsed {index} samples")
             game_state, ball_movement = line.rstrip().split("#")
-            x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(
-                ":")
+            x, init_time, x, agent_info, x, opp, x, me, x, ball, x, kick_target, x, direct_features = game_state.split(":")
             init_time = float(init_time)
-            x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(
-                ":")
+            x, immed_after_kick, x, after_kick, x, kick_info = ball_movement.split(":")
             kick_mode = int(kick_info.split()[0])
             if (kick_mode != 2):
                 continue
