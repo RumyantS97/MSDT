@@ -341,44 +341,5 @@ else:
 print("t-статистика:", t_statistic)
 print("p-значение:", p_value)
 
-# Основные функции анализа
-
-def calculate_statistics(data):
-    mean = np.mean(data)
-    variance = np.var(data)
-    std_deviation = np.std(data)
-    cv = (std_deviation / mean) * 100
-    std_err = st.sem(data)
-    alpha = 0.95
-    interval = st.norm.interval(alpha, loc=mean, scale=std_err)
-    return mean, variance, std_deviation, cv, interval
-
-def weighted_statistics(data, weights):
-    mean = np.average(data, weights=weights)
-    variance = np.sum([(x - mean)**2 * weights[i] for i, x in enumerate(data)])
-    std_deviation = math.sqrt(variance)
-    cv = (std_deviation / mean) * 100
-    return mean, variance, std_deviation, cv
-
-def profit_analysis(income, expense):
-    profit = [income[i] - expense[i] for i in range(len(income))]
-    avg_profit = np.mean(profit)
-    disp_profit = np.var(profit)
-    std_profit = np.std(profit)
-    cv_profit = (std_profit / avg_profit) * 100
-    std_err = st.sem(profit)
-    alpha = 0.90
-    interval = st.norm.interval(alpha, loc=avg_profit, scale=std_err)
-    return avg_profit, disp_profit, std_profit, cv_profit, interval
-
-def simulate_data(size, mean, std_dev):
-    simulated_data = [random.gauss(mean, std_dev) for _ in range(size)]
-    q1, q3 = np.percentile(simulated_data, [25, 75])
-    iqr = q3 - q1
-    lower_bound = q1 - 1.5 * iqr
-    upper_bound = q3 + 1.5 * iqr
-    outliers = [x for x in simulated_data if x < lower_bound or x > upper_bound]
-    return simulated_data, lower_bound, upper_bound, outliers
-
 if __name__ == "__main__":
     unittest.main()
