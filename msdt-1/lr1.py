@@ -62,7 +62,8 @@ def format_value(value):
     formatted_date = datetime.strptime(value, '%Y-%m-%d').date()
     return f"'{formatted_date}'"
   except ValueError:
-    pass # Если ошибка, значит не дата, продолжаем дальше
+    # Если ошибка, значит не дата, продолжаем дальше
+    pass 
 
   # Если это число, ничего не добавляем
   if isinstance(value, int) or value == "None":
@@ -120,8 +121,10 @@ def open_operation_window(operation):
       for part in set_parts:
         # Разделяем на колонку и значение
         column, value = part.split(' = ')
-        column = column.strip() # Убираем пробелы вокруг столбца
-        value = value.strip() # Убираем пробелы вокруг значения
+        # Убираем пробелы вокруг столбца
+        column = column.strip() 
+        # Убираем пробелы вокруг значения
+        value = value.strip() 
         
         # Форматируем значение
         formatted_value = format_value(value)
@@ -134,8 +137,10 @@ def open_operation_window(operation):
       
       formatted_condition_parts = []
       column, value = condition.split(' = ')
-      column = column.strip() # Убираем пробелы вокруг столбца
-      value = value.strip() # Убираем пробелы вокруг значения
+      # Убираем пробелы вокруг столбца
+      column = column.strip() 
+      # Убираем пробелы вокруг значения
+      value = value.strip() 
 
       # Форматируем значение
       formatted_value = format_value(value)
@@ -170,8 +175,10 @@ def open_operation_window(operation):
       
       # Разделяем на колонку и значение
       column, value = condition.split(' = ')
-      column = column.strip() # Убираем пробелы вокруг столбца
-      value = value.strip() # Убираем пробелы вокруг значения
+      # Убираем пробелы вокруг столбца
+      column = column.strip() 
+      # Убираем пробелы вокруг значения
+      value = value.strip() 
         
       # Форматируем значение
       formatted_value = format_value(value)
@@ -263,10 +270,11 @@ def generate_pdf(data, columns, filename, year):
   pdf.cell(0, 10, "Задание 26. Проект ИЗДАТЕЛЬСКИЙ ЦЕНТР", ln = True, align = 'C')
   pdf.cell(0, 10, "Прибыль от продаж книг издательского центра 'Печать'", ln = True, align = 'C')
   pdf.cell(0, 10, f"за {year} год", ln = True, align = 'C')
-  pdf.ln(10) # Отступ между текстом и таблицей
+  # Отступ между текстом и таблицей 
+  pdf.ln(10) 
 
   # Устанавливаем ширину столбцов
-  col_widths = [60, 50, 20, 15, 15, 20] # Ширины столбцов (в мм)
+  col_widths = [60, 50, 20, 15, 15, 20]
 
   # Добавляем заголовок таблицы
   for i, col in enumerate(columns):
