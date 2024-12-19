@@ -9,15 +9,15 @@ class CSVValidator:
     def __init__(self):
         # Определение регулярных выражений
         self.regex_patterns = {
-            "email": r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-            "http_status_message": r"^\d{3}\s.+",
-            "snils": r"^\d{11}$",
-            "passport": r"^\d{2} \d{2} \d{6}$",
-            "ip_v4": r"^\d{1,3}(\.\d{1,3}){3}$",
-            "longitude": r"^-?(180|(\d{1,2}|1[0-7]\d)(\.\d{1,})?)$",
-            "hex_color": r"^#[0-9a-fA-F]{6}$",
-            "locale_code": r"^[a-zA-Z]+(-[a-zA-Z]+)*$",
-            "time": r"^[0-2]\d:[0-5]\d:[0-5]\d(\.\d{1,6})?$"
+            "email"               : r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+            "http_status_message" : r"^\d{3}\s.+",
+            "snils"               : r"^\d{11}$",
+            "passport"            : r"^\d{2} \d{2} \d{6}$",
+            "ip_v4"               : r"^\d{1,3}(\.\d{1,3}){3}$",
+            "longitude"           : r"^-?(180|(\d{1,2}|1[0-7]\d)(\.\d{1,})?)$",
+            "hex_color"           : r"^#[0-9a-fA-F]{6}$",
+            "locale_code"         : r"^[a-zA-Z]+(-[a-zA-Z]+)*$",
+            "time"                : r"^[0-2]\d:[0-5]\d:[0-5]\d(\.\d{1,6})?$"
         }
 
     def is_valid_row(self, row):
