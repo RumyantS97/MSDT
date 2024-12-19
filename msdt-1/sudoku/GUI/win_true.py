@@ -43,7 +43,7 @@ class WinDialog(QDialog):
         self.ui.ok.clicked.connect(self.on_click)
 
     def on_click(self):
-        ''' В случае если пользователь ввел ник - закрываем окно '''
+        """ В случае если пользователь ввел ник - закрываем окно """
         self.nick = self.ui.name.text()
         if self.nick:
             self.accept()

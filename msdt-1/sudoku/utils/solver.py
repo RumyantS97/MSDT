@@ -2,7 +2,7 @@ from itertools import product
 
 
 def solve_sudoku(size, grid):
-    ''' Решатель судоку с помощью алгоритма X '''
+    """ Решатель судоку с помощью алгоритма X """
     R, C = size
     N = R * C
     # заполняем строки
@@ -32,7 +32,7 @@ def solve_sudoku(size, grid):
 
 
 def exact_cover(X, Y):
-    ''' Форматирование данных строк '''
+    """ Форматирование данных строк """
     X = {j: set() for j in X}
     for i, row in Y.items():
         for j in row:
@@ -41,7 +41,7 @@ def exact_cover(X, Y):
 
 
 def solve(X, Y, solution):
-    ''' Сам алгоритм '''
+    """ Сам алгоритм """
     if not X:
         yield list(solution)
     else:
@@ -70,7 +70,7 @@ def select(X, Y, r):
 
 
 def deselect(X, Y, r, cols):
-    ''' Удаляли столбцы от первого пересечения с r к последнему, восстанавливать надо в обратном порядке '''
+    """ Удаляли столбцы от первого пересечения с r к последнему, восстанавливать надо в обратном порядке """
     for j in reversed(Y[r]):
         X[j] = cols.pop()
         for i in X[j]:

@@ -13,14 +13,14 @@ def has_connect() -> bool:
 
 
 def top(n: int) -> list:
-    '''
+    """
     Получить топ n из общего сервера
     :return: [(nick, time)...]
-    '''
+    """
     json = {"n": n}
     response = requests.post(URL + SUDOKU_URL + "top", json=json)
     rows = response.text.split("\n")[:-1]  # Сервер возвращает в конце пустую строку, поэтому ее не берем
-    ''' Форматирует данные, полученные от сервера в матрицу '''
+    """ Форматирует данные, полученные от сервера в матрицу """
     matrix = []
     for row in rows:
         nick, ftime = row.split(": ")  # ftime - format_time
@@ -29,12 +29,12 @@ def top(n: int) -> list:
 
 
 def add_record(nick: str, time: int) -> None:
-    ''' Добавляет ваш рекорд '''
+    """ Добавляет ваш рекорд """
     json = {"nick": nick, "time": time, "password": PASSWORD}
     requests.post(URL + SUDOKU_URL + "add", json=json)
 
 
 def clear() -> None:
-    ''' Очистка бд '''
+    """ Очистка бд """
     json = {"password": PASSWORD}
     requests.post(URL + SUDOKU_URL + "clear", json=json)

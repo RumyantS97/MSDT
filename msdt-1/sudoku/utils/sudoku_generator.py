@@ -5,18 +5,18 @@ from copy import deepcopy
 
 class Grid:
     def __init__(self, n=3):
-        ''' Генерирование базовой таблицы '''
+        """ Генерирование базовой таблицы """
         self.n = n
         self.table = [[((i * n + i // n + j) % (n * n) + 1) for j in range(n * n)] for i in range(n * n)]
 
     def transposing(self):
-        ''' Транспонирование таблицы '''
+        """ Транспонирование таблицы """
 
         self.table = map(list, zip(*self.table))
         self.table = list(self.table)
 
     def swap_rows_small(self):
-        ''' Меняет два ряда в пределах одного района местами '''
+        """ Меняет два ряда в пределах одного района местами """
         area = randrange(0, self.n, 1)
         line1 = randrange(0, self.n, 1)
         # получение случайного района и случайной строки
@@ -34,13 +34,13 @@ class Grid:
         self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
     def swap_colums_small(self):
-        '''  Меняет две колонки в пределах одного района местами '''
+        """  Меняет две колонки в пределах одного района местами """
         self.transposing()
         self.swap_rows_small()
         self.transposing()
 
     def swap_rows_area(self):
-        ''' Меняет два района по горизонтали местами '''
+        """ Меняет два района по горизонтали местами """
         area1 = randrange(0, self.n, 1)
         # получение случайного района
 
@@ -54,17 +54,17 @@ class Grid:
             self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
     def swap_colums_area(self):
-        ''' Меняет два района по вертикали местами '''
+        """ Меняет два района по вертикали местами """
         self.transposing()
         self.swap_rows_area()
         self.transposing()
 
     def mix(self, amt=10) -> None:
-        '''
+        """
         Функция генерации путем вызова различных методо перемешивания
         :param amt: int - количество перемешиваний
         :return: None
-        '''
+        """
         mix_func = [self.transposing, self.swap_rows_small, self.swap_colums_small, self.swap_rows_area, self.swap_colums_area]
         for i in range(1, amt):
             # Вызываем случайную функцию
@@ -72,11 +72,11 @@ class Grid:
 
 
 def generate(n=3) -> list:
-    '''
+    """
     Функция генерации таблицы судоку.
     :param n: int - размер базового поля
     :return: list - готовая таблица
-    '''
+    """
 
     grid = Grid(n)
     grid.mix()

@@ -1,5 +1,5 @@
 def connect_db():
-    ''' Импортируем функции из нужных файлов в зависимости от того, есть ли подключение '''
+    """ Импортируем функции из нужных файлов в зависимости от того, есть ли подключение """
     from records_db.online import has_connect
     if has_connect():
         import records_db.online as func

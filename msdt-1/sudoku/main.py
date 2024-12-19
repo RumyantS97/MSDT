@@ -27,12 +27,12 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.new_game()
 
     def button_bind(self):
-        ''' Привязка всех кнопок '''
+        """ Привязка всех кнопок """
         for button in self.field:
             button.clicked.connect(self._clicked)
 
     def new_game(self):
-        ''' Запуск новой игры '''
+        """ Запуск новой игры """
         # количество клеток в мини поле
         N = 3
         field = generate(N)
@@ -45,16 +45,16 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         for i in range(len(self.field)):
             button = self.field[i]
             if self.cell_const[i]:
-                style = '''
+                style = """
                            QPushButton { background-color: yellow; }
                            QPushButton:pressed { background-color: red; }
-                        '''
+                        """
                 button.setText(str(self.field_value[i]))
             else:
-                style = '''
+                style = """
                            QPushButton { background-color: white; }
                            QPushButton:hover { background-color: silver; }
-                        '''
+                        """
                 button.setText('')
             button.setStyleSheet(style)
 
@@ -72,7 +72,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.timer.start()
 
     def records(self):
-        ''' Вывод списка лучших игр (топ 100) '''
+        """ Вывод списка лучших игр (топ 100) """
         self.listWidget.clear()  # Отчистка на случай обновления
         self.server_connection()  # Перепроверяем подключение
         for index, item in enumerate(top(100)):
@@ -99,7 +99,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.connect_button.setText(text)
 
     def _set_time(self):
-        ''' Прибавить секунду ко времени '''
+        """ Прибавить секунду ко времени """
         # Время всегда будет меньше часа, т.к. час на судоку... Очень много
         if self.minutes == self.seconds == 59:
             return
@@ -111,7 +111,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
                                 '0' * (2 - len(str(self.seconds))) + str(self.seconds))
 
     def _clicked(self):
-        ''' Изменение значения ячейки на которую нажал пользователь '''
+        """ Изменение значения ячейки на которую нажал пользователь """
         button = self.sender()
         index = self.field.index(button)
         # Если пользователь окончил игру или ячейка не подлежит изменению
@@ -148,7 +148,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.result()
 
     def next(self):
-        ''' Следующий ход (кнопка вперед) '''
+        """ Следующий ход (кнопка вперед) """
         if self.is_game_over or self.deep_immersion < 0:
             return
         # Если есть значения дальше
@@ -156,7 +156,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.deep_immersion -= 1
 
     def back(self):
-        ''' Предыдуший ход (кнопка назад) '''
+        """ Предыдуший ход (кнопка назад) """
         if self.is_game_over or self.deep_immersion >= len(self.moves_history) - 1:
             return
         # Если есть значения до
@@ -164,7 +164,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self._set_field(False)
 
     def _set_field(self, is_next):
-        ''' Изменяет значение на прошлое лил следующее (is_next) '''
+        """ Изменяет значение на прошлое лил следующее (is_next) """
         index, *values = self.moves_history[self.deep_immersion]
         # Если следующее - берем current_value (стр. 107) иначе прошлое
         value = values[1] if is_next else values[0]
@@ -172,7 +172,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         self.field[index].setText(str(value) if value != 0 else '')
 
     def result(self):
-        ''' Проверка резултата '''
+        """ Проверка резултата """
         # Если не все клетки запонены - выходим
         if not all(self.field_value):
             return
@@ -184,7 +184,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
             return self._win()
 
     def _win(self):
-        ''' Функция успешного завершения игры '''
+        """ Функция успешного завершения игры """
         # Останавливаем таймер и сообщаем о завершении игры
         self.timer.cancel()
         self.is_game_over = True
@@ -203,7 +203,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
             win_dialog.showMessage(f"Победа! Ваше время {self.time_label.text()}")
 
     def _fail(self):
-        ''' Поражение '''
+        """ Поражение """
         self.is_fail = True  # Игра проиграна
 
         # Сообщение о поражении
@@ -218,7 +218,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.field[i].setStyleSheet("background-color: green")
 
     def closeEvent(self, event):
-        ''' Закрытие игры (изменено для остановки таймера) '''
+        """ Закрытие игры (изменено для остановки таймера) """
         self.timer.cancel()
         event.accept()
 
