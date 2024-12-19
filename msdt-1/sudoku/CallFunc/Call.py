@@ -37,7 +37,7 @@ class InfiniteTimer:
             self.thread.cancel()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     def hello():
         print("Hello world!")
 

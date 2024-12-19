@@ -32,7 +32,7 @@ class UiMainWindow(object):
 
         positions = [(i, j) for i in range(9) for j in range(9)]
 
-        font = QFont('Arial', 14)
+        font = QFont("Arial", 14)
         self.field = []
         for position in positions:
             btn = QPushButton()
@@ -115,13 +115,13 @@ class Digits(QDialog):
         super().__init__(*args)
 
         self.num = None
-        self.setWindowTitle('Выберите цифру')
+        self.setWindowTitle("Выберите цифру")
         self.__digits = "123456789"
         self.init_ui()
 
     def init_ui(self):
         main_layout = QGridLayout()
-        font = QFont('Arial', 14)
+        font = QFont("Arial", 14)
 
         positions = [(i, j) for i in range(3) for j in range(3)]
 

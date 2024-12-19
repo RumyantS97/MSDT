@@ -55,7 +55,7 @@ class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
                            QPushButton { background-color: white; }
                            QPushButton:hover { background-color: silver; }
                         """
-                button.setText('')
+                button.setText("")
             button.setStyleSheet(style)
 
         self.moves_history = []
@@ -107,8 +107,8 @@ class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
         if self.seconds == 60:
             self.minutes += 1
             self.seconds -= 60
-        self.time_label.setText('0' * (2 - len(str(self.minutes))) + str(self.minutes) + ":" +
-                                '0' * (2 - len(str(self.seconds))) + str(self.seconds))
+        self.time_label.setText("0" * (2 - len(str(self.minutes))) + str(self.minutes) + ":" +
+                                "0" * (2 - len(str(self.seconds))) + str(self.seconds))
 
     def _clicked(self):
         """ Изменение значения ячейки на которую нажал пользователь """
@@ -142,7 +142,7 @@ class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
 
         # Меняем цвет ячейки если игра была проиграна и пользователь сделал значение ячейки верным
         if self.is_fail and self.field_value[index] == self.solve[index]:
-            button.setStyleSheet('background-color: green')
+            button.setStyleSheet("background-color: green")
 
         # Проверяем окончена ли игра
         self.result()
@@ -169,7 +169,7 @@ class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
         # Если следующее - берем current_value (стр. 107) иначе прошлое
         value = values[1] if is_next else values[0]
         self.field_value[index] = value
-        self.field[index].setText(str(value) if value != 0 else '')
+        self.field[index].setText(str(value) if value != 0 else "")
 
     def result(self):
         """ Проверка резултата """
