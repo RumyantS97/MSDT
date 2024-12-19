@@ -10,7 +10,7 @@ class CustomerType(Enum):
 
 
 @dataclass
-class shopping_list:
+class ShoppingList:
     products: List[str] = field(default_factory=list)
 
 
@@ -29,7 +29,7 @@ class ExternalCustomer:
     company_number: Optional[str]
     preferred_store: str
     postal_address: Address
-    shopping_lists: List[shopping_list] = field(default_factory=list)
+    shopping_lists: List[ShoppingList] = field(default_factory=list)
 
 
 class Customer:

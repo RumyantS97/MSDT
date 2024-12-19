@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from model_objects import Customer, shopping_list, CustomerType, Address
+from model_objects import Customer, ShoppingList, CustomerType, Address
 
 
 class CustomerMatches:
@@ -57,7 +57,7 @@ class CustomerDataAccess:
         return self.customerDataLayer.create_customer_record(customer)
 
     def update_shopping_list(self, customer: Customer,
-                             shopping_list: shopping_list):
+                             shopping_list: ShoppingList):
         customer.add_shopping_list(shopping_list)
         self.customerDataLayer.update_shopping_list(shopping_list)
         self.customerDataLayer.update_customer_record(customer)
@@ -112,7 +112,7 @@ class CustomerDataLayer:
                                 'shoppinglistId=?', (sl[0],))
             products_as_str = self.cursor.fetchone()
             products = products_as_str[0].split(", ")
-            customer.add_shopping_list(shopping_list(products))
+            customer.add_shopping_list(ShoppingList(products))
         return customer
 
     def find_by_master_external_id(self, master_external_id):
