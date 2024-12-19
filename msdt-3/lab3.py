@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 from checksum import calculate_checksum, serialize_result
+
 # Обновлённые регулярные выражения для нового формата
 validators = {
     "telephone": r"^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$",
@@ -14,6 +15,8 @@ validators = {
     "uuid": r"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
     "date": r"^\d{4}-\d{2}-\d{2}$",
 }
+
+
 def validate_row(row, validators):
     """Функция валидации строки по регулярным выражениям."""
     for column, regex in validators.items():
@@ -21,6 +24,8 @@ def validate_row(row, validators):
         if not re.match(regex, value):
             return False
     return True
+
+
 file_name = "56.csv"
 data = pd.read_csv(file_name, encoding="utf-16-le", delimiter=";", quotechar='"')
 invalid_rows = []
