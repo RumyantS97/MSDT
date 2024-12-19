@@ -15,6 +15,13 @@ PARAMHELP = (
 
 
 def get_subparser_print_help(parser, subcommand):
+    """
+    Prints the help for a specific subcommand.
+
+    Args:
+        parser (argparse.ArgumentParser): The main parser instance.
+        subcommand (str): The subcommand for which to print the help.
+    """
     subparsers_actions = [
         action
         for action in parser._actions
@@ -28,6 +35,16 @@ def get_subparser_print_help(parser, subcommand):
 
 
 def get_subparser(parser, subcommand):
+    """
+    Retrieves the subparser for a specific subcommand.
+
+    Args:
+        parser (argparse.ArgumentParser): The main parser instance.
+        subcommand (str): The subcommand to retrieve the subparser for.
+
+    Returns:
+        argparse.ArgumentParser: The subparser for the given subcommand.
+    """
     subparsers_actions = [
         action
         for action in parser._actions
@@ -40,6 +57,15 @@ def get_subparser(parser, subcommand):
 
 
 def choose_parameter_file(paramfile):
+    """
+    Determines the parameter file to use, considering the environment.
+
+    Args:
+        paramfile (str): The parameter file to use, if specified.
+
+    Returns:
+        str: The final determined parameter file.
+    """
     if os.path.exists("/i_am_a_container"):
         if paramfile is not None and not os.path.isabs(paramfile):
             paramfile = f"/workdir/{paramfile}"
@@ -53,6 +79,13 @@ def choose_parameter_file(paramfile):
 
 
 def create_cluster(args):
+    """
+    Creates a cluster using the provided arguments.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the necessary parameters.
+    """
     info(f"Creating cluster {args.cluster}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -70,6 +103,13 @@ def create_cluster(args):
 
 
 def delete_cluster(args):
+    """
+    Deletes a cluster and associated infrastructure environments.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the clusters to delete.
+    """
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -91,6 +131,13 @@ def delete_cluster(args):
 
 
 def export_cluster(args):
+    """
+    Exports the cluster information.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the cluster to export.
+    """
     info(f"Exporting cluster {args.cluster}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -99,6 +146,13 @@ def export_cluster(args):
 
 
 def info_cluster(args):
+    """
+    Displays information about a cluster, optionally filtering by fields.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        cluster info options.
+    """
     if not args.full:
         skipped = [
             "kind",
@@ -138,6 +192,13 @@ def info_cluster(args):
 
 
 def list_cluster(args):
+    """
+    Lists all clusters with their details including ID, status, and DNS domain.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the necessary parameters.
+    """
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -154,6 +215,13 @@ def list_cluster(args):
 
 
 def update_cluster(args):
+    """
+    Updates the specified cluster with the provided parameters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the cluster to update and other parameters.
+    """
     info(f"Updating Cluster {args.cluster}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -164,6 +232,13 @@ def update_cluster(args):
 
 
 def start_cluster(args):
+    """
+    Starts the specified cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the cluster to start.
+    """
     info(f"Starting cluster {args.cluster}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -172,6 +247,13 @@ def start_cluster(args):
 
 
 def stop_cluster(args):
+    """
+    Stops the specified cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the cluster to stop.
+    """
     info(f"Stopping cluster {args.cluster}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -180,6 +262,13 @@ def stop_cluster(args):
 
 
 def create_manifests(args):
+    """
+    Uploads manifests for the specified cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the cluster and directory for manifest upload.
+    """
     info(f"Uploading manifests for Cluster {args.cluster}")
     directory = args.dir
     openshift = args.openshift
@@ -190,6 +279,13 @@ def create_manifests(args):
 
 
 def delete_host(args):
+    """
+    Deletes hosts from the system based on the specified hostnames.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        the hostnames to delete.
+    """
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
     ai = AssistedClient(
@@ -201,6 +297,14 @@ def delete_host(args):
 
 
 def info_host(args):
+    """
+    Displays detailed information about a specific host, 
+    optionally filtered by fields.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        host details and filter options.
+    """
     if not args.full:
         skipped = [
             "kind",
@@ -242,6 +346,14 @@ def info_host(args):
 
 
 def list_hosts(args):
+    """
+    Lists all hosts along with their details including ID, cluster, role,
+    status, and IP.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the necessary parameters.
+    """
     infra_env_ids = {}
     cluster_ids = {}
     ai = AssistedClient(
@@ -293,6 +405,13 @@ def list_hosts(args):
 
 
 def create_infra_env(args):
+    """
+    Creates an infrastructure environment with the specified parameters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infrastructure environment details.
+    """
     info(f"Creating infraenv {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -303,6 +422,13 @@ def create_infra_env(args):
 
 
 def delete_infra_env(args):
+    """
+    Deletes specified infrastructure environments.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infrastructure environments to delete.
+    """
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -312,6 +438,14 @@ def delete_infra_env(args):
 
 
 def info_infra_env(args):
+    """
+    Displays detailed information about an infrastructure environment,
+    optionally filtered by fields.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing 
+        infrastructure environment details and filter options.
+    """
     if not args.full:
         skipped = [
             "kind",
@@ -348,6 +482,14 @@ def info_infra_env(args):
 
 
 def list_infra_env(args):
+    """
+    Lists all infrastructure environments along with their details
+    including cluster, OpenShift version, and ISO type.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the necessary parameters.
+    """
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -375,6 +517,14 @@ def list_infra_env(args):
 
 
 def bind_infra_env(args):
+    """
+    Binds the specified infrastructure environment to a given cluster,
+    associating all hosts of the infraenv to the cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv and cluster to bind, and a force flag if needed.
+    """
     info(f"binding Infra Env {args.infraenv} to Cluster {args.cluster}")
     info("this will bind all hosts of the infraenv to given cluster")
     ai = AssistedClient(
@@ -384,6 +534,14 @@ def bind_infra_env(args):
 
 
 def unbind_infra_env(args):
+    """
+    Unbinds the specified infrastructure environment from any cluster,
+    removing the association between hosts and clusters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv to unbind.
+    """
     info(f"Unbinding Infra Env {args.infraenv}")
     info("this will unbind all hosts of the infraenv from any cluster")
     ai = AssistedClient(
@@ -393,6 +551,13 @@ def unbind_infra_env(args):
 
 
 def update_infra_env(args):
+    """
+    Updates the specified infrastructure environment with new parameters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv to update and the parameter file for overrides.
+    """
     info(f"Updating infraenv {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -403,6 +568,14 @@ def update_infra_env(args):
 
 
 def create_iso(args):
+    """
+    Deprecated: Retrieves the ISO URL for
+    the specified infrastructure environment.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv to get the ISO URL for and the minimal flag.
+    """
     warning("This api call is deprecated")
     info(f"Getting Iso url for infraenv {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
@@ -416,6 +589,13 @@ def create_iso(args):
 
 
 def info_iso(args):
+    """
+    Retrieves the ISO URL for the specified infrastructure environment.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv and the minimal flag for retrieving the ISO URL.
+    """
     if not args.short:
         info(f"Getting Iso url for infraenv {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
@@ -428,6 +608,14 @@ def info_iso(args):
 
 
 def download_iso(args):
+    """
+    Downloads the ISO for the specified infrastructure environment
+    to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv and the path to save the ISO.
+    """
     info(f"Downloading Iso for infraenv {args.infraenv} in {args.path}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -436,8 +624,16 @@ def download_iso(args):
 
 
 def download_kubeadminpassword(args):
+    """
+    Downloads the kubeadmin password for the specified cluster
+    to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster and path to save the kubeadmin password.
+    """
     info(
-        f"Downloading KubeAdminPassword for Cluster {args.cluster} \ 
+        f"Downloading KubeAdminPassword for Cluster {args.cluster} \
         in {args.path}/kubeadmin.{args.cluster}"
     )
     ai = AssistedClient(
@@ -447,6 +643,14 @@ def download_kubeadminpassword(args):
 
 
 def download_kubeconfig(args):
+    """
+    Downloads the kubeconfig file for the specified cluster
+    to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster and path to save the kubeconfig file.
+    """
     info(
         f"Downloading Kubeconfig for Cluster {args.cluster} \
             in {args.path}/kubeconfig.{args.cluster}"
@@ -458,6 +662,14 @@ def download_kubeconfig(args):
 
 
 def download_initrd(args):
+    """
+    Downloads the initrd configuration for
+    the specified infrastructure environment to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv and path to save the initrd file.
+    """
     info(
         f"Downloading Initrd Config for infraenv {args.infraenv} \
             in {args.path}/initrd.{args.infraenv}"
@@ -469,6 +681,14 @@ def download_initrd(args):
 
 
 def download_installconfig(args):
+    """
+    Downloads the install configuration for the specified cluster
+    to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster and path to save the install config file.
+    """
     info(
         f"Downloading Install Config for Cluster {args.cluster} \
             in {args.path}/install-config.yaml.{args.cluster}"
@@ -480,6 +700,14 @@ def download_installconfig(args):
 
 
 def download_ignition(args):
+    """
+    Downloads the ignition configuration for the specified cluster role
+    to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster, role, and path to save the ignition file.
+    """
     role = args.role
     info(
         f"Downloading {role} ignition for Cluster {args.cluster} \
@@ -492,6 +720,14 @@ def download_ignition(args):
 
 
 def download_discovery_ignition(args):
+    """
+    Downloads the discovery ignition for
+    the specified infrastructure environment to the provided path.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv and path to save the discovery ignition file.
+    """
     info(
         f"Downloading Discovery ignition for infraenv {args.infraenv} \
             in {args.path}"
@@ -503,6 +739,14 @@ def download_discovery_ignition(args):
 
 
 def bind_host(args):
+    """
+    Binds a host to a given cluster by updating
+    the host's cluster association.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the hostname and cluster to bind the host to.
+    """
     info(f"binding Host {args.hostname} to Cluster {args.cluster}")
     overrides = {"cluster": args.cluster}
     ai = AssistedClient(
@@ -512,6 +756,14 @@ def bind_host(args):
 
 
 def unbind_host(args):
+    """
+    Unbinds a host from its current cluster by removing
+    the cluster association.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the hostname to unbind from any cluster.
+    """
     info(f"Unbinding Host {args.hostname}")
     overrides = {"cluster": None}
     ai = AssistedClient(
@@ -521,6 +773,13 @@ def unbind_host(args):
 
 
 def update_host(args):
+    """
+    Updates a host with new parameters from the provided overrides.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the hostname to update and the parameter file for overrides.
+    """
     info(f"Updating Host {args.hostname}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -531,6 +790,14 @@ def update_host(args):
 
 
 def wait_hosts(args):
+    """
+    Waits for a specified number of hosts in an infrastructure environment
+    to reach a certain state.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv, number of hosts, and filter conditions.
+    """
     info("Wait for hosts")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -542,6 +809,13 @@ def wait_hosts(args):
 
 
 def list_manifests(args):
+    """
+    Retrieves and lists all manifests associated with the specified cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster to retrieve manifests for.
+    """
     info(f"Retrieving manifests for Cluster {args.cluster}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -557,6 +831,14 @@ def list_manifests(args):
 
 
 def update_installconfig(args):
+    """
+    Updates the install configuration for
+    the specified cluster with new parameters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster to update and the parameter file for overrides.
+    """
     info(f"Updating installconfig in {args.cluster}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -567,6 +849,14 @@ def update_installconfig(args):
 
 
 def update_iso(args):
+    """
+    Updates the ISO configuration for
+    the specified infrastructure environment with new parameters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the infraenv to update and the parameter file for overrides.
+    """
     info(f"Updating iso in {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
@@ -577,6 +867,13 @@ def update_iso(args):
 
 
 def info_service(args):
+    """
+    Retrieves general information about the service.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the service-related information request.
+    """
     info("Retrieving information on service")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -585,6 +882,13 @@ def info_service(args):
 
 
 def list_events(args):
+    """
+    Lists the events for the specified cluster.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments containing
+        the cluster to list events for.
+    """
     info(f"List events of cluster {args.cluster}")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -600,6 +904,13 @@ def list_events(args):
 
 
 def list_infraenv_keywords(args):
+    """
+    Lists the available keywords for infrastructure environments.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments to retrieve
+        the infraenv keywords.
+    """
     info("List infraenv keywords")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
@@ -612,6 +923,13 @@ def list_infraenv_keywords(args):
 
 
 def list_cluster_keywords(args):
+    """
+    Lists the available keywords for clusters.
+
+    Args:
+        args (argparse.Namespace): The parsed arguments to retrieve
+        the cluster keywords.
+    """
     info("List cluster keywords")
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
