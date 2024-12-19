@@ -1,11 +1,13 @@
-import argparse
-from argparse import RawDescriptionHelpFormatter as rawhelp
-from ailib.common import get_overrides, info, error, warning
-import json
-from prettytable import PrettyTable
 import os
 import sys
+import json
+import argparse
+from argparse import RawDescriptionHelpFormatter as rawhelp
+from prettytable import PrettyTable
+
+from ailib.common import get_overrides, info, error, warning
 from ailib import AssistedClient
+
 
 PARAMHELP = "specify parameter or keyword for rendering (multiple can be specified)"
 
