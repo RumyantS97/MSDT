@@ -5,18 +5,21 @@ from copy import deepcopy
 
 class Grid:
     def __init__(self, n=3):
-        """ Генерирование базовой таблицы """
+        """Генерирование базовой таблицы"""
         self.n = n
-        self.table = [[((i * n + i // n + j) % (n * n) + 1) for j in range(n * n)] for i in range(n * n)]
+        self.table = [
+            [((i * n + i // n + j) % (n * n) + 1) for j in range(n * n)]
+            for i in range(n * n)
+        ]
 
     def transposing(self):
-        """ Транспонирование таблицы """
+        """Транспонирование таблицы"""
 
         self.table = map(list, zip(*self.table))
         self.table = list(self.table)
 
     def swap_rows_small(self):
-        """ Меняет два ряда в пределах одного района местами """
+        """Меняет два ряда в пределах одного района местами"""
         area = randrange(0, self.n, 1)
         line1 = randrange(0, self.n, 1)
         # получение случайного района и случайной строки
@@ -34,13 +37,13 @@ class Grid:
         self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
     def swap_columns_small(self):
-        """  Меняет две колонки в пределах одного района местами """
+        """Меняет две колонки в пределах одного района местами"""
         self.transposing()
         self.swap_rows_small()
         self.transposing()
 
     def swap_rows_area(self):
-        """ Меняет два района по горизонтали местами """
+        """Меняет два района по горизонтали местами"""
         area1 = randrange(0, self.n, 1)
         # получение случайного района
 
@@ -54,7 +57,7 @@ class Grid:
             self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
     def swap_columns_area(self):
-        """ Меняет два района по вертикали местами """
+        """Меняет два района по вертикали местами"""
         self.transposing()
         self.swap_rows_area()
         self.transposing()
@@ -65,7 +68,13 @@ class Grid:
         :param amt: int - количество перемешиваний
         :return: None
         """
-        mix_func = [self.transposing, self.swap_rows_small, self.swap_columns_small, self.swap_rows_area, self.swap_columns_area]
+        mix_func = [
+            self.transposing,
+            self.swap_rows_small,
+            self.swap_columns_small,
+            self.swap_rows_area,
+            self.swap_columns_area,
+        ]
         for i in range(1, amt):
             # Вызываем случайную функцию
             choice(mix_func)()
@@ -81,31 +90,36 @@ def generate(n=3) -> list:
     grid = Grid(n)
     grid.mix()
 
-    field_is_look = [[0 for _ in range(grid.n * grid.n)]
-    for _ in range(grid.n * grid.n)
+    field_is_look = [
+        [0 for _ in range(grid.n * grid.n)] for _ in range(grid.n * grid.n)
     ]
-    difficult = grid.n ** 4  # Первоначально все элементы на месте
+    difficult = grid.n**4  # Первоначально все элементы на месте
 
-    iterator = grid.n ** 4 - 30
+    iterator = grid.n**4 - 30
 
-    while iterator < grid.n ** 4:
+    while iterator < grid.n**4:
         # Выбираем случайную ячейку
         i, j = randrange(0, grid.n * grid.n, 1), randrange(0, grid.n * grid.n, 1)
         if field_is_look[i][j] == 0:  # Если её не смотрели
             iterator += 1
             field_is_look[i][j] = 1  # Посмотрим
 
-            temp = grid.table[i][j]  # Сохраним элемент на случай если без него нет решения или их слишком много
+            temp = grid.table[i][
+                j
+            ]  # Сохраним элемент на случай если без него нет решения или их слишком много
             grid.table[i][j] = 0  # Удаляем элемент
             difficult -= 1  # Усложняем если убрали элемент
 
             table_solution = deepcopy(grid.table)  # Скопируем в отдельный список
 
-            number_of_solution = len(list(solve_sudoku((grid.n, grid.n), table_solution)))  # Считаем количество решений
+            number_of_solution = len(
+                list(solve_sudoku((grid.n, grid.n), table_solution))
+            )  # Считаем количество решений
 
-            if number_of_solution != 1:  # Если решение не одинственное вернуть всё обратно
+            if (
+                number_of_solution != 1
+            ):  # Если решение не одинственное вернуть всё обратно
                 grid.table[i][j] = temp
                 difficult += 1  # Облегчаем
 
     return grid.table
-

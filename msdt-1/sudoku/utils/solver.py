@@ -2,23 +2,21 @@ from itertools import product
 
 
 def solve_sudoku(size, grid):
-    """ Решатель судоку с помощью алгоритма X """
+    """Решатель судоку с помощью алгоритма X"""
     R, C = size
     N = R * C
     # заполняем строки
-    X = ([("rc", rc) for rc in product(range(N), range(N))] +
-         [("rn", rn) for rn in product(range(N), range(1, N + 1))] +
-         [("cn", cn) for cn in product(range(N), range(1, N + 1))] +
-         [("bn", bn) for bn in product(range(N), range(1, N + 1))])
+    X = (
+        [("rc", rc) for rc in product(range(N), range(N))]
+        + [("rn", rn) for rn in product(range(N), range(1, N + 1))]
+        + [("cn", cn) for cn in product(range(N), range(1, N + 1))]
+        + [("bn", bn) for bn in product(range(N), range(1, N + 1))]
+    )
     # заполняем столбцы
     Y = dict()
     for r, c, n in product(range(N), range(N), range(1, N + 1)):
         b = (r // R) * R + (c // C)  # Box number
-        Y[(r, c, n)] = [
-            ("rc", (r, c)),
-            ("rn", (r, n)),
-            ("cn", (c, n)),
-            ("bn", (b, n))]
+        Y[(r, c, n)] = [("rc", (r, c)), ("rn", (r, n)), ("cn", (c, n)), ("bn", (b, n))]
     X, Y = exact_cover(X, Y)
     for i, row in enumerate(grid):
         for j, n in enumerate(row):
@@ -26,13 +24,13 @@ def solve_sudoku(size, grid):
                 select(X, Y, (i, j, n))
     # Идем по всевсевозможным решениям
     for solution in solve(X, Y, []):
-        for (r, c, n) in solution:
+        for r, c, n in solution:
             grid[r][c] = n
         yield grid
 
 
 def exact_cover(X, Y):
-    """ Форматирование данных строк """
+    """Форматирование данных строк"""
     X = {j: set() for j in X}
     for i, row in Y.items():
         for j in row:
@@ -41,7 +39,7 @@ def exact_cover(X, Y):
 
 
 def solve(X, Y, solution):
-    """ Сам алгоритм """
+    """Сам алгоритм"""
     if not X:
         yield list(solution)
     else:
@@ -70,11 +68,10 @@ def select(X, Y, r):
 
 
 def deselect(X, Y, r, cols):
-    """ Удаляли столбцы от первого пересечения с r к последнему, восстанавливать надо в обратном порядке """
+    """Удаляли столбцы от первого пересечения с r к последнему, восстанавливать надо в обратном порядке"""
     for j in reversed(Y[r]):
         X[j] = cols.pop()
         for i in X[j]:
             for k in Y[i]:
                 if k != j:
                     X[k].add(i)
-

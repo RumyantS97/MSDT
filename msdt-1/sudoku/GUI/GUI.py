@@ -4,14 +4,14 @@ from PyQt5 import QtCore, QtWidgets
 
 
 class UiMainWindow(object):
-    """ Главное окно.
-        Основные изменения:
-        сделал из кнопок массив,
-        переименовал переменные """
+    """Главное окно.
+    Основные изменения:
+    сделал из кнопок массив,
+    переименовал переменные"""
+
     def setup_ui(self, MainWindow):
         MainWindow.setObjectName("Sudoku")
         MainWindow.resize(339, 418)
-
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -103,14 +103,19 @@ class UiMainWindow(object):
         self.back_button.setText(_translate("MainWindow", "↶"))
         self.next_button.setText(_translate("MainWindow", "↷"))
         self.new_game_button.setText(_translate("MainWindow", "Новая игра"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Игра"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Игра")
+        )
         self.best_rounds.setText(_translate("MainWindow", "Лучшие раунды"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2),
-                                  _translate("MainWindow", "Турнирная таблица"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_2),
+            _translate("MainWindow", "Турнирная таблица"),
+        )
 
 
 class Digits(QDialog):
-    """ Класс Digit - диалоговое окно получающее от пользователя цифру. Сделан по макету Alphabet """
+    """Класс Digit - диалоговое окно получающее от пользователя цифру. Сделан по макету Alphabet"""
+
     def __init__(self, *args):
         super().__init__(*args)
 
