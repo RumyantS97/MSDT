@@ -21,7 +21,7 @@ def divide(x, y):
     logger.debug(f'Вызвана функция multiply({x}, {y})')
     if y == 0:
         logger.warning("Ошибка деления на ноль!")
-        return "Ошибка: деление на ноль!"
+        raise ZeroDivisionError("Ошибка: деление на ноль!")
     return x / y
 
 
