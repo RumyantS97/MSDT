@@ -2,6 +2,7 @@ import json
 import csv
 import re
 
+
 def read_csv(path):
     try:
         data = []
