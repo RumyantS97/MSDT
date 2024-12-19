@@ -1,4 +1,4 @@
-from operations import add, subtract, multiply, divide, power, sin, cos, tan
+from operations_enum import OperationsEnum
 
 
 def calculator():
@@ -25,16 +25,16 @@ def calculator():
                     continue
 
             if choice == '1':
-                print(f"{num1} + {num2} = {add(num1, num2)}")
+                print(f"{num1} + {num2} = {OperationsEnum.ADD.func(num1, num2)}")
             elif choice == '2':
-                print(f"{num1} - {num2} = {subtract(num1, num2)}")
+                print(f"{num1} - {num2} = {OperationsEnum.SUB.func(num1, num2)}")
             elif choice == '3':
-                print(f"{num1} * {num2} = {multiply(num1, num2)}")
+                print(f"{num1} * {num2} = {OperationsEnum.MUL.func(num1, num2)}")
             elif choice == '4':
-                result = divide(num1, num2)
+                result = OperationsEnum.DIV.func(num1, num2)
                 print(f"{num1} / {num2} = {result}")
             elif choice == '5':
-                print(f"{num1} ^ {num2} = {power(num1, num2)}")
+                print(f"{num1} ^ {num2} = {OperationsEnum.POW.func(num1, num2)}")
             elif choice in ['6', '7', '8']:
                 try:
                     angle = float(input("Введите угол в градусах: "))
@@ -43,11 +43,11 @@ def calculator():
                     continue
 
                 if choice == '6':
-                    print(f"sin({angle}) = {sin(angle)}")
+                    print(f"sin({angle}) = {OperationsEnum.SIN.func(angle)}")
                 elif choice == '7':
-                    print(f"cos({angle}) = {cos(angle)}")
+                    print(f"cos({angle}) = {OperationsEnum.COS.func(angle)}")
                 elif choice == '8':
-                    print(f"tan({angle}) = {tan(angle)}")
+                    print(f"tan({angle}) = {OperationsEnum.TAN.func(angle)}")
 
         else:
             print("Некорректный ввод. Пожалуйста, выберите номер операции от 1 до 8.")
