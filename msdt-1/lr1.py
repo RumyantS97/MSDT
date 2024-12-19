@@ -55,7 +55,7 @@ def insert_sql_template(template):
   query_text.insert(tk.END, template)
 
 # Функция для обработки значений перед вставкой в запрос
-def format_value(value):
+def change_format_value(value):
   # Проверка, если значение похоже на дату в формате YYYY-MM-DD
   try:
     # Пробуем преобразовать в дату, если возможно
@@ -98,7 +98,7 @@ def open_operation_window(operation):
       value_list = [val.strip() for val in values.split(',')]
 
       # Применяем форматирование для каждого значения
-      formatted_values = [format_value(val) for val in value_list]
+      formatted_values = [change_format_value(val) for val in value_list]
 
       # Формируем запрос
       query = f"INSERT INTO {selected_table} VALUES ({', '.join(formatted_values)})"
@@ -127,7 +127,7 @@ def open_operation_window(operation):
         value = value.strip() 
         
         # Форматируем значение
-        formatted_value = format_value(value)
+        formatted_value = change_format_value(value)
         
         # Собираем обратно
         formatted_set_parts.append(f"{column} = {formatted_value}")
@@ -143,7 +143,7 @@ def open_operation_window(operation):
       value = value.strip() 
 
       # Форматируем значение
-      formatted_value = format_value(value)
+      formatted_value = change_format_value(value)
       formatted_condition_parts.append(f"{column} = {formatted_value}")
 
       # Собираем все части условия в одно строковое выражение
@@ -181,7 +181,7 @@ def open_operation_window(operation):
       value = value.strip() 
         
       # Форматируем значение
-      formatted_value = format_value(value)
+      formatted_value = change_format_value(value)
         
       # Собираем обратно
       formatted_condition_parts.append(f"{column} = {formatted_value}")
