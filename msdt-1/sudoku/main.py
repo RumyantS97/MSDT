@@ -107,8 +107,8 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.seconds == 60:
             self.minutes += 1
             self.seconds -= 60
-        self.time_label.setText('0'*(2-len(str(self.minutes)))+str(self.minutes) + ":" +
-                                '0'*(2-len(str(self.seconds)))+str(self.seconds))
+        self.time_label.setText('0' * (2 - len(str(self.minutes))) + str(self.minutes) + ":" +
+                                '0' * (2 - len(str(self.seconds))) + str(self.seconds))
 
     def _clicked(self):
         ''' Изменение значения ячейки на которую нажал пользователь '''
@@ -195,7 +195,7 @@ class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
             win_dialog = WinDialog()
             if win_dialog.exec_():
                 self.server_connection()
-                add_record(win_dialog.nick, self.minutes*60+self.seconds)
+                add_record(win_dialog.nick, self.minutes * 60 + self.seconds)
                 self.records()
         else:
             # Иначе сообщение о победе без записи в таблицу рекордов

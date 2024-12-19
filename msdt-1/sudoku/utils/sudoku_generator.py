@@ -7,7 +7,7 @@ class Grid:
     def __init__(self, n=3):
         ''' Генерирование базовой таблицы '''
         self.n = n
-        self.table = [[((i*n+i//n+j)%(n*n)+1) for j in range(n*n)] for i in range(n*n)]
+        self.table = [[((i * n + i // n + j) % (n * n) + 1) for j in range(n * n)] for i in range(n * n)]
 
     def transposing(self):
         ''' Транспонирование таблицы '''
