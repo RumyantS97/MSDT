@@ -1,0 +1,2 @@
+CSV = "msdt-3/9.csv"
+PATTERNS = "msdt-3/patterns.json"
