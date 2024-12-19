@@ -1,6 +1,6 @@
 from loguru import logger
-from book import Book
-from reader import Reader
+from library_app.book import Book
+from library_app.reader import Reader
 
 class Library:
     def __init__(self):
