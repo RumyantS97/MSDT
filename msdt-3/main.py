@@ -1,5 +1,8 @@
 from functions import *
 from paths import *
 
-print(read_csv(CSV))
-print(read_json(PATTERNS))
+
+file = read_csv(CSV)
+patterns = read_json(PATTERNS)
+result = get_list(file, patterns)
+print(len(result))

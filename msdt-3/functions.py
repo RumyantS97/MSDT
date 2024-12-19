@@ -1,6 +1,6 @@
 import json
 import csv
-
+import re
 
 def read_csv(path):
     try:
@@ -38,3 +38,18 @@ def write_json(path, data):
             from e
     except Exception as e:
         raise e
+    
+    
+def check_validation(data, patterns):
+    for key, value in zip(patterns.keys(), data):
+        if not re.match(patterns[key], value):
+            return False
+    return True
+
+
+def get_list(data, patterns):
+    list = []
+    for i, row in enumerate(data):
+        if not check_validation(row, patterns):
+            list.append(i)
+    return list
