@@ -1,10 +1,13 @@
 import sys  # sys нужен для передачи argv в QApplication
 from PyQt5 import QtWidgets
 from front.main import SyntaxAnalyzerApp
+from logger_settings import loguru_config
 
 
 def main():
     """ Запуск графического окна """
+
+    loguru_config()
 
     app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
     window = SyntaxAnalyzerApp()  # Создаём объект класса ExampleApp
