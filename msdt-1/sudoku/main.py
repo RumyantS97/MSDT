@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
-from GUI.GUI import Ui_MainWindow, Digits
+from GUI.GUI import UiMainWindow, Digits
 from GUI.win_true import WinDialog
 from utils.sudoku_generator import generate
 from utils.solver import solve_sudoku
@@ -14,7 +14,7 @@ add_record = lambda nick, time: None
 CONNECT = None
 
 
-class Sudoku(QtWidgets.QMainWindow, Ui_MainWindow):
+class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)

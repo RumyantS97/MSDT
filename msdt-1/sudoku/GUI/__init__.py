@@ -1,3 +1,3 @@
 """GUI to sudoku"""
 
-from GUI.GUI import Ui_MainWindow, Digits
+from GUI.GUI import UiMainWindow, Digits

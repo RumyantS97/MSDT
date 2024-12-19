@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QDialog, QGridLayout, QPushButton, QLabel
 from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_MainWindow(object):
+class UiMainWindow(object):
     """ Главное окно.
         Основные изменения:
         сделал из кнопок массив,

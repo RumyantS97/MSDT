@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDialog, QPushButton, QLabel, 
 from PyQt5 import QtCore
 
 
-class Ui_Dialog(object):
+class UiDialog(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(201, 152)
@@ -38,7 +38,7 @@ class WinDialog(QDialog):
         super().__init__()
 
         self.nick = None
-        self.ui = Ui_Dialog()
+        self.ui = UiDialog()
         self.ui.setupUi(self)
         self.ui.ok.clicked.connect(self.on_click)
 
