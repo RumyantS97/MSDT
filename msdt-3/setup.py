@@ -1,0 +1,3 @@
+CSV_PATH = ''
+RESULT_PATH = ''
+REGULAR_JSON = ''

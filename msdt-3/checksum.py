@@ -1,7 +1,10 @@
 import json
 import hashlib
+import csv
+import re
 from typing import List
 
+from setup import CSV_PATH, REGULAR_JSON, RESULT_PATH
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
 """
@@ -34,4 +37,48 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant" : variant,
+        "checksum": checksum
+    }
+    with open(RESULT_PATH, 'w', encoding='utf-8') as file:
+        json.dump(result, file)
+
+
+def read_json(path: str) -> dict:
+    """
+    Чтение json файла
+    """
+    with open(path, 'r', encoding='utf-8') as file:
+        return json.load(file)
+    
+
+def read_csv(path: str) -> list[list[str]]:
+    """
+    Чтение csv файлов
+    """
+    with open(path,'r',  encoding="utf-8") as file:
+        return [row for row in csv.reader(file, delimiter=";")][1:]
+    
+
+def validate_data(data: list[list[str]], regular: dict) -> list[int]:
+    """
+    Поиск индексов невалидных строк
+    """
+    invalid_rows = []
+    for row_number, row in enumerate(data):
+        for col_index, (field, key) in enumerate(zip(row, regular.keys())):
+            pattern = regular[key]
+            if not re.fullmatch(pattern, field):
+                invalid_rows.append(row_number)
+                break
+
+    return invalid_rows
+
+
+if __name__ == "__main__":
+    regular = read_json(REGULAR_JSON)
+    data = read_csv(CSV_PATH)
+    indexs = validate_data(data, regular)
+    checksum = calculate_checksum(indexs)
+    serialize_result(3, checksum)
