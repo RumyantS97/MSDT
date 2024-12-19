@@ -137,7 +137,7 @@ class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
         if self.deep_immersion != -1:
 
             # Оставляем от массива только часть после глубины погружения
-            self.moves_history = self.moves_history[self.deep_immersion + 1 :]
+            self.moves_history = self.moves_history[self.deep_immersion + 1:]
 
             # Возвращаем глубину к стандартному значению
             self.deep_immersion = -1
