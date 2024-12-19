@@ -989,8 +989,10 @@ def list_cluster_keywords(args):
 
 
 def cli():
-    """ """
-    # PARAMETERS_HELP = 'specify parameter or keyword for rendering (multiple can be specified)'
+    """
+    This function sets up the argument parser, defines available subcommands, 
+    and processes the arguments to execute the corresponding functionality.
+    """
     parser = argparse.ArgumentParser(
         description="Assisted installer assistant"
     )
