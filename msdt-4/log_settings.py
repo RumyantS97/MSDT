@@ -1,7 +1,7 @@
 import logging
 
 logging.basicConfig(
-    filename='Log.txt',
+    filename='Log.log',
     level=logging.DEBUG,
     format='[%(asctime)s] [%(levelname)s] => %(message)s',
     encoding='utf-8',
