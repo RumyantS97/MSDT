@@ -2,20 +2,12 @@ from operations_enum import OperationsEnum
 
 
 def calculator():
-    print("Выберите операцию:")
-    print("1. Сложение")
-    print("2. Вычитание")
-    print("3. Умножение")
-    print("4. Деление")
-    print("5. Возведение в степень")
-    print("6. Синус")
-    print("7. Косинус")
-    print("8. Тангенс")
 
     while True:
-        choice = input("Введите номер операции (1/2/3/4/5/6/7/8): ")
+        print(OperationsEnum.get_message_for_input())
+        choice = input("Введите номер операции: ")
         num1 = num2 = 0
-        if choice in ['1', '2', '3', '4', '5', '6', '7', '8']:
+        if choice in OperationsEnum.get_codes():
             if choice in ['1', '2', '3', '4', '5']:
                 try:
                     num1 = float(input("Введите первое число: "))
