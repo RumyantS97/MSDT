@@ -44,7 +44,11 @@ def get_csv(path_name: str) -> Optional[List]:
     '''
     data = []
     try:
-        with open(path_name, 'r', encoding='utf-16') as file:
+        with open(
+                path_name, 
+                'r', 
+                encoding='utf-16'
+            ) as file:
             reader = csv.reader(file, delimiter=';')
             for row in reader:
                 data.append(row)
@@ -85,7 +89,7 @@ def check_data(path_csv: str, path_json: str) -> List[int]:
     Returns:
             List[int]: list of invalid rows numbers
     """
-    data = get_csv(path_csv)
+    data    = get_csv(path_csv)
     reg_exp = get_json(path_json)
     invalid_rows = []
     for i, row in enumerate(data):
@@ -95,7 +99,7 @@ def check_data(path_csv: str, path_json: str) -> List[int]:
 
 
 if __name__ == "__main__":
-    invalid = check_data(PATH_TO_CSV, PATTERNS)
+    invalid =   check_data(PATH_TO_CSV, PATTERNS)
     check_sum = calculate_checksum(invalid)
     serialize_result(VARIANT, check_sum)
     print(len(invalid))
