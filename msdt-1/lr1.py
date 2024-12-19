@@ -108,6 +108,7 @@ def open_operation_window(operation):
       error_label.update()
       fetch_and_display_data()
 
+  # Функция для изменения данных
   def perform_update():
     selected_table = table_combo.get()
     if selected_table:
@@ -165,7 +166,7 @@ def open_operation_window(operation):
       
       # Обновляем данные на экране
       fetch_and_display_data()
-
+  # Функция для удаления данных
   def perform_delete():
     selected_table = table_combo.get()
     if selected_table:
@@ -299,7 +300,8 @@ def get_years():
 
 # Диалог создания отчёта
 def open_report_window():
-
+   
+  # Функция для создания отчета
   def generate_report():
     year = year_combo.get()
     if not year:
