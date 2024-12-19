@@ -38,7 +38,7 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
     result = {
-        "variant" : variant,
+        "variant": variant,
         "checksum": checksum
     }
     with open(RESULT_PATH, 'w', encoding='utf-8') as file:
@@ -51,15 +51,15 @@ def read_json(path: str) -> dict:
     """
     with open(path, 'r', encoding='utf-8') as file:
         return json.load(file)
-    
+
 
 def read_csv(path: str) -> list[list[str]]:
     """
     Чтение csv файлов
     """
-    with open(path,'r',  encoding="utf-8") as file:
+    with open(path, 'r', encoding="utf-16") as file:
         return [row for row in csv.reader(file, delimiter=";")][1:]
-    
+
 
 def validate_data(data: list[list[str]], regular: dict) -> list[int]:
     """
