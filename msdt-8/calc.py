@@ -15,18 +15,21 @@ def calculator():
                 except ValueError:
                     print("Ошибка: введите числовое значение.")
                     continue
-                print(f'{operation.description} для чисел {num1} и {num2} = {operation.func(num1, num2)}')
+                print(f'{operation.description} для чисел '
+                      f'{num1} и {num2} = {operation.func(num1, num2)}')
             elif operation.operand_count == 1:
                 try:
                     num = float(input("Введите число: "))
                 except ValueError:
                     print("Ошибка: введите числовое значение.")
                     continue
-                print(f'{operation.description} числа {num} = {operation.func(num)}')
+                print(f'{operation.description} числа '
+                      f'{num} = {operation.func(num)}')
         else:
-            print("Некорректный ввод. Пожалуйста, выбирайте номер операции из списка.")
+            print("Некорректный ввод. Выбирайте номер операции из списка.")
 
-        next_calculation = input("Хотите выполнить еще одно вычисление? (да/any key): ")
+        next_calculation = \
+            input("Хотите выполнить еще одно вычисление? (да/any key): ")
         if next_calculation.lower() != 'да':
             break
 
