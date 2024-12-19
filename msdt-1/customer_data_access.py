@@ -125,7 +125,8 @@ class CustomerDataLayer:
 
     def find_by_company_number(self, company_number):
         self.cursor.execute(
-            'SELECT internalId, externalId, masterExternalId, name, customerType, companyNumber FROM customers WHERE companyNumber=?',
+            'SELECT internalId, externalId, masterExternalId, name, '
+            'customerType, companyNumber FROM customers WHERE companyNumber=?',
             (company_number,))
         return self._customer_from_sql_select_fields(self.cursor.fetchone())
 
@@ -185,8 +186,9 @@ class CustomerDataLayer:
                 address_id = self._nextid("addresses")
                 self.cursor.execute(
                     'INSERT INTO addresses VALUES (?, ?, ?, ?)', (
-                    address_id, customer.address.street, customer.address.city,
-                    customer.address.postal_code))
+                        address_id, customer.address.street,
+                        customer.address.city,
+                        customer.address.postal_code))
                 self.cursor.execute(
                     'UPDATE customers set addressId=? WHERE internalId=?',
                     (address_id, customer.internal_id))
