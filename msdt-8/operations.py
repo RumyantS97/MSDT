@@ -34,3 +34,6 @@ def cos(x):
 def tan(x):
     return math.tan(math.radians(x))  # Преобразуем градусы в радианы
 
+
+def sqrt(x):
+    return math.sqrt(x)

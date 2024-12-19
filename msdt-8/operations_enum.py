@@ -11,6 +11,7 @@ class OperationsEnum(Enum):
     SIN = ('6', "Синус", 1, operations.sin)
     COS = ('7', "Косинус", 1, operations.cos)
     TAN = ('8', "Тангенс", 1, operations.tan)
+    SQR = ('9', "Квадратный корень", 1, operations.sqrt)
 
     def __init__(self, code, description, operand_count, func):
         self.code = code
