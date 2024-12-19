@@ -27,6 +27,7 @@ def get_subparser_print_help(parser, subcommand):
         for action in parser._actions
         if isinstance(action, argparse._SubParsersAction)
     ]
+    
     for subparsers_action in subparsers_actions:
         for choice, subparser in subparsers_action.choices.items():
             if choice == subcommand:
@@ -50,6 +51,7 @@ def get_subparser(parser, subcommand):
         for action in parser._actions
         if isinstance(action, argparse._SubParsersAction)
     ]
+    
     for subparsers_action in subparsers_actions:
         for choice, subparser in subparsers_action.choices.items():
             if choice == subcommand:
@@ -90,13 +92,16 @@ def create_cluster(args):
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
     infraenv = overrides.get("infraenv", True)
+    
     if infraenv:
         infraenv_overrides = overrides.copy()
         infraenv_overrides["cluster"] = args.cluster
+        
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
     ai.create_cluster(args.cluster, overrides)
+    
     if infraenv:
         infraenv = f"{args.cluster}_infra-env"
         ai.create_infra_env(infraenv, infraenv_overrides)
@@ -113,6 +118,7 @@ def delete_cluster(args):
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
+    
     for cluster in args.clusters:
         info(f"Deleting cluster {cluster}")
         ai.delete_cluster(cluster)
@@ -170,15 +176,19 @@ def info_cluster(args):
         ]
     else:
         skipped = []
+        
     fields = args.fields.split(",") if args.fields is not None else []
     values = args.values
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
+    
     if args.preflight:
         print(ai.preflight_cluster(args.cluster))
         return
+    
     info = ai.info_cluster(args.cluster).to_dict()
+    
     if fields:
         for key in list(info):
             if key not in fields:
@@ -204,6 +214,7 @@ def list_cluster(args):
     )
     clusters = ai.list_clusters()
     clusterstable = PrettyTable(["Cluster", "Id", "Status", "Dns Domain"])
+    
     for cluster in sorted(clusters, key=lambda x: x["name"] or "zzz"):
         name = cluster["name"]
         status = cluster["status"]
@@ -211,6 +222,7 @@ def list_cluster(args):
         base_dns_domain = cluster.get("base_dns_domain", "N/A")
         entry = [name, _id, status, base_dns_domain]
         clusterstable.add_row(entry)
+    
     print(clusterstable)
 
 
@@ -291,6 +303,7 @@ def delete_host(args):
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
+    
     for hostname in args.hostnames:
         info(f"Deleting Host {hostname}")
         ai.delete_host(hostname, overrides=overrides)
@@ -320,12 +333,14 @@ def info_host(args):
             skipped.append("inventory")
     else:
         skipped = []
+        
     fields = args.fields.split(",") if args.fields is not None else []
     values = args.values
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
     hostinfo = ai.info_host(args.host)
+    
     if hostinfo is None:
         error(f"Host {args.host} not found")
     else:
@@ -356,6 +371,7 @@ def list_hosts(args):
     """
     infra_env_ids = {}
     cluster_ids = {}
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -363,27 +379,35 @@ def list_hosts(args):
     hoststable = PrettyTable(
         ["Host", "Id", "Cluster", "Infraenv", "Status", "Role", "Ip"]
     )
+    
     for host in sorted(hosts, key=lambda x: x["requested_hostname"] or "zzz"):
         name = host["requested_hostname"]
         cluster_name = None
         cluster_id = host.get("cluster_id")
+        
         if cluster_id is not None:
             if cluster_id not in cluster_ids:
                 cluster_ids[cluster_id] = ai.get_cluster_name(cluster_id)
             cluster_name = cluster_ids[cluster_id]
+            
         infra_env_id = host.get("infra_env_id")
+        
         if infra_env_id not in infra_env_ids:
             infra_env_ids[infra_env_id] = ai.get_infra_env_name(infra_env_id)
         infra_env_name = infra_env_ids[infra_env_id]
+        
         _id = host["id"]
         role = host["role"]
+        
         if "bootstrap" in host and host["bootstrap"]:
             role += "(bootstrap)"
+            
         status = host["status"]
         inventory = (
             json.loads(host["inventory"]) if "inventory" in host else {}
         )
         ip = "N/A"
+        
         if "interfaces" in inventory and inventory["interfaces"]:
             if (
                 "ipv6_addresses" in inventory["interfaces"][0]
@@ -399,8 +423,10 @@ def list_hosts(args):
                 ip = inventory["interfaces"][0]["ipv4_addresses"][0].split(
                     "/"
                 )[0]
+                
         entry = [name, _id, cluster_name, infra_env_name, status, role, ip]
         hoststable.add_row(entry)
+        
     print(hoststable)
 
 
@@ -432,6 +458,7 @@ def delete_infra_env(args):
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
+    
     for infraenv in args.infraenvs:
         info(f"Deleting infraenv {infraenv}")
         ai.delete_infra_env(infraenv)
@@ -463,12 +490,14 @@ def info_infra_env(args):
         ]
     else:
         skipped = []
+        
     fields = args.fields.split(",") if args.fields is not None else []
     values = args.values
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
     info = ai.info_infra_env(args.infraenv).to_dict()
+    
     if fields:
         for key in list(info):
             if key not in fields:
@@ -498,6 +527,7 @@ def list_infra_env(args):
     infra_envs_table = PrettyTable(
         ["Infraenv", "Id", "Cluster", "Openshift Version", "Iso Type"]
     )
+    
     for infra_env in sorted(infra_envs, key=lambda x: x["name"] or "zzz"):
         name = infra_env["name"]
         openshift_version = infra_env["openshift_version"]
@@ -505,14 +535,17 @@ def list_infra_env(args):
         _id = infra_env["id"]
         cluster = None
         cluster_id = infra_env.get("cluster_id")
+        
         if cluster_id is not None and cluster_id not in cluster_ids:
             try:
                 cluster_ids[cluster_id] = ai.get_cluster_name(cluster_id)
                 cluster = cluster_ids[cluster_id]
             except:
                 cluster = "N/A"
+                
         entry = [name, _id, cluster, openshift_version, iso_type]
         infra_envs_table.add_row(entry)
+        
     print(infra_envs_table)
 
 
@@ -581,6 +614,7 @@ def create_iso(args):
     paramfile = choose_parameter_file(args.paramfile)
     minimal = args.minimal
     overrides = get_overrides(paramfile=paramfile, param=args.param)
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -598,9 +632,11 @@ def info_iso(args):
     """
     if not args.short:
         info(f"Getting Iso url for infraenv {args.infraenv}")
+        
     paramfile = choose_parameter_file(args.paramfile)
     minimal = args.minimal
     overrides = get_overrides(paramfile=paramfile, param=args.param)
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -783,6 +819,7 @@ def update_host(args):
     info(f"Updating Host {args.hostname}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -822,11 +859,13 @@ def list_manifests(args):
     )
     manifests = ai.list_manifests(args.cluster)
     manifeststable = PrettyTable(["File", "Folder"])
+    
     for manifest in sorted(manifests, key=lambda x: x["file_name"]):
         filename = manifest["file_name"]
         folder = manifest["folder"]
         entry = [filename, folder]
         manifeststable.add_row(entry)
+        
     print(manifeststable)
 
 
@@ -842,6 +881,7 @@ def update_installconfig(args):
     info(f"Updating installconfig in {args.cluster}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -860,6 +900,7 @@ def update_iso(args):
     info(f"Updating iso in {args.infraenv}")
     paramfile = choose_parameter_file(args.paramfile)
     overrides = get_overrides(paramfile=paramfile, param=args.param)
+    
     ai = AssistedClient(
         args.url, token=args.token, offlinetoken=args.offlinetoken
     )
@@ -895,11 +936,13 @@ def list_events(args):
     )
     events = ai.list_events(args.cluster)
     eventstable = PrettyTable(["Date", "Message"])
+    
     for event in events:
         date = event["event_time"]
         message = event["message"]
         entry = [date, message]
         eventstable.add_row(entry)
+        
     print(eventstable)
 
 
@@ -917,8 +960,10 @@ def list_infraenv_keywords(args):
     )
     keywords = ai.get_infraenv_keywords()
     keywordstable = PrettyTable(["Keyword"])
+    
     for keyword in sorted(keywords):
         keywordstable.add_row([keyword])
+        
     print(keywordstable)
 
 
@@ -936,8 +981,10 @@ def list_cluster_keywords(args):
     )
     keywords = ai.get_cluster_keywords()
     keywordstable = PrettyTable(["Keyword"])
+    
     for keyword in sorted(keywords):
         keywordstable.add_row([keyword])
+    
     print(keywordstable)
 
 
@@ -1700,7 +1747,9 @@ def cli():
     if len(sys.argv) == 1:
         parser.print_help()
         os._exit(0)
+        
     args = parser.parse_args()
+    
     if not hasattr(args, "func"):
         for attr in dir(args):
             if attr.startswith("subcommand_") and getattr(args, attr) is None:
@@ -1723,6 +1772,7 @@ def cli():
             if not args.staging
             else "https://api.stage.openshift.com"
         )
+        
     args.func(args)
 
 
