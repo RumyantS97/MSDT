@@ -17,7 +17,7 @@ CONNECT = None
 class Sudoku(QtWidgets.QMainWindow, UiMainWindow):
     def __init__(self):
         super().__init__()
-        self.setupUi(self)
+        self.setup_ui(self)
         self.new_game_button.clicked.connect(self.new_game)
         self.next_button.clicked.connect(self.next)
         self.back_button.clicked.connect(self.back)

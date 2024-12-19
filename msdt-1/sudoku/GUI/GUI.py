@@ -8,7 +8,7 @@ class UiMainWindow(object):
         Основные изменения:
         сделал из кнопок массив,
         переименовал переменные """
-    def setupUi(self, MainWindow):
+    def setup_ui(self, MainWindow):
         MainWindow.setObjectName("Sudoku")
         MainWindow.resize(339, 418)
 
@@ -91,13 +91,13 @@ class UiMainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslate_ui(MainWindow)
 
         self.tabWidget.setCurrentIndex(0)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslate_ui(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Судоку"))
         self.back_button.setText(_translate("MainWindow", "↶"))

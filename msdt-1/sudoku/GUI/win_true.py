@@ -3,7 +3,7 @@ from PyQt5 import QtCore
 
 
 class UiDialog(object):
-    def setupUi(self, Form):
+    def setup_ui(self, Form):
         Form.setObjectName("Form")
         Form.resize(201, 152)
         verticalLayoutWidget = QWidget(Form)
@@ -39,7 +39,7 @@ class WinDialog(QDialog):
 
         self.nick = None
         self.ui = UiDialog()
-        self.ui.setupUi(self)
+        self.ui.setup_ui(self)
         self.ui.ok.clicked.connect(self.on_click)
 
     def on_click(self):

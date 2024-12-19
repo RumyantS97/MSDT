@@ -33,7 +33,7 @@ class Grid:
         # номер 2 строки для обмена
         self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
-    def swap_colums_small(self):
+    def swap_columns_small(self):
         """  Меняет две колонки в пределах одного района местами """
         self.transposing()
         self.swap_rows_small()
@@ -53,7 +53,7 @@ class Grid:
             N1, N2 = area1 * self.n + i, area2 * self.n + i
             self.table[N1], self.table[N2] = self.table[N2], self.table[N1]
 
-    def swap_colums_area(self):
+    def swap_columns_area(self):
         """ Меняет два района по вертикали местами """
         self.transposing()
         self.swap_rows_area()
@@ -65,7 +65,7 @@ class Grid:
         :param amt: int - количество перемешиваний
         :return: None
         """
-        mix_func = [self.transposing, self.swap_rows_small, self.swap_colums_small, self.swap_rows_area, self.swap_colums_area]
+        mix_func = [self.transposing, self.swap_rows_small, self.swap_columns_small, self.swap_rows_area, self.swap_columns_area]
         for i in range(1, amt):
             # Вызываем случайную функцию
             choice(mix_func)()
