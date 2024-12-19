@@ -398,56 +398,56 @@ btn_writers = tk.Button(root, text = "Таблица 'Писатели'", comman
 btn_writers.grid(row = 6, column = 2, padx = 5, pady = 5)
 
 # Кнопки для выполнения готовых запросов
-btn1 = tk.Button(root, text = "Вывод писателей, фамилия которых начинается с C", command = lambda: 
+btn_select1 = tk.Button(root, text = "Вывод писателей, фамилия которых начинается с C", command = lambda: 
          execute_query("select surname as Фамилия, name as Имя, \
                 patronimic as Отчество from writers where surname like 'П%' \
                 order by surname"), wraplength = 150)
-btn1.grid(row = 7, column = 0, padx = 5, pady = 5)
+btn_select1(row = 7, column = 0, padx = 5, pady = 5)
 
-btn2 = tk.Button(root, text = "Вывод авторов, написавших более 1 книги", command = lambda: 
+btn_select2 = tk.Button(root, text = "Вывод авторов, написавших более 1 книги", command = lambda: 
          execute_query("select surname as Фамилия, name as Имя, patronimic as Отчество from \
                 writers where idPassport in (select writers from published_books group by writers \
                 having count(code) > 1 order by writers)"),
          wraplength = 150)
-btn2.grid(row = 7, column = 1, padx = 5, pady = 5)
+btn_select2.grid(row = 7, column = 1, padx = 5, pady = 5)
 
-btn3 = tk.Button(root, text = "Вывод писателей по уникальной творческой группе", command = lambda: 
+btn_select3 = tk.Button(root, text = "Вывод писателей по уникальной творческой группе", command = lambda: 
          execute_query("select distinct creativeGroup as Творческие_группы from writers \
                 where creativeGroup is not null"), wraplength = 150)
-btn3.grid(row = 7, column = 2, padx = 5, pady = 5)
+btn_select3.grid(row = 7, column = 2, padx = 5, pady = 5)
 
-btn4 = tk.Button(root, text = "Вывод писателей с одинаковыми фамилиями", command = lambda: 
+btn_select4 = tk.Button(root, text = "Вывод писателей с одинаковыми фамилиями", command = lambda: 
          execute_query("select * from writers where surname in \
                 (select surname from writers group by surname having \
                 count(surname) > 1) order by surname"), wraplength = 150)
-btn4.grid(row = 8, column = 0, padx = 5, pady = 5)
+btn_select4.grid(row = 8, column = 0, padx = 5, pady = 5)
 
-btn5 = tk.Button(root, text = "Вывести писателей по номеру творческой группы", command = lambda: 
+btn_select5 = tk.Button(root, text = "Вывести писателей по номеру творческой группы", command = lambda: 
          execute_query("select * from writers where creativeGroup like '2%'"), wraplength = 150)
-btn5.grid(row = 8, column = 1, padx = 5, pady = 5)
+btn_select5.grid(row = 8, column = 1, padx = 5, pady = 5)
 
-btn6 = tk.Button(root, text = "Вывод числа писателей однофамильцев", command = lambda: 
+btn_select6 = tk.Button(root, text = "Вывод числа писателей однофамильцев", command = lambda: 
          execute_query("select count(*) as Число_записей from writers where \
                 surname in (select surname from writers group by surname having \
                 count(surname) > 1) order by surname"), wraplength = 150)
-btn6.grid(row = 8, column = 2, padx = 5, pady = 5)
+btn_select6.grid(row = 8, column = 2, padx = 5, pady = 5)
 
-btn7 = tk.Button(root, text = "Вывод названий книг по дате заказов", command = lambda: 
+btn_select7 = tk.Button(root, text = "Вывод названий книг по дате заказов", command = lambda: 
          execute_query("select name as Название_книги, receiptDate as Дата_заказа from \
                 books join orders on (books.code = orders.code) order by receiptDate"), wraplength = 150)
-btn7.grid(row = 9, column = 0, padx = 5, pady = 5)
+btn_select7.grid(row = 9, column = 0, padx = 5, pady = 5)
 
-btn8 = tk.Button(root, text = "Заказ книг представителями", command = lambda: 
+btn_select8 = tk.Button(root, text = "Заказ книг представителями", command = lambda: 
          execute_query("select books.name as Название_книги, circulation as Тираж, \
                 orders.number as Номер_заказа, agent as Представитель from books \
                 inner join orders on (books.code = orders.code) left outer join \
                 customers on (orders.customer = customers.name)"), wraplength = 150)
-btn8.grid(row = 9, column = 1, padx = 5, pady = 5)
+btn_select8.grid(row = 9, column = 1, padx = 5, pady = 5)
 
-btn9 = tk.Button(root, text = "Возвращаем номера", command = lambda: 
+btn_select9 = tk.Button(root, text = "Возвращаем номера", command = lambda: 
          execute_query("select idcreative_groups as Различные_номера from creative_groups union \
               (select idPassport from writers) union (select number from contract)"), wraplength = 150)
-btn9.grid(row = 9, column = 2, padx = 5, pady = 5)
+btn_select9.grid(row = 9, column = 2, padx = 5, pady = 5)
 
 # Запуск интерфейса
 root.mainloop()
