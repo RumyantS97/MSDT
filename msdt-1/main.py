@@ -15,19 +15,19 @@ import time
 import urllib.request
 import zipfile
 
-import pyxel
-import pyxel.utils
+import pixel
+import pixel.utils
 
 
 def cli():
     """Define a command-line interface for interacting
-    with various functions related to a retro game engine called Pyxel.
+    with various functions related to a retro game engine called Pixel.
 
     :return: The `cli()` function returns the appropriate usage information
-    basedon the command line arguments provided by the user. If the arguments
+    based the command line arguments provided by the user. If the arguments
     match a defined command, the corresponding function associated with that
-    command isexecuted. If the arguments do not match any command or if the
-    number ofparameters is incorrect, an error message is displayed along with
+    command is executed. If the arguments do not match any command or if the
+    number parameters is incorrect, an error message is displayed along with
     the correct usage information.
 
     """
@@ -38,29 +38,29 @@ def cli():
             watch_and_run_python_script,
         ),
         (
-            ["play", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"],
-            play_pyxel_app,
+            ["play", f"PIXEL_APP_FILE({pixel.APP_FILE_EXTENSION})"],
+            play_pixel_app,
         ),
         (
             [
                 "edit",
-                f"[PYXEL_RESOURCE_FILE({pyxel.RESOURCE_FILE_EXTENSION})]",
+                f"[PIXEL_RESOURCE_FILE({pixel.RESOURCE_FILE_EXTENSION})]",
             ],
-            edit_pyxel_resource,
+            edit_pixel_resource,
         ),
         (
             ["package", "APP_DIR", "STARTUP_SCRIPT_FILE(.py)"],
-            package_pyxel_app,
+            package_pixel_app,
         ),
         (
-            ["app2exe", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"],
-            create_executable_from_pyxel_app,
+            ["app2exe", f"PIXEL_APP_FILE({pixel.APP_FILE_EXTENSION})"],
+            create_executable_from_pixel_app,
         ),
         (
-            ["app2html", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"],
-            create_html_from_pyxel_app,
+            ["app2html", f"PIXEL_APP_FILE({pixel.APP_FILE_EXTENSION})"],
+            create_html_from_pixel_app,
         ),
-        (["copy_examples"], copy_pyxel_examples),
+        (["copy_examples"], copy_pixel_examples),
     ]
 
     def print_usage(command_name=None):
@@ -78,12 +78,12 @@ def cli():
         print("usage:")
         for command in commands:
             if command_name is None or command[0] == command_name:
-                print(f"    pyxel {' '.join(command[0])}")
+                print(f"    pixel {' '.join(command[0])}")
         _check_newer_version()
 
     num_args = len(sys.argv)
     if num_args <= 1:
-        print(f"Pyxel {pyxel.VERSION}, a retro game engine for Python")
+        print(f"Pixel {pixel.VERSION}, a retro game engine for Python")
         print_usage()
         return
     for command in commands:
@@ -105,21 +105,21 @@ def cli():
 
 def _check_newer_version():
     """
-    The function checks for a newer version of Pyxel by scraping the GitHub page
+    The function checks for a newer version of Pixel by scraping the GitHub page
     and comparing it with the current version.
 
     :return: The `_check_newer_version` function is returning `None` if there is an
     error during the URL request or if the latest version is not found in the
     response. If a new version is found and it is greater than the current version
-    of Pyxel, a message is printed indicating that a new version is available.
+    of Pixel, a message is printed indicating that a new version is available.
 
     """
-    url = "https://www.github.com/kitao/pyxel"
+    url = "https://www.github.com/kitao/pixel"
     req = urllib.request.Request(url)
     latest_version = None
     try:
         with urllib.request.urlopen(req, timeout=3) as res:
-            pattern = r"/kitao/pyxel/releases/tag/v(\d+\.\d+\.\d+)"
+            pattern = r"/kitao/pixel/releases/tag/v(\d+\.\d+\.\d+)"
             text = res.read().decode("utf-8")
             result = re.search(pattern, text)
             if result:
@@ -132,8 +132,8 @@ def _check_newer_version():
     def parse_version(version):
         return list(map(int, version.split(".")))
 
-    if parse_version(latest_version) > parse_version(pyxel.VERSION):
-        print(f"A new version, Pyxel {latest_version}, is available.")
+    if parse_version(latest_version) > parse_version(pixel.VERSION):
+        print(f"A new version, Pixel {latest_version}, is available.")
 
 
 def _complete_extension(filename, command, valid_ext):
@@ -242,11 +242,11 @@ def _create_app_dir():
     :return: The function `_create_app_dir` returns the path to the newly created
     application directory `app_dir`.
     """
-    play_dir = os.path.join(tempfile.gettempdir(), pyxel.BASE_DIR, "play")
+    play_dir = os.path.join(tempfile.gettempdir(), pixel.BASE_DIR, "play")
     pathlib.Path(play_dir).mkdir(parents=True, exist_ok=True)
     for path in glob.glob(os.path.join(play_dir, "*")):
         pid = int(os.path.basename(path))
-        if not pyxel.process_exists(pid):
+        if not pixel.process_exists(pid):
             shutil.rmtree(path)
     app_dir = os.path.join(play_dir, str(os.getpid()))
     if os.path.exists(app_dir):
@@ -263,11 +263,11 @@ def _create_watch_info_file():
     :return: The function `_create_watch_info_file` returns the path to the watch
     info file that is created within the specified watch directory.
     """
-    watch_dir = os.path.join(tempfile.gettempdir(), pyxel.BASE_DIR, "watch")
+    watch_dir = os.path.join(tempfile.gettempdir(), pixel.BASE_DIR, "watch")
     pathlib.Path(watch_dir).mkdir(parents=True, exist_ok=True)
     for path in glob.glob(os.path.join(watch_dir, "*")):
         pid = int(os.path.basename(path))
-        if not pyxel.process_exists(pid):
+        if not pixel.process_exists(pid):
             os.remove(path)
     watch_info_file = os.path.join(watch_dir, str(os.getpid()))
     with open(watch_info_file, "w") as f:
@@ -318,23 +318,23 @@ def _run_python_script_in_separate_process(python_script_file):
     return worker
 
 
-def _extract_pyxel_app(pyxel_app_file):
+def _extract_pixel_app(pixel_app_file):
     """
-    The function `_extract_pyxel_app` extracts a Pyxel app file, searches for a
+    The function `_extract_pixel_app` extracts a Pixel app file, searches for a
     specific startup script file, and returns the path to the script file if found.
 
-    :param pyxel_app_file: The `pyxel_app_file` parameter is the file path to a
-    Pyxel application file that you want to extract information from. This function
-    is designed to extract a specific setting file from the Pyxel application
+    :param pixel_app_file: The `pixel_app_file` parameter is the file path to a
+    Pixel application file that you want to extract information from. This function
+    is designed to extract a specific setting file from the Pixel application
     archive
-    :return: The function `_extract_pyxel_app` is returning the path to the startup
-    script file of a Pyxel application.
+    :return: The function `_extract_pixel_app` is returning the path to the startup
+    script file of a Pixel application.
     """
-    _check_file_exists(pyxel_app_file)
+    _check_file_exists(pixel_app_file)
     app_dir = _create_app_dir()
-    zf = zipfile.ZipFile(pyxel_app_file)
+    zf = zipfile.ZipFile(pixel_app_file)
     zf.extractall(app_dir)
-    pattern = os.path.join(app_dir, "*", pyxel.APP_STARTUP_SCRIPT_FILE)
+    pattern = os.path.join(app_dir, "*", pixel.APP_STARTUP_SCRIPT_FILE)
     for setting_file in glob.glob(pattern):
         with open(setting_file, "r") as f:
             return os.path.join(os.path.dirname(setting_file), f.read())
@@ -416,7 +416,7 @@ def watch_and_run_python_script(watch_dir, python_script_file):
     _check_dir_exists(watch_dir)
     _check_file_exists(python_script_file)
     _check_file_under_dir(python_script_file, watch_dir)
-    os.environ[pyxel.WATCH_INFO_FILE_ENVVAR] = _create_watch_info_file()
+    os.environ[pixel.WATCH_INFO_FILE_ENVVAR] = _create_watch_info_file()
     try:
         print(f"start watching '{watch_dir}' (Ctrl+C to stop)")
         cur_time = last_time = time.time()
@@ -439,23 +439,23 @@ def watch_and_run_python_script(watch_dir, python_script_file):
         print("stopped watching")
 
 
-def get_pyxel_app_metadata(pyxel_app_file):
+def get_pixel_app_metadata(pixel_app_file):
     """
-    The function `get_pyxel_app_metadata` extracts metadata from a Pyxel
+    The function `get_pixel_app_metadata` extracts metadata from a Pixel
     application file.
 
-    :param pyxel_app_file: The `pyxel_app_file` parameter is a file path to
-    a Pyxel application file. This function `get_pyxel_app_metadata` reads
-    the metadata from the Pyxel application file and returns it as a dictionary
+    :param pixel_app_file: The `pixel_app_file` parameter is a file path to
+    a Pixel application file. This function `get_pixel_app_metadata` reads
+    the metadata from the Pixel application file and returns it as a dictionary
     :return: An empty dictionary is being returned if the zipfile comment is
     emptyor does not contain any key-value pairs. If the comment contains
     key-value pairs, a dictionary with the extracted metadata
     is being returned.
 
     """
-    _check_file_exists(pyxel_app_file)
+    _check_file_exists(pixel_app_file)
     metadata = {}
-    zf = zipfile.ZipFile(pyxel_app_file)
+    zf = zipfile.ZipFile(pixel_app_file)
     if zf.comment:
         comment = zf.comment.decode(encoding="utf-8")
     else:
@@ -469,86 +469,86 @@ def get_pyxel_app_metadata(pyxel_app_file):
     return metadata
 
 
-def print_pyxel_app_metadata(pyxel_app_file):
+def print_pixel_app_metadata(pixel_app_file):
     """
-    The function `print_pyxel_app_metadata` reads a Pyxel application file,
+    The function `print_pixel_app_metadata` reads a Pixel application file,
     checks if it exists, and prints the comment metadata if available.
 
-    :param pyxel_app_file: The `print_pyxel_app_metadata` function
-    takes a Pyxel app file as input and prints out any metadata stored in
-    the file's comment section. The `pyxel_app_file` parameter should be the
-    path to the Pyxel app file that you want to extract metadata from
+    :param pixel_app_file: The `print_pixel_app_metadata` function
+    takes a Pixel app file as input and prints out any metadata stored in
+    the file's comment section. The `pixel_app_file` parameter should be the
+    path to the Pixel app file that you want to extract metadata from
     """
-    _check_file_exists(pyxel_app_file)
-    zf = zipfile.ZipFile(pyxel_app_file)
+    _check_file_exists(pixel_app_file)
+    zf = zipfile.ZipFile(pixel_app_file)
     if zf.comment:
         print(zf.comment.decode(encoding="utf-8"))
 
 
-def play_pyxel_app(pyxel_app_file):
+def play_pixel_app(pixel_app_file):
     """
-    The `play_pyxel_app` function plays a Pyxel application by running
+    The `play_pixel_app` function plays a Pixel application by running
     its startup script.
 
-    :param pyxel_app_file: The `play_pyxel_app` function seems to be a Python
-    function that plays a Pyxel app. The function takes a `pyxel_app_file`
-    parameter, which is the file path of the Pyxel app to be played
-    :return: The function `play_pyxel_app` returns None.
+    :param pixel_app_file: The `play_pixel_app` function seems to be a Python
+    function that plays a Pixel app. The function takes a `pixel_app_file`
+    parameter, which is the file path of the Pixel app to be played
+    :return: The function `play_pixel_app` returns None.
 
     """
-    pyxel_app_file = _complete_extension(
-        pyxel_app_file, "play", pyxel.APP_FILE_EXTENSION
+    pixel_app_file = _complete_extension(
+        pixel_app_file, "play", pixel.APP_FILE_EXTENSION
     )
-    _check_file_exists(pyxel_app_file)
-    print_pyxel_app_metadata(pyxel_app_file)
-    startup_script_file = _extract_pyxel_app(pyxel_app_file)
+    _check_file_exists(pixel_app_file)
+    print_pixel_app_metadata(pixel_app_file)
+    startup_script_file = _extract_pixel_app(pixel_app_file)
     if startup_script_file:
         sys.path.append(os.path.dirname(startup_script_file))
         runpy.run_path(startup_script_file, run_name="__main__")
         return
-    print(f"file not found: '{pyxel.APP_STARTUP_SCRIPT_FILE}'")
+    print(f"file not found: '{pixel.APP_STARTUP_SCRIPT_FILE}'")
     sys.exit(1)
 
 
-def edit_pyxel_resource(pyxel_resource_file=None, starting_editor="image"):
+def edit_pixel_resource(pixel_resource_file=None, starting_editor="image"):
     """
-    The function `edit_pyxel_resource` opens the Pyxel editor with a specified
+    The function `edit_pixel_resource` opens the Pixel editor with a specified
     resource file and starting editor.
 
-    :param pyxel_resource_file: The `pyxel_resource_file` parameter is a string
-    that represents the file path of the Pyxel resource file that you want
+    :param pixel_resource_file: The `pixel_resource_file` parameter is a string
+    that represents the file path of the Pixel resource file that you want
     to edit.
     If this parameter is not provided, the default value is set
     to "my_resource".
-    This file should be a Pyxel resource file with the appropriate extension
+    This file should be a Pixel resource file with the appropriate extension
     :param starting_editor: The `starting_editor` parameter in the
-    `edit_pyxel_resource` function is used to specify the initial edito
-    mode when opening the Pyxel resource file. It determines whether the
+    `edit_pixel_resource` function is used to specify the initial edito
+    mode when opening the Pixel resource file. It determines whether the
     resource file willbe opened in the "image" editor mode or another
     specified mode, defaults to image (optional)
     """
-    import pyxel.editor
+    import pixel.editor
 
-    if not pyxel_resource_file:
-        pyxel_resource_file = "my_resource"
-    pyxel_resource_file = _complete_extension(
-        pyxel_resource_file, "edit", pyxel.RESOURCE_FILE_EXTENSION
+    if not pixel_resource_file:
+        pixel_resource_file = "my_resource"
+    pixel_resource_file = _complete_extension(
+        pixel_resource_file, "edit", pixel.RESOURCE_FILE_EXTENSION
     )
-    pyxel.editor.App(pyxel_resource_file, starting_editor)
+    pixel.editor.App(pixel_resource_file, starting_editor)
 
 
-def package_pyxel_app(app_dir, startup_script_file):
+def package_pixel_app(app_dir, startup_script_file):
     """
-    The function `package_pyxel_app` packages a Pyxel application
+    The function `package_pixel_app` packages a Pixel application
     by creating a zip file containing the necessary files and metadata.
 
-    :param app_dir: The `app_dir` parameter in the `package_pyxel_app` function
-    refers to the directory where the Pyxel application files are located. This
-    function is designed to package a Pyxel application by creating a zip file
+    :param app_dir: The `app_dir` parameter in the `package_pixel_app` function
+    refers to the directory where the Pixel application files are located. This
+    function is designed to package a Pixel application by creating a zip file
     containing the necessary files for the application to run
     :param startup_script_file: The `startup_script_file` parameter is the file
-    that contains the main script of the Pyxel application that you want to
-    package. This script is the entry point of your Pyxel application
+    that contains the main script of the Pixel application that you want to
+    package. This script is the entry point of your Pixel application
     and will be included in the packaged application.
 
     """
@@ -560,20 +560,20 @@ def package_pyxel_app(app_dir, startup_script_file):
     if metadata_comment:
         print(metadata_comment)
     app_dir = os.path.abspath(app_dir)
-    setting_file = os.path.join(app_dir, pyxel.APP_STARTUP_SCRIPT_FILE)
+    setting_file = os.path.join(app_dir, pixel.APP_STARTUP_SCRIPT_FILE)
     with open(setting_file, "w") as f:
         f.write(os.path.relpath(startup_script_file, app_dir))
-    pyxel_app_file = os.path.basename(app_dir) + pyxel.APP_FILE_EXTENSION
+    pixel_app_file = os.path.basename(app_dir) + pixel.APP_FILE_EXTENSION
     app_parent_dir = os.path.dirname(app_dir)
     with zipfile.ZipFile(
-        pyxel_app_file,
+        pixel_app_file,
         "w",
         compression=zipfile.ZIP_DEFLATED,
     ) as zf:
         zf.comment = metadata_comment.encode(encoding="utf-8")
         files = [setting_file] + _files_in_dir(app_dir)
         for file in files:
-            if os.path.basename(file) == (pyxel_app_file or "/__pycache__/" in file):
+            if os.path.basename(file) == (pixel_app_file or "/__pycache__/" in file):
                 continue
             arcname = os.path.relpath(file, app_parent_dir)
             zf.write(file, arcname)
@@ -581,40 +581,40 @@ def package_pyxel_app(app_dir, startup_script_file):
     os.remove(setting_file)
 
 
-def create_executable_from_pyxel_app(pyxel_app_file):
-    """This Python function creates an executable file from a Pyxel application
+def create_executable_from_pixel_app(pixel_app_file):
+    """This Python function creates an executable file from a Pixel application
     file.
 
-    :param pyxel_app_file: The `pyxel_app_file` parameter in the
-    `create_executable_from_pyxel_app` function is the file path to the Pyxel
+    :param pixel_app_file: The `pixel_app_file` parameter in the
+    `create_executable_from_pixel_app` function is the file path to the Pixel
     application file that you want to convert into an executable. This function
     takes this file path as input and performs the necessary steps to create an
     executable from the.
 
     """
-    pyxel_app_file = _complete_extension(
-        pyxel_app_file, "app2exe", pyxel.APP_FILE_EXTENSION
+    pixel_app_file = _complete_extension(
+        pixel_app_file, "app2exe", pixel.APP_FILE_EXTENSION
     )
-    _check_file_exists(pyxel_app_file)
-    app2exe_dir = os.path.join(tempfile.gettempdir(), pyxel.BASE_DIR, "app2exe")
+    _check_file_exists(pixel_app_file)
+    app2exe_dir = os.path.join(tempfile.gettempdir(), pixel.BASE_DIR, "app2exe")
     if os.path.isdir(app2exe_dir):
         shutil.rmtree(app2exe_dir)
     pathlib.Path(app2exe_dir).mkdir(parents=True, exist_ok=True)
-    pyxel_app_name = os.path.splitext(os.path.basename(pyxel_app_file))[0]
-    startup_script_file = os.path.join(app2exe_dir, pyxel_app_name + ".py")
+    pixel_app_name = os.path.splitext(os.path.basename(pixel_app_file))[0]
+    startup_script_file = os.path.join(app2exe_dir, pixel_app_name + ".py")
     with open(startup_script_file, "w") as f:
         f.write(
-            "import os, pyxel.cli; pyxel.cli.play_pyxel_app("
+            "import os, pixel.cli; pixel.cli.play_pixel_app("
             "os.path.join(os.path.dirname(__file__), "
-            f"'{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}'))"
+            f"'{pixel_app_name}{pixel.APP_FILE_EXTENSION}'))"
         )
     cp = subprocess.run("pyinstaller -h", capture_output=True, shell=True)
     if cp.returncode != 0:
         print("Pyinstaller is not found. Please install it.")
         sys.exit(1)
     command = f"{sys.executable}" "-m PyInstaller --windowed --onefile --distpath . "
-    command += f"--add-data {pyxel_app_file}{os.pathsep}. "
-    modules = pyxel.utils.list_imported_modules(_extract_pyxel_app(pyxel_app_file))[
+    command += f"--add-data {pixel_app_file}{os.pathsep}. "
+    modules = pixel.utils.list_imported_modules(_extract_pixel_app(pixel_app_file))[
         "system"
     ]
     command += "".join([f"--hidden-import {module} " for module in modules])
@@ -623,53 +623,52 @@ def create_executable_from_pyxel_app(pyxel_app_file):
     subprocess.run(command, shell=True)
     if os.path.isdir(app2exe_dir):
         shutil.rmtree(app2exe_dir)
-    spec_file = os.path.splitext(pyxel_app_file)[0] + ".spec"
+    spec_file = os.path.splitext(pixel_app_file)[0] + ".spec"
     if os.path.isfile(spec_file):
         os.remove(spec_file)
 
 
-def create_html_from_pyxel_app(pyxel_app_file):
-    """The function `create_html_from_pyxel_app` generates an HTML
-    file that embeds a Pyxel app using base64 encoding.
+def create_html_from_pixel_app(pixel_app_file):
+    """The function `create_html_from_pixel_app` generates an HTML
+    file that embeds a Pixel app using base64 encoding.
 
-    :param pyxel_app_file: The `pyxel_app_file` parameter is a file path to
-    a Pyxel application file that you want to convert to an HTML file for
-    running in a web browser using Pyxel's JavaScript library.
+    :param pixel_app_file: The `pixel_app_file` parameter is a file path to
+    a Pixel application file that you want to convert to an HTML file for
+    running in a web browser using Pixel's JavaScript library.
 
     """
-    pyxel_app_file = _complete_extension(
-        pyxel_app_file, "app2html", pyxel.APP_FILE_EXTENSION
+    pixel_app_file = _complete_extension(
+        pixel_app_file, "app2html", pixel.APP_FILE_EXTENSION
     )
-    _check_file_exists(pyxel_app_file)
+    _check_file_exists(pixel_app_file)
     base64_string = ""
-    with open(pyxel_app_file, "rb") as f:
+    with open(pixel_app_file, "rb") as f:
         base64_string = base64.b64encode(f.read()).decode()
-    pyxel_app_name = os.path.splitext(os.path.basename(pyxel_app_file))[0]
-    with open(pyxel_app_name + ".html", "w") as f:
+    pixel_app_name = os.path.splitext(os.path.basename(pixel_app_file))[0]
+    with open(pixel_app_name + ".html", "w") as f:
         f.write(
             "<!DOCTYPE html>\n"
             "<script "
-            'src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js">'
+            'src="https://cdn.jsdelivr.net/gh/kitao/pixel/wasm/pixel.js">'
             "</script>\n"
             "<script>\n"
-            'launchPyxel({{ command: "play", name: '
-            f'"{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}", '
+            'launchPixel({{ command: "play", name: '
+            f'"{pixel_app_name}{pixel.APP_FILE_EXTENSION}", '
             f'gamepad: "enabled", base64: "{base64_string}" }});\n'
             "</script>\n"
         )
 
 
-def copy_pyxel_examples():
-    """The function `copy_pyxel_examples` copies files from the "examples"
-    directory to a destination directory "pyxel_examples".
+def copy_pixel_examples():
+    """The function `copy_pixel_examples` copies files from the "examples"
+    directory to a destination directory "pixel_examples".
 
     """
     src_dir = os.path.join(os.path.dirname(__file__), "examples")
-    dst_dir = "pyxel_examples"
+    dst_dir = "pixel_examples"
     shutil.rmtree(dst_dir, ignore_errors=True)
     for src_file in _files_in_dir(src_dir):
         dst_file = os.path.join(dst_dir, os.path.relpath(src_file, src_dir))
         os.makedirs(os.path.dirname(dst_file), exist_ok=True)
         shutil.copyfile(src_file, dst_file)
         print(f"copied '{dst_file}'")
-
