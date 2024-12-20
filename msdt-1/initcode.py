@@ -12,172 +12,169 @@ dispatcher = updater.dispatcher
 job_queue = updater.job_queue
 
 
-# Checks if feeds have updated by comparing saved feed dates to new feed
-def check_feed_update():
+def check_feed_updates():
     """
-    check_feed_update
+    Checks if feeds have updated by comparing saved feed dates to new feed dates.
     """
     try:
-        with open("feeds.txt") as f:
-            feeds = json.load(f)
+        with open("feeds.txt") as feed_file:
+            saved_feeds = json.load(feed_file)
         updates = {}
-        current_en_update = feedparser.parse(
+
+        current_english_update = feedparser.parse(
             "http://rss.weather.gov.hk/rss/CurrentWeather.xml"
         )
-        warning_en_update = feedparser.parse(
+        warning_english_update = feedparser.parse(
             "http://rss.weather.gov.hk/rss/WeatherWarningBulletin.xml"
         )
 
-        if current_en_update:
-            current_en = feeds["current"][0]
-            if current_en["entries"][0]["published"] != current_en_update.entries[0].published:
-                current_trad_update = feedparser.parse(
+        if current_english_update:
+            current_english_feed = saved_feeds["current"][0]
+            if current_english_feed["entries"][0]["published"] != current_english_update.entries[0].published:
+                current_traditional_update = feedparser.parse(
                     "http://rss.weather.gov.hk/rss/CurrentWeather_uc.xml"
                 )
-                current_simp_update = feedparser.parse(
+                current_simplified_update = feedparser.parse(
                     "http://gbrss.weather.gov.hk/rss/CurrentWeather_uc.xml"
                 )
                 current_update = [
-                    current_en_update, current_trad_update, current_simp_update
+                    current_english_update, current_traditional_update, current_simplified_update
                 ]
                 updates["current"] = current_update
-                feeds["current"] = current_update
+                saved_feeds["current"] = current_update
 
-        if warning_en_update:
-            warning_en = feeds["warning"][0]
-            if warning_en["entries"][0]["published"] != warning_en_update.entries[0].published:
-                warning_trad_update = feedparser.parse(
+        if warning_english_update:
+            warning_english_feed = saved_feeds["warning"][0]
+            if warning_english_feed["entries"][0]["published"] != warning_english_update.entries[0].published:
+                warning_traditional_update = feedparser.parse(
                     "http://rss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
                 )
-                warning_simp_update = feedparser.parse(
+                warning_simplified_update = feedparser.parse(
                     "http://gbrss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
                 )
                 warning_update = [
-                    warning_en_update, warning_trad_update, warning_simp_update
+                    warning_english_update, warning_traditional_update, warning_simplified_update
                 ]
                 updates["warning"] = warning_update
-                feeds["warning"] = warning_update
+                saved_feeds["warning"] = warning_update
 
     except FileNotFoundError:
-        current_en = feedparser.parse(
+        current_english_feed = feedparser.parse(
             "http://rss.weather.gov.hk/rss/CurrentWeather.xml"
         )
-        current_trad = feedparser.parse(
+        current_traditional_feed = feedparser.parse(
             "http://rss.weather.gov.hk/rss/CurrentWeather_uc.xml"
         )
-        current_simp = feedparser.parse(
+        current_simplified_feed = feedparser.parse(
             "http://gbrss.weather.gov.hk/rss/CurrentWeather_uc.xml"
         )
-        current = [
-            current_en, current_trad, current_simp
+        current_feeds = [
+            current_english_feed, current_traditional_feed, current_simplified_feed
         ]
 
-        warning_en = feedparser.parse(
+        warning_english_feed = feedparser.parse(
             "http://rss.weather.gov.hk/rss/WeatherWarningBulletin.xml"
         )
-        warning_trad = feedparser.parse(
+        warning_traditional_feed = feedparser.parse(
             "http://rss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
         )
-        warning_simp = feedparser.parse(
+        warning_simplified_feed = feedparser.parse(
             "http://gbrss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
         )
-        warning = [
-            warning_en, warning_trad, warning_simp
+        warning_feeds = [
+            warning_english_feed, warning_traditional_feed, warning_simplified_feed
         ]
 
-        with open("feeds.txt", "w") as f:
-            updates = {"current": current, "warning": warning}
-            feeds = updates
-            json.dump(updates, f)
+        with open("feeds.txt", "w") as feed_file:
+            updates = {"current": current_feeds, "warning": warning_feeds}
+            saved_feeds = updates
+            json.dump(updates, feed_file)
 
     if updates:
-        with open("feeds.txt", "w") as f:
-            json.dump(feeds, f)
+        with open("feeds.txt", "w") as feed_file:
+            json.dump(saved_feeds, feed_file)
     return updates
 
 
-
-def get_user_language():
+def get_user_language_preferences():
     """
-    Returns language preferences for all users
+    Returns language preferences for all users.
     """
     try:
-        with open("user_language.txt") as f:
-            user_language = json.load(f)
+        with open("user_language.txt") as language_file:
+            user_language_preferences = json.load(language_file)
     except FileNotFoundError:
-        user_language = {}
-    return user_language
+        user_language_preferences = {}
+    return user_language_preferences
 
 
-def get_topics():
+def get_available_topics():
     """
-    get_topics
+    Returns a list of available topics.
     """
     topics = ["Current - Current weather information",
               "Warning - Warnings in force"]
-    topics = "The topics I can tell you about are:\n" + "\n".join(topics)
-    return topics
+    topics_message = "The topics I can tell you about are:\n" + "\n".join(topics)
+    return topics_message
 
 
-
-def get_feed_message(user_id, topic):
+def get_feed_message_for_user(user_id, topic):
     """
-    Returns the formatted feed in the user's preferred language
+    Returns the formatted feed in the user's preferred language.
     """
-    check_feed_update()
-    user_language = get_user_language()
-    language = user_language.get(user_id, "english")
-    with open("feeds.txt") as f:
-        feeds = json.load(f)
+    check_feed_updates()
+    user_language_preferences = get_user_language_preferences()
+    language = user_language_preferences.get(user_id, "english")
+    with open("feeds.txt") as feed_file:
+        saved_feeds = json.load(feed_file)
 
     if language == "english":
-        feed = feeds[topic][0]
+        selected_feed = saved_feeds[topic][0]
     elif language == "traditional":
-        feed = feeds[topic][1]
+        selected_feed = saved_feeds[topic][1]
     elif language == "simplified":
-        feed = feeds[topic][2]
+        selected_feed = saved_feeds[topic][2]
 
-    format = bs4.BeautifulSoup(feed["entries"][0]["summary"], "html.parser")
+    formatted_feed = bs4.BeautifulSoup(selected_feed["entries"][0]["summary"], "html.parser")
     if topic == "current":
-        for br in format.find_all("br"):
-            if br.previous_element != br:
-                br.previous_element.wrap(format.new_tag("p"))
-            br.decompose()
-        for tr in format.find_all("tr"):
-            tr.decompose()
-        for span in format.find_all("span"):
-            span.decompose()
-        for table in format.find_all("table"):
-            if table.find_previous("p") != format.p:
-                table.find_previous("p").decompose()
-            table.decompose()
-        message = []
-        for string in format.stripped_strings:
-            message.append(" ".join(string.split()))
-        message = "\n".join(message)
+        for line_break in formatted_feed.find_all("br"):
+            if line_break.previous_element != line_break:
+                line_break.previous_element.wrap(formatted_feed.new_tag("p"))
+            line_break.decompose()
+        for table_row in formatted_feed.find_all("tr"):
+            table_row.decompose()
+        for span_element in formatted_feed.find_all("span"):
+            span_element.decompose()
+        for table_element in formatted_feed.find_all("table"):
+            if table_element.find_previous("p") != formatted_feed.p:
+                table_element.find_previous("p").decompose()
+            table_element.decompose()
+        message_parts = []
+        for text_string in formatted_feed.stripped_strings:
+            message_parts.append(" ".join(text_string.split()))
+        message = "\n".join(message_parts)
 
     elif topic == "warning":
-        message = format.get_text()
+        message = formatted_feed.get_text()
     return message
 
 
-def start(bot, update):
+def start_bot(bot, update):
     """
-    start
+    Handles the /start command.
     """
     message = "Hi, I'm HKObservatoryBot! Type @hkobservatory_bot to see what I can do!"
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
 
 
-
-def inline_query(bot, update):
+def handle_inline_query(bot, update):
     """
-    Handles inline queries from user
+    Handles inline queries from the user.
     """
     query = update.inline_query.query
     results = []
     user_id = str(update.inline_query.from_user.id)
-    first_name = update.inline_query.from_user.first_name
+    user_first_name = update.inline_query.from_user.first_name
 
     if not query:
         results.append(
@@ -197,8 +194,8 @@ def inline_query(bot, update):
                 telegram.InlineQueryResultArticle(
                     id="topics",
                     title="Topics",
-                     input_message_content=telegram.InputTextMessageContent(
-                        get_topics()
+                    input_message_content=telegram.InputTextMessageContent(
+                        get_available_topics()
                     ),
                     description="List of available topics"
                 )
@@ -209,7 +206,7 @@ def inline_query(bot, update):
                     id="tellme_current",
                     title="Current Weather",
                     input_message_content=telegram.InputTextMessageContent(
-                        get_feed_message(user_id, "current")
+                        get_feed_message_for_user(user_id, "current")
                     ),
                     description="Current weather from the HK Observatory"
                 )
@@ -219,7 +216,7 @@ def inline_query(bot, update):
                 telegram.InlineQueryResultArticle(
                     id="tellme_warning",
                     title="Warning",
-                    input_message_content=telegram.InputTextMessageContent(get_feed_message(user_id, "warning")),
+                    input_message_content=telegram.InputTextMessageContent(get_feed_message_for_user(user_id, "warning")),
                     description="Warnings in force"
                 )
             )
@@ -229,7 +226,7 @@ def inline_query(bot, update):
                     id="sub_current",
                     title="Subscribe Current",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + " has subscribed to: Current"
+                        user_first_name + " has subscribed to: Current"
                     ),
                     description="Subscribe to current to receive updates"
                 )
@@ -240,8 +237,8 @@ def inline_query(bot, update):
                     id="sub_warning",
                     title="Subscribe Warning",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + " has subscribed to: Warning"
-                    ),,
+                        user_first_name + " has subscribed to: Warning"
+                    ),
                     description="Subscribe to warning to receive updates"
                 )
             )
@@ -251,7 +248,7 @@ def inline_query(bot, update):
                     id="unsub_current",
                     title="Unsubscribe Current",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + " has unsubscribed from: Current"
+                        user_first_name + " has unsubscribed from: Current"
                     ),
                     description="Unsubscribe from current to stop receiving updates"
                 )
@@ -262,8 +259,8 @@ def inline_query(bot, update):
                     id="unsub_warning",
                     title="Unsubscribe Warning",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + " has unsubscribed from: Warning"
-                    ),,
+                        user_first_name + " has unsubscribed from: Warning"
+                    ),
                     description="Unsubscribe from warning to stop receiving updates"
                 )
             )
@@ -273,7 +270,7 @@ def inline_query(bot, update):
                     id="lang_english",
                     title="English",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + "\'s language changed to English"
+                        user_first_name + "\'s language changed to English"
                     ),
                     description="Select English as topic information language"
                 )
@@ -284,7 +281,7 @@ def inline_query(bot, update):
                     id="lang_traditional",
                     title="繁體中文",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + "\'s language changed to 繁體中文"
+                        user_first_name + "\'s language changed to 繁體中文"
                     ),
                     description="Select 繁體中文 as topic information language"
                 )
@@ -295,7 +292,7 @@ def inline_query(bot, update):
                     id="lang_simplified",
                     title="简体中文",
                     input_message_content=telegram.InputTextMessageContent(
-                        first_name + "\'s language changed to 简体中文"
+                        user_first_name + "\'s language changed to 简体中文"
                     ),
                     description="Select 简体中文 as topic information language"
                 )
@@ -303,10 +300,9 @@ def inline_query(bot, update):
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
 
 
-
-def inline_result(bot, update):
+def handle_inline_result(bot, update):
     """
-    Saves language preferences and subscriptions
+    Saves language preferences and subscriptions.
     """
     result_id = update.chosen_inline_result.result_id
     user_id = str(update.chosen_inline_result.from_user.id)
@@ -314,25 +310,25 @@ def inline_result(bot, update):
     if "lang" in result_id:
         language = result_id[5:]
         try:
-            with open("user_language.txt") as f:
-                user_language = json.load(f)
+            with open("user_language.txt") as language_file:
+                user_language_preferences = json.load(language_file)
         except FileNotFoundError:
-            user_language = {}
+            user_language_preferences = {}
 
-        with open("user_language.txt", "w") as f:
+        with open("user_language.txt", "w") as language_file:
             if result_id == ("lang_" + language):
-                user_language[user_id] = language
-            json.dump(user_language, f)
+                user_language_preferences[user_id] = language
+            json.dump(user_language_preferences, language_file)
 
     elif "sub" in result_id:
         topic = result_id[4:]
         try:
-            with open("subscribers.txt") as f:
-                subscribers = json.load(f)
+            with open("subscribers.txt") as subscribers_file:
+                subscribers = json.load(subscribers_file)
         except FileNotFoundError:
             subscribers = {}
 
-        with open("subscribers.txt", "w") as f:
+        with open("subscribers.txt", "w") as subscribers_file:
             if result_id == ("sub_" + topic):
                 try:
                     if user_id not in subscribers[topic]:
@@ -344,29 +340,28 @@ def inline_result(bot, update):
                     subscribers[topic].remove(user_id)
                 except:
                     pass
-            json.dump(subscribers, f)
+            json.dump(subscribers, subscribers_file)
 
 
-
-def send_update(bot, job):
+def send_updates_to_subscribers(bot, job):
     """
-    Sends updates to subscribed users
+    Sends updates to subscribed users.
     """
     try:
-        with open("subscribers.txt") as f:
-            subscribers = json.load(f)
-        user_language = get_user_language()
+        with open("subscribers.txt") as subscribers_file:
+            subscribers = json.load(subscribers_file)
+        user_language_preferences = get_user_language_preferences()
     except FileNotFoundError:
         subscribers = {}
 
     if subscribers:
-        updates = check_feed_update()
+        updates = check_feed_updates()
         if updates:
             for topic in updates:
                 try:
                     for user_id in subscribers[topic]:
-                        language = user_language.get(user_id, "english")
-                        message = get_feed_message(updates, topic, language)
+                        language = user_language_preferences.get(user_id, "english")
+                        message = get_feed_message_for_user(updates, topic, language)
                         bot.sendMessage(chat_id=user_id, text=message)
                 except telegram.Unauthorized:
                     subscribers[topic].remove(user_id)
@@ -375,17 +370,19 @@ def send_update(bot, job):
 
 
 # Bot will check for updates every hour
-job_queue.put(telegram.ext.Job(send_update, 3600.0))
+job_queue.put(telegram.ext.Job(send_updates_to_subscribers, 3600.0))
 
 # Handlers for commands, inline queries and results
-start_handler = telegram.ext.CommandHandler("start", start)
+start_handler = telegram.ext.CommandHandler("start", start_bot)
 dispatcher.add_handler(start_handler)
 
-inline_query_handler = telegram.ext.InlineQueryHandler(inline_query)
+inline_query_handler = telegram.ext.InlineQueryHandler(handle_inline_query)
 dispatcher.add_handler(inline_query_handler)
 
-inline_result_handler = telegram.ext.ChosenInlineResultHandler(inline_result)
+inline_result_handler = telegram.ext.ChosenInlineResultHandler(handle_inline_result)
 dispatcher.add_handler(inline_result_handler)
 
+updater.start_polling()
+updater.idle()
 updater.start_polling()
 updater.idle()
