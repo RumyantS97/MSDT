@@ -309,14 +309,16 @@ class WindowUI:
                 self.increment_value.destroy()
                 self.label_2.destroy()
                 self.increment_start.destroy()
-            except:
-                pass
+            except Exception as error:
+                print(f"Error while destroying widgets: {error}")
 
     def new_create_folders(self, entry_get="", sleep_value=0):
         try:
             increment_value = self.increment_value.get(1.0, "end-1c")
             increment_start = self.increment_start.get(1.0, "end-1c")
-        except:
+        except Exception as error:
+            print(f"Error while getting values: {error}")
+
             increment_value = 0
             increment_start = 0
         if increment_start == "":
@@ -339,7 +341,9 @@ class WindowUI:
         try:
             increment_value = self.increment_value.get(1.0, "end-1c")
             increment_start = self.increment_start.get(1.0, "end-1c")
-        except:
+        except Exception as error:
+            print(f"Error while getting values: {error}")
+
             increment_value = 0
             increment_start = 0
         if increment_start == "":
