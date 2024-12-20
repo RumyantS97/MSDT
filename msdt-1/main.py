@@ -1,4 +1,4 @@
-#задание 1
+# Задание 1
 print("Задание 1")
 
 
@@ -14,10 +14,10 @@ def check_brackets(inputString):
 
 
 inputString = "((()))"
-print(inputString, "\t: ", check_brackets(inputString))  #вернет True
+print(inputString, "\t: ", check_brackets(inputString))  # Вернет True
 
 inputString = "(()))"
-print(inputString, "\t: ", check_brackets(inputString), "\n")  #вернет False
+print(inputString, "\t: ", check_brackets(inputString), "\n")  # Вернет False
 
 
 def check_brackets(input_string):
@@ -38,10 +38,10 @@ def check_brackets(input_string):
 
 
 inputString = "{[()()]}"
-print(inputString, ": ", check_brackets(inputString))  #вернет True
+print(inputString, ": ", check_brackets(inputString))  # Вернет True
 
 inputString = "({)}"
-print(inputString, "\t : ", check_brackets(inputString))  #вернет False
+print(inputString, "\t : ", check_brackets(inputString))  # Вернет False
 
 # Задание 2
 print("\nЗадание 2")
@@ -79,14 +79,14 @@ min_stack.push(3)
 min_stack.push(5)
 min_stack.push(2)
 min_stack.print_stack()
-print("min: ", min_stack.min())  #вернет 2
+print("min: ", min_stack.min())  # Вернет 2
 min_stack.pop()
 min_stack.print_stack()
-print("min: ", min_stack.min())  #вернет 3
+print("min: ", min_stack.min())  # Вернет 3
 min_stack.pop()
 min_stack.print_stack()
 
-#задание 3
+# Задание 3
 print("\nЗадание 3")
 from collections import deque
 
@@ -114,14 +114,14 @@ def max_in_window(arr, k):
     return max_in_window
 
 
-#пример использования
+# Пример использования
 arr = [1, 3, -1, -3, 5, 3, 6, 7]
 k = 3
 result = max_in_window(arr, k)
 print(arr)
 print("\t", result)
 
-#задание 4
+# Задание 4
 print("\nЗадание 4")
 def find_duplicate(nums):
     tortoise = nums[0]
@@ -140,13 +140,13 @@ def find_duplicate(nums):
 
     return tortoise
 
-#пример использования
+# Пример использования
 nums = [1, 3, 4, 2, 2]
 print(nums)
-print(find_duplicate(nums))  #вывод: 2
+print(find_duplicate(nums))  # Вывод: 2
 
 
-#задание 5
+# Задание 5
 print("\nЗадание 5")
 def zero_matrix(matrix):
     rows = len(matrix)
@@ -154,19 +154,19 @@ def zero_matrix(matrix):
     row_zero = [False] * rows
     col_zero = [False] * cols
 
-    #поиск нулевых элементов
+    # Поиск нулевых элементов
     for i in range(rows):
         for j in range(cols):
             if matrix[i][j] == 0:
                 row_zero[i] = True
                 col_zero[j] = True
 
-    #обнуление строк
+    # Обнуление строк
     for i in range(rows):
         if row_zero[i]:
             matrix[i] = [0] * cols
 
-    #обнуление столбцов
+    # Обнуление столбцов
     for j in range(cols):
         if col_zero[j]:
             for i in range(rows):
@@ -174,7 +174,7 @@ def zero_matrix(matrix):
 
     return matrix
 
-#пример использования
+# Пример использования
 matrix = [
     [1, 2, 3],
     [4, 0, 6],
@@ -225,11 +225,11 @@ def compare_algorithms(text_length, pattern_length, num_tests):
     return avg_naive_time, avg_kmp_time
 
 
-#задание 1
+# Задание 1
 print("Задание 1")
 
 
-def naive_search(text, pattern):  #O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
+def naive_search(text, pattern):  # O(m * (n - m)), худший сл(m/2): O(n^2), лучший: O(n)
     n = len(text)
     m = len(pattern)
     result = []
@@ -259,7 +259,7 @@ def compute_lps_array(pattern):
     return lps
 
 
-def kmp_search(text, pattern):  #O(n)
+def kmp_search(text, pattern):  # O(n)
     n = len(text)
     m = len(pattern)
     lps = compute_lps_array(pattern)
@@ -282,7 +282,7 @@ avg_naive_time, avg_kmp_time = compare_algorithms(1000, 3, 100)
 print(f"Avg Time наивного алгоритма:\t {avg_naive_time * 1000:.5f} ms")
 print(f"Avg Time Кнута-Морриса-Пратта:\t {avg_kmp_time * 1000:.5f} ms")
 
-#задание 2
+# Задание 2
 print("\nЗадание 2")
 
 
@@ -299,7 +299,7 @@ def find_palindromes(s):
 
     return palindromes
 
-    #O(n^2)
+    # O(n^2)
 
 
 def palindromic_substrings(s):
@@ -311,13 +311,13 @@ def palindromic_substrings(s):
 
     palindromes = []
     for i in range(len(s)):
-        expand(i, i)  #палиндромы с центром в символе
-        expand(i, i + 1)  #палиндромы с центром между символами
+        expand(i, i)  # Палиндромы с центром в символе
+        expand(i, i + 1)  # Палиндромы с центром между символами
 
     return palindromes
 
 
-#пример использования
+# Пример использования
 inputString = "abcbabad"
 # print(input_string[4:len(input_string)+4])
 palindrome_substrings = find_palindromes(inputString)
@@ -328,15 +328,15 @@ palindrome_substrings = palindromic_substrings(inputString)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
-print("\nЗадание 3") #O(Nlog(N))
-#задание 3
+print("\nЗадание 3") # O(Nlog(N))
+# Задание 3
 import heapq
 from collections import defaultdict
 
 class node:
     def __init__(self, char, freq):
-        self.char = char #символ
-        self.freq = freq #частота повоторений
+        self.char = char # Символ
+        self.freq = freq # Частота повоторений
         self.left = None
         self.right = None
 
@@ -344,26 +344,26 @@ class node:
         return self.freq < other.freq
 
 def build_huffman_tree(text):
-    freq_dict = defaultdict(int) #создаем словарь и заносим к ключу количество совпадений
+    freq_dict = defaultdict(int) # Создаем словарь и заносим к ключу количество совпадений
     for char in text:
         freq_dict[char] += 1
 
     min_heap = []
-    for char, freq in freq_dict.items(): #создаем кучу и заносим по возр для каждого символа узел с символом и частотой
+    for char, freq in freq_dict.items(): # Создаем кучу и заносим по возр для каждого символа узел с символом и частотой
         heapq.heappush(min_heap, node(char, freq))
 
-    while len(min_heap) > 1: #проходим пока не останется один узел _ Log(n)
+    while len(min_heap) > 1: # Проходим пока не останется один узел _ Log(n)
         left = heapq.heappop(min_heap)
         right = heapq.heappop(min_heap)
         combined_freq = left.freq + right.freq
-        parent = node(None, combined_freq) #создаем новый узел из двух наименее повторяющихся
+        parent = node(None, combined_freq) # Создаем новый узел из двух наименее повторяющихся
         parent.left = left
         parent.right = right
-        heapq.heappush(min_heap, parent) #заносим новый узел к остальным
+        heapq.heappush(min_heap, parent) # Заносим новый узел к остальным
 
     return min_heap[0]
 
-def build_huffman_codes(node, current_code, huffman_codes): #для каждого узла сохраняется его двоичный код из дерева
+def build_huffman_codes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
@@ -371,16 +371,16 @@ def build_huffman_codes(node, current_code, huffman_codes): #для каждог
         build_huffman_codes(node.right, current_code + '1', huffman_codes)
 
 def huffman_encoding(text):
-    root = build_huffman_tree(text) #построение дерева
-    huffman_codes = {} #заведение словаря для символов(их довичный код)
+    root = build_huffman_tree(text) # Построение дерева
+    huffman_codes = {} # Заведение словаря для символов(их довичный код)
     build_huffman_codes(root, '', huffman_codes)
 
-    encoded_text = ''.join(huffman_codes[char] for char in text) #преобразовываем текст проходя посимвольно
-    return encoded_text, huffman_codes #возвращаем закодированный текст и словарь с кодом
+    encoded_text = ''.join(huffman_codes[char] for char in text) # Преобразовываем текст проходя посимвольно
+    return encoded_text, huffman_codes # Возвращаем закодированный текст и словарь с кодом
 
 def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
-    current_code = '' #накопление битов для тек символа
+    current_code = '' # Накопление битов для тек символа
     for bit in encoded_text:
         current_code += bit
         for char, code in huffman_codes.items():
@@ -391,7 +391,7 @@ def huffman_decoding(encoded_text, huffman_codes):
 
     return decoded_text
 
-#пример использования
+# Пример использования
 text = "hello world"
 encoded_text, huffman_codes = huffman_encoding(text)
 print("Encoded text:", encoded_text)
@@ -399,27 +399,27 @@ decoded_text = huffman_decoding(encoded_text, huffman_codes)
 print("Decoded text:", decoded_text)
 
 
-#задание 4
+# Задание 4
 print("\nЗадание 4")
 from collections import defaultdict
 
-def has_cycle(graph): #O(n + m)
+def has_cycle(graph): # O(n + m)
     def dfs(node, visited, rec_stack):
         visited[node] = True
         rec_stack[node] = True
 
-        for neighbor in graph[node]: #проходка по соседям вершины
-            if not visited[neighbor]: #если не посещали соседа, вызываем рекурсивно функцию
+        for neighbor in graph[node]: # Проходка по соседям вершины
+            if not visited[neighbor]: # Если не посещали соседа, вызываем рекурсивно функцию
                 if dfs(neighbor, visited, rec_stack):
                     return True
-            elif rec_stack[neighbor]: #если обнаруживается сосед как записаный, то есть цикл
+            elif rec_stack[neighbor]: # Если обнаруживается сосед как записаный, то есть цикл
                 return True
 
         rec_stack[node] = False
         return False
 
-    visited = defaultdict(bool) #словарь для отслеживания посещенных вершин
-    rec_stack = defaultdict(bool) #словарь для отслеживания вершин в текущем стеке вызовов
+    visited = defaultdict(bool) # Словарь для отслеживания посещенных вершин
+    rec_stack = defaultdict(bool) # Словарь для отслеживания вершин в текущем стеке вызовов
 
     for node in graph:
         if not visited[node]:
@@ -428,7 +428,7 @@ def has_cycle(graph): #O(n + m)
 
     return False
 
-#пример использования
+# Пример использования
 graph = {
     0: [1, 2],
     1: [2],
