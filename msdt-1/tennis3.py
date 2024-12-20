@@ -13,15 +13,15 @@ class TennisGame3:
 
     def score(self):
         if (self.player1_score < 4 and self.player2_score < 4) and (self.player1_score + self.player2_score < 6):
-            p = ["Love", "Fifteen", "Thirty", "Forty"]
-            s = p[self.player1_score]
-            return s + "-All" if (self.player1_score == self.player2_score) else s + "-" + p[self.player2_score]
+            score_names = ["Love", "Fifteen", "Thirty", "Forty"]
+            player1_score_name = score_names[self.player1_score]
+            return player1_score_name + "-All" if (self.player1_score == self.player2_score) else player1_score_name + "-" + score_names[self.player2_score]
         else:
             if self.player1_score == self.player2_score:
                 return "Deuce"
-            s = self.player1_name if self.player1_score > self.player2_score else self.player2_name
+            leading_player = self.player1_name if self.player1_score > self.player2_score else self.player2_name
             return (
-                "Advantage " + s
+                "Advantage " + leading_player
                 if ((self.player1_score - self.player2_score) * (self.player1_score - self.player2_score) == 1)
-                else "Win for " + s
+                else "Win for " + leading_player
             )
