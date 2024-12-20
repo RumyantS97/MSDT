@@ -319,7 +319,7 @@ def package_pyxel_app(app_dir, startup_script_file):
         zf.comment = metadata_comment.encode(encoding="utf-8")
         files = [setting_file] + _files_in_dir(app_dir)
         for file in files:
-            if os.path.basename(file) == pyxel_app_file or "/__pycache__/" in file:
+            if os.path.basename(file) == (pyxel_app_file or "/__pycache__/" in file):
                 continue
             arcname = os.path.relpath(file, app_parent_dir)
             zf.write(file, arcname)
@@ -341,13 +341,14 @@ def create_executable_from_pyxel_app(pyxel_app_file):
     with open(startup_script_file, "w") as f:
         f.write(
             "import os, pyxel.cli; pyxel.cli.play_pyxel_app("
-            f"os.path.join(os.path.dirname(__file__), '{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}'))"
+            "os.path.join(os.path.dirname(__file__), "
+            f"'{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}'))"
         )
     cp = subprocess.run("pyinstaller -h", capture_output=True, shell=True)
     if cp.returncode != 0:
         print("Pyinstaller is not found. Please install it.")
         sys.exit(1)
-    command = f"{sys.executable} -m PyInstaller --windowed --onefile --distpath . "
+    command = f"{sys.executable}" "-m PyInstaller --windowed --onefile --distpath . "
     command += f"--add-data {pyxel_app_file}{os.pathsep}. "
     modules = pyxel.utils.list_imported_modules(_extract_pyxel_app(pyxel_app_file))[
         "system"
@@ -375,10 +376,12 @@ def create_html_from_pyxel_app(pyxel_app_file):
     with open(pyxel_app_name + ".html", "w") as f:
         f.write(
             "<!DOCTYPE html>\n"
-            '<script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js">'
+            "<script "
+            'src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js">'
             "</script>\n"
             "<script>\n"
-            f'launchPyxel({{ command: "play", name: "{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}", '
+            'launchPyxel({{ command: "play", name: '
+            f'"{pyxel_app_name}{pyxel.APP_FILE_EXTENSION}", '
             f'gamepad: "enabled", base64: "{base64_string}" }});\n'
             "</script>\n"
         )
@@ -393,3 +396,4 @@ def copy_pyxel_examples():
         os.makedirs(os.path.dirname(dst_file), exist_ok=True)
         shutil.copyfile(src_file, dst_file)
         print(f"copied '{dst_file}'")
+
