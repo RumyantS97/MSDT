@@ -4,16 +4,16 @@ from checksum import calculate_checksum, serialize_result
 
 # Обновлённые регулярные выражения для нового формата
 validators = {
-    "telephone": r"^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$",
-    "height": r"^\"?\d{1}\.\d{2}\"?$",
-    "inn": r"^\d{12}$",
-    "identifier": r"^\d{2}-\d{2}/\d{2}$",
-    "occupation": r"^[а-яА-Яa-zA-Z\- ]+$",
-    "latitude": r"^-?(90(\.0+)?|([1-8]?\d(\.\d+)?))$",
-    "blood_type": r"^(A|B|AB|O)[+-]$",
-    "issn": r"^\d{4}-\d{4}$",
-    "uuid": r"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
-    "date": r"^\d{4}-\d{2}-\d{2}$",
+    "telephone"   :   r"^\+7-\(\d{3}\)-\d{3}-\d{2}-\d{2}$",
+    "height"      :   r"^\"?\d{1}\.\d{2}\"?$",
+    "inn"         :   r"^\d{12}$",
+    "identifier"  :   r"^\d{2}-\d{2}/\d{2}$",
+    "occupation"  :   r"^[а-яА-Яa-zA-Z\- ]+$",
+    "latitude"    :   r"^-?(90(\.0+)?|([1-8]?\d(\.\d+)?))$",
+    "blood_type"  :   r"^(A|B|AB|O)[+-]$",
+    "issn"        :   r"^\d{4}-\d{4}$",
+    "uuid"        :   r"^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$",
+    "date"        :   r"^\d{4}-\d{2}-\d{2}$",
 }
 
 
