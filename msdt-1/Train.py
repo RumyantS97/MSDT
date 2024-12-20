@@ -1,7 +1,9 @@
 import logging
 import time
 import os
+
 import tensorflow as tf 
+
 from TG_Model import TGModel
 from Process_Poetry import Process_Poetry
 from Config import Config

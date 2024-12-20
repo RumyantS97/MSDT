@@ -1,13 +1,14 @@
+import os
+import re
+
 import tensorflow as tf 
 import numpy as np 
 import pickle as pkl
-import re
-
-import os
 
 from TG_Model import TGModel
 from Process_Poetry import Process_Poetry
 from Config import Config
+
 
 class generate():
 
