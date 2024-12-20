@@ -16,8 +16,10 @@ class Generate:
         self.config = Config
         self.vocab = vocab
 
-    def generate_text(self, correct=True):
-
+    def generate_text(self, correct: bool = True) -> None:
+        """
+        Generates text based on a trained model.
+        """
         model = TGModel(self.config, "prediction")
         tensors = model.build()
 
@@ -26,7 +28,7 @@ class Generate:
         with tf.Session() as sess:
             sess.run(init)
             checkpoint = tf.train.latest_checkpoint(
-                DIR + "/model/", "checkpoint"
+                f"{DIR}/model/", "checkpoint"
             )
             saver.restore(sess, checkpoint)
 

@@ -8,7 +8,18 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 
 class TGModel(object):
-    def fit(self, sess, saver, x_data, y_data, y_mask, vocab):
+    def fit(
+        self,
+        sess: tf.Session,
+        saver: tf.train.Saver,
+        x_data: np.ndarray,
+        y_data: np.ndarray,
+        y_mask: np.ndarray,
+        vocab: dict,
+    ) -> None:
+        """
+        Trains the model over multiple epochs.
+        """
         for epoch in range(self.config.n_epochs):
             os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
             losses = []
@@ -32,7 +43,9 @@ class TGModel(object):
 
                 if (i + 1) % 100 == 0:
                     print(
-                        "Epoch: %d, batch: %d, training loss: %.6f"
+                        f"Epoch: {epoch + 1}, batch: {
+                            i + 1
+                        }, training loss: {losses[i]:.6f}"
                         % (epoch + 1, i + 1, losses[i])
                     )
 
@@ -41,18 +54,24 @@ class TGModel(object):
                     sess, self.config.model_path, global_step=self.global_steps
                 )
                 print(
-                    "global_step : {} , loss = {}".format(
-                        sess.run(self.global_steps), np.sum(losses) / a
+                    f"global_step: {
+                        sess.run(self.global_steps)
+                    }, loss = {np.sum(losses) / a}"
                     )
-                )
 
-    def create_ont_hot(self, ids):
+    def create_ont_hot(self, ids: list[int]) -> np.ndarray:
+        """
+        Creates one-hot encoded vectors for a list of indices.
+        """
         one_hot = np.zeros([len(ids), self.config.vocab_size])
         for i, label in enumerate(ids):
             one_hot[i, label] = 1
         return one_hot
 
-    def build(self):
+    def build(self) -> dict:
+        """
+        Builds the TensorFlow computation graph for training or prediction.
+        """
         self.y_mask = tf.placeholder(tf.bool, [None, None])
         self.input_placeholder = tf.placeholder(tf.int32, [None, None])
         self.labels_placeholder = tf.placeholder(tf.int32, [None, None])
@@ -69,7 +88,7 @@ class TGModel(object):
         elif self.config.cell == "lstm":
             cell = tf.nn.rnn_cell.BasicLSTMCell
         else:
-            raise ValueError("Unsuppported cell type: " + self.config.cell)
+            raise ValueError(f"Unsupported cell type: {self.config.cell}")
 
         cell_list = [
             cell(self.config.hidden_size, state_is_tuple=True)

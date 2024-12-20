@@ -12,11 +12,11 @@ from Config import Config
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-Config.data_path = DIR + "/data/Poem.pkl"
-Config.model_path = DIR + "/model/train"
+Config.data_path = f"{DIR}/data/Poem.pkl"
+Config.model_path = f"{DIR}/model/train"
 
 
-checkpoint_path = DIR + "/model/checkpoint"
+checkpoint_path = f"{DIR}/model/checkpoint"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
@@ -38,7 +38,7 @@ with tf.Graph().as_default():
         sess.run(init)
         if os.path.exists(checkpoint_path):
             checkpoint = tf.train.latest_checkpoint(
-                DIR + "/model", "checkpoint"
+                f"{DIR}/model/", "checkpoint"
             )
             saver.restore(sess, checkpoint)
 
