@@ -8,6 +8,20 @@ from tkinter import filedialog, ttk
 
 
 class Execution:
+    """
+    Class for executing folder management operations.
+
+    This class provides methods for creating, removing, and modifying folders
+    in the current working directory. It also includes functions for changing
+    the working directory and retrieving a list of folders.
+
+    Methods:
+        change_folder: Changes the current working directory to a selected directory.
+        create_folders: Creates folders based on specified names.
+        remove_folders: Removes folders based on specified conditions.
+        modify_folders: Modifies folder names based on specified conditions.
+        get_folder_list: Retrieves the list of folders in the current working directory.
+    """
     def change_folder(self):
         """
         Changes the current working directory to a selected directory.
@@ -202,6 +216,26 @@ class Execution:
 
 # UI class
 class WindowUI:
+    """
+    Class for creating the user interface of the Mass Directory Manager.
+
+    This class sets up the main window, tabs, and controls for folder management operations.
+    It provides a graphical interface for users to create, remove, modify folders,
+    and manage the working directory.
+
+    Methods:
+        __init__: Initializes the user interface components.
+        focus_next_widget: Focuses the next widget in the tab order.
+        focus_previous_widget: Focuses the previous widget in the tab order.
+        clear_logs: Clears the log text area.
+        increment_selector: Toggles the increment mode UI elements.
+        new_create_folders: Initiates the creation of folders in a separate thread.
+        new_remove_folders: Initiates the removal of folders in a separate thread.
+        new_modify_folders: Initiates the modification of folder names in a separate thread.
+        new_folders_list: Retrieves and displays the list of folders in the log area.
+        new_change_folder: Changes the current working directory.
+        new_open_current_folder: Opens the current working directory in the file explorer.
+    """
     def __init__(self):
         """
         Initializes the user interface for the Mass Directory Manager.
