@@ -20,18 +20,38 @@ import pyxel.utils
 
 
 def cli():
+    """Define a command-line interface for interacting
+    with various functions related to a retro game engine called Pyxel.
+
+    :return: The `cli()` function returns the appropriate usage information
+    basedon the command line arguments provided by the user. If the arguments
+    match a defined command, the corresponding function associated with that
+    command isexecuted. If the arguments do not match any command or if the
+    number ofparameters is incorrect, an error message is displayed along with
+    the correct usage information.
+
+    """
     commands = [
         (["run", "PYTHON_SCRIPT_FILE(.py)"], run_python_script),
         (
             ["watch", "WATCH_DIR", "PYTHON_SCRIPT_FILE(.py)"],
             watch_and_run_python_script,
         ),
-        (["play", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"], play_pyxel_app),
         (
-            ["edit", f"[PYXEL_RESOURCE_FILE({pyxel.RESOURCE_FILE_EXTENSION})]"],
+            ["play", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"],
+            play_pyxel_app,
+        ),
+        (
+            [
+                "edit",
+                f"[PYXEL_RESOURCE_FILE({pyxel.RESOURCE_FILE_EXTENSION})]",
+            ],
             edit_pyxel_resource,
         ),
-        (["package", "APP_DIR", "STARTUP_SCRIPT_FILE(.py)"], package_pyxel_app),
+        (
+            ["package", "APP_DIR", "STARTUP_SCRIPT_FILE(.py)"],
+            package_pyxel_app,
+        ),
         (
             ["app2exe", f"PYXEL_APP_FILE({pyxel.APP_FILE_EXTENSION})"],
             create_executable_from_pyxel_app,
@@ -44,6 +64,17 @@ def cli():
     ]
 
     def print_usage(command_name=None):
+        """
+        The function `print_usage` prints the usage information for a given command
+        or all commands if no specific command is provided.
+
+        :param command_name: The `command_name` parameter in the `print_usage`
+        function is used to specify a particular command for which the usage
+        information should be printed. If `command_name` is provided, only the
+        usage information for that specific command will be displayed. If
+        `command_name` is not provided (i.e)
+
+        """
         print("usage:")
         for command in commands:
             if command_name is None or command[0] == command_name:
@@ -73,6 +104,16 @@ def cli():
 
 
 def _check_newer_version():
+    """
+    The function checks for a newer version of Pyxel by scraping the GitHub page
+    and comparing it with the current version.
+
+    :return: The `_check_newer_version` function is returning `None` if there is an
+    error during the URL request or if the latest version is not found in the
+    response. If a new version is found and it is greater than the current version
+    of Pyxel, a message is printed indicating that a new version is available.
+
+    """
     url = "https://www.github.com/kitao/pyxel"
     req = urllib.request.Request(url)
     latest_version = None
@@ -96,6 +137,30 @@ def _check_newer_version():
 
 
 def _complete_extension(filename, command, valid_ext):
+    """The function `_complete_extension` ensures that a given filename has a
+    specificvalid extension and handles cases where the extension is missing
+    or incorrect.
+
+    :param filename: The `filename` parameter is a string representing the name
+    ofa file
+    :param command: The `command` parameter is a string representing the name
+    of a command or operation being performed
+    :param valid_ext: The `valid_ext` parameter in the `_complete_extension`
+    function represents the valid file extension that the `command`
+    is expecting.
+    This parameter is used to ensure that the filename provided matches the
+    expected file extension. If the file extension of the provided
+    filename does not match the `valid_ext`, an error
+
+    :return: The function `_complete_extension` returns the `filename` after
+    ensuring that it has the correct extension based on the `valid_ext`
+    parameter.
+    If the `filename` does not have an extension, it appends the `valid_ext`
+    to it.
+    If the existing extension of the `filename` does not match the `valid_ext`,
+    it prints an error message and exits the program.
+
+    """  # noqa: D205
     file_ext = os.path.splitext(filename)[1].lower()
     if not file_ext:
         filename += valid_ext
@@ -106,29 +171,77 @@ def _complete_extension(filename, command, valid_ext):
 
 
 def _files_in_dir(dirname):
+    """The function `_files_in_dir` returns a sorted list of
+    file paths within a specified directory.
+
+    :param dirname: The `dirname` parameter in the `_files_in_dir`
+    function is a string representing the directory path for which you want
+    to find all files
+
+    :return: The function `_files_in_dir` returns a sorted list of file paths
+    within the specified directory `dirname`.
+    """
     paths = glob.glob(os.path.join(dirname, "**/*"), recursive=True)
     return sorted(list(filter(os.path.isfile, paths)))
 
 
 def _check_file_exists(filename):
+    """The function `_check_file_exists` checks if a file exists and
+    prints an error message if it does not.
+
+    :param filename: The `filename` parameter is a string that represents
+    the name of the file that needs to be checked for existence. The function
+    `_check_file_exists` takes this filename as input and checks if the file
+    exists in the file system. If the file does not exist, it prints a message
+    indicating that the
+
+    """
     if not os.path.isfile(filename):
         print(f"no such file: '{filename}'")
         sys.exit(1)
 
 
 def _check_dir_exists(dirname):
+    """The function checks if a directory exists and exits the program
+    if it does not.
+
+    :param dirname: The `dirname` parameter in the `_check_dir_exists`function
+    is a string representing the name of a directory. The function checks
+    if the directory exists on the file system. If the directory does not
+    exist, it prints a message indicating that the directory does not exist
+    and exits the program with a status
+    """
     if not os.path.isdir(dirname):
         print(f"no such directory: '{dirname}'")
         sys.exit(1)
 
 
 def _check_file_under_dir(filename, dirname):
+    """
+    The function `_check_file_under_dir` checks if a specified file is located
+    under a specified directory.
+
+    :param filename: The `filename` parameter is a string that represents the path
+    to a file in the file system
+    :param dirname: The `dirname` parameter in the `_check_file_under_dir` function
+    represents the directory path where the file should be located. This function
+    is designed to check if the specified `filename` is under the `dirname`
+    directory. If the file is not under the specified directory, it will print a
+    message
+    """
     if os.path.relpath(filename, dirname).startswith(".."):
         print("specified file is not under the directory")
         sys.exit(1)
 
 
 def _create_app_dir():
+    """
+    The function `_create_app_dir` creates a temporary directory for an
+    application, removing any existing directories associated with the application
+    process.
+    :return: The function `_create_app_dir` returns the path to the newly created
+    application directory `app_dir`.
+    """
     play_dir = os.path.join(tempfile.gettempdir(), pyxel.BASE_DIR, "play")
     pathlib.Path(play_dir).mkdir(parents=True, exist_ok=True)
     for path in glob.glob(os.path.join(play_dir, "*")):
@@ -143,6 +256,13 @@ def _create_app_dir():
 
 
 def _create_watch_info_file():
+    """
+    The function `_create_watch_info_file` creates a watch directory, removes any
+    existing files that do not correspond to active processes, and then creates a
+    new watch info file with the current process ID.
+    :return: The function `_create_watch_info_file` returns the path to the watch
+    info file that is created within the specified watch directory.
+    """
     watch_dir = os.path.join(tempfile.gettempdir(), pyxel.BASE_DIR, "watch")
     pathlib.Path(watch_dir).mkdir(parents=True, exist_ok=True)
     for path in glob.glob(os.path.join(watch_dir, "*")):
@@ -156,6 +276,16 @@ def _create_watch_info_file():
 
 
 def _timestamps_in_dir(dirname):
+    """
+    This Python function retrieves the last modification timestamps of files in a
+    specified directory and its subdirectories.
+
+    :param dirname: The `dirname` parameter in the `_timestamps_in_dir` function is
+    a string representing the directory path where you want to search for files and
+    retrieve their timestamps
+    :return: A dictionary containing the file paths in the specified directory
+    along with their corresponding modification timestamps.
+    """
     paths = glob.glob(os.path.join(dirname, "*"))
     paths += glob.glob(os.path.join(dirname, "*/*"))
     paths += glob.glob(os.path.join(dirname, "*/*/*"))
@@ -167,6 +297,19 @@ def _timestamps_in_dir(dirname):
 
 
 def _run_python_script_in_separate_process(python_script_file):
+    """
+    The function `_run_python_script_in_separate_process` creates a separate
+    process to run a Python script file.
+
+    :param python_script_file: The `python_script_file` parameter is a string that
+    represents the file path of the Python script that you want to run in a
+    separate process. This function `_run_python_script_in_separate_process`
+    creates a new process using the `multiprocessing` module in Python to execute
+    the specified Python script file
+    :return: The function `_run_python_script_in_separate_process` is returning the
+    `worker` process that was started to run the Python script in a separate
+    process.
+    """
     worker = multiprocessing.Process(
         target=run_python_script, args=(python_script_file,)
     )
@@ -176,6 +319,17 @@ def _run_python_script_in_separate_process(python_script_file):
 
 
 def _extract_pyxel_app(pyxel_app_file):
+    """
+    The function `_extract_pyxel_app` extracts a Pyxel app file, searches for a
+    specific startup script file, and returns the path to the script file if found.
+
+    :param pyxel_app_file: The `pyxel_app_file` parameter is the file path to a
+    Pyxel application file that you want to extract information from. This function
+    is designed to extract a specific setting file from the Pyxel application
+    archive
+    :return: The function `_extract_pyxel_app` is returning the path to the startup
+    script file of a Pyxel application.
+    """
     _check_file_exists(pyxel_app_file)
     app_dir = _create_app_dir()
     zf = zipfile.ZipFile(pyxel_app_file)
@@ -188,6 +342,21 @@ def _extract_pyxel_app(pyxel_app_file):
 
 
 def _make_metadata_comment(startup_script_file):
+    """
+    The function `_make_metadata_comment` reads a startup script file
+    to extract specific metadata fields and formats them into a comment block.
+
+    :param startup_script_file: The function `_make_metadata_comment` reads a
+    startup script file and extracts metadata information from comments in the
+    file. The metadata fields it looks for are "title", "author", "desc", "site",
+    "license", and "version". It then formats this metadata into a comment block
+    :return: The function `_make_metadata_comment` is returning a formatted
+    metadata comment extracted from a startup script file. The comment includes
+    metadata fields such as title, author, description, site, license, and version.
+    The function reads the startup script file, extracts metadata using a regular
+    expression pattern, formats the metadata comment, and returns it. If no
+    metadata is found in the file, an empty string is returned.
+    """
     METADATA_FIELDS = ["title", "author", "desc", "site", "license", "version"]
     metadata = {}
     metadata_pattern = re.compile(r"#\s*(.+?)\s*:\s*(.+)")
@@ -215,6 +384,15 @@ def _make_metadata_comment(startup_script_file):
 
 
 def run_python_script(python_script_file):
+    """
+    The function `run_python_script` runs a Python script file as the
+    main program.
+
+    :param python_script_file: The `python_script_file` parameter is a string
+    thatrepresents the file path of the Python script that you want to run
+    using the `run_python_script` function.
+
+    """
     python_script_file = _complete_extension(python_script_file, "run", ".py")
     _check_file_exists(python_script_file)
     sys.path.append(os.path.dirname(python_script_file))
@@ -222,6 +400,18 @@ def run_python_script(python_script_file):
 
 
 def watch_and_run_python_script(watch_dir, python_script_file):
+    """
+    This Python function watches a directory for changes and reruns a specified
+    Python script when changes are detected.
+
+    :param watch_dir: The `watch_and_run_python_script` function seems to be
+    designed to watch a directory for changes and run a Python script whenever
+    a change is detected. The function takes two parameters:
+    :param python_script_file: The `python_script_file` parameter is the
+    file path of the Python script that you want to watch and run whenever
+    changes occur in the specified `watch_dir`.
+
+    """
     python_script_file = _complete_extension(python_script_file, "watch", ".py")
     _check_dir_exists(watch_dir)
     _check_file_exists(python_script_file)
@@ -250,6 +440,19 @@ def watch_and_run_python_script(watch_dir, python_script_file):
 
 
 def get_pyxel_app_metadata(pyxel_app_file):
+    """
+    The function `get_pyxel_app_metadata` extracts metadata from a Pyxel
+    application file.
+
+    :param pyxel_app_file: The `pyxel_app_file` parameter is a file path to
+    a Pyxel application file. This function `get_pyxel_app_metadata` reads
+    the metadata from the Pyxel application file and returns it as a dictionary
+    :return: An empty dictionary is being returned if the zipfile comment is
+    emptyor does not contain any key-value pairs. If the comment contains
+    key-value pairs, a dictionary with the extracted metadata
+    is being returned.
+
+    """
     _check_file_exists(pyxel_app_file)
     metadata = {}
     zf = zipfile.ZipFile(pyxel_app_file)
@@ -267,6 +470,15 @@ def get_pyxel_app_metadata(pyxel_app_file):
 
 
 def print_pyxel_app_metadata(pyxel_app_file):
+    """
+    The function `print_pyxel_app_metadata` reads a Pyxel application file,
+    checks if it exists, and prints the comment metadata if available.
+
+    :param pyxel_app_file: The `print_pyxel_app_metadata` function
+    takes a Pyxel app file as input and prints out any metadata stored in
+    the file's comment section. The `pyxel_app_file` parameter should be the
+    path to the Pyxel app file that you want to extract metadata from
+    """
     _check_file_exists(pyxel_app_file)
     zf = zipfile.ZipFile(pyxel_app_file)
     if zf.comment:
@@ -274,6 +486,16 @@ def print_pyxel_app_metadata(pyxel_app_file):
 
 
 def play_pyxel_app(pyxel_app_file):
+    """
+    The `play_pyxel_app` function plays a Pyxel application by running
+    its startup script.
+
+    :param pyxel_app_file: The `play_pyxel_app` function seems to be a Python
+    function that plays a Pyxel app. The function takes a `pyxel_app_file`
+    parameter, which is the file path of the Pyxel app to be played
+    :return: The function `play_pyxel_app` returns None.
+
+    """
     pyxel_app_file = _complete_extension(
         pyxel_app_file, "play", pyxel.APP_FILE_EXTENSION
     )
@@ -289,6 +511,22 @@ def play_pyxel_app(pyxel_app_file):
 
 
 def edit_pyxel_resource(pyxel_resource_file=None, starting_editor="image"):
+    """
+    The function `edit_pyxel_resource` opens the Pyxel editor with a specified
+    resource file and starting editor.
+
+    :param pyxel_resource_file: The `pyxel_resource_file` parameter is a string
+    that represents the file path of the Pyxel resource file that you want
+    to edit.
+    If this parameter is not provided, the default value is set
+    to "my_resource".
+    This file should be a Pyxel resource file with the appropriate extension
+    :param starting_editor: The `starting_editor` parameter in the
+    `edit_pyxel_resource` function is used to specify the initial edito
+    mode when opening the Pyxel resource file. It determines whether the
+    resource file willbe opened in the "image" editor mode or another
+    specified mode, defaults to image (optional)
+    """
     import pyxel.editor
 
     if not pyxel_resource_file:
@@ -300,6 +538,20 @@ def edit_pyxel_resource(pyxel_resource_file=None, starting_editor="image"):
 
 
 def package_pyxel_app(app_dir, startup_script_file):
+    """
+    The function `package_pyxel_app` packages a Pyxel application
+    by creating a zip file containing the necessary files and metadata.
+
+    :param app_dir: The `app_dir` parameter in the `package_pyxel_app` function
+    refers to the directory where the Pyxel application files are located. This
+    function is designed to package a Pyxel application by creating a zip file
+    containing the necessary files for the application to run
+    :param startup_script_file: The `startup_script_file` parameter is the file
+    that contains the main script of the Pyxel application that you want to
+    package. This script is the entry point of your Pyxel application
+    and will be included in the packaged application.
+
+    """
     startup_script_file = _complete_extension(startup_script_file, "package", ".py")
     _check_dir_exists(app_dir)
     _check_file_exists(startup_script_file)
@@ -330,6 +582,16 @@ def package_pyxel_app(app_dir, startup_script_file):
 
 
 def create_executable_from_pyxel_app(pyxel_app_file):
+    """This Python function creates an executable file from a Pyxel application
+    file.
+
+    :param pyxel_app_file: The `pyxel_app_file` parameter in the
+    `create_executable_from_pyxel_app` function is the file path to the Pyxel
+    application file that you want to convert into an executable. This function
+    takes this file path as input and performs the necessary steps to create an
+    executable from the.
+
+    """
     pyxel_app_file = _complete_extension(
         pyxel_app_file, "app2exe", pyxel.APP_FILE_EXTENSION
     )
@@ -367,6 +629,14 @@ def create_executable_from_pyxel_app(pyxel_app_file):
 
 
 def create_html_from_pyxel_app(pyxel_app_file):
+    """The function `create_html_from_pyxel_app` generates an HTML
+    file that embeds a Pyxel app using base64 encoding.
+
+    :param pyxel_app_file: The `pyxel_app_file` parameter is a file path to
+    a Pyxel application file that you want to convert to an HTML file for
+    running in a web browser using Pyxel's JavaScript library.
+
+    """
     pyxel_app_file = _complete_extension(
         pyxel_app_file, "app2html", pyxel.APP_FILE_EXTENSION
     )
@@ -390,6 +660,10 @@ def create_html_from_pyxel_app(pyxel_app_file):
 
 
 def copy_pyxel_examples():
+    """The function `copy_pyxel_examples` copies files from the "examples"
+    directory to a destination directory "pyxel_examples".
+
+    """
     src_dir = os.path.join(os.path.dirname(__file__), "examples")
     dst_dir = "pyxel_examples"
     shutil.rmtree(dst_dir, ignore_errors=True)
