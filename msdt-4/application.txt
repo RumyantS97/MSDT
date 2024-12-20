@@ -1,0 +1,9 @@
+2024-12-20 20:45:17,266 - main - INFO - Program started.
+2024-12-20 20:45:17,266 - main - INFO - Parsing command-line arguments.
+2024-12-20 20:45:17,268 - main - INFO - Arguments parsed: input_name=msdt-4\image.png, height=500, width=400, output_name=msdt-4\resized_photo.jpg
+2024-12-20 20:45:17,268 - imageprocessor - INFO - Loading image: msdt-4\image.png
+2024-12-20 20:45:17,287 - imageprocessor - INFO - Image msdt-4\image.png successfully loaded.
+2024-12-20 20:45:17,287 - imageprocessor - INFO - Image dimensions: Height=472, Width=484
+2024-12-20 20:45:17,287 - imageprocessor - INFO - Calculating histogram.
+2024-12-20 20:45:17,302 - imageprocessor - INFO - Histogram calculation completed.
+2024-12-20 20:45:17,302 - imageprocessor - INFO - Displaying histograms.
