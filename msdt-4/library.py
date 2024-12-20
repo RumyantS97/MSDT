@@ -1,9 +1,35 @@
+import logging
 import json
 import os
 
 from datetime import datetime
 from typing import List, Dict, Optional
 
+
+# Setup logging
+def setup_logging():
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+
+    # Setup logger
+    logger = logging.getLogger('library_manager')
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+	
+	# Add logger handlers
+    file_handler = logging.FileHandler('logs/library.log')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+    return logger
 
 class Book:
     def __init__(self, title: str, author: str, isbn: str, year: int):
@@ -27,57 +53,69 @@ class Book:
         }
 
 class LibraryManager:
-    def __init__(self):
+    def __init__(self, logger):
         self.books: Dict[str, Book] = {}
+        self.logger = logger
         self.data_file = 'library_data.json'
         self.load_data()
 
     def add_book(self, title: str, author: str, isbn: str, year: int) -> bool:
         if isbn in self.books:
+            self.logger.warning(f"Trying to add book with existing ISBN: {isbn}")
             return False
 
         book = Book(title, author, isbn, year)
         self.books[isbn] = book
+        self.logger.info(f"Added new book: {title} (ISBN: {isbn})")
         self.save_data()
         return True
 
     def remove_book(self, isbn: str) -> bool:
         if isbn not in self.books:
+            self.logger.error(f"Trying to delete non-existen book with ISBN: {isbn}")
             return False
 
         book = self.books.pop(isbn)
+        self.logger.info(f"Deleted book: {book.title} (ISBN: {isbn})")
         self.save_data()
         return True
 
     def borrow_book(self, isbn: str, user: str) -> bool:
         if isbn not in self.books:
+            self.logger.error(f"Trying to borrow non-existen book with ISBN: {isbn}")
             return False
 
         book = self.books[isbn]
         if not book.is_available:
+            self.logger.warning(f"Trying to borrow unavailable book: {book.title} (ISBN: {isbn})")
             return False
 
         book.is_available = False
         book.borrowed_by = user
         book.borrow_date = datetime.now()
+        self.logger.info(f"Book '{book.title}' is already taken by {user}")
         self.save_data()
         return True
 
     def return_book(self, isbn: str) -> bool:
         if isbn not in self.books:
+            self.logger.error(f"Trying to return non-existen book with ISBN: {isbn}")
             return False
 
         book = self.books[isbn]
         if book.is_available:
+            self.logger.warning(f"Trying to return already returned book: {book.title}")
             return False
 
         book.is_available = True
         book.borrowed_by = None
         book.borrow_date = None
+        self.logger.info(f"Book '{book.title}' borrowed to library")
         self.save_data()
         return True
 
     def search_books(self, query: str) -> List[Book]:
+        self.logger.debug(f"Searching books with query: {query}")
         query = query.lower()
         results = []
         for book in self.books.values():
@@ -92,8 +130,9 @@ class LibraryManager:
             data = {isbn: book.to_dict() for isbn, book in self.books.items()}
             with open(self.data_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
+            self.logger.debug("Library data successfully saved")
         except Exception as e:
-            pass
+            self.logger.error(f"Error while saving library data: {str(e)}")
 
     def load_data(self):
         try:
@@ -112,12 +151,18 @@ class LibraryManager:
                     if book_data['borrow_date']:
                         book.borrow_date = datetime.fromisoformat(book_data['borrow_date'])
                     self.books[isbn] = book
+                self.logger.info(f"Loaded {len(self.books)} books from file")
+            else:
+                self.logger.info("No data file is found, creating new library")
         except Exception as e:
-            pass
+            self.logger.error(f"Error while loading data: {str(e)}")
 
 def main():
+    # Logger init
+    logger = setup_logging()
+    
     # Create library manager
-    library = LibraryManager()
+    library = LibraryManager(logger)
 
     # Usage examples
     try:
@@ -128,21 +173,26 @@ def main():
 
         # Searching books
         search_results = library.search_books("tolkien")
+        logger.info(f"Founded books: {len(search_results)}")
 		
 		# Borrowing book
-        borrow = library.borrow_book("978-0547928227", "John Doe")
+        if library.borrow_book("978-0547928227", "John Doe"):
+            logger.info("Book borrowed successfully")
         
         # Borrowing already borrowed book
-        borrow = library.borrow_book("978-0547928227", "Jane Smith")
+        if not library.borrow_book("978-0547928227", "Jane Smith"):
+            logger.warning("Cannot borrow book thas already borrowed")
 
         # Returning book
-        returning = library.return_book("978-0547928227")
+        if library.return_book("978-0547928227"):
+            logger.info("Book returned successfully")
 
         # Removing book
-        removing = library.remove_book("978-0141439518")
+        if library.remove_book("978-0141439518"):
+            logger.info("Book deleted from library successfully")
 
     except Exception as e:
-        pass
+        logger.error(f"Unexpected error: {str(e)}")
 
 if __name__ == "__main__":
     main()
