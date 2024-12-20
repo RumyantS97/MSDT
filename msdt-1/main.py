@@ -340,8 +340,8 @@ print("\nЗадание 3") # O(Nlog(N))
 
 class Node:
     def __init__(self, char, freq):
-        self.char = char # Символ
-        self.freq = freq # Частота повоторений
+        self.char = char  # Символ
+        self.freq = freq  # Частота повоторений
         self.left = None
         self.right = None
 
@@ -362,7 +362,7 @@ def build_huffman_tree(text):
     for char, freq in freq_dict.items(): 
         heapq.heappush(min_heap, Node(char, freq))
 
-    while len(min_heap) > 1: # Проходим пока не останется один узел _ Log(n)
+    while len(min_heap) > 1:  # Проходим пока не останется один узел _ Log(n)
         left = heapq.heappop(min_heap)
         right = heapq.heappop(min_heap)
         combined_freq = left.freq + right.freq
@@ -370,7 +370,7 @@ def build_huffman_tree(text):
         parent = Node(None, combined_freq) 
         parent.left = left
         parent.right = right
-        heapq.heappush(min_heap, parent) # Заносим новый узел к остальным
+        heapq.heappush(min_heap, parent)  # Заносим новый узел к остальным
 
     return min_heap[0]
 
@@ -385,8 +385,8 @@ def build_huffman_codes(node, current_code, huffman_codes):
 
 
 def huffman_encoding(text):
-    root = build_huffman_tree(text) # Построение дерева
-    huffman_codes = {} # Заведение словаря для символов(их довичный код)
+    root = build_huffman_tree(text)  # Построение дерева
+    huffman_codes = {}  # Заведение словаря для символов(их довичный код)
     build_huffman_codes(root, '', huffman_codes)
     # Преобразовываем текст проходя посимвольно
     encoded_text = ''.join(huffman_codes[char] for char in text) 
@@ -396,7 +396,7 @@ def huffman_encoding(text):
 
 def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
-    current_code = '' # Накопление битов для тек символа
+    current_code = ''  # Накопление битов для тек символа
     for bit in encoded_text:
         current_code += bit
         for char, code in huffman_codes.items():
@@ -423,7 +423,7 @@ def has_cycle(graph): # O(n + m)
         visited[node] = True
         rec_stack[node] = True
 
-        for neighbor in graph[node]: # Проходка по соседям вершины
+        for neighbor in graph[node]:  # Проходка по соседям вершины
             # Если не посещали соседа, вызываем рекурсивно функцию
             if not visited[neighbor]: 
                 if dfs(neighbor, visited, rec_stack):
