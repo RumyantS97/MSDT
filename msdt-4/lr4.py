@@ -4,6 +4,19 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import logging
+
+  # Создания менеджера
+def init(  log_file = "C:\lr\msdt-4\manager.log" ):
+    # Здесь будет инициализация логирования
+    print("init")
+    # Настройка логирования
+    logging.basicConfig(
+        filename = log_file,
+        level = logging.INFO,
+        format = '%(asctime)s - %(levelname)s - %(message)s'
+    )
+    logging.info("FileManager initialized.")
 
 # Функция для генерации ключа из пароля пользователя
 def generate_key(password):
@@ -70,7 +83,9 @@ def decrypt_data(encrypted_data, password):
 
 # Основная функция программы
 def main():
+    init()
     print("Приветствую вас в программе шифрования!")
+    logging.info("Запуск программы")
     while True:
         choice = input("\nВыберите действие:\n1. Зашифровать данные\n2. Расшифровать данные\n3. Выход\nВаш выбор: ")
         
@@ -84,7 +99,7 @@ def main():
             with open(filename, "wb") as file:
                 file.write(encrypted_data)
                 
-            print(f"Данные успешно зашифрованы и сохранены в файле {filename}.")
+            logging.info(f"Данные успешно зашифрованы и сохранены в файле {filename}.")
         
         elif choice == '2':
             filename = input("Введите имя файла с зашифрованными данными: ")
@@ -92,7 +107,7 @@ def main():
                 with open(filename, "rb") as file:
                     encrypted_data = file.read()
             except FileNotFoundError:
-                print(f"Файл {filename} не найден.")
+                logging.error(f"Файл {filename} не найден.")
                 continue
             
             password = input("Введите пароль: ")
@@ -100,14 +115,16 @@ def main():
             try:
                 decrypted_data = decrypt_data(encrypted_data, password)
                 print("Расшифрованный текст:", decrypted_data.decode())
+                logging.info("Файл успешно прочитан")
             except ValueError:
-                print("Неверный пароль или поврежденные данные.")
+                logging.error("Неверный пароль или поврежденные данные.")
         
         elif choice == '3':
             break
         
         else:
             print("Неправильный ввод. Попробуйте еще раз.")
+    logging.info("Завершение программы")
 
 if __name__ == "__main__":
     main()
