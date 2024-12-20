@@ -1,20 +1,11 @@
 import json
 import hashlib
+import re
+import csv
 from typing import List
 
+from constants import REGEX, CSV_PATH, RESULT
 
-REGEX = {
-    "email"              : "^[a-z0-9]+(?:[._][a-z0-9]+)*\\@[a-z]+(?:\\.[a-z]+)+$",
-    "http_status_message": "^\\d{3} [A-Za-z ]+$",
-    "inn"                : "^\\d{12}$",
-    "passport"           : "^\\d{2}\\s\\d{2}\\s\\d{6}$",
-    "ip_v4"              : "^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$",
-    "latitude"           : "^[-]?(90\\.0+|[0-8]?[0-9]\\.\\d+)$",
-    "hex_color"          : "^\\#[0-9a-fA-F]{6}$",
-    "isbn"               : "^\\d+-\\d+-\\d+-\\d+(?:-\\d+)?$", 
-    "uuid"               : "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    "time"               : "^(2[0-3]|[0-1][0-9])\\:[0-5][0-9]\\:[0-5][0-9]\\.\\d{6}$"
-}
 
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
@@ -36,7 +27,7 @@ def calculate_checksum(row_numbers: List[int]) -> str:
     return hashlib.md5(json.dumps(row_numbers).encode('utf-8')).hexdigest()
 
 
-def serialize_result(variant: int, checksum: str) -> None:
+def serialize_result(variant: int, checksum: str, path: str) -> None:
     """
     Метод для сериализации результатов лабораторной пишите сами.
     Вам нужно заполнить данными - номером варианта и контрольной суммой - файл, лежащий в папке с лабораторной.
@@ -48,4 +39,45 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
+    result = {
+        "variant" : variant,
+        "checksum": checksum
+    }
+    with open(path, 'w', encoding='utf-8') as data:
+        json.dump(result, data)
+    
+
+def read_csv(path: str) -> list[list[str]]:
+    """
+    read csv file
+    """
+    data = []
+    with open(path, "r", encoding="utf-16") as file:
+        file_reader = csv.reader(file, delimiter=';')
+        next(file_reader, None)
+        for row in file_reader:
+            data.append(row)
+        return data
+    
+
+def invalide_rows(data: list[list[str]], regular: dict) -> list[int]:
+    """
+    validate rows in a dataset against a set of regular expression patterns
+    """
+    invalid_rows = []
+    for number, row in enumerate(data):
+        for _, (field, key) in enumerate(zip(row, regular.keys())):
+            pattern = regular[key]
+            if not re.fullmatch(pattern, field):
+                invalid_rows.append(number)
+                break
+    return invalid_rows
+
+
+if __name__ == "__main__":
+    csv_data = read_csv(CSV_PATH)
+    invalide_index = invalide_rows(csv_data, REGEX)
+    result = calculate_checksum(invalide_index)
+    serialize_result(13, result, RESULT)
+    print(len(invalide_index))
     
