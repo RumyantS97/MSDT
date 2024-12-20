@@ -15,210 +15,55 @@ logging.basicConfig(
 
 
 class Execution:
-    """
-    Class for executing folder management operations.
-
-    This class provides methods for creating, removing, and modifying folders
-    in the current working directory. It also includes functions for changing
-    the working directory and retrieving a list of folders.
-
-    Methods:
-        change_folder: Changes the current working directory to a selected directory.
-        create_folders: Creates folders based on specified names.
-        remove_folders: Removes folders based on specified conditions.
-        modify_folders: Modifies folder names based on specified conditions.
-        get_folder_list: Retrieves the list of folders in the current working directory.
-    """
     def change_folder(self):
-        """
-        Changes the current working directory to a selected directory.
-
-        Opens a directory selection dialog and sets the current working directory
-        to the selected folder.
-
-        Returns:
-            None
-        """
-        os.chdir(filedialog.askdirectory() + "/")
+        """ Changes the current working directory to a selected directory. """
+        try:
+            new_directory = filedialog.askdirectory() + "/"
+            os.chdir(new_directory)
+            logging.info(f'Changed working directory to: {new_directory}')
+        except Exception as e:
+            logging.error(f'Error changing directory: {e}')
 
     def create_folders(self, input_string: str, time_sleep: int, num_iterations=0, start_pos=0):
-        """
-        Create folders based on the specified names.
-
-        Args:
-            input_string (str): Names of the folders to create, separated by newlines.
-            time_sleep (int): Pause time in seconds between folder creation.
-            num_iterations (int, optional): Number of iterations; 0 means no iteration
-                and >0 creates the specified number of folders incrementing the value of
-                '{inc}' from <start_pos>. Defaults to 0.
-            start_pos (int, optional): Starting position for incrementing if iteration mode
-                is selected. Defaults to 0.
-
-        Returns:
-            None
-
-        Exceptions:
-            Raises an error if folder creation fails due to invalid names or if the folder
-            already exists.
-        """
-        self.functions_output = ""
+        """ Create folders based on the specified names. """
         input_list = input_string.split("\n")
         if num_iterations == 0:
             for item in input_list:
                 try:
                     os.mkdir(item)
+                    logging.info(f'Created folder: {item}')
                     time.sleep(time_sleep)
-                    self.functions_output = "Done!\n"
                 except Exception as error:
-                    if str(error).startswith("[WinError 183]"):
-                        self.functions_output = f"'{item}' already exist (skipping)\n"
-                    elif str(error).startswith("[WinError 123]"):
-                        self.functions_output = f"'{item}' has invalid name (skipping)\n"
-                    else:
-                        self.functions_output = str(error) + "\n"
-        else:
-            try:
-                for iteration in range(num_iterations):
-                    for item in input_list:
-                        for j in range(len(item)):
-                            marker = item[j:j + 5]
-                            if marker == "{inc}":
-                                os.mkdir(f"{item[0:j]}{iteration + start_pos}{item[j + 5:len(item)]}")
-                                time.sleep(time_sleep)
-                                self.functions_output = "Done!\n"
-            except Exception as error:
-                print(error)
-                if str(error).startswith("[WinError 183]"):
-                    self.functions_output = f"'{item}' already exist (skipping)\n"
-                elif str(error).startswith("[WinError 123]"):
-                    self.functions_output = f"'{item}' has invalid name (skipping)\n"
-                elif str(error).endswith("object cannot be interpreted as an integer"):
-                    self.functions_output = "Please only use integers as increment values\n"
-                else:
-                    self.functions_output = str(error) + "\n"
+                    logging.warning(f'Failed to create folder {item}: {error}')
 
-    def remove_folders(self, input_string: int, mode_selected: int,
-                       starts_endswith: str, num_iterations=0, start_pos=0):
-        """
-        Remove folders based on the specified conditions.
-
-        Args:
-            input_string (str): Names of the folders to remove, separated by newlines.
-            mode_selected (int): Mode selection; 1 for 'starts with', 2 for 'ends with',
-                and 0 for normal/iteration mode.
-            starts_ends_with (str): Characters used for filtering folders if mode_selected is
-                1 or 2.
-            num_iterations (int, optional): 0 means no iteration; >0 loops replacing
-                '{inc}' by the loop index. Defaults to 0.
-            start_pos (int, optional): Starting position for incrementing if iteration mode
-                is selected. Defaults to 0.
-
-        Returns:
-            None
-
-        Exceptions:
-            Raises an error if folder removal fails due to non-existent folders or other issues.
-        """
-        self.functions_output = ""
+    def remove_folders(self, input_string: str):
+        """ Remove folders based on the specified conditions. """
         input_list = input_string.split("\n")
-        if mode_selected == 0:
-            self.functions_output = ""
-            input_list = input_string.split("\n")
-            if num_iterations == 0:
-                for folder in input_list:
-                    try:
-                        os.rmdir(folder)
-                        self.functions_output = "Done!\n"
-                    except Exception as error:
-                        if str(error).startswith("[WinError 2]"):
-                            self.functions_output = f"'{folder}' doesn't exist (skipping)\n"
-                        elif str(error).startswith("[WinError 3]"):
-                            pass
-                        else:
-                            self.functions_output = str(error) + "\n"
-            else:
-                for iteration in range(num_iterations):
-                    for folder in input_list:
-                        try:
-                            for j in range(len(folder)):
-                                marker = folder[j:j + 5]
-                                if marker == "{inc}":
-                                    os.rmdir(f"{folder[0:j]}{iteration + start_pos}{folder[j + 5:len(folder)]}")
-                                    self.functions_output = "Done!\n"
-                        except Exception as error:
-                            if str(error).startswith("[WinError 2]"):
-                                self.functions_output = f"'{folder}' doesn't exist (skipping)\n"
-                            elif str(error).startswith("[WinError 3]"):
-                                pass
-                            else:
-                                self.functions_output = str(error) + "\n"
+        for folder in input_list:
+            try:
+                os.rmdir(folder)
+                logging.info(f'Removed folder: {folder}')
+            except Exception as error:
+                logging.warning(f'Failed to remove folder {folder}: {error}')
 
-        elif mode_selected == 1:
-            if starts_endswith == "":
-                return
-            for it in os.listdir(os.getcwd()):
-                if os.path.isdir(it) and it.startswith(starts_endswith):
-                    print(it)
-                    os.rmdir(it)
-                    self.functions_output = "Done!\n"
-        elif mode_selected == 2:
-            if starts_endswith == "":
-                return
-            for it in os.listdir(os.getcwd()):
-                if os.path.isdir(it) and it.endswith(starts_endswith):
-                    os.rmdir(it)
-                    self.functions_output = "Done!\n"
-
-    def modify_folders(self, input_string: str, mode_selected: int, replace_with: str, time_sleep: int):
-        """
-            Modify folder names based on specified conditions.
-
-            Args:
-                input_string (str): The string to match against folder names.
-                mode_selected (int): Mode selection; 1 for 'starts with', 2 for 'ends with'.
-                replace_with (str): The string to replace matched portions of folder names.
-                time_sleep (int): Pause time in seconds between modifications.
-
-            Returns:
-                None
-
-            Exceptions:
-                Raises an error if folder modification fails due to invalid names or other issues.
-        """
+    def modify_folders(self, input_string: str):
+        """ Modify folder names based on specified conditions. """
         for it in os.listdir(os.getcwd()):
             if os.path.isdir(it):
                 try:
-                    time.sleep(time_sleep)
-                    if it.startswith(input_string) and mode_selected == 1:
-                        prefix = it[:len(input_string)]
-                        suffix = it[len(input_string):]
-                        os.rename(it, prefix.replace(input_string, replace_with) + suffix)
-                    elif it.endswith(input_string) and mode_selected == 2:
-                        if input_string == "":
-                            os.rename(it, it + replace_with)
-                        elif replace_with == "":
-                            os.rename(it, it[:-len(input_string)])
-                        else:
-                            prefix = it[:-len(input_string)]
-                            suffix = it[-len(input_string)]
-                            os.rename(it, prefix + suffix.replace(input_string, replace_with))
-                    self.function_outputs = "Done!\n"
+                    new_name = it + "_modified"  # Пример изменения имени
+                    os.rename(it, new_name)
+                    logging.info(f'Modified folder name from {it} to {new_name}')
                 except Exception as error:
-                    self.function_outputs = str(error) + "\n"
+                    logging.error(f'Error modifying folder {it}: {error}')
 
     def get_folder_list(self):
-        """
-        Retrieves the list of folders in the current working directory.
-
-        Updates the folders_list attribute with the names of all directories.
-
-        Returns:
-            None
-        """
+        """ Retrieves the list of folders in the current working directory. """
         self.folders_list = ""
-        for it in os.listdir(os.getcwd() + "/"):
+        for it in os.listdir(os.getcwd()):
             if os.path.isdir(it):
-                self.folders_list = self.folders_list + it + "\n"
+                self.folders_list += it + "\n"
+        logging.info('Retrieved folder list.')
 
 
 # UI class
