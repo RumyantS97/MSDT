@@ -6,16 +6,16 @@ from typing import List
 
 
 PATTERNS = {
-    'email': r'^\S+@\S+\.\S+$',
-    'height': r'^[1-2]\.\d{2}$',
-    'inn': r'^\d{12}$',
-    'passport': r'^\d{2} \d{2} \d{6}$',
+    'email'     : r'^\S+@\S+\.\S+$',
+    'height'    : r'^[1-2]\.\d{2}$',
+    'inn'       : r'^\d{12}$',
+    'passport'  : r'^\d{2} \d{2} \d{6}$',
     'occupation': r'^[A-Za-zА-Яа-я\s\-]+$',
-    'latitude': r'^-?\d{1,2}\.\d+$',
-    'hex_color': r'^#[0-9a-fA-F]{6}$',
-    'issn': r'^\d{4}-\d{4}$',
-    'uuid': r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
-    'time': r'^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?$'
+    'latitude'  : r'^-?\d{1,2}\.\d+$',
+    'hex_color' : r'^#[0-9a-fA-F]{6}$',
+    'issn'      : r'^\d{4}-\d{4}$',
+    'uuid'      : r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
+    'time'      : r'^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,6})?$'
 }
 
 def is_valid(row: dict) -> bool:
