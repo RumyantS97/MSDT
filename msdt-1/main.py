@@ -1,5 +1,6 @@
 """Starter module of pixel python game."""
 
+# Add some info for each imports
 import base64
 import glob
 import multiprocessing
@@ -18,6 +19,7 @@ import zipfile
 import pixel
 import pixel.utils
 
+METADATA_FIELDS = ["title", "author", "desc", "site", "license", "version"]
 
 def cli():
     """Define a command-line interface for interacting
@@ -64,8 +66,7 @@ def cli():
     ]
 
     def print_usage(command_name=None):
-        """
-        The function `print_usage` prints the usage information for a given command
+        """The function `print_usage` prints the usage information for a given command
         or all commands if no specific command is provided.
 
         :param command_name: The `command_name` parameter in the `print_usage`
@@ -104,8 +105,7 @@ def cli():
 
 
 def _check_newer_version():
-    """
-    The function checks for a newer version of Pixel by scraping the GitHub page
+    """The function checks for a newer version of Pixel by scraping the GitHub page
     and comparing it with the current version.
 
     :return: The `_check_newer_version` function is returning `None` if there is an
@@ -217,8 +217,7 @@ def _check_dir_exists(dirname):
 
 
 def _check_file_under_dir(filename, dirname):
-    """
-    The function `_check_file_under_dir` checks if a specified file is located
+    """The function `_check_file_under_dir` checks if a specified file is located
     under a specified directory.
 
     :param filename: The `filename` parameter is a string that represents the path
@@ -235,8 +234,7 @@ def _check_file_under_dir(filename, dirname):
 
 
 def _create_app_dir():
-    """
-    The function `_create_app_dir` creates a temporary directory for an
+    """The function `_create_app_dir` creates a temporary directory for an
     application, removing any existing directories associated with the application
     process.
     :return: The function `_create_app_dir` returns the path to the newly created
@@ -256,8 +254,7 @@ def _create_app_dir():
 
 
 def _create_watch_info_file():
-    """
-    The function `_create_watch_info_file` creates a watch directory, removes any
+    """The function `_create_watch_info_file` creates a watch directory, removes any
     existing files that do not correspond to active processes, and then creates a
     new watch info file with the current process ID.
     :return: The function `_create_watch_info_file` returns the path to the watch
@@ -276,8 +273,7 @@ def _create_watch_info_file():
 
 
 def _timestamps_in_dir(dirname):
-    """
-    This Python function retrieves the last modification timestamps of files in a
+    """This Python function retrieves the last modification timestamps of files in a
     specified directory and its subdirectories.
 
     :param dirname: The `dirname` parameter in the `_timestamps_in_dir` function is
@@ -297,8 +293,7 @@ def _timestamps_in_dir(dirname):
 
 
 def _run_python_script_in_separate_process(python_script_file):
-    """
-    The function `_run_python_script_in_separate_process` creates a separate
+    """The function `_run_python_script_in_separate_process` creates a separate
     process to run a Python script file.
 
     :param python_script_file: The `python_script_file` parameter is a string that
@@ -319,8 +314,7 @@ def _run_python_script_in_separate_process(python_script_file):
 
 
 def _extract_pixel_app(pixel_app_file):
-    """
-    The function `_extract_pixel_app` extracts a Pixel app file, searches for a
+    """The function `_extract_pixel_app` extracts a Pixel app file, searches for a
     specific startup script file, and returns the path to the script file if found.
 
     :param pixel_app_file: The `pixel_app_file` parameter is the file path to a
@@ -342,8 +336,7 @@ def _extract_pixel_app(pixel_app_file):
 
 
 def _make_metadata_comment(startup_script_file):
-    """
-    The function `_make_metadata_comment` reads a startup script file
+    """The function `_make_metadata_comment` reads a startup script file
     to extract specific metadata fields and formats them into a comment block.
 
     :param startup_script_file: The function `_make_metadata_comment` reads a
@@ -357,7 +350,6 @@ def _make_metadata_comment(startup_script_file):
     expression pattern, formats the metadata comment, and returns it. If no
     metadata is found in the file, an empty string is returned.
     """
-    METADATA_FIELDS = ["title", "author", "desc", "site", "license", "version"]
     metadata = {}
     metadata_pattern = re.compile(r"#\s*(.+?)\s*:\s*(.+)")
     with open(startup_script_file, "r", encoding="utf8") as f:
@@ -384,8 +376,7 @@ def _make_metadata_comment(startup_script_file):
 
 
 def run_python_script(python_script_file):
-    """
-    The function `run_python_script` runs a Python script file as the
+    """The function `run_python_script` runs a Python script file as the
     main program.
 
     :param python_script_file: The `python_script_file` parameter is a string
@@ -400,8 +391,7 @@ def run_python_script(python_script_file):
 
 
 def watch_and_run_python_script(watch_dir, python_script_file):
-    """
-    This Python function watches a directory for changes and reruns a specified
+    """This Python function watches a directory for changes and reruns a specified
     Python script when changes are detected.
 
     :param watch_dir: The `watch_and_run_python_script` function seems to be
@@ -440,8 +430,7 @@ def watch_and_run_python_script(watch_dir, python_script_file):
 
 
 def get_pixel_app_metadata(pixel_app_file):
-    """
-    The function `get_pixel_app_metadata` extracts metadata from a Pixel
+    """The function `get_pixel_app_metadata` extracts metadata from a Pixel
     application file.
 
     :param pixel_app_file: The `pixel_app_file` parameter is a file path to
@@ -470,8 +459,7 @@ def get_pixel_app_metadata(pixel_app_file):
 
 
 def print_pixel_app_metadata(pixel_app_file):
-    """
-    The function `print_pixel_app_metadata` reads a Pixel application file,
+    """The function `print_pixel_app_metadata` reads a Pixel application file,
     checks if it exists, and prints the comment metadata if available.
 
     :param pixel_app_file: The `print_pixel_app_metadata` function
@@ -486,8 +474,7 @@ def print_pixel_app_metadata(pixel_app_file):
 
 
 def play_pixel_app(pixel_app_file):
-    """
-    The `play_pixel_app` function plays a Pixel application by running
+    """The `play_pixel_app` function plays a Pixel application by running
     its startup script.
 
     :param pixel_app_file: The `play_pixel_app` function seems to be a Python
@@ -511,8 +498,7 @@ def play_pixel_app(pixel_app_file):
 
 
 def edit_pixel_resource(pixel_resource_file=None, starting_editor="image"):
-    """
-    The function `edit_pixel_resource` opens the Pixel editor with a specified
+    """The function `edit_pixel_resource` opens the Pixel editor with a specified
     resource file and starting editor.
 
     :param pixel_resource_file: The `pixel_resource_file` parameter is a string
@@ -538,8 +524,7 @@ def edit_pixel_resource(pixel_resource_file=None, starting_editor="image"):
 
 
 def package_pixel_app(app_dir, startup_script_file):
-    """
-    The function `package_pixel_app` packages a Pixel application
+    """The function `package_pixel_app` packages a Pixel application
     by creating a zip file containing the necessary files and metadata.
 
     :param app_dir: The `app_dir` parameter in the `package_pixel_app` function
