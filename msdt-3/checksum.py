@@ -1,10 +1,37 @@
 import json
 import hashlib
 from typing import List
+# we use csv module for working with csv file (не может быть)
+import csv
+from validator import Validator
+
+CSV_PATH = "19.csv"
+JSON_PATH="result.json"
+OPTION = 19
 
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
 """
+def get_numbers_id_with_wrong_data(csv_file_path: str) -> list[int]:
+    """Get numbers with mistake from csv file.
+
+    Args:
+        csv_file_path (str): path for csv file for data validating
+
+    Returns:
+        list[int]: return list with id with wrong data
+
+    """
+    numbers_id_with_wrong_data = []
+    validator = Validator()
+    with open(CSV_PATH, newline='', encoding="utf-16") as csv_file:
+        reader= csv.DictReader(csv_file, delimiter=';')
+        for row_id, row in enumerate(reader):
+            for pattern, data in row.items():
+                if not validator.validate_data(pattern, data):
+                    numbers_id_with_wrong_data.append(row_id - 1)
+
+    return numbers_id_with_wrong_data
 
 
 def calculate_checksum(row_numbers: List[int]) -> str:
@@ -23,9 +50,10 @@ def calculate_checksum(row_numbers: List[int]) -> str:
 
 
 def serialize_result(variant: int, checksum: str) -> None:
-    """
-    Метод для сериализации результатов лабораторной пишите сами.
-    Вам нужно заполнить данными - номером варианта и контрольной суммой - файл, лежащий в папке с лабораторной.
+    """Метод для сериализации результатов лабораторной пишите сами.
+    Вам нужно заполнить данными - номером варианта и контрольной суммой - файл,
+    лежащий в папке с лабораторной.
+    
     Файл называется, очевидно, result.json.
 
     ВНИМАНИЕ, ВАЖНО! На json натравлен github action, который проверяет корректность выполнения лабораторной.
@@ -34,4 +62,20 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param variant: номер вашего варианта
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
-    pass
+    result = {
+        "variant": variant,
+        "checksum": checksum
+    }
+    with open(JSON_PATH, "w", encoding="utf-8") as json_file:
+        json.dump(result, json_file)
+
+
+def main():
+    # get hash
+    numbers_id_with_wrong_data = get_numbers_id_with_wrong_data(CSV_PATH)
+    check_sum = calculate_checksum(numbers_id_with_wrong_data)
+    serialize_result(OPTION, check_sum)
+
+
+if __name__ == "__main__":
+    main()
