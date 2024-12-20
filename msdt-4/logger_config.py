@@ -1,6 +1,6 @@
 import logging
 
-LOG_FILE = "application.log"
+LOG_FILE = "msdt-4/application.log"
 
 file_handler = logging.FileHandler(LOG_FILE)
 file_handler.setLevel(logging.DEBUG)
