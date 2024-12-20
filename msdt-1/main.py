@@ -1,3 +1,11 @@
+from collections import deque
+import random
+import string
+import time
+import heapq
+from collections import defaultdict
+
+
 # Задание 1
 print("Задание 1")
 
@@ -88,8 +96,6 @@ min_stack.print_stack()
 
 # Задание 3
 print("\nЗадание 3")
-from collections import deque
-
 
 def max_in_window(arr, k):
     n = len(arr)
@@ -186,10 +192,6 @@ for row in result:
     print(row)
 
 
-import random
-import string
-
-
 def generate_random_string(length):
     return ''.join(random.choices(string.ascii_lowercase, k=length))
 
@@ -198,9 +200,6 @@ def generate_random_substring(string, min_length, max_length):
     start = random.randint(0, len(string) - max_length)
     end = random.randint(min_length, max_length)
     return string[start:start + end]
-
-
-import time
 
 
 def compare_algorithms(text_length, pattern_length, num_tests):
@@ -330,8 +329,6 @@ print(palindrome_substrings)
 
 print("\nЗадание 3") # O(Nlog(N))
 # Задание 3
-import heapq
-from collections import defaultdict
 
 class Node:
     def __init__(self, char, freq):
@@ -401,7 +398,6 @@ print("Decoded text:", decoded_text)
 
 # Задание 4
 print("\nЗадание 4")
-from collections import defaultdict
 
 def has_cycle(graph): # O(n + m)
     def dfs(node, visited, rec_stack):
