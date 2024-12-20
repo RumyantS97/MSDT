@@ -1,21 +1,30 @@
 import pygame
 import random
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("msdt-4/tetris.log", encoding="utf-8"),
+        logging.StreamHandler()
+    ]
+)
 
 pygame.init()
 
-# Основные настройки
 SCREEN_WIDTH, SCREEN_HEIGHT = 300, 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Тетрис")
 BLOCK_SIZE = 30
 BOARD_WIDTH, BOARD_HEIGHT = SCREEN_WIDTH // BLOCK_SIZE, SCREEN_HEIGHT // BLOCK_SIZE
 
-# Цвета
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-COLORS = [(112,163,218), (218,112,163), (163,218,11), (204,0,0), (204,153,255)]
+COLORS = [(112, 163, 218), (218, 112, 163),
+          (163, 218, 11), (204, 0, 0), (204, 153, 255)]
 
-# Фигурки
 tetrominoes = [
     [(1, 1, 1, 1)],
     [(1, 1), (1, 1)],
@@ -24,12 +33,14 @@ tetrominoes = [
     [(0, 0, 1), (1, 1, 1)]
 ]
 
+
 class Tetromino:
     def __init__(self, shape, color):
         self.shape = shape
         self.color = color
         self.x = BOARD_WIDTH // 2 - len(self.shape[0]) // 2
         self.y = 0
+        logging.info(f"Создана новая фигура: {shape}")
 
     def draw(self):
         for i, row in enumerate(self.shape):
@@ -38,19 +49,25 @@ class Tetromino:
                     pygame.draw.rect(screen, self.color,
                                      ((self.x + j) * BLOCK_SIZE, (self.y + i) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
 
+
 def create_tetromino():
     idx = random.randint(0, len(tetrominoes) - 1)
+    logging.info(f"Создание фигуры: индекс {idx}")
     return Tetromino(tetrominoes[idx], COLORS[idx])
 
+
 def valid_space(tetromino, board):
-    accepted_positions = [[(j, i) for j in range(BOARD_WIDTH) if board[i][j] == 0] for i in range(BOARD_HEIGHT)]
+    accepted_positions = [[(j, i) for j in range(
+        BOARD_WIDTH) if board[i][j] == 0] for i in range(BOARD_HEIGHT)]
     accepted_positions = [j for sub in accepted_positions for j in sub]
     formatted = convert_shape_format(tetromino)
     for pos in formatted:
         if pos not in accepted_positions:
             if pos[1] > -1:
+                logging.warning(f"Недопустимая позиция: {pos}")
                 return False
     return True
+
 
 def convert_shape_format(tetromino):
     positions = []
@@ -58,16 +75,22 @@ def convert_shape_format(tetromino):
         for j, cell in enumerate(row):
             if cell == 1:
                 positions.append((tetromino.x + j, tetromino.y + i))
+    logging.debug(f"Формат фигуры: {positions}")
     return positions
 
+
 def rotate_shape(shape):
+    logging.info("Вращение фигуры")
     return [list(row)[::-1] for row in zip(*shape)]
+
 
 def check_game_over(board):
     for x in range(BOARD_WIDTH):
         if board[0][x] != 0:
+            logging.info("Игра окончена")
             return True
     return False
+
 
 def clear_rows(board, score):
     cleared_rows = 0
@@ -78,13 +101,17 @@ def clear_rows(board, score):
             board.insert(0, [0 for _ in range(BOARD_WIDTH)])
             cleared_rows += 1
     score += cleared_rows * 10
+    if cleared_rows > 0:
+        logging.info(f"Удалено строк: {cleared_rows}, текущий счёт: {score}")
     return score
+
 
 def draw_window(board, score):
     screen.fill(BLACK)
     for i in range(BOARD_HEIGHT):
         for j in range(BOARD_WIDTH):
-            pygame.draw.rect(screen, WHITE, (j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 1)
+            pygame.draw.rect(screen, WHITE, (j * BLOCK_SIZE,
+                             i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 1)
             if board[i][j] != 0:
                 pygame.draw.rect(screen, COLORS[board[i][j] - 1],
                                  (j * BLOCK_SIZE, i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE))
@@ -92,16 +119,15 @@ def draw_window(board, score):
     text = font.render(f"Score: {score}", True, WHITE)
     screen.blit(text, [10, 10])
 
-# Игровой цикл и дополнительная логика...
-
-board = [[0 for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
 
 def restart_game():
     global board, score, current_tetromino, next_tetromino
+    logging.info("Перезапуск игры")
     score = 0
     board = [[0 for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
     current_tetromino = create_tetromino()
     next_tetromino = create_tetromino()
+
 
 def game_loop():
     global board
@@ -118,9 +144,9 @@ def game_loop():
         fall_time += clock.get_rawtime()
         clock.tick()
 
-        # Обработка событий
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                logging.info("Игра завершена пользователем")
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -137,15 +163,12 @@ def game_loop():
                         current_tetromino.y -= 1
                 if event.key == pygame.K_UP:
                     original_shape = current_tetromino.shape
-                    current_tetromino.shape = rotate_shape(current_tetromino.shape)
+                    current_tetromino.shape = rotate_shape(
+                        current_tetromino.shape)
                     if not valid_space(current_tetromino, board):
                         current_tetromino.shape = original_shape
-                if event.key == pygame.K_r:  # Если нажата клавиша R
+                if event.key == pygame.K_r:
                     restart_game()
-
-
-        fall_time += clock.get_rawtime()
-        clock.tick()
 
         draw_window(board, score)
         current_tetromino.draw()
@@ -164,10 +187,12 @@ def game_loop():
                 current_tetromino = next_tetromino
                 next_tetromino = create_tetromino()
                 if check_game_over(board):
-                    print("Game Over")
+                    logging.info("Игра окончена: набрано очков %d", score)
                     running = False
 
+    logging.info("Завершение игрового цикла")
 
 
+board = [[0 for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
 game_loop()
 pygame.quit()
