@@ -2,9 +2,9 @@
 print("Задание 1")
 
 
-def check_brackets(inputString):
+def check_brackets(input_string):
     stack = []
-    for char in inputString:
+    for char in input_string:
         if char == '(':
             stack.append('(')
         elif char == ')':
@@ -13,11 +13,11 @@ def check_brackets(inputString):
     return len(stack) == 0
 
 
-inputString = "((()))"
-print(inputString, "\t: ", check_brackets(inputString))  # Вернет True
+input_string = "((()))"
+print(input_string, "\t: ", check_brackets(input_string))  # Вернет True
 
-inputString = "(()))"
-print(inputString, "\t: ", check_brackets(inputString), "\n")  # Вернет False
+input_string = "(()))"
+print(input_string, "\t: ", check_brackets(input_string), "\n")  # Вернет False
 
 
 def check_brackets(input_string):
@@ -37,11 +37,11 @@ def check_brackets(input_string):
     return len(stack) == 0
 
 
-inputString = "{[()()]}"
-print(inputString, ": ", check_brackets(inputString))  # Вернет True
+input_string = "{[()()]}"
+print(input_string, ": ", check_brackets(input_string))  # Вернет True
 
-inputString = "({)}"
-print(inputString, "\t : ", check_brackets(inputString))  # Вернет False
+input_string = "({)}"
+print(input_string, "\t : ", check_brackets(input_string))  # Вернет False
 
 # Задание 2
 print("\nЗадание 2")
@@ -318,13 +318,13 @@ def palindromic_substrings(s):
 
 
 # Пример использования
-inputString = "abcbabad"
+input_string = "abcbabad"
 # print(input_string[4:len(input_string)+4])
-palindrome_substrings = find_palindromes(inputString)
+palindrome_substrings = find_palindromes(input_string)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
-palindrome_substrings = palindromic_substrings(inputString)
+palindrome_substrings = palindromic_substrings(input_string)
 print("Палиндромные подстроки в строке:")
 print(palindrome_substrings)
 
