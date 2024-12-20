@@ -4,16 +4,16 @@ from checksum import calculate_checksum, serialize_result
 
 # Регулярные выражения для валидации
 regex_patterns = {
-    'email': r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
-    'height': r'^[0-9]{1,2}(\.[0-9]{1,2})?$',
-    'inn': r'^\d{10,12}$',
-    'passport': r'^\d{2} \d{2} \d{6}$',
-    'occupation': r'^[A-Za-zА-Яа-яЁё\s]+$',
-    'latitude': r'^-?([1-8]?[0-9]|90)\.[0-9]+$',
-    'hex_color': r'^#[0-9a-fA-F]{6}$',
-    'issn': r'^\d{4}-\d{4}$',
-    'uuid': r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
-    'time': r'^\d{2}:\d{2}:\d{2}\.\d{6}$'
+    'email'      :  r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+    'height'     :  r'^[0-9]{1,2}(\.[0-9]{1,2})?$',
+    'inn'        :  r'^\d{10,12}$',
+    'passport'   :  r'^\d{2} \d{2} \d{6}$',
+    'occupation' :  r'^[A-Za-zА-Яа-яЁё\s]+$',
+    'latitude'   :  r'^-?([1-8]?[0-9]|90)\.[0-9]+$',
+    'hex_color'  :  r'^#[0-9a-fA-F]{6}$',
+    'issn'       :  r'^\d{4}-\d{4}$',
+    'uuid'       :  r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    'time'       :  r'^\d{2}:\d{2}:\d{2}\.\d{6}$'
 }
 
 def validate_row(row):
