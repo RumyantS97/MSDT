@@ -18,7 +18,8 @@ class Execution:
         Args:
             input_string (str): Folders names
             time_sleep (int): Pause time between folder creation
-            num_iterations (int): Number of iterations; 0 means it's disabled and >0 create the amount of folders and increments the value of '{inc}' from <startPos> to it. Defaults to 0.
+            num_iterations (int): Number of iterations; 0 means it's disabled and >0 create the amount of folders and
+            increments the value of '{inc}' from <startPos> to it. Defaults to 0.
             start_pos (int, optional): pos to start from if iteration mode selcted. Defaults to 0.
         """
         self.functions_output = ""
@@ -57,13 +58,15 @@ class Execution:
                 else:
                     self.functions_output = str(error) + "\n"
 
-    def remove_folders(self, input_string: int, mode_selected: int, starts_endswith: str, num_iterations=0, start_pos=0):
+    def remove_folders(self, input_string: int, mode_selected: int,
+                       starts_endswith: str, num_iterations=0, start_pos=0):
         """Remove folders named after the specified names
         Args:
             input_string (int): Folders names
             mode_selected (int): 1 is 'starts with', 2 is 'ends with' and 0 is normal/iteration
             starts_endswith (str): Charactes passed as params is mode_selected is 1 or 2
-            num_iterations (int, optional): 0 is no iteration and >0 loops replacing '{inc}' by the loop index. Defaults to 0.
+            num_iterations (int, optional): 0 is no iteration and >0 loops replacing '{inc}' by the loop index.
+            Defaults to 0.
             start_pos (int, optional): pos to start from if iteration mode selcted. Defaults to 0.
         """
         self.functions_output = ""
@@ -183,7 +186,8 @@ class WindowUI:
         text_box_1.pack(expand=True, fill=tk.BOTH)
 
         button_go_1 = tk.Button(self.tab1, text="Go!",
-                              command=lambda: [self.new_create_folders(text_box_1.get("1.0", 'end-1c'), v1.get())])
+                              command=lambda: [self.new_create_folders(text_box_1.get("1.0",
+                                                                                      'end-1c'), v1.get())])
         button_go_1.pack(side="bottom", pady=10)
 
         v1 = tk.DoubleVar()
@@ -195,8 +199,9 @@ class WindowUI:
 
         self.increment_variable = tk.IntVar()
 
-        increment_button_1 = tk.Checkbutton(self.tab1, text="Increment mode", variable=self.increment_variable, onvalue=1,
-                                          offvalue=0, command=lambda: [self.increment_selector(self.tab1)])
+        increment_button_1 = tk.Checkbutton(self.tab1, text="Increment mode", variable=self.increment_variable,
+                                            onvalue=1, offvalue=0,
+                                            command=lambda: [self.increment_selector(self.tab1)])
         increment_button_1.pack(side="left", anchor="sw")
 
         # tab2 - remove folders
@@ -218,8 +223,9 @@ class WindowUI:
             self.new_remove_folders(test_box_2.get("1.0", 'end-1c'), v4.get(), entry_box_1.get())])
         button_go_2.pack(side="bottom", pady=10)
 
-        increment_button_2 = tk.Checkbutton(self.tab2, text="Increment mode", variable=self.increment_variable, onvalue=1,
-                                          offvalue=0, command=lambda: [self.increment_selector(self.tab2)])
+        increment_button_2 = tk.Checkbutton(self.tab2, text="Increment mode", variable=self.increment_variable,
+                                            onvalue=1, offvalue=0,
+                                            command=lambda: [self.increment_selector(self.tab2)])
         increment_button_2.pack(side="left", anchor="sw")
 
         # tab3 - modify folders
@@ -322,7 +328,8 @@ class WindowUI:
         if str(increment_start).isdigit():
             increment_start = int(increment_start)
 
-        p = threading.Thread(target=self.execution.create_folders(entry_get, sleep_value, increment_value, increment_start))
+        p = threading.Thread(target=self.execution.create_folders(entry_get, sleep_value,
+                                                                  increment_value, increment_start))
         p.start()
         self.logs.configure(state="normal")
         self.logs.insert("1.0", f"---------------------------------\n{self.execution.function_outputs}")
@@ -345,7 +352,8 @@ class WindowUI:
             increment_start = int(increment_start)
 
         p = threading.Thread(
-            target=self.execution.remove_folders(entry_get, mode_selected, starts_endswith, increment_value, increment_start))
+            target=self.execution.remove_folders(entry_get, mode_selected, starts_endswith,
+                                                 increment_value, increment_start))
         p.start()
         self.logs.configure(state="normal")
         self.logs.insert("1.0", f"---------------------------------\n{self.execution.function_outputs}")
@@ -363,7 +371,8 @@ class WindowUI:
         p.start()
         self.logs.configure(state="normal")
         self.logs.insert("1.0",
-                         f"---------------------------------\nCurrently working on:\n{os.getcwd()}.\nFolders list:\n{self.execution.folders_list}")
+                         f"---------------------------------\nCurrently working on:\n{os.getcwd()}."
+                         f"\nFolders list:\n{self.execution.folders_list}")
         self.logs.configure(state="disabled")
 
     def new_change_folder(self):
