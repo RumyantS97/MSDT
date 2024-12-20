@@ -1,3 +1,5 @@
+"""Starter module of pixel python game."""
+
 import base64
 import glob
 import multiprocessing
