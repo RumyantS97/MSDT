@@ -9,7 +9,6 @@ from collections import defaultdict
 # Задание 1
 print("Задание 1")
 
-
 def check_brackets(input_string):
     stack = []
     for char in input_string:
@@ -60,20 +59,24 @@ class MinStack:
         self.stack = []
         self.min_stack = []
 
+
     def push(self, x):
         self.stack.append(x)
         if not self.min_stack or x <= self.min_stack[-1]:
             self.min_stack.append(x)
+
 
     def pop(self):
         if self.stack:
             if self.stack[-1] == self.min_stack[-1]:
                 self.min_stack.pop()
             return self.stack.pop()
+        
 
     def min(self):
         if self.min_stack:
             return self.min_stack[-1]
+        
 
     def print_stack(self):
         for i in self.stack:
@@ -146,6 +149,7 @@ def find_duplicate(nums):
 
     return tortoise
 
+
 # Пример использования
 nums = [1, 3, 4, 2, 2]
 print(nums)
@@ -179,6 +183,7 @@ def zero_matrix(matrix):
                 matrix[i][j] = 0
 
     return matrix
+
 
 # Пример использования
 matrix = [
@@ -288,6 +293,7 @@ print("\nЗадание 2")
 def find_palindromes(s):
     def is_palindrome(substring):
         return substring == substring[::-1]
+    
 
     palindromes = []
     n = len(s)
@@ -307,6 +313,7 @@ def palindromic_substrings(s):
             palindromes.append(s[left:right + 1])
             left -= 1
             right += 1
+
 
     palindromes = []
     for i in range(len(s)):
@@ -337,8 +344,10 @@ class Node:
         self.left = None
         self.right = None
 
+
     def __lt__(self, other):
         return self.freq < other.freq
+    
 
 def build_huffman_tree(text):
     freq_dict = defaultdict(int) # Создаем словарь и заносим к ключу количество совпадений
@@ -360,12 +369,14 @@ def build_huffman_tree(text):
 
     return min_heap[0]
 
+
 def build_huffman_codes(node, current_code, huffman_codes): # Для каждого узла сохраняется его двоичный код из дерева
     if node:
         if node.char:
             huffman_codes[node.char] = current_code
         build_huffman_codes(node.left, current_code + '0', huffman_codes)
         build_huffman_codes(node.right, current_code + '1', huffman_codes)
+
 
 def huffman_encoding(text):
     root = build_huffman_tree(text) # Построение дерева
@@ -374,6 +385,7 @@ def huffman_encoding(text):
 
     encoded_text = ''.join(huffman_codes[char] for char in text) # Преобразовываем текст проходя посимвольно
     return encoded_text, huffman_codes # Возвращаем закодированный текст и словарь с кодом
+
 
 def huffman_decoding(encoded_text, huffman_codes):
     decoded_text = ''
@@ -385,8 +397,8 @@ def huffman_decoding(encoded_text, huffman_codes):
                 decoded_text += char
                 current_code = ''
                 break
-
     return decoded_text
+
 
 # Пример использования
 text = "hello world"
@@ -410,9 +422,10 @@ def has_cycle(graph): # O(n + m)
                     return True
             elif rec_stack[neighbor]: # Если обнаруживается сосед как записаный, то есть цикл
                 return True
-
+            
         rec_stack[node] = False
         return False
+    
 
     visited = defaultdict(bool) # Словарь для отслеживания посещенных вершин
     rec_stack = defaultdict(bool) # Словарь для отслеживания вершин в текущем стеке вызовов
@@ -423,6 +436,7 @@ def has_cycle(graph): # O(n + m)
                 return True
 
     return False
+
 
 # Пример использования
 graph = {
