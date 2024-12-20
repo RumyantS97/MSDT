@@ -1,7 +1,17 @@
 import random as rand
+import logging
+
+
+logging.basicConfig(
+    level = logging.DEBUG,
+    format = "%(asctime)s - %(levelname)s - %(message)s",
+    datefmt = "%Y-%m-%d %H:%M:%S",
+    filename = "msdt-4\log.txt",
+    filemode = "w"
+)
 
 class Node:
-    def __init__(self, value=0, next=None):
+    def __init__(self, value = 0, next=None):
         self.value = value
         self.next = next
         self.random = None
@@ -15,11 +25,13 @@ class LinkedList:
 
 
     def add(self, value=0):
+        logging.info(f"Добавление узла с значением: {value}")
         if not self.head:
             self.head = Node(value)
             self.length += 1
             self.list_node.append(self.head)
             self.head.random = self.head
+            logging.debug(f"Создан узел-хед: {self.head.value} с указателем random на себя.")
         else:
             self.length += 1
             current = self.head
@@ -30,10 +42,12 @@ class LinkedList:
             current = self.head
             while current:
                 current.random = self.list_node[rand.randint(0, self.length - 1)]
+                logging.debug(f"Назначен случайный указатель random для узла {current.value}: {current.random.value}")
                 current = current.next
 
 
     def __copy__(self):
+        logging.info("Создание глубокой копии LinkedList.")
         if not self.head:
             return LinkedList()
         else:
@@ -47,6 +61,7 @@ class LinkedList:
             while current:
                 if current.random is not None:
                     current.next.random = current.random
+                    logging.debug(f"Установлен random для копированного узла {current.next.value} на {current.next.random.value}")
                 current = current.next.next
             new_node = self.head.next
             cur_old = self.head
@@ -60,6 +75,7 @@ class LinkedList:
 
             new_ll = LinkedList()
             new_ll.head = new_node
+            logging.info("Глубокая копия LinkedList успешно создана.")
             return new_ll
         
 
@@ -86,25 +102,34 @@ b = ll.__copy__()
 print(b)
 
 def zero_matrix(matrix):
+    logging.info("Начало функции zero_matrix.")
     if not matrix:
+        logging.warning("Пустая матрица передана.")
         return
 
     rows_with_zero = set()
     cols_with_zero = set()
+    logging.debug(f"Исходная матрица: {matrix}")
 
     for i in range(len(matrix)):
         for j in range(len(matrix[0])):
             if matrix[i][j] == 0:
                 rows_with_zero.add(i)
                 cols_with_zero.add(j)
+                logging.debug(f"Найден нулевой элемент на позиции ({i}, {j})")
 
     for i in rows_with_zero:
         for j in range(len(matrix[0])):
             matrix[i][j] = 0
+            logging.debug(f"Устанавливаю строку {i} в нули")
 
     for j in cols_with_zero:
         for i in range(len(matrix)):
             matrix[i][j] = 0
+            logging.debug(f"Устанавливаю столбец {j} в нули")
+
+    logging.info("Завершена функция zero_matrix.")
+    logging.debug(f"Результирующая матрица: {matrix}")
 
 
 matrix = [
