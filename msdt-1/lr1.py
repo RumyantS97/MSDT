@@ -13,8 +13,8 @@ def execute_query(query):
     conn = mysql.connector.connect(
       host = "127.0.0.1",
       user = "root",
-      password = "daytel4125", # Укажите свой пароль
-      database = "vm_lab"  # Укажите свою базу данных
+      password = "Lenya1631!", # Укажите свой пароль
+      database = "test"  # Укажите свою базу данных
     )
     
     cursor = conn.cursor()
@@ -458,7 +458,7 @@ btn_select1 = tk.Button(root, text = "Вывод писателей, фамил�
                                            from writers where surname \
                                            like 'П%' order by surname"), 
                         wraplength = 150)
-btn_select1(row = 7, column = 0, padx = 5, pady = 5)
+btn_select1.grid(row = 7, column = 0, padx = 5, pady = 5)
 
 btn_select2 = tk.Button(root, text = "Вывод авторов, написавших более 1 книги", 
                         command = lambda: 

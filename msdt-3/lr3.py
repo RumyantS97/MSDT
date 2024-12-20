@@ -63,7 +63,7 @@ def validation_string_values(array_params):
         ^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$
     """, re.VERBOSE)
     # Проверка http_status_message
-    http_pattern = re.compile(r"""
+    http = re.compile(r"""
         ^
         [\d]{3}                  # Код стутуса
         \s+                      # Пробел после кода
@@ -71,11 +71,11 @@ def validation_string_values(array_params):
         $
     """, re.VERBOSE)
 # Проверка ip_v4
-    ip_pattern = re.compile(r"""
+    ip = re.compile(r"""
         ^
         (
             [0-1][0-9]{2}|
-            2[0-4][0-9]|         # Бит адреса
+            2[0-4][0-9]|         
             25[0-5]|
             [0-9][0-9]|
             [0-9]
@@ -83,7 +83,7 @@ def validation_string_values(array_params):
         (
             \.(
                 [0-1][0-9]{2}|
-                2[0-4][0-9]|     # Бит адреса
+                2[0-4][0-9]|     
                 25[0-5]|
                 [0-9][0-9]|
                 [0-9]
@@ -91,13 +91,7 @@ def validation_string_values(array_params):
         ){3}
         $
     """, re.VERBOSE)
-    # Проверка isbn
-    
-    '''
-        Формат кода книги тоже задаётся иным образом
-    '''
-    
-    isbn_pattern = re.compile(r"""
+    isbn = re.compile(r"""
         ^
         (\d{3}-)?
         \d
@@ -131,13 +125,13 @@ def validation_string_values(array_params):
     if not inn.match(clean_params[2]):
         #print(clean_params[2])
         return False
-    if not http_pattern.match(clean_params[1]):
+    if not http.match(clean_params[1]):
         #print(clean_params[1])
         return False
-    if not ip_pattern.match(clean_params[4]):
+    if not ip.match(clean_params[4]):
         #print(clean_params[4])
         return False
-    if not isbn_pattern.match(clean_params[7]):
+    if not isbn.match(clean_params[7]):
         #print(clean_params[7])
         return False
     return True
