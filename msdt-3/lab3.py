@@ -15,7 +15,7 @@ validation_rules = {
     'hex_color' : r'^#[0-9A-Fa-f]{6}$',
     'issn'      : r'^\d{4}-\d{4}$',
     'uuid'      : r'^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$',
-    'time'      : r'^[0-2][0-9]:[0-5][0-9]:[0-5][0-9]$'
+    'time'      : r'^\d{2}:\d{2}:\d{2}\.\d{6}$'
 }
 
 def validate_row(data_row: dict) -> bool:
