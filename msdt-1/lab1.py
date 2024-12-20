@@ -9,18 +9,36 @@ from tkinter import filedialog, ttk
 
 class Execution:
     def change_folder(self):
-        """Simply changes the current working directory
+        """
+        Changes the current working directory to a selected directory.
+
+        Opens a directory selection dialog and sets the current working directory
+        to the selected folder.
+
+        Returns:
+            None
         """
         os.chdir(filedialog.askdirectory() + "/")
 
     def create_folders(self, input_string: str, time_sleep: int, num_iterations=0, start_pos=0):
-        """Create folders named after the names specified
+        """
+        Create folders based on the specified names.
+
         Args:
-            input_string (str): Folders names
-            time_sleep (int): Pause time between folder creation
-            num_iterations (int): Number of iterations; 0 means it's disabled and >0 create the amount of folders and
-            increments the value of '{inc}' from <startPos> to it. Defaults to 0.
-            start_pos (int, optional): pos to start from if iteration mode selcted. Defaults to 0.
+            input_string (str): Names of the folders to create, separated by newlines.
+            time_sleep (int): Pause time in seconds between folder creation.
+            num_iterations (int, optional): Number of iterations; 0 means no iteration
+                and >0 creates the specified number of folders incrementing the value of
+                '{inc}' from <start_pos>. Defaults to 0.
+            start_pos (int, optional): Starting position for incrementing if iteration mode
+                is selected. Defaults to 0.
+
+        Returns:
+            None
+
+        Exceptions:
+            Raises an error if folder creation fails due to invalid names or if the folder
+            already exists.
         """
         self.functions_output = ""
         input_list = input_string.split("\n")
@@ -60,14 +78,25 @@ class Execution:
 
     def remove_folders(self, input_string: int, mode_selected: int,
                        starts_endswith: str, num_iterations=0, start_pos=0):
-        """Remove folders named after the specified names
+        """
+        Remove folders based on the specified conditions.
+
         Args:
-            input_string (int): Folders names
-            mode_selected (int): 1 is 'starts with', 2 is 'ends with' and 0 is normal/iteration
-            starts_endswith (str): Charactes passed as params is mode_selected is 1 or 2
-            num_iterations (int, optional): 0 is no iteration and >0 loops replacing '{inc}' by the loop index.
-            Defaults to 0.
-            start_pos (int, optional): pos to start from if iteration mode selcted. Defaults to 0.
+            input_string (str): Names of the folders to remove, separated by newlines.
+            mode_selected (int): Mode selection; 1 for 'starts with', 2 for 'ends with',
+                and 0 for normal/iteration mode.
+            starts_ends_with (str): Characters used for filtering folders if mode_selected is
+                1 or 2.
+            num_iterations (int, optional): 0 means no iteration; >0 loops replacing
+                '{inc}' by the loop index. Defaults to 0.
+            start_pos (int, optional): Starting position for incrementing if iteration mode
+                is selected. Defaults to 0.
+
+        Returns:
+            None
+
+        Exceptions:
+            Raises an error if folder removal fails due to non-existent folders or other issues.
         """
         self.functions_output = ""
         input_list = input_string.split("\n")
@@ -120,6 +149,21 @@ class Execution:
                     self.functions_output = "Done!\n"
 
     def modify_folders(self, input_string: str, mode_selected: int, replace_with: str, time_sleep: int):
+        """
+            Modify folder names based on specified conditions.
+
+            Args:
+                input_string (str): The string to match against folder names.
+                mode_selected (int): Mode selection; 1 for 'starts with', 2 for 'ends with'.
+                replace_with (str): The string to replace matched portions of folder names.
+                time_sleep (int): Pause time in seconds between modifications.
+
+            Returns:
+                None
+
+            Exceptions:
+                Raises an error if folder modification fails due to invalid names or other issues.
+        """
         for it in os.listdir(os.getcwd()):
             if os.path.isdir(it):
                 try:
@@ -142,6 +186,14 @@ class Execution:
                     self.function_outputs = str(error) + "\n"
 
     def get_folder_list(self):
+        """
+        Retrieves the list of folders in the current working directory.
+
+        Updates the folders_list attribute with the names of all directories.
+
+        Returns:
+            None
+        """
         self.folders_list = ""
         for it in os.listdir(os.getcwd() + "/"):
             if os.path.isdir(it):
@@ -151,6 +203,11 @@ class Execution:
 # UI class
 class WindowUI:
     def __init__(self):
+        """
+        Initializes the user interface for the Mass Directory Manager.
+
+        Sets up the main window, tabs, and controls for folder management operations.
+        """
         self.execution = Execution()
 
         # global
@@ -278,18 +335,51 @@ class WindowUI:
         button_quit.pack(side="bottom", anchor="se", pady=8, padx=8)
 
     def focus_next_widget(self, event):
+        """
+        Focuses the next widget in the tab order.
+
+        Args:
+            event: The event that triggered this method.
+
+        Returns:
+            str: A string indicating to break the event propagation.
+        """
         event.widget.tk_focusNext().focus()
         return ("break")
 
     def focus_previous_widget(self, event):
+        """
+        Focuses the previous widget in the tab order.
+
+        Args:
+            event: The event that triggered this method.
+
+        Returns:
+            str: A string indicating to break the event propagation.
+        """
         event.widget.tk_focusPrev().focus()
         return ("break")
 
     def clear_logs(self):
+        """
+        Clears the log text area.
+
+        Returns:
+            None
+        """
         self.logs.config(state=tk.NORMAL)
         self.logs.delete('1.0', tk.END)
 
     def increment_selector(self, selected_tab):
+        """
+        Toggles the increment mode UI elements in the specified tab.
+
+        Args:
+            selected_tab: The tab where the increment mode is being toggled.
+
+        Returns:
+            None
+        """
         variable = self.increment_variable.get()
         if variable == 1:
             self.label_1 = tk.Label(selected_tab, text="Num to loop")
@@ -313,6 +403,16 @@ class WindowUI:
                 print(f"Error while destroying widgets: {error}")
 
     def new_create_folders(self, entry_get="", sleep_value=0):
+        """
+        Initiates the creation of folders in a separate thread.
+
+        Args:
+            entry_get (str): The names of folders to create.
+            sleep_value (int): The time to pause between actions.
+
+        Returns:
+            None
+        """
         try:
             increment_value = self.increment_value.get(1.0, "end-1c")
             increment_start = self.increment_start.get(1.0, "end-1c")
@@ -338,6 +438,17 @@ class WindowUI:
         self.logs.configure(state="disabled")
 
     def new_remove_folders(self, entry_get="", mode_selected=0, starts_endswith=""):
+        """
+        Initiates the removal of folders in a separate thread.
+
+        Args:
+            entry_get (str): The names of folders to remove.
+            mode_selected (int): The mode of removal (1 for 'starts with', 2 for 'ends with').
+            starts_ends_with (str): The characters to match for removal.
+
+        Returns:
+            None
+        """
         try:
             increment_value = self.increment_value.get(1.0, "end-1c")
             increment_start = self.increment_start.get(1.0, "end-1c")
@@ -364,6 +475,18 @@ class WindowUI:
         self.logs.configure(state="disabled")
 
     def new_modify_folders(self, entry_get="", mode_selected=0, replace_with="", sleep_value=0):
+        """
+        Initiates the modification of folder names in a separate thread.
+
+        Args:
+            entry_get (str): The string to match against folder names.
+            mode_selected (int): Mode selection; 1 for 'starts with', 2 for 'ends with'.
+            replace_with (str): The string to replace matched portions of folder names.
+            sleep_value (int): Pause time in seconds between modifications.
+
+        Returns:
+            None
+        """
         p = threading.Thread(target=self.execution.modify_folders(entry_get, mode_selected, replace_with, sleep_value))
         p.start()
         self.logs.configure(state="normal")
@@ -371,6 +494,14 @@ class WindowUI:
         self.logs.configure(state="disabled")
 
     def new_folders_list(self):
+        """
+        Initiates the retrieval of the folder list in a separate thread.
+
+        Updates the logs with the current working directory and the list of folders.
+
+        Returns:
+            None
+        """
         p = threading.Thread(target=self.execution.get_folder_list())
         p.start()
         self.logs.configure(state="normal")
@@ -380,10 +511,24 @@ class WindowUI:
         self.logs.configure(state="disabled")
 
     def new_change_folder(self):
+        """
+        Initiates the change of the working directory in a separate thread.
+
+        Opens a dialog to select a new working directory.
+
+        Returns:
+            None
+        """
         p = threading.Thread(target=self.execution.change_folder())
         p.start()
 
     def new_open_current_folder(self):
+        """
+        Opens the current working directory in the file explorer.
+
+        Returns:
+            None
+        """
         subprocess.Popen(f'explorer "{os.getcwd()}"')
 
 
