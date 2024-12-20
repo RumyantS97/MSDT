@@ -79,7 +79,8 @@ def cli():
         print("usage:")
         for command in commands:
             if command_name is None or command[0] == command_name:
-                print(f"    pixel {' '.join(command[0])}")
+                # :^ – center leveling
+                print(f"pixel {' '.join(command[0]):^}")
         _check_newer_version()
 
     num_args = len(sys.argv)
