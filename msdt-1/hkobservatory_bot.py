@@ -1,4 +1,5 @@
 import json
+from typing import Dict, List, Union, Optional
 
 import feedparser
 import bs4
@@ -15,7 +16,10 @@ dispatcher = updater.dispatcher
 job_queue = updater.job_queue
 
 
-def check_feed_update():
+def check_feed_update() -> Dict[str, List[feedparser.FeedParserDict]]:
+    """
+    Checks for updates in the weather feeds and returns any new updates.
+    """
     try:
         with open(feed) as f:
             feeds = json.load(f)
@@ -77,7 +81,10 @@ def check_feed_update():
     return updates
 
 
-def get_user_language():
+def get_user_language() -> Dict[str, str]:
+    """
+    Retrieves the language preferences of all users.
+    """
     try:
         with open(lang) as f:
             user_language = json.load(f)
@@ -86,7 +93,10 @@ def get_user_language():
     return user_language
 
 
-def get_topics():
+def get_topics() -> str:
+    """
+    Provides a list of available weather topics.
+    """
     topics = [
         "Current - Current weather information",
         "Warning - Warnings in force",
@@ -95,7 +105,11 @@ def get_topics():
     return topics
 
 
-def get_feed_message(user_id, topic):
+def get_feed_message(user_id: str, topic: str) -> str:
+    """
+    Generates a message with weather information
+     based on the user's language preference.
+    """
     check_feed_update()
     user_language = get_user_language()
     language = user_language.get(user_id, "english")
@@ -133,13 +147,19 @@ def get_feed_message(user_id, topic):
     return message
 
 
-def start(bot, update):
+def start(bot: telegram.Bot, update: telegram.Update) -> None:
+    """
+    Handles the /start command to introduce the bot.
+    """
     message = "Hi, I'm HKObservatoryBot! \
         Type @hkobservatory_bot to see what I can do!"
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
 
 
-def inline_query(bot, update):
+def inline_query(bot: telegram.Bot, update: telegram.Update) -> None:
+    """
+    Handles inline queries and provides relevant results.
+    """
     query = update.inline_query.query
     results = []
     user_id = str(update.inline_query.from_user.id)
@@ -276,7 +296,11 @@ def inline_query(bot, update):
     bot.answerInlineQuery(update.inline_query.id, results, cache_time=0)
 
 
-def inline_result(bot, update):
+def inline_result(bot: telegram.Bot, update: telegram.Update) -> None:
+    """
+    Processes chosen inline results 
+    and updates user subscriptions or preferences.
+    """
     result_id = update.chosen_inline_result.result_id
     user_id = str(update.chosen_inline_result.from_user.id)
 
@@ -316,7 +340,10 @@ def inline_result(bot, update):
             json.dump(subscribers, f)
 
 
-def send_update(bot, job):
+def send_update(bot: telegram.Bot, job: telegram.ext.Job) -> None:
+    """
+    Sends updates to subscribed users if new weather information is available.
+    """
     try:
         with open(subs) as f:
             subscribers = json.load(f)
@@ -341,7 +368,6 @@ def send_update(bot, job):
 
 job_queue.put(telegram.ext.Job(send_update, 3600.0))
 
-# Handlers for commands, inline queries and results
 start_handler = telegram.ext.CommandHandler("start", start)
 dispatcher.add_handler(start_handler)
 
