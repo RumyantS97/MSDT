@@ -169,13 +169,14 @@ def battle_with_custom(player, monster):
 
 # Добавление новых функций для улучшения игры
 def save_game(player):
+    """Save the player's game state to a file."""
     with open(f"{player.name}_save.txt", "w") as f:
         f.write(f"{player.name}\n{player.hp}\n{player.level}\n{player.experience}\n")
         for item in player.inventory:
             f.write(f"{item.name}\n")
 
-
 def load_game():
+    """Load the player's game state from a file."""
     name = input("Enter your character's name to load: ")
     try:
         with open(f"{name}_save.txt", "r") as f:
@@ -195,6 +196,7 @@ def load_game():
     except FileNotFoundError:
         print("Save file not found.")
         return None
+
 
 
 def main_menu():
