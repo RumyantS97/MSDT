@@ -85,9 +85,9 @@ def grid():
                             (y + grid_size) * (depth + 1) + (z + depth + 1)]
 
                 # Рисование линий
-                pygame.draw.line(screen, white, p1, p2, 1) #Линия по x
-                pygame.draw.line(screen, white, p1, p3, 1) #Линия по y
-                pygame.draw.line(screen, white, p1, p4, 1) #Линия по z
+                pygame.draw.line(screen, white, p1, p2, 1)  # Линия по x
+                pygame.draw.line(screen, white, p1, p3, 1)  # Линия по y
+                pygame.draw.line(screen, white, p1, p4, 1)  # Линия по z
 
 
 def project_to_2d_isometric(x, y, z):
@@ -132,7 +132,7 @@ def draw_arrow(start, color, angle):
     pygame.draw.line(screen, color, start, (x_end, y_end), 3)
 
     # Рисуем вторую линию стрелки
-    angle2 = angle + math.pi / 3 #Второй угол для стрелки (30 градусов)
+    angle2 = angle + math.pi / 3  # Второй угол для стрелки (30 градусов)
     x_end2 = start[0] + arrow_size * math.cos(angle2)
     y_end2 = start[1] - arrow_size * math.sin(angle2)
 
@@ -166,7 +166,7 @@ def draw_scale_marks(axis_end, axis, color):
             pygame.draw.line(screen, color, (x_pos, y_pos-10), (x_pos, y_pos + 10), 2)
             draw_text((x_pos-30, y_pos), str(i), color)
     elif axis == 'Z':
-        for i in range(1, steps): #Рисуем 5 меток
+        for i in range(1, steps):  # Рисуем 5 меток
             x_pos = start_x + (axis_end_x - start_x) / steps * i
             y_pos = start_y + (axis_end_y - start_y) / steps * i
             pygame.draw.line(screen, color, (x_pos-10, y_pos), (x_pos+10, y_pos), 2)
