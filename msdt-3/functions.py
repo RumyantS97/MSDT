@@ -24,22 +24,17 @@ def write_json(path: str, file_content: dict) -> None:
         json.dump(file_content, file)
 
 
-def check_validation(data: list, file_patterns: dict) -> bool:
+def invalid_list(data: list[list[str]], patern: dict) -> list[int]:
     """
-    Checking file validation by using patterns.
+    Get invalide indexs
     """
-    for key, value in zip(file_patterns.keys(), data):
-        if not re.match(file_patterns[key], value):
-            return False
-    return True
+    invalid_rows = []
 
+    for row_number, row in enumerate(data):
+        for col_index, (field, key) in enumerate(zip(row, patern.keys())):
+            pattern = patern[key]
+            if not re.fullmatch(pattern, field):
+                invalid_rows.append(row_number)
+                break 
 
-def invalid_list(file_data: list, patterns: dict) -> list[int]:
-    """
-    Getting invalidated indexs.
-    """
-    invalid_list = []
-    for i, row in enumerate(file_data):
-        if not check_validation(row, patterns):
-            invalid_list.append(i)
-    return invalid_list
+    return invalid_rows
