@@ -1,11 +1,10 @@
 import os
 import pytest
-from pytest_mock import mocker
 import time
 from user import UserDataFetcher, User, Calculator, Database, RandomDataGenerator, Timer, save_to_file, load_from_file
 
 
-def test_fetch_data_success(mocker):
+def test_fetch_data_success(mocker):  
     mock_response = mocker.Mock()
     mock_response.status_code = 200
     mock_response.json.return_value = {"name": "John", "age": 30}
@@ -21,7 +20,7 @@ def test_fetch_data_success(mocker):
     mock_response.json.assert_called_once()
 
 
-def test_fetch_data_failure(mocker):
+def test_fetch_data_failure(mocker): 
     mock_response = mocker.Mock()
     mock_response.status_code = 500
     
@@ -34,7 +33,7 @@ def test_fetch_data_failure(mocker):
         fetcher.fetch_data()
 
 
-def test_process_data_valid(mocker):
+def test_process_data_valid(mocker):  
     fetcher = UserDataFetcher(api_url="")
     data = {"name": "John", "age": 30}
     
@@ -43,7 +42,7 @@ def test_process_data_valid(mocker):
     assert processed_data == {"name": "JOHN", "age": 60}
     
     
-def test_process_data_invalid(mocker):
+def test_process_data_invalid(mocker): 
     fetcher = UserDataFetcher(api_url="")
     
     with pytest.raises(ValueError, match="Invalid data format"):
