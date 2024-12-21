@@ -1,10 +1,15 @@
 import json
+
 import feedparser
 import bs4
 import telegram
 import telegram.ext
 
-bot_token = "243527010:AAGWz1pfH5uIKOFAH2A6M6wwIoVdhwhjxzY"
+from token import bot_token
+from links import weather1, weather2, weather3, weather4, weather5, weather6
+from paths import lang, feed, subs
+
+
 updater = telegram.ext.Updater(token=bot_token)
 dispatcher = updater.dispatcher
 job_queue = updater.job_queue
@@ -13,17 +18,17 @@ job_queue = updater.job_queue
 # Checks if feeds have updated by comparing saved feed dates to new feed
 def check_feed_update():
     try:
-        with open("feeds.txt") as f:
+        with open(feed) as f:
             feeds = json.load(f)
         updates = {}
-        current_en_update = feedparser.parse("http://rss.weather.gov.hk/rss/CurrentWeather.xml")
-        warning_en_update = feedparser.parse("http://rss.weather.gov.hk/rss/WeatherWarningBulletin.xml")
+        current_en_update = feedparser.parse(weather1)
+        warning_en_update = feedparser.parse(weather2)
 
         if current_en_update:
             current_en = feeds["current"][0]
             if current_en["entries"][0]["published"] != current_en_update.entries[0].published:
-                current_trad_update = feedparser.parse("http://rss.weather.gov.hk/rss/CurrentWeather_uc.xml")
-                current_simp_update = feedparser.parse("http://gbrss.weather.gov.hk/rss/CurrentWeather_uc.xml")
+                current_trad_update = feedparser.parse(weather3)
+                current_simp_update = feedparser.parse(weather4)
                 current_update = [current_en_update, current_trad_update, current_simp_update]
                 updates["current"] = current_update
                 feeds["current"] = current_update
@@ -31,30 +36,30 @@ def check_feed_update():
         if warning_en_update:
             warning_en = feeds["warning"][0]
             if warning_en["entries"][0]["published"] != warning_en_update.entries[0].published:
-                warning_trad_update = feedparser.parse("http://rss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml")
-                warning_simp_update = feedparser.parse("http://gbrss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml")
+                warning_trad_update = feedparser.parse(weather5)
+                warning_simp_update = feedparser.parse(weather6)
                 warning_update = [warning_en_update, warning_trad_update, warning_simp_update]
                 updates["warning"] = warning_update
                 feeds["warning"] = warning_update
 
     except FileNotFoundError:
-        current_en = feedparser.parse("http://rss.weather.gov.hk/rss/CurrentWeather.xml")
-        current_trad = feedparser.parse("http://rss.weather.gov.hk/rss/CurrentWeather_uc.xml")
-        current_simp = feedparser.parse("http://gbrss.weather.gov.hk/rss/CurrentWeather_uc.xml")
+        current_en = feedparser.parse(weather1)
+        current_trad = feedparser.parse(weather3)
+        current_simp = feedparser.parse(weather4)
         current = [current_en, current_trad, current_simp]
 
-        warning_en = feedparser.parse("http://rss.weather.gov.hk/rss/WeatherWarningBulletin.xml")
-        warning_trad = feedparser.parse("http://rss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml")
-        warning_simp = feedparser.parse("http://gbrss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml")
+        warning_en = feedparser.parse(weather2)
+        warning_trad = feedparser.parse(weather5)
+        warning_simp = feedparser.parse(weather6)
         warning = [warning_en, warning_trad, warning_simp]
 
-        with open("feeds.txt", "w") as f:
+        with open(feed, "w") as f:
             updates = {"current":current, "warning":warning}
             feeds = updates
             json.dump(updates, f)
 
     if updates:
-        with open("feeds.txt", "w") as f:
+        with open(feed, "w") as f:
             json.dump(feeds, f)
     return updates
 
@@ -62,7 +67,7 @@ def check_feed_update():
 # Returns language preferences for all users
 def get_user_language():
     try:
-        with open("user_language.txt") as f:
+        with open(lang) as f:
             user_language = json.load(f)
     except FileNotFoundError:
         user_language = {}
@@ -81,7 +86,7 @@ def get_feed_message(user_id, topic):
     check_feed_update()
     user_language = get_user_language()
     language = user_language.get(user_id, "english")
-    with open("feeds.txt") as f:
+    with open(feed) as f:
         feeds = json.load(f)
 
     if language == "english":
@@ -240,12 +245,12 @@ def inline_result(bot, update):
     if "lang" in result_id:
         language = result_id[5:]
         try:
-            with open("user_language.txt") as f:
+            with open(lang) as f:
                 user_language = json.load(f)
         except FileNotFoundError:
             user_language = {}
 
-        with open("user_language.txt", "w") as f:
+        with open(lang, "w") as f:
             if result_id == ("lang_" + language):
                 user_language[user_id] = language
             json.dump(user_language, f)
@@ -253,12 +258,12 @@ def inline_result(bot, update):
     elif "sub" in result_id:
         topic = result_id[4:]
         try:
-            with open("subscribers.txt") as f:
+            with open(subs) as f:
                 subscribers = json.load(f)
         except FileNotFoundError:
             subscribers = {}
 
-        with open("subscribers.txt", "w") as f:
+        with open(subs, "w") as f:
             if result_id == ("sub_" + topic):
                 try:
                     if user_id not in subscribers[topic]:
@@ -276,7 +281,7 @@ def inline_result(bot, update):
 # Sends updates to subscribed users
 def send_update(bot, job):
     try:
-        with open("subscribers.txt") as f:
+        with open(subs) as f:
             subscribers = json.load(f)
         user_language = get_user_language()
     except FileNotFoundError:

@@ -1,0 +1,6 @@
+weather1 = "http://rss.weather.gov.hk/rss/CurrentWeather.xml"
+weather2 = "http://rss.weather.gov.hk/rss/WeatherWarningBulletin.xml"
+weather3 = "http://rss.weather.gov.hk/rss/CurrentWeather_uc.xml"
+weather4 = "http://gbrss.weather.gov.hk/rss/CurrentWeather_uc.xml"
+weather5 = "http://rss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
+weather6 = "http://gbrss.weather.gov.hk/rss/WeatherWarningBulletin_uc.xml"
