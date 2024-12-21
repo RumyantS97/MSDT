@@ -1,8 +1,55 @@
+import os
 import pytest
+from pytest_mock import mocker
 import time
 from user import UserDataFetcher, User, Calculator, Database, RandomDataGenerator, Timer, save_to_file, load_from_file
 
 
+def test_fetch_data_success(mocker):
+    mock_response = mocker.Mock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = {"name": "John", "age": 30}
+    
+    mocker.patch('requests.get', return_value=mock_response)
+    
+    api_url = "https://api.example.com/user/1"
+    fetcher = UserDataFetcher(api_url)
+    
+    data = fetcher.fetch_data()
+    
+    assert data == {"name": "John", "age": 30}
+    mock_response.json.assert_called_once()
+
+
+def test_fetch_data_failure(mocker):
+    mock_response = mocker.Mock()
+    mock_response.status_code = 500
+    
+    mocker.patch('requests.get', return_value=mock_response)
+    
+    api_url = "https://api.example.com/user/1"
+    fetcher = UserDataFetcher(api_url)
+    
+    with pytest.raises(Exception, match="Failed to fetch data"):
+        fetcher.fetch_data()
+
+
+def test_process_data_valid(mocker):
+    fetcher = UserDataFetcher(api_url="")
+    data = {"name": "John", "age": 30}
+    
+    processed_data = fetcher.process_data(data)
+    
+    assert processed_data == {"name": "JOHN", "age": 60}
+    
+    
+def test_process_data_invalid(mocker):
+    fetcher = UserDataFetcher(api_url="")
+    
+    with pytest.raises(ValueError, match="Invalid data format"):
+        fetcher.process_data({"name": "John"}) 
+        
+        
 def test_calculate_sum():
     calc = Calculator()
     assert calc.add(2, 3) == 5
@@ -61,7 +108,6 @@ def test_save_load_file():
     save_to_file(data, filename)
     loaded_data = load_from_file(filename)
     assert loaded_data == data
-    import os
     os.remove(filename)
 
 
