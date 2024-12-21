@@ -1,5 +1,6 @@
-import pygame
 import math
+
+import pygame
 
 from pygame import font
 
