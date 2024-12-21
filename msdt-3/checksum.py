@@ -98,3 +98,19 @@ def validate_data(data: list[list[str]], regex: dict) -> list[int]:
                 break
 
     return invalid_rows
+
+
+if __name__ == "__main__":
+    data = read_csv(CSV_PATH)
+    regex = read_json(REGEX_PATH)
+    invalid_rows = validate_data(data, regex)
+    summ = calculate_checksum(invalid_rows)
+    result = {
+        "variant": 21,
+        "checksum": summ
+    }
+    write_json_file(RESULT_PATH, result)
+
+    print(f"Невалидные строки: {invalid_rows}")
+    print(f"Контрольная сумма: {summ}")
+    print(len(invalid_rows))
