@@ -200,6 +200,7 @@ def load_game():
 
 
 def main_menu():
+    """Display the main menu and handle user choice."""
     print("1. New Game")
     print("2. Load Game")
     choice = input("Choose an option: ")
@@ -210,6 +211,6 @@ def main_menu():
         if player:
             explore(player)
 
-
 if __name__ == "__main__":
     main_menu()
+
