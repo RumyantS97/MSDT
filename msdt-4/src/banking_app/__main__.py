@@ -1,7 +1,11 @@
 from models.bank import Bank
 from exceptions.account_not_found_error import AccountNotFoundError
 from exceptions.insufficient_funds_error import InsufficientFundsError
+from config import logger
 
+
+# Add decorator catch to logs all exceptions
+@logger.catch
 def main():
     bank = Bank()
 

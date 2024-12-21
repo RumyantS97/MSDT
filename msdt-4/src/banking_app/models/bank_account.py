@@ -2,6 +2,8 @@
 functionalities for depositing, withdrawing, checking balance, and viewing
 transaction history.
 """
+from loguru import logger
+
 from models.transaction import Transaction
 from exceptions.insufficient_funds_error import InsufficientFundsError
 
@@ -34,6 +36,7 @@ class BankAccount:
         self.balance = 0.0
         self.currency = currency
         self.transactions = []
+        logger.info(f"Bank account id={self.account_id} is created")
 
     def deposit(self, amount):
         """The `deposit` function adds a specified amount to an account balance and
@@ -44,13 +47,19 @@ class BankAccount:
         increase the balance of the account by that specific amount
         """
         if amount <= 0:
+            logger.info("User attempt to add to bank account negative number.")
             raise ValueError("Сумма для пополнения должна быть положительной.")
         self.balance += amount
         transaction = Transaction("Пополнение", amount, self.balance)
         self.transactions.append(transaction)
         print(
             f"Успешно пополнен счет на {amount} {self.currency}.\n"
-            f"Текущий баланс: {self.balance} {self.currency}")
+            f"Текущий баланс: {self.balance} {self.currency}"
+        )
+        logger.info(
+            f"In bank account {self.account_id} "
+            f"was added {self.balance}. Now balance: {self.balance}"
+        )
 
     def withdraw(self, amount):
         """This function is likely a method within a class that handles withdrawing a
@@ -62,14 +71,20 @@ class BankAccount:
 
         """  # noqa: D404
         if amount <= 0:
+            logger.info("User attempt to raise negative number.")
             raise ValueError("Сумма для снятия должна быть положительной.")
         if amount > self.balance:
+            logger.info("User attempt to raise more money then it is.")
             raise InsufficientFundsError("Недостаточно средств на счете.")
         self.balance -= amount
         transaction = Transaction("Снятие", amount, self.balance)
         self.transactions.append(transaction)
         print(f"Успешно снято {amount} {self.currency}.\n"
               f"Текущий баланс: {self.balance} {self.currency}")
+        logger.info(
+            f"In bank account f{self.account_id} was withdraw "
+            f"{amount}. Now balance: {self.balance}"
+        )
 
     def get_balance(self):
         """This function is likely a method within a class that retrieves the current
@@ -79,4 +94,5 @@ class BankAccount:
 
     def get_transaction_history(self):
         """This function retrieves the transaction history."""  # noqa: D404
+        logger.info(f"Get transaction history of {self.account_id}")
         return [str(transaction) for transaction in self.transactions]
