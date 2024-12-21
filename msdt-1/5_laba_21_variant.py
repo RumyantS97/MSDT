@@ -283,31 +283,31 @@ while running:
                 translation[2] -= 10
 
 
-            if check_button_click(905, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(905, 460, 45, 45, mouse_pos):
                 rotation_angle[0] += 0.1
-            if check_button_click(955, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(955, 460, 45, 45, mouse_pos):
                 rotation_angle[0] -= 0.1
-            if check_button_click(1005, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(1005, 460, 45, 45, mouse_pos):
                 rotation_angle[1] += 0.1
-            if check_button_click(1055, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(1055, 460, 45, 45, mouse_pos):
                 rotation_angle[1] -= 0.1
-            if check_button_click(1105, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(1105, 460, 45, 45, mouse_pos):
                 rotation_angle[2] += 0.1
-            if check_button_click(1155, 460, 45, 45, mouse_pos) == 1:
+            if check_button_click(1155, 460, 45, 45, mouse_pos):
                 rotation_angle[2] -= 0.1
 
 
-            if check_button_click(905, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(905, 520, 45, 45, mouse_pos):
                 scale_factor[0] += 0.1
-            if check_button_click(955, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(955, 520, 45, 45, mouse_pos):
                 scale_factor[0] -= 0.1
-            if check_button_click(1005, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(1005, 520, 45, 45, mouse_pos):
                 scale_factor[1] += 0.1
-            if check_button_click(1055, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(1055, 520, 45, 45, mouse_pos):
                 scale_factor[1] -= 0.1
-            if check_button_click(1105, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(1105, 520, 45, 45, mouse_pos):
                 scale_factor[2] += 0.1
-            if check_button_click(1155, 520, 45, 45, mouse_pos) == 1:
+            if check_button_click(1155, 520, 45, 45, mouse_pos):
                 scale_factor[2] -= 0.1
     drawings()
     grid()
