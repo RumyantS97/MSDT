@@ -2,6 +2,10 @@ import json
 import hashlib
 from typing import List
 
+from functions import read_csv, write_json, invalid_list
+from setup import CSV, RESULT, PATTERN, VARIANT
+
+
 """
 В этом модуле обитают функции, необходимые для автоматизированной проверки результатов ваших трудов.
 """
@@ -35,3 +39,13 @@ def serialize_result(variant: int, checksum: str) -> None:
     :param checksum: контрольная сумма, вычисленная через calculate_checksum()
     """
     pass
+
+
+if __name__ == "__main__":
+    data = read_csv(CSV)
+    invalid_rows = invalid_list(data, PATTERN)
+    result = {
+        "variant" : VARIANT,
+        "checksum": calculate_checksum(invalid_rows)
+    }
+    write_json(RESULT, result)
