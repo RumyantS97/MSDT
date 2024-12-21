@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from msdt-5.main import Product, ShoppingCart, Discount
+from msdt_5.main import Product, ShoppingCart, Discount
 
 
 def test_product_total_price():
