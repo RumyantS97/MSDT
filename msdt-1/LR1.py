@@ -64,7 +64,6 @@ def create_monster():
     attack = random.randint(5, 15)
     return Monster(name, hp, attack)
 
-
 def battle(player, monster):
     print(f"A wild {monster.name} appears!")
     while player.is_alive() and monster.is_alive():
@@ -86,6 +85,7 @@ def battle(player, monster):
         if loot:
             player.add_item(loot)
             print(f"You found a {loot.name}!")
+
 
 
 def explore(player):
