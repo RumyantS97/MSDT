@@ -282,7 +282,6 @@ while running:
             if check_button_click(1155, 400, 45, 45, mouse_pos):
                 translation[2] -= 10
 
-
             if check_button_click(905, 460, 45, 45, mouse_pos):
                 rotation_angle[0] += 0.1
             if check_button_click(955, 460, 45, 45, mouse_pos):
@@ -295,7 +294,6 @@ while running:
                 rotation_angle[2] += 0.1
             if check_button_click(1155, 460, 45, 45, mouse_pos):
                 rotation_angle[2] -= 0.1
-
 
             if check_button_click(905, 520, 45, 45, mouse_pos):
                 scale_factor[0] += 0.1
@@ -314,7 +312,6 @@ while running:
 
     # Обновляем экран
     pygame.display.flip()
-
 
 # Завершаем работу pygame
 pygame.quit()
