@@ -106,7 +106,7 @@ if __name__ == "__main__":
     invalid_rows = validate_data(data, regex)
     summ = calculate_checksum(invalid_rows)
     result = {
-        "variant": 21,
+        "variant": 94,
         "checksum": summ
     }
     write_json_file(RESULT_PATH, result)
