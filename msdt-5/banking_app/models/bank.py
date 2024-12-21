@@ -1,7 +1,7 @@
 from loguru import logger
-from models.checking_account import CheckingAccount
-from models.saving_account import SavingsAccount
-from exceptions.account_not_found_error import AccountNotFoundError
+from .checking_account import CheckingAccount
+from .saving_account import SavingsAccount
+from ..exceptions.account_not_found_error import AccountNotFoundError
 
 class Bank:
     def __init__(self):

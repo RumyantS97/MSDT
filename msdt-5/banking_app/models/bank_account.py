@@ -4,8 +4,8 @@ transaction history.
 """
 from loguru import logger
 
-from models.transaction import Transaction
-from exceptions.insufficient_funds_error import InsufficientFundsError
+from .transaction import Transaction
+from ..exceptions.insufficient_funds_error import InsufficientFundsError
 
 
 class BankAccount:

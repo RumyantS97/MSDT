@@ -1,25 +1,32 @@
 import pytest
-from models.checking_account import CheckingAccount
-from models.saving_account import SavingsAccount
-from exceptions.account_not_found_error import AccountNotFoundError
-from bank import Bank  # Предполагается, что класс Bank находится в файле bank.py
+from ..models.checking_account import CheckingAccount
+from ..models.saving_account import SavingsAccount
+from ..exceptions.account_not_found_error import AccountNotFoundError
+from ..models.bank import Bank
+
+from .stubs.currency_stub import CurrencyStub
 
 @pytest.fixture
 def bank():
     """Создает экземпляр банка для тестов."""
     return Bank()
 
-@pytest.mark.parametrize("account_id, owner, account_type", [
-    ("123", "Alice", "checking"),
-    ("456", "Bob", "savings"),
-])
+@pytest.mark.parametrize(
+    "account_id, owner, account_type",
+    [
+        ("123", "Alice", "checking"),
+        ("456", "Bob", "savings"),
+    ]
+)
 def test_create_account(bank, account_id, owner, account_type):
     """Тестирует создание аккаунтов."""
     bank.create_account(account_id, owner, account_type)
     account = bank.get_account(account_id)
     assert account.owner == owner
     assert account.account_id == account_id
-    assert type(account) == (CheckingAccount if account_type == "checking" else SavingsAccount)
+    assert type(account) == (
+        CheckingAccount if account_type == "checking" else SavingsAccount
+    )
 
 def test_create_account_with_existing_id(bank):
     """Тестирует попытку создания аккаунта с существующим ID."""
