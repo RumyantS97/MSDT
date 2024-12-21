@@ -89,6 +89,7 @@ def battle(player, monster):
 
 
 def explore(player):
+    """Explore the dungeon and encounter monsters or items."""
     print("You are exploring the dungeon...")
     while player.is_alive():
         encounter = random.choice(["monster", "item", "nothing"])
@@ -104,8 +105,8 @@ def explore(player):
         else:
             print("You found nothing.")
 
-
 def main():
+    """Main function to start the game."""
     print("Welcome to the Dungeon Explorer!")
     player_name = input("Enter your character's name: ")
     player = Player(player_name)
@@ -118,6 +119,7 @@ def main():
         else:
             print("Invalid action!")
     print("Game Over!")
+
 
 
 # Дальнейшее расширение кода
